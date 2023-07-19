@@ -1,5 +1,15 @@
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
-import { useState } from "react";
+import { TimeRanges, useState } from "react";
+
+function menubar({ h }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+      }}
+    ></div>
+  );
+}
 
 const App = () => {
   const { isLoaded } = useLoadScript({
@@ -10,6 +20,7 @@ const App = () => {
   const [isShow, setIsShow] = useState(false);
   const [work, setWork] = useState(true);
   const [menu, setMenu] = useState(false);
+  const [isShowMenu, setIsShowMenu] = useState(false);
 
   const handleMapClick = (e) => {
     if (!work) return;
@@ -84,12 +95,14 @@ const App = () => {
 
           <div
             style={{
+              className: "MENU",
               position: "absolute",
               zIndex: 9,
               width: "50px",
               marginLeft: "38px",
               marginTop: "40px",
               minHeight: menu ? "400px" : "0px",
+              maxHeight: TimeRanges > 0.2 ? "auto" : "0px",
               height: "auto",
               transition: "0.5s ",
               borderRadius: "30px",
@@ -104,7 +117,7 @@ const App = () => {
               style={{
                 cursor: "pointer",
                 marginLeft: "4px",
-                transitionDelay: menu ? "0.2s" : "0s",
+                transitionDelay: menu ? "0.25s" : "0s",
                 display: menu ? "block" : "none",
               }}
             >
@@ -119,7 +132,7 @@ const App = () => {
               style={{
                 cursor: "pointer",
                 marginLeft: "9px",
-                transitionDelay: menu ? "0.2s" : "0s",
+                transitionDelay: menu ? "0.25s" : "0s",
                 display: menu ? "block" : "none",
               }}
             >
@@ -134,7 +147,7 @@ const App = () => {
               style={{
                 cursor: "pointer",
                 marginLeft: "3px",
-                transitionDelay: menu ? "0.2s" : "0s",
+                transitionDelay: menu ? "0.25s" : "0s",
                 display: menu ? "block" : "none",
               }}
             >
@@ -149,7 +162,7 @@ const App = () => {
               style={{
                 cursor: "pointer",
                 marginLeft: "6px",
-                transitionDelay: menu ? "0.2s" : "0s",
+                transitionDelay: menu ? "0.25s" : "0s",
                 display: menu ? "block" : "none",
               }}
             >
