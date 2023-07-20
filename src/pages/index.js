@@ -1,16 +1,6 @@
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
 import { TimeRanges, useState } from "react";
 
-function menubar({ h }) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-      }}
-    ></div>
-  );
-}
-
 const App = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "",
@@ -95,7 +85,6 @@ const App = () => {
 
           <div
             style={{
-              className: "MENU",
               position: "absolute",
               zIndex: 9,
               width: "50px",
@@ -103,7 +92,6 @@ const App = () => {
               marginTop: "40px",
               minHeight: menu ? "400px" : "0px",
               maxHeight: TimeRanges > 0.2 ? "auto" : "0px",
-              height: "auto",
               transition: "0.5s ",
               borderRadius: "30px",
               backgroundColor: "#E86A33",
@@ -121,12 +109,7 @@ const App = () => {
                 display: menu ? "block" : "none",
               }}
             >
-              <img
-                src="search.png"
-                width="auto"
-                height="36px"
-                color="white"
-              ></img>
+              <img src="search.png" height="36px" className="zoom"></img>
             </div>
             <div
               style={{
@@ -141,12 +124,13 @@ const App = () => {
                 width="auto"
                 height="36px"
                 color="white"
+                className="zoom"
               ></img>
             </div>
             <div
               style={{
                 cursor: "pointer",
-                marginLeft: "3px",
+                marginLeft: "2px",
                 transitionDelay: menu ? "0.25s" : "0s",
                 display: menu ? "block" : "none",
               }}
@@ -156,6 +140,7 @@ const App = () => {
                 width="auto"
                 height="36px"
                 color="white"
+                className="zoom"
               ></img>
             </div>
             <div
@@ -171,6 +156,7 @@ const App = () => {
                 width="auto"
                 height="36px"
                 color="white"
+                className="zoom"
               ></img>
             </div>
           </div>
@@ -238,15 +224,94 @@ const App = () => {
         style={{
           zIndex: 99,
           width: "100%",
-          height: "60vh",
+          height: isShow ? "60vh" : "0px",
+          transition: "0.5s",
           backgroundColor: "white",
           position: "absolute",
           bottom: 0,
           visibility: isShow ? "visible" : "hidden",
+          color: "black",
         }}
       >
-        <div style={{ color: "black" }} onClick={onClose}>
-          click to close
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "30px",
+          }}
+        >
+          <h1>เพิ่มสถานที่ใหม่</h1>
+        </div>
+        <div
+          style={{
+            width: "100%",
+            alignItems: "center",
+            marginLeft: "500px",
+            marginTop: "30px",
+          }}
+        >
+          <form class="w3-container w3-card-4 w3-light-grey">
+            <label for="name">ชื่อสถานที่</label>
+            <br></br>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              style={{
+                width: "430px",
+                color: "black",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "#F8F8FF",
+              }}
+            ></input>
+            <br></br>
+            <br></br>
+            <label for="name">รายละเอียด</label>
+            <br></br>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              style={{
+                width: "430px",
+                color: "black",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "#F8F8FF",
+              }}
+            ></input>
+          </form>
+          <div style={{ marginTop: "15px" }}>เพิ่มรูปภาพ</div>
+          <div style={{ marginTop: "15px", display: "flex", gap: "16px" }}>
+            <img
+              src="camera.svg"
+              style={{ height: "30px", cursor: "pointer" }}
+            />
+            <img
+              src="images.svg"
+              style={{ height: "30px", cursor: "pointer" }}
+            />
+          </div>
+          <div>
+            <button
+              onClick={onClose}
+              style={{
+                width: "430px",
+                marginTop: "50px",
+                height: "46px",
+                borderRadius: "10px",
+                backgroundColor: "#E86A33",
+                border: "none",
+                cursor: "pointer",
+                color: "white",
+                letterSpacing: "0.15em",
+              }}
+            >
+              สร้างสถานที่
+            </button>
+          </div>
         </div>
       </div>
     </div>
