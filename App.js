@@ -33,11 +33,14 @@ export default function App() {
   }
   if(Platform.OS == "ios") {
     return (
-        <SafeAreaView style={styles.container}>
-          <NavBar />
-          <HomeScreen />
-        </SafeAreaView>
-    
+      <view style={styles.container}>
+        <SafeAreaProvider>
+          <SafeAreaView>
+            <NavBar />
+            <HomeScreen />
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </view>
     );
   }
   
