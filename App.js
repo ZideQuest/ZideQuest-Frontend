@@ -5,9 +5,8 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// import HomeScreen from "./src/pages/HomeScreen";
-import RecommendScreen from "./src/pages/RecommendScreen";
-import CreatePinScreen from "./src/pages/CreatePinScreen";
+import HomeScreen from "./src/pages/HomeScreen";
+
 import NavBar from "./src/components/NavBar";
 import Map from "./src/components/Map";
 
@@ -34,23 +33,7 @@ export default function App() {
       />
       <SafeAreaProvider>
         <NavBar />
-        <Map />
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              style={{flex: 1}}
-              name="Recommend"
-              component={RecommendScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              style={{flex: 1}}
-              name="CreatePin"
-              component={CreatePinScreen}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <HomeScreen/>
       </SafeAreaProvider>
       {/* <SafeAreaProvider>
         <SafeAreaView>

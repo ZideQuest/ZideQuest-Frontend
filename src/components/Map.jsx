@@ -6,7 +6,7 @@ import { useState, useRef } from "react";
 
 import { mapOptions, locations } from "../data/dev-data";
 
-export default function Map() {
+export default function Map({ newMarker, setNewMarker }) {
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 51.5079145,
@@ -14,8 +14,6 @@ export default function Map() {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
-
-  const [newMarker, setNewMarker] = useState(null);
 
   const mapPressHandler = (coordinate) => {
     const lat = coordinate.nativeEvent.coordinate.latitude;
@@ -43,22 +41,20 @@ export default function Map() {
   };
 
   return (
-    <View style={[styles.mapContainer, {height: "60%"}]}>
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        onRegionChangeComplete={(region) => setRegion(region)}
-        {...mapOptions}
-        onPress={(data) => mapPressHandler(data)}
-        onPoiClick={(data) => mapPressHandler(data)}
-      >
-        {locations.map((pin) => (
-          <Marker coordinate={pin} key={pin.id} />
-        ))}
-        {newMarker && <Marker coordinate={newMarker} />}
-      </MapView>
-    </View>
+    <MapView
+      ref={mapRef}
+      style={styles.map}
+      provider={PROVIDER_GOOGLE}
+      onRegionChangeComplete={(region) => setRegion(region)}
+      {...mapOptions}
+      onPress={(data) => mapPressHandler(data)}
+      onPoiClick={(data) => mapPressHandler(data)}
+    >
+      {locations.map((pin) => (
+        <Marker coordinate={pin} key={pin.id} />
+      ))}
+      {newMarker && <Marker coordinate={newMarker} />}
+    </MapView>
   );
 }
 
