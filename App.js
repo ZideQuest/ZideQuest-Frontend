@@ -22,33 +22,31 @@ export default function App() {
     TRANSITIONS[0]
   );
 
-  if(Platform.OS == "android") {
-    return (
-        <SafeAreaProvider style={styles.AndroidSafeArea}>
-          <NavBar />
-          <HomeScreen />
-        </SafeAreaProvider>
-    
-    );
-  }
-  if(Platform.OS == "ios") {
-    return (
-        <SafeAreaView style={styles.container}>
+  return (
+    <View style={styles.container}>
+      {/* <StatusBar
+        animated={true}
+        backgroundColor="#ffffff"
+        barStyle={statusBarStyle}
+        showHideTransition={statusBarTransition}
+        hidden={hidden}
+      /> */}
+      <SafeAreaProvider>
+        <SafeAreaView>
           <NavBar />
           <HomeScreen />
         </SafeAreaView>
-    
-    );
-  }
-  
+      </SafeAreaProvider>
+      {/* <SafeAreaProvider>
+          <NavBar />
+          <Home />
+      </SafeAreaProvider> */}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  AndroidSafeArea: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight
-  }
 });
