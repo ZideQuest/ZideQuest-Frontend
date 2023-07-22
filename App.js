@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // import HomeScreen from "./src/pages/HomeScreen";
 import RecommendScreen from "./src/pages/RecommendScreen";
+import CreatePinScreen from "./src/pages/CreatePinScreen";
 import NavBar from "./src/components/NavBar";
 import Map from "./src/components/Map";
 
@@ -37,9 +38,15 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
-              style={{ width: 200, height: 200, backgroundColor: "red" }}
+              style={{flex: 1}}
               name="Recommend"
               component={RecommendScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              style={{flex: 1}}
+              name="CreatePin"
+              component={CreatePinScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

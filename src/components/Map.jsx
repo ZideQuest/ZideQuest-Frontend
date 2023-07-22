@@ -43,7 +43,7 @@ export default function Map() {
   };
 
   return (
-    <View>
+    <View style={[styles.mapContainer, {height: "60%"}]}>
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -64,7 +64,6 @@ export default function Map() {
 
 const styles = StyleSheet.create({
   map: {
-    width: "100%",
     height: "100%",
   },
 });
