@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     zIndex: 1,
-    paddingTop: 50
+    // paddingTop: 50
     // height: 20
   },
   navLeft: {

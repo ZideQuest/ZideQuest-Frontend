@@ -36,7 +36,7 @@ export default function Map({ newMarker, setNewMarker }) {
         latitudeDelta: 0.0015, // The delta values control the zoom level
         longitudeDelta: 0.0015,
       };
-      mapRef.current.animateToRegion(region, 200); // 1000ms duration for the animation
+      mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
     }
   };
 

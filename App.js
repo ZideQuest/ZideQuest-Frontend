@@ -24,22 +24,22 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <StatusBar
+      {/* <StatusBar
         animated={true}
         backgroundColor="#ffffff"
         barStyle={statusBarStyle}
         showHideTransition={statusBarTransition}
         hidden={hidden}
-      />
+      /> */}
       <SafeAreaProvider>
-        <NavBar />
-        <HomeScreen/>
-      </SafeAreaProvider>
-      {/* <SafeAreaProvider>
         <SafeAreaView>
           <NavBar />
-          <Home />
+          <HomeScreen />
         </SafeAreaView>
+      </SafeAreaProvider>
+      {/* <SafeAreaProvider>
+          <NavBar />
+          <Home />
       </SafeAreaProvider> */}
     </View>
   );
