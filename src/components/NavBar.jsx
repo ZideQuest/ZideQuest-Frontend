@@ -7,6 +7,7 @@ import {
   Image,
   Animated,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
@@ -26,7 +27,7 @@ export default function NavBar() {
   });
 
   useEffect(() => {
-    rotateValueHolder.setValue(hamburgerOpen ? 0 : 1)
+    rotateValueHolder.setValue(hamburgerOpen ? 0 : 1);
     Animated.timing(rotateValueHolder, {
       toValue: hamburgerOpen ? 1 : 0,
       duration: 300,
@@ -48,11 +49,21 @@ export default function NavBar() {
             ]}
             source={hamburger_icon}
           />
-          <View style={[styles.menus, {display: hamburgerOpen ? "flex" : "none"}]}>
-            <Pressable onPress={() => alert("filer")}><Image style={styles.menuItem} source={filter_icon} /></Pressable>
-            <Pressable onPress={() => alert("filer")}><Image style={styles.menuItem} source={filter_icon} /></Pressable>
-            <Pressable onPress={() => alert("filer")}><Image style={styles.menuItem} source={filter_icon} /></Pressable>
-            <Pressable onPress={() => alert("filer")}><Image style={styles.menuItem} source={filter_icon} /></Pressable>
+          <View
+            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none" }]}
+          >
+            <Pressable onPress={() => alert("filer")}>
+              <Image style={styles.menuItem} source={filter_icon} />
+            </Pressable>
+            <Pressable onPress={() => alert("filer")}>
+              <Image style={styles.menuItem} source={filter_icon} />
+            </Pressable>
+            <Pressable onPress={() => alert("filer")}>
+              <Image style={styles.menuItem} source={filter_icon} />
+            </Pressable>
+            <Pressable onPress={() => alert("filer")}>
+              <Image style={styles.menuItem} source={filter_icon} />
+            </Pressable>
           </View>
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
@@ -75,6 +86,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     zIndex: 1,
+    paddingTop: 50
+    // height: 20
   },
   navLeft: {
     flexDirection: "row",
