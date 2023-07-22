@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
+import filter_icon from "../../assets/images/filter.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -47,11 +48,12 @@ export default function NavBar() {
             ]}
             source={hamburger_icon}
           />
-          {/* <View style={styles.menus}>
-            <Text>1</Text>
-            <Text>2</Text>
-            <Text>3</Text>
-          </View> */}
+          <View style={[styles.menus, {display: hamburgerOpen ? "flex" : "none"}]}>
+            <Pressable onPress={() => alert("filer")}><Image style={styles.menuItem} source={filter_icon} /></Pressable>
+            <Pressable onPress={() => alert("filer")}><Image style={styles.menuItem} source={filter_icon} /></Pressable>
+            <Pressable onPress={() => alert("filer")}><Image style={styles.menuItem} source={filter_icon} /></Pressable>
+            <Pressable onPress={() => alert("filer")}><Image style={styles.menuItem} source={filter_icon} /></Pressable>
+          </View>
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
@@ -72,6 +74,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 15,
     paddingVertical: 10,
+    zIndex: 1,
   },
   navLeft: {
     flexDirection: "row",
@@ -89,7 +92,16 @@ const styles = StyleSheet.create({
   },
   menus: {
     position: "absolute",
-
+    backgroundColor: "#E86A33",
+    top: 60,
+    padding: 10,
+    gap: 10,
+    borderRadius: 10,
+  },
+  menuItem: {
+    width: 40,
+    height: 40,
+    padding: 10,
   },
   logo: {
     color: "#E86A33",
