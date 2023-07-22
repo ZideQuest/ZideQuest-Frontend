@@ -1,4 +1,5 @@
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
+import { useRouter } from "next/router";
 import { TimeRanges, useState } from "react";
 
 const App = () => {
@@ -10,7 +11,14 @@ const App = () => {
   const [isShow, setIsShow] = useState(false);
   const [work, setWork] = useState(true);
   const [menu, setMenu] = useState(false);
-  const [isShowMenu, setIsShowMenu] = useState(false);
+  const [plusplace, setPlusplace] = useState(false);
+  const [add, setAdd] = useState(false);
+  const [plus, setPlus] = useState(false);
+
+  const router = useRouter();
+  const handleClick = (path) => {
+    router.push(path);
+  };
 
   const handleMapClick = (e) => {
     if (!work) return;
@@ -21,6 +29,18 @@ const App = () => {
     setMarker([...marker, { lat, lng }]);
     setIsShow(true);
     setWork(false);
+  };
+
+  const handleAdd = () => {
+    setAdd(true);
+    setPlus(false);
+  };
+
+  const handlePlus = () => {
+    setPlus(true);
+    setPlusplace(true);
+    setWork(false);
+    // setMenu(true);
   };
 
   const mapOptions = {
@@ -41,10 +61,9 @@ const App = () => {
   const onClose = () => {
     setIsShow(false);
     setWork(true);
-  };
-
-  const onMarkerEvent = (event) => {
-    setIsShow((current) => !current);
+    setAdd(false);
+    setPlus(false);
+    setPlusplace(false);
   };
 
   return (
@@ -74,7 +93,9 @@ const App = () => {
           >
             <img
               onClick={() => [
-                !isShow && (setMenu((menu) => !menu), setWork((work) => !work)),
+                !add &&
+                  !isShow &&
+                  (setMenu((menu) => !menu), setWork((work) => !work)),
               ]}
               src="7612954.png"
               width="46px"
@@ -97,7 +118,7 @@ const App = () => {
               backgroundColor: "#E86A33",
               visibility: menu ? "visible" : "hidden",
               display: "grid",
-              gridTemplateRows: "1fr 1fr 1fr 1fr",
+              gridTemplateRows: "1fr 1fr 1fr",
               alignItems: "center",
             }}
           >
@@ -143,7 +164,7 @@ const App = () => {
                 className="zoom"
               ></img>
             </div>
-            <div
+            {/* <div
               style={{
                 cursor: "pointer",
                 marginLeft: "6px",
@@ -158,7 +179,7 @@ const App = () => {
                 color="white"
                 className="zoom"
               ></img>
-            </div>
+            </div> */}
           </div>
         </div>
         <div
@@ -198,6 +219,9 @@ const App = () => {
           </button>
         </div>
       </div>
+      {/* <View style={styles.container}>
+        <MapView style={styles.map} />
+      </View> */}
       {!isLoaded ? (
         <h1>Loading...</h1>
       ) : (
@@ -216,7 +240,7 @@ const App = () => {
           onClick={(e) => handleMapClick(e)}
         >
           {marker.map((item, index) => (
-            <MarkerF position={item} />
+            <MarkerF position={item} onClick={() => handlePlus()} />
           ))}
         </GoogleMap>
       )}
@@ -231,12 +255,16 @@ const App = () => {
           bottom: 0,
           visibility: isShow ? "visible" : "hidden",
           color: "black",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <div
           style={{
             display: "flex",
             flexDirection: "column",
+            // height: "60vh",
             alignItems: "center",
             marginTop: "30px",
           }}
@@ -246,8 +274,10 @@ const App = () => {
         <div
           style={{
             width: "100%",
+            display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            marginLeft: "500px",
+            justifyContent: "center",
             marginTop: "30px",
           }}
         >
@@ -264,6 +294,7 @@ const App = () => {
                 height: "40px",
                 borderRadius: "10px",
                 backgroundColor: "#F8F8FF",
+                border: "solid",
               }}
             ></input>
             <br></br>
@@ -280,39 +311,126 @@ const App = () => {
                 height: "40px",
                 borderRadius: "10px",
                 backgroundColor: "#F8F8FF",
+                border: "solid",
               }}
             ></input>
           </form>
-          <div style={{ marginTop: "15px" }}>เพิ่มรูปภาพ</div>
-          <div style={{ marginTop: "15px", display: "flex", gap: "16px" }}>
-            <img
-              src="camera.svg"
-              style={{ height: "30px", cursor: "pointer" }}
-            />
-            <img
-              src="images.svg"
-              style={{ height: "30px", cursor: "pointer" }}
-            />
-          </div>
-          <div>
-            <button
-              onClick={onClose}
-              style={{
-                width: "430px",
-                marginTop: "50px",
-                height: "46px",
-                borderRadius: "10px",
-                backgroundColor: "#E86A33",
-                border: "none",
-                cursor: "pointer",
-                color: "white",
-                letterSpacing: "0.15em",
-              }}
-            >
-              สร้างสถานที่
-            </button>
-          </div>
         </div>
+        <div
+          style={{
+            marginTop: "15px",
+            marginRight: "351px",
+          }}
+        >
+          เพิ่มรูปภาพ
+        </div>
+        <div
+          style={{
+            marginTop: "15px",
+            display: "flex",
+            gap: "16px",
+            marginRight: "351px",
+          }}
+        >
+          <img src="camera.svg" style={{ height: "30px", cursor: "pointer" }} />
+          <img src="images.svg" style={{ height: "30px", cursor: "pointer" }} />
+        </div>
+        <div className="create">
+          <button
+            onClick={onClose}
+            style={{
+              width: "430px",
+              marginTop: "50px",
+              height: "46px",
+              borderRadius: "10px",
+              backgroundColor: "#E86A33",
+              border: "none",
+              cursor: "pointer",
+              color: "white",
+              letterSpacing: "0.15em",
+            }}
+          >
+            สร้างสถานที่
+          </button>
+        </div>
+      </div>
+      <div
+        style={{
+          zIndex: 99,
+          width: "100%",
+          height: plusplace ? "60vh" : "0px",
+          transition: "0.5s",
+          backgroundColor: "white",
+          position: "absolute",
+          bottom: 0,
+          visibility: plusplace ? "visible" : "hidden",
+          color: "black",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          style={{
+            // width: "100%",
+            // display: "flex",
+            // flexDirection: "column",
+            // alignItems: "center",
+            // marginTop: "329px",
+            visibility: plus ? "visible" : "hidden",
+          }}
+        >
+          <button
+            onClick={() => handleAdd()}
+            style={{
+              width: add ? "0px" : "100px",
+              height: "100px",
+              display: "flex",
+              border: "solid",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "1000px",
+              backgroundColor: "#E86A33",
+              fontSize: "50px",
+              cursor: "pointer",
+              bottom: "0px",
+            }}
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <div
+        style={{
+          zIndex: 99,
+          width: "100%",
+          height: add ? "60vh" : "0px",
+          transition: "0.5s",
+          backgroundColor: "white",
+          position: "absolute",
+          bottom: 0,
+          visibility: add ? "visible" : "hidden",
+          color: "black",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <button
+          onClick={onClose}
+          style={{
+            width: "430px",
+
+            marginTop: "50px",
+            height: "46px",
+            borderRadius: "10px",
+            backgroundColor: "#E86A33",
+            border: "none",
+            cursor: "pointer",
+            color: "white",
+            letterSpacing: "0.15em",
+          }}
+        >
+          สร้างกิจกรรม
+        </button>
       </div>
     </div>
   );

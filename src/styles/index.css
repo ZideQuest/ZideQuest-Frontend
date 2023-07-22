@@ -5,3 +5,8 @@
 .zoom:hover {
   transform: scale(2);
 }
+
+.create {
+  height: 60vh;
+  bottom: 0px;
+}
