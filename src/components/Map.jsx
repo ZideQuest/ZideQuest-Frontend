@@ -42,7 +42,7 @@ export default function Map({ newMarker, setNewMarker }) {
 
   useEffect(() => {
     mapRef.current.setMapBoundaries(
-      { latitude: 13.847247, longitude: 100.580817 },
+      { latitude: 13.847247, longitude: 100.570117 },
       { latitude: 13.842048, longitude: 100.561315 }
     );
   }, []);
