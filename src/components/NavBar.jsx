@@ -7,17 +7,24 @@ import {
   Image,
   Animated,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
+import { useAppContext } from "../data/AppContext";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-
+  const {setCreatingNewMarker} = useAppContext();
+  
   const hamburgerPressHandler = () => {
     setHamburgerOpen((prev) => !prev);
   };
+
+  const addButtonHandler = () => {
+    setCreatingNewMarker(true)
+    hamburgerPressHandler()
+  }
 
   const rotateValueHolder = new Animated.Value(0);
 
@@ -52,16 +59,7 @@ export default function NavBar() {
           <View
             style={[styles.menus, { display: hamburgerOpen ? "flex" : "none" }]}
           >
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-            <Pressable onPress={() => alert("filer")}>
+            <Pressable onPress={() => addButtonHandler()}>
               <Image style={styles.menuItem} source={filter_icon} />
             </Pressable>
           </View>
@@ -86,6 +84,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     zIndex: 1,
+    backgroundColor: "white",
     // paddingTop: 50
     // height: 20
   },
