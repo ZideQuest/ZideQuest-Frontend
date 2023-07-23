@@ -2,7 +2,7 @@ import React from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { View, StyleSheet } from "react-native";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { mapOptions, locations } from "../data/dev-data";
 
@@ -39,6 +39,13 @@ export default function Map({ newMarker, setNewMarker }) {
       mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
     }
   };
+
+  useEffect(() => {
+    mapRef.current.setMapBoundaries(
+      { latitude: 13.856247, longitude: 100.580817 },
+      { latitude: 13.842048, longitude: 100.561315 }
+    );
+  }, []);
 
   return (
     <MapView
