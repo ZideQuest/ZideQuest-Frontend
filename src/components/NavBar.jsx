@@ -11,6 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
+import search_icon from "../../assets/images/search.png";
+import plus_icon from "../../assets/images/plus.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -20,11 +22,13 @@ export default function NavBar() {
   };
 
   const rotateValueHolder = new Animated.Value(0);
+  const heightValueHolder = useState(new Animated.Value(0))[0];
 
   const RotateData = rotateValueHolder.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "90deg"],
   });
+
 
   useEffect(() => {
     rotateValueHolder.setValue(hamburgerOpen ? 0 : 1);
@@ -32,8 +36,26 @@ export default function NavBar() {
       toValue: hamburgerOpen ? 1 : 0,
       duration: 300,
       useNativeDriver: true,
-    }).start();
-  }, [hamburgerOpen]);
+    },
+    ).start();
+   if (hamburgerOpen) {
+      Animated.timing(heightValueHolder, {
+        toValue: 200,
+        duration: 300, 
+        useNativeDriver: false,
+      }).start();
+    } else {
+      Animated.timing(heightValueHolder, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: false,
+      }).start();
+    }
+   
+  },
+   [hamburgerOpen]);
+
+
 
   return (
     <View style={styles.container}>
@@ -49,22 +71,21 @@ export default function NavBar() {
             ]}
             source={hamburger_icon}
           />
-          <View
-            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none" }]}
+          <Animated.View
+            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none", height: heightValueHolder,
+            
+           }]}
           >
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
+            <Pressable onPress={() => alert("search")}>
+              <Image style={styles.menuItem} source={search_icon} />
             </Pressable>
             <Pressable onPress={() => alert("filer")}>
               <Image style={styles.menuItem} source={filter_icon} />
             </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
+            <Pressable onPress={() => alert("plus")}>
+              <Image style={styles.menuItem} source={plus_icon} />
             </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-          </View>
+          </Animated.View>
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
@@ -106,15 +127,20 @@ const styles = StyleSheet.create({
   menus: {
     position: "absolute",
     backgroundColor: "#E86A33",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    paddingHorizontal: 5,
     top: 60,
     padding: 10,
     gap: 10,
-    borderRadius: 10,
+    borderRadius: 100,
   },
   menuItem: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     padding: 10,
+
   },
   logo: {
     color: "#E86A33",

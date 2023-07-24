@@ -2,7 +2,7 @@ import React from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { View, StyleSheet } from "react-native";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { mapOptions, locations } from "../data/dev-data";
 
@@ -40,16 +40,23 @@ export default function Map({ newMarker, setNewMarker }) {
     }
   };
 
+  useEffect(() => {
+    mapRef.current.setMapBoundaries(
+      { latitude: 13.853247, longitude: 100.579117 },
+      { latitude: 13.845048, longitude: 100.569315 }
+    );
+  }, []);
+
   return (
     <MapView
       ref={mapRef}
       style={styles.map}
       provider={PROVIDER_GOOGLE}
+      minZoomLevel={15}
       onRegionChangeComplete={(region) => setRegion(region)}
       {...mapOptions}
       onPress={(data) => mapPressHandler(data)}
-      onPoiClick={(data) => mapPressHandler(data)}
-    >
+      onPoiClick={(data) => mapPressHandler(data)}>
       {locations.map((pin) => (
         <Marker coordinate={pin} key={pin.id} />
       ))}
