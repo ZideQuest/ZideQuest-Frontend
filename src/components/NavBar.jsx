@@ -102,9 +102,9 @@ export default function NavBar() {
             <Pressable onPress={() => alert("filer")}>
               <Image style={styles.menuItem} source={filter_icon} />
             </Pressable>
-            <Pressable onPress={() => alert("plus")}>
+            {isLoggedIn && <Pressable onPress={addButtonHandler}>
               <Image style={styles.menuItem} source={plus_icon} />
-            </Pressable>
+            </Pressable>}
           </Animated.View>
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
