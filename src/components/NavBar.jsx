@@ -12,19 +12,33 @@ import { useAppContext } from "../data/AppContext";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
+import plus_icon from "../../assets/images/plus.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-  const {setCreatingNewMarker} = useAppContext();
-  
+  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn } =
+    useAppContext();
+
   const hamburgerPressHandler = () => {
     setHamburgerOpen((prev) => !prev);
   };
 
   const addButtonHandler = () => {
-    setCreatingNewMarker(true)
-    hamburgerPressHandler()
-  }
+    setCreatingNewMarker(true);
+    hamburgerPressHandler();
+  };
+
+  const loginHandler = () => {
+    alert("Logging in...");
+    setIsLoggedIn(true);
+  };
+
+  const logoutHandler = () => {
+    alert("Logging out...");
+    setCreatingNewMarker(false);
+    setIsLoggedIn(false);
+    setNewMarker(null);
+  };
 
   const rotateValueHolder = new Animated.Value(0);
 
@@ -59,19 +73,27 @@ export default function NavBar() {
           <View
             style={[styles.menus, { display: hamburgerOpen ? "flex" : "none" }]}
           >
-            <Pressable onPress={() => addButtonHandler()}>
+            {isLoggedIn && (
+              <Pressable onPress={() => addButtonHandler()}>
+                <Image style={styles.menuItem} source={plus_icon} />
+              </Pressable>
+            )}
+            <Pressable onPress={() => alert("filtering")}>
               <Image style={styles.menuItem} source={filter_icon} />
             </Pressable>
           </View>
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
-      <Pressable
-        style={styles.loginButton}
-        onPress={() => alert("logging in...")}
-      >
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
+      {isLoggedIn ? (
+        <Pressable style={styles.loginButton} onPress={() => logoutHandler()}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </Pressable>
+      ) : (
+        <Pressable style={styles.loginButton} onPress={() => loginHandler()}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
