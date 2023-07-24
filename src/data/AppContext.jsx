@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 const AppContext = createContext();
 
@@ -14,13 +14,25 @@ export const AppProvider = ({ children }) => {
   const cancelPinCreating = () => {
     setNewMarker(null);
     setCreatingNewMarker(false);
+    setCurrentPage("recommend");
   };
 
   const selectExistedPin = (pinId) => {
     cancelPinCreating();
-    setCurrentMarkerSelecting(pinId);
     setCurrentPage("markerDetail")
+    setCurrentMarkerSelecting(pinId);
   }
+
+  const backToRecommend = () => {
+    setCreatingNewMarker(false)
+    setNewMarker(null)
+    setCurrentMarkerSelecting(null)
+    setCurrentPage("recomemnd")
+  }
+
+  useEffect(() => {
+    console.log(currentPage);
+  }, [currentPage])
 
   return (
     <AppContext.Provider
@@ -34,7 +46,9 @@ export const AppProvider = ({ children }) => {
         cancelPinCreating,
         currentPage,
         setCurrentPage,
-        selectExistedPin
+        selectExistedPin,
+        backToRecommend,
+        currentMarkerSelecting,
       }}
     >
       {children}

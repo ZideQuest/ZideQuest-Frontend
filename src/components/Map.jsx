@@ -23,8 +23,10 @@ export default function Map() {
     newMarker,
     setNewMarker,
     cancelPinCreating,
+    currentPage,
     setCurrentPage,
     selectExistedPin,
+    backToRecommend,
   } = useAppContext();
 
   const mapRef = useRef(null);
@@ -36,9 +38,15 @@ export default function Map() {
   });
 
   const mapPressHandler = (coordinate) => {
-    if (!creatingNewMarker) {
+    // if (currentPage === "markerDetail") {
+    //   backToRecommend();
+    //   return;
+    // }
+
+    if (currentPage !== "addMarker" || !creatingNewMarker) {
       return;
     }
+
     const { lat, lng, name, placeId } = getDetailFromData(coordinate);
 
     animateToRegion(lat, lng);

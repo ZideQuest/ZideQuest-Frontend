@@ -6,15 +6,20 @@ import { TransitionPresets } from "@react-navigation/stack";
 import { useAppContext } from "../data/AppContext";
 import RecommendScreen from "./RecommendScreen";
 import CreatePinScreen from "./CreatePinScreen";
+import PinDetailScreen from "./PinDetailScreen";
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
-  const { creatingNewMarker } = useAppContext();
+  const { creatingNewMarker, currentPage } = useAppContext();
 
   const screenSlector = () => {
-    if (creatingNewMarker) {
+    if (currentPage === "addMarker") {
       return <Stack.Screen name="CreatePin" component={CreatePinScreen} />;
+    }
+
+    if (currentPage === "markerDetail") {
+      return <Stack.Screen name="PinDetail" component={PinDetailScreen} />;
     }
 
     return <Stack.Screen name="Recommend" component={RecommendScreen} />;
