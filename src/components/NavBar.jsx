@@ -17,7 +17,7 @@ import plus_icon from "../../assets/images/plus.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn } =
+  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn, setCurrentPage, } =
     useAppContext();
 
   const hamburgerPressHandler = () => {
@@ -25,6 +25,7 @@ export default function NavBar() {
   };
 
   const addButtonHandler = () => {
+    setCurrentPage("addMarker")
     setCreatingNewMarker(true);
     hamburgerPressHandler();
   };

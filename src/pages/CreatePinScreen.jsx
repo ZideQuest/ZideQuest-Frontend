@@ -4,7 +4,7 @@ import {View, Text, StyleSheet, TextInput} from "react-native"
 export default function CreatePinScreen() {
   return (
     <View style={styles.container}>
-      <Text>Test</Text>
+      <Text>Create Pin</Text>
       <TextInput/>
     </View>
   )
