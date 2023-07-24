@@ -10,6 +10,7 @@ import HomeScreen from "./src/pages/HomeScreen";
 import NavBar from "./src/components/NavBar";
 import Map from "./src/components/Map";
 
+import Activity from"./src/components/Activity";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
 
@@ -25,8 +26,9 @@ export default function App() {
   if(Platform.OS == "android") {
     return (
         <SafeAreaProvider style={styles.AndroidSafeArea}>
-          <NavBar />
-          <HomeScreen />
+          {/* <NavBar />
+          <HomeScreen /> */}
+          <Activity />
         </SafeAreaProvider>
     
     );
