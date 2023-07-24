@@ -7,8 +7,25 @@ import { useState, useRef, useEffect } from "react";
 import { useAppContext } from "../data/AppContext";
 import { mapOptions, locations } from "../data/dev-data";
 
+function getDetailFromData(coordinate) {
+  const lat = coordinate.nativeEvent.coordinate.latitude;
+  const lng = coordinate.nativeEvent.coordinate.longitude;
+  const name = coordinate.nativeEvent.name;
+  const placeId = coordinate.nativeEvent.placeId;
+
+  return { lat, lng, name, placeId };
+}
+
 export default function Map() {
-  const { creatingNewMarker, setCreatingNewMarker, newMarker, setNewMarker } = useAppContext();
+  const {
+    creatingNewMarker,
+    setCreatingNewMarker,
+    newMarker,
+    setNewMarker,
+    cancelPinCreating,
+    setCurrentPage,
+    selectExistedPin,
+  } = useAppContext();
 
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
@@ -22,16 +39,19 @@ export default function Map() {
     if (!creatingNewMarker) {
       return;
     }
-    const lat = coordinate.nativeEvent.coordinate.latitude;
-    const lng = coordinate.nativeEvent.coordinate.longitude;
-    const name = coordinate.nativeEvent.name;
-    const placeId = coordinate.nativeEvent.placeId;
+    const { lat, lng, name, placeId } = getDetailFromData(coordinate);
 
     animateToRegion(lat, lng);
     setNewMarker({
       latitude: lat,
       longitude: lng,
     });
+  };
+
+  const markerPressHandler = (pinId, data) => {
+    selectExistedPin(pinId);
+    const { lat, lng, name, placeId } = getDetailFromData(data);
+    animateToRegion(lat, lng);
   };
 
   const animateToRegion = (lat, lng) => {
@@ -65,7 +85,11 @@ export default function Map() {
       onPoiClick={(data) => mapPressHandler(data)}
     >
       {locations.map((pin) => (
-        <Marker coordinate={pin} key={pin.id} />
+        <Marker
+          coordinate={pin}
+          key={pin.id}
+          onPress={(data) => markerPressHandler(pin.id, data)}
+        />
       ))}
       {newMarker && <Marker coordinate={newMarker} />}
     </MapView>
