@@ -22,6 +22,7 @@ export default function NavBar() {
   };
 
   const rotateValueHolder = new Animated.Value(0);
+  const heightValueHolder = useState(new Animated.Value(0))[0];
 
   const RotateData = rotateValueHolder.interpolate({
     inputRange: [0, 1],
@@ -35,8 +36,26 @@ export default function NavBar() {
       toValue: hamburgerOpen ? 1 : 0,
       duration: 300,
       useNativeDriver: true,
-    }).start();
-  }, [hamburgerOpen]);
+    },
+    ).start();
+   if (hamburgerOpen) {
+      Animated.timing(heightValueHolder, {
+        toValue: 200,
+        duration: 300, 
+        useNativeDriver: false,
+      }).start();
+    } else {
+      Animated.timing(heightValueHolder, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: false,
+      }).start();
+    }
+   
+  },
+   [hamburgerOpen]);
+
+
 
   return (
     <View style={styles.container}>
@@ -52,8 +71,9 @@ export default function NavBar() {
             ]}
             source={hamburger_icon}
           />
-          <View
-            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none",height: hamburgerOpen ? 200:0
+          <Animated.View
+            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none", height: heightValueHolder,
+            
            }]}
           >
             <Pressable onPress={() => alert("search")}>
@@ -65,7 +85,7 @@ export default function NavBar() {
             <Pressable onPress={() => alert("plus")}>
               <Image style={styles.menuItem} source={plus_icon} />
             </Pressable>
-          </View>
+          </Animated.View>
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
