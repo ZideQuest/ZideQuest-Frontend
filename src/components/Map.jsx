@@ -42,8 +42,8 @@ export default function Map({ newMarker, setNewMarker }) {
 
   useEffect(() => {
     mapRef.current.setMapBoundaries(
-      { latitude: 13.847247, longitude: 100.570117 },
-      { latitude: 13.842048, longitude: 100.561315 }
+      { latitude: 13.853247, longitude: 100.579117 },
+      { latitude: 13.845048, longitude: 100.569315 }
     );
   }, []);
 
@@ -52,11 +52,11 @@ export default function Map({ newMarker, setNewMarker }) {
       ref={mapRef}
       style={styles.map}
       provider={PROVIDER_GOOGLE}
+      minZoomLevel={15}
       onRegionChangeComplete={(region) => setRegion(region)}
       {...mapOptions}
       onPress={(data) => mapPressHandler(data)}
-      onPoiClick={(data) => mapPressHandler(data)}
-    >
+      onPoiClick={(data) => mapPressHandler(data)}>
       {locations.map((pin) => (
         <Marker coordinate={pin} key={pin.id} />
       ))}

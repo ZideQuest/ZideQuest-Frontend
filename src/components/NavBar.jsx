@@ -11,6 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
+import search_icon from "../../assets/images/search.png";
+import plus_icon from "../../assets/images/plus.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -52,17 +54,14 @@ export default function NavBar() {
           <View
             style={[styles.menus, { display: hamburgerOpen ? "flex" : "none" }]}
           >
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
+            <Pressable onPress={() => alert("search")}>
+              <Image style={styles.menuItem} source={search_icon} />
             </Pressable>
             <Pressable onPress={() => alert("filer")}>
               <Image style={styles.menuItem} source={filter_icon} />
             </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
+            <Pressable onPress={() => alert("plus")}>
+              <Image style={styles.menuItem} source={plus_icon} />
             </Pressable>
           </View>
         </Pressable>
