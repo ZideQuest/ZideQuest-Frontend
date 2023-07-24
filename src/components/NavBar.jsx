@@ -28,6 +28,7 @@ export default function NavBar() {
     outputRange: ["0deg", "90deg"],
   });
 
+
   useEffect(() => {
     rotateValueHolder.setValue(hamburgerOpen ? 0 : 1);
     Animated.timing(rotateValueHolder, {
@@ -52,7 +53,8 @@ export default function NavBar() {
             source={hamburger_icon}
           />
           <View
-            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none" }]}
+            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none",height: hamburgerOpen ? 200:0
+           }]}
           >
             <Pressable onPress={() => alert("search")}>
               <Image style={styles.menuItem} source={search_icon} />
@@ -105,15 +107,20 @@ const styles = StyleSheet.create({
   menus: {
     position: "absolute",
     backgroundColor: "#E86A33",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    paddingHorizontal: 5,
     top: 60,
     padding: 10,
     gap: 10,
-    borderRadius: 10,
+    borderRadius: 100,
   },
   menuItem: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     padding: 10,
+
   },
   logo: {
     color: "#E86A33",
