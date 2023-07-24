@@ -7,7 +7,8 @@ import {
   Image,
   Animated,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
+import { useAppContext } from "../data/AppContext";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
@@ -16,9 +17,28 @@ import plus_icon from "../../assets/images/plus.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn } =
+    useAppContext();
 
   const hamburgerPressHandler = () => {
     setHamburgerOpen((prev) => !prev);
+  };
+
+  const addButtonHandler = () => {
+    setCreatingNewMarker(true);
+    hamburgerPressHandler();
+  };
+
+  const loginHandler = () => {
+    alert("Logging in...");
+    setIsLoggedIn(true);
+  };
+
+  const logoutHandler = () => {
+    alert("Logging out...");
+    setCreatingNewMarker(false);
+    setIsLoggedIn(false);
+    setNewMarker(null);
   };
 
   const rotateValueHolder = new Animated.Value(0);
@@ -89,12 +109,15 @@ export default function NavBar() {
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
-      <Pressable
-        style={styles.loginButton}
-        onPress={() => alert("logging in...")}
-      >
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
+      {isLoggedIn ? (
+        <Pressable style={styles.loginButton} onPress={() => logoutHandler()}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </Pressable>
+      ) : (
+        <Pressable style={styles.loginButton} onPress={() => loginHandler()}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -107,6 +130,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     zIndex: 1,
+    backgroundColor: "white",
     // paddingTop: 50
     // height: 20
   },
