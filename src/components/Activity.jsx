@@ -25,6 +25,9 @@ export default function Activity(){
           <View style={styles.creatorCon}>
             <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>องกรวย</Text>
           </View>
+          <View style={styles.creatorPicCon}>
+            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>องกรวย องกรวย องกรวย</Text>
+          </View>
           {Array.from({length: tag.length}).map((_, index) => (
             <View style={styles.tagCon}>
               <Text key={index} style={styles.tagText}>
@@ -75,14 +78,19 @@ export default function Activity(){
     },
     timePlaceCon: {
       backgroundColor: 'black',
-      width: "60%",      
+      width: "45%",      
       justifyContent: 'center', 
     },
     creatorCon: {
       backgroundColor: 'black',
-      width: "37%",      
+      width: "29%",      
       justifyContent: 'center', 
       alignItems: 'flex-end',
     },
-    
+    creatorPicCon: {
+      backgroundColor: 'black',
+      width: "20%",      
+      justifyContent: 'center', 
+      alignItems: 'flex-end',
+    },    
   });
