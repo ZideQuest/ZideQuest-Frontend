@@ -1,13 +1,35 @@
 import React from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 import { useState, useRef, useEffect } from "react";
 
+import { useAppContext } from "../data/AppContext";
 import { mapOptions, locations } from "../data/dev-data";
 import Addplace from "./Addplace";
 
-export default function Map({ newMarker, setNewMarker }) {
+function getDetailFromData(coordinate) {
+  const lat = coordinate.nativeEvent.coordinate.latitude;
+  const lng = coordinate.nativeEvent.coordinate.longitude;
+  const name = coordinate.nativeEvent.name;
+  const placeId = coordinate.nativeEvent.placeId;
+
+  return { lat, lng, name, placeId };
+}
+
+export default function Map() {
+  const {
+    creatingNewMarker,
+    setCreatingNewMarker,
+    newMarker,
+    setNewMarker,
+    cancelPinCreating,
+    currentPage,
+    setCurrentPage,
+    selectExistedPin,
+    backToRecommend,
+  } = useAppContext();
+
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 51.5079145,
@@ -18,10 +40,16 @@ export default function Map({ newMarker, setNewMarker }) {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   const mapPressHandler = (coordinate) => {
-    const lat = coordinate.nativeEvent.coordinate.latitude;
-    const lng = coordinate.nativeEvent.coordinate.longitude;
-    const name = coordinate.nativeEvent.name;
-    const placeId = coordinate.nativeEvent.placeId;
+    // if (currentPage === "markerDetail") {
+    //   backToRecommend();
+    //   return;
+    // }
+
+    if (currentPage !== "addMarker" || !creatingNewMarker) {
+      return;
+    }
+
+    const { lat, lng, name, placeId } = getDetailFromData(coordinate);
 
     animateToRegion(lat, lng);
     setNewMarker({
@@ -29,6 +57,12 @@ export default function Map({ newMarker, setNewMarker }) {
       longitude: lng,
     });
     setMapLoaded(true);
+  };
+
+  const markerPressHandler = (pinId, data) => {
+    selectExistedPin(pinId);
+    const { lat, lng, name, placeId } = getDetailFromData(data);
+    animateToRegion(lat, lng);
   };
 
   const animateToRegion = (lat, lng) => {
@@ -60,9 +94,14 @@ export default function Map({ newMarker, setNewMarker }) {
       onRegionChangeComplete={(region) => setRegion(region)}
       {...mapOptions}
       onPress={(data) => mapPressHandler(data)}
-      onPoiClick={(data) => mapPressHandler(data)}>
+      onPoiClick={(data) => mapPressHandler(data)}
+    >
       {locations.map((pin) => (
-        <Marker coordinate={pin} key={pin.id}  />
+        <Marker
+          coordinate={pin}
+          key={pin.id}
+          onPress={(data) => markerPressHandler(pin.id, data)}
+        />
       ))}
       {newMarker && <Marker coordinate={newMarker} />}
       </MapView>

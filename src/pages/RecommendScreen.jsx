@@ -15,8 +15,10 @@ export default function RecommendScreen() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    borderRadius: 30,
-    padding: 30
+    borderTopEndRadius: 30,
+    borderTopLeftRadius: 30,
+    padding: 30,
+    flex: 1,
   },
   textColor: {
     color: "black"
