@@ -14,11 +14,16 @@ export default function Activity(){
               source={yo}
           />
           <View style={styles.ActNameCon}>
-            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold', ellipsizeMode: 'tail',
-            numberOfLines: 1, }}>สอนน้องร้องเพลงบุเรงนองร้องฮุ้วอะจุ้วอะจุ้วงุ้วงุ้ว</Text>
+            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>สอนน้องร้องเพลงอุฟุฟวยฟ่วยฟวยฟวยฟวยฟวยฟวยฟวยฟวยฟวยฟวย</Text>
           </View>
           <View style={styles.countCon}>
             <Text style={{color: "white", fontSize: 20, fontWeight: 'bold'}}>xx/xx</Text>
+          </View>
+          <View style={styles.timePlaceCon}>
+            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>todayyyy 77:77</Text>
+          </View>
+          <View style={styles.creatorCon}>
+            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>องกรวย</Text>
           </View>
           {Array.from({length: tag.length}).map((_, index) => (
             <View style={styles.tagCon}>
@@ -49,7 +54,7 @@ export default function Activity(){
     pic: {
       width: '100%',
       resizeMode: 'contain',
-      
+      backgroundColor: 'black',
     },
     tagCon: {
       backgroundColor: "white",
@@ -64,8 +69,20 @@ export default function Activity(){
     },
     countCon: {
       backgroundColor: 'black',
-      width: "25%",   
+      width: "27%",   
       alignItems: 'center',
       justifyContent: 'center',
-    }
+    },
+    timePlaceCon: {
+      backgroundColor: 'black',
+      width: "60%",      
+      justifyContent: 'center', 
+    },
+    creatorCon: {
+      backgroundColor: 'black',
+      width: "37%",      
+      justifyContent: 'center', 
+      alignItems: 'flex-end',
+    },
+    
   });

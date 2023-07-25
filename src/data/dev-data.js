@@ -43,7 +43,8 @@ const locations = [
 ];
 
 const tag = [
-  "aa151aa", "bb484bb", "c65cc4c", "ddd6546d", "ee54ee", "ff54ff", "ggg454g", "hh54hh", "III454I"
+  "aa151aa", "bb484bb", "c65cc4c", "ddd6546d", "ee54ee",
+   "ff54ff", "ggg454g", "hh54hh", "III454I"
 ]
 
 module.exports = { mapOptions, locations, tag};
