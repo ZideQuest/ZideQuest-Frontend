@@ -13,28 +13,30 @@ export default function Activity(){
               style={styles.pic}
               source={yo}
           />
-          <View style={styles.ActNameCon}>
-            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>สอนน้องร้องเพลงอุฟุฟวยฟ่วยฟวยฟวยฟวยฟวยฟวยฟวยฟวยฟวยฟวย</Text>
-          </View>
-          <View style={styles.countCon}>
-            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold'}}>xx/xx</Text>
-          </View>
-          <View style={styles.timePlaceCon}>
-            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>todayyyy 77:77</Text>
-          </View>
-          <View style={styles.creatorCon}>
-            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>องกรวย</Text>
-          </View>
-          <View style={styles.creatorPicCon}>
-            <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>องกรวย องกรวย องกรวย</Text>
-          </View>
-          {Array.from({length: tag.length}).map((_, index) => (
-            <View style={styles.tagCon}>
-              <Text key={index} style={styles.tagText}>
-                {tag[index]}
-              </Text>
+          <View style={styles.DataCon}>
+            <View style={styles.ActNameCon}>
+              <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>สอนน้องร้องเพลงอุฟุฟวยฟ่วยฟวยฟวยฟวยฟวยฟวยฟวยฟวยฟวยฟวย</Text>
             </View>
-          ))}
+            <View style={styles.countCon}>
+              <Text style={{color: "white", fontSize: 20, fontWeight: 'bold'}}>xx/xx</Text>
+            </View>
+            <View style={styles.timePlaceCon}>
+              <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>todayyyy 77:77</Text>
+            </View>
+            <View style={styles.creatorCon}>
+              <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>องกรวย</Text>
+            </View>
+            <View style={styles.creatorPicCon}>
+              <Text style={{color: "white", fontSize: 20, fontWeight: 'bold',}}>องกรวย องกรวย องกรวย</Text>
+            </View>
+            {Array.from({length: tag.length}).map((_, index) => (
+              <View style={styles.tagCon}>
+                <Text key={index} style={styles.tagText}>
+                  {tag[index]}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
     );
   };
@@ -44,7 +46,7 @@ export default function Activity(){
       backgroundColor: BGcolor,
       borderRadius: 25,
       width: "100%",
-      padding: 10,
+      padding: 0,
       flexDirection: 'row',
       flexWrap: 'wrap',
       rowGap: 10,
@@ -58,7 +60,20 @@ export default function Activity(){
       width: '100%',
       resizeMode: 'contain',
       backgroundColor: 'black',
+      borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     },
+    DataCon: {
+      backgroundColor: '#aaff00',
+      borderRadius: 25,
+      width: "100%",
+      padding: 10,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      rowGap: 10,
+      columnGap: 10,
+    },
+
     tagCon: {
       backgroundColor: "white",
       alignSelf: 'flex-start',   
