@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 
 export default function RecommendScreen() {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { zIndex: 99 }]}>
       <Text style={styles.textColor}>Recommened 1</Text>
       <Text>Recommened 2</Text>
       <Text>Recommened 3</Text>

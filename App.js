@@ -22,16 +22,15 @@ export default function App() {
     TRANSITIONS[0]
   );
 
-  if(Platform.OS == "android") {
+  if (Platform.OS == "android") {
     return (
-        <SafeAreaProvider style={styles.AndroidSafeArea}>
-          <NavBar />
-          <HomeScreen />
-        </SafeAreaProvider>
-    
+      <SafeAreaProvider style={styles.AndroidSafeArea}>
+        <NavBar />
+        <HomeScreen />
+      </SafeAreaProvider>
     );
   }
-  if(Platform.OS == "ios") {
+  if (Platform.OS == "ios") {
     return (
       <SafeAreaProvider style={styles.container}>
         <SafeAreaView>
@@ -41,7 +40,6 @@ export default function App() {
       </SafeAreaProvider>
     );
   }
-  
 }
 
 const styles = StyleSheet.create({
@@ -50,7 +48,6 @@ const styles = StyleSheet.create({
   },
   AndroidSafeArea: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight
-  }
+    paddingTop: StatusBar.currentHeight,
+  },
 });
-

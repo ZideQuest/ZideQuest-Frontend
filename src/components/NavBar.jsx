@@ -44,7 +44,7 @@ export default function NavBar() {
         duration: 300, 
         useNativeDriver: false,
       }).start();
-    } else {
+    } else if (!hamburgerOpen)  {
       Animated.timing(heightValueHolder, {
         toValue: 0,
         duration: 150,

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   mapContainer: {
-    height: "70%",
+    height: "100%",
   },
   subMenu: {
     flex: 1,
