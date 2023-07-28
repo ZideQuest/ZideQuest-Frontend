@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    
   },
   DataCon: {
     backgroundColor: '#aaff00',
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     width: "20%",
     justifyContent: 'center',
     alignItems: 'flex-end',
+    aspectRatio: 1/1,
   },
   DescripCon: {
     backgroundColor: 'black',
