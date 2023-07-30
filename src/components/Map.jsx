@@ -78,8 +78,8 @@ export default function Map() {
 
   useEffect(() => {
     mapRef.current.setMapBoundaries(
-      { latitude: 13.854619, longitude: 100.583732 },
-      { latitude: 13.840740, longitude: 100.563645 }
+      { latitude: 13.857319, longitude: 100.585732 },
+      { latitude: 13.840040, longitude: 100.561646 }
     );
   }, []);
 
