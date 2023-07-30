@@ -1,6 +1,6 @@
 import React from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text ,Image} from "react-native";
 
 import { useState, useRef, useEffect } from "react";
 
@@ -85,24 +85,32 @@ export default function Map() {
 
   return (
     <View>
-    <MapView
-      ref={mapRef}
-      style={[styles.map]}
-      provider={PROVIDER_GOOGLE}
-      minZoomLevel={16}
-      onRegionChangeComplete={(region) => setRegion(region)}
-      {...mapOptions}
-      onPress={(data) => mapPressHandler(data)}
-      onPoiClick={(data) => mapPressHandler(data)}
-    >
-      {locations.map((pin) => (
-        <Marker
-          coordinate={pin}
-          key={pin.id}
-          onPress={(data) => markerPressHandler(pin.id, data)}
-        />
-      ))}
-      {newMarker && <Marker coordinate={newMarker} />}
+      <MapView
+        ref={mapRef}
+        style={[styles.map]}
+        provider={PROVIDER_GOOGLE}
+        minZoomLevel={16}
+        onRegionChangeComplete={(region) => setRegion(region)}
+        {...mapOptions}
+        onPress={(data) => mapPressHandler(data)}
+        onPoiClick={(data) => mapPressHandler(data)}
+      >
+        {locations.map((pin) => (
+          <Marker
+            coordinate={pin}
+            key={pin.id}
+            onPress={(data) => markerPressHandler(pin.id, data)}
+          >
+            <Image
+              source={require("../../assets/images/location.png")}
+              style={{ height: 35, width: 35 }}
+            />
+          </Marker>
+        ))}
+        {newMarker && <Marker coordinate={newMarker}><Image
+              source={require("../../assets/images/location.png")}
+              style={{ height: 35, width: 35 }}
+            /></Marker>}
       </MapView>
     </View>
   );
