@@ -14,6 +14,7 @@ import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
 import search_icon from "../../assets/images/search.png";
 import plus_icon from "../../assets/images/plus.png";
+import Logo from "../../assets/images/Logo.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);

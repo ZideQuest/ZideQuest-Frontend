@@ -6,7 +6,6 @@ import { useState, useRef, useEffect } from "react";
 
 import { useAppContext } from "../data/AppContext";
 import { mapOptions, locations } from "../data/dev-data";
-import Addplace from "./Addplace";
 
 function getDetailFromData(coordinate) {
   const lat = coordinate.nativeEvent.coordinate.latitude;
@@ -70,8 +69,8 @@ export default function Map() {
       const region = {
         latitude: lat,
         longitude: lng,
-        latitudeDelta: 0.0015, // The delta values control the zoom level
-        longitudeDelta: 0.0015,
+        // latitudeDelta: 0.0015, // The delta values control the zoom level
+        // longitudeDelta: 0.0015,
       };
       mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
     }
@@ -79,8 +78,8 @@ export default function Map() {
 
   useEffect(() => {
     mapRef.current.setMapBoundaries(
-      { latitude: 13.850547, longitude: 100.581817 },
-      { latitude: 13.844748, longitude: 100.565315 }
+      { latitude: 13.854619, longitude: 100.583732 },
+      { latitude: 13.840740, longitude: 100.563645 }
     );
   }, []);
 
@@ -88,7 +87,7 @@ export default function Map() {
     <View>
     <MapView
       ref={mapRef}
-      style={[styles.map, { height: mapLoaded? "30%":"100%" }]}
+      style={[styles.map]}
       provider={PROVIDER_GOOGLE}
       minZoomLevel={16}
       onRegionChangeComplete={(region) => setRegion(region)}
@@ -105,19 +104,16 @@ export default function Map() {
       ))}
       {newMarker && <Marker coordinate={newMarker} />}
       </MapView>
-        <View style={[styles.add,{display: mapLoaded? "flex":"none"}]}>
-            <Text>HI</Text>
-        </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   map: {
-    // height: "100%",
+    height: "100%",
   },
   add: {
-    height: "70%",
+    height: "100%",
     backgroundColor: "white",
   },
 });
