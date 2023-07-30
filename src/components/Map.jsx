@@ -1,11 +1,13 @@
 import React from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Button } from "react-native";
 
 import { useState, useRef, useEffect } from "react";
 
 import { useAppContext } from "../data/AppContext";
 import { mapOptions, locations } from "../data/dev-data";
+
+import * as TabNavigation from "../data/TabNavigation";
 
 function getDetailFromData(coordinate) {
   const lat = coordinate.nativeEvent.coordinate.latitude;
@@ -17,17 +19,7 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const {
-    creatingNewMarker,
-    setCreatingNewMarker,
-    newMarker,
-    setNewMarker,
-    cancelPinCreating,
-    currentPage,
-    setCurrentPage,
-    selectExistedPin,
-    backToRecommend,
-  } = useAppContext();
+  const { newMarker, setNewMarker } = useAppContext();
 
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
@@ -38,12 +30,7 @@ export default function Map() {
   });
 
   const mapPressHandler = (coordinate) => {
-    // if (currentPage === "markerDetail") {
-    //   backToRecommend();
-    //   return;
-    // }
-
-    if (currentPage !== "addMarker" || !creatingNewMarker) {
+    if (TabNavigation.currentScreen() != "CreatePin") {
       return;
     }
 
@@ -57,7 +44,8 @@ export default function Map() {
   };
 
   const markerPressHandler = (pinId, data) => {
-    selectExistedPin(pinId);
+    data.stopPropagation();
+    TabNavigation.navigate("PinDetail", { pinId });
     const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
   };
@@ -82,30 +70,35 @@ export default function Map() {
   }, []);
 
   return (
-    <MapView
-      ref={mapRef}
-      style={styles.map}
-      provider={PROVIDER_GOOGLE}
-      minZoomLevel={15}
-      onRegionChangeComplete={(region) => setRegion(region)}
-      {...mapOptions}
-      onPress={(data) => mapPressHandler(data)}
-      onPoiClick={(data) => mapPressHandler(data)}
-    >
-      {locations.map((pin) => (
-        <Marker
-          coordinate={pin}
-          key={pin.id}
-          onPress={(data) => markerPressHandler(pin.id, data)}
-        />
-      ))}
-      {newMarker && <Marker coordinate={newMarker} />}
-    </MapView>
+    <View style={styles.map}>
+      <MapView
+        ref={mapRef}
+        style={{height: "100%"}}
+        provider={PROVIDER_GOOGLE}
+        minZoomLevel={15}
+        onRegionChangeComplete={(region) => setRegion(region)}
+        {...mapOptions}
+        onPress={(data) => mapPressHandler(data)}
+        onPoiClick={(data) => mapPressHandler(data)}
+      >
+        {locations.map((pin) => (
+          <Marker
+            coordinate={pin}
+            key={pin.id}
+            onPress={(data) => markerPressHandler(pin.id, data)}
+          />
+        ))}
+        {newMarker && <Marker coordinate={newMarker} />}
+      </MapView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   map: {
     height: "100%",
+    position:"relative",
+    width: "100%",
   },
+  
 });
