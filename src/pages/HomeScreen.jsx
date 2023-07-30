@@ -10,13 +10,9 @@ import Map from "../components/Map";
 import { useState } from "react";
 
 export default function HomeScreen() {
-  const { creatingNewMarker, setCreatingNewMarker, setNewMarker } =
+  const { creatingNewMarker, setCreatingNewMarker, setNewMarker, cancelPinCreating } =
     useAppContext();
 
-  const cancelCreateMarker = () => {
-    setNewMarker(null);
-    setCreatingNewMarker(false);
-  };
 
   return (
     <NavigationContainer style={{ position: "relative" }}>
@@ -27,7 +23,7 @@ export default function HomeScreen() {
             <Text style={styles.mapConditionText}>
               เลือกสถานที่เพื่อปักหมุด
             </Text>
-            <Button title="ปิด" onPress={() => cancelCreateMarker()} />
+            <Button title="ปิด" onPress={() => cancelPinCreating()} />
           </View>
         )}
       </View>
