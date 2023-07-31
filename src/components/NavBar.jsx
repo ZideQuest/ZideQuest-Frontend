@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import { useAppContext } from "../data/AppContext";
-import * as TabNavigation from '../data/TabNavigation';
+import * as TabNavigation from "../data/TabNavigation";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
@@ -20,23 +20,22 @@ const ANIMATION_TIME = 200;
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(null);
-  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn } =
-
-    useAppContext();
+  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn, isProfileOpen, setIsProfileOpen } = useAppContext();
 
   const hamburgerToggle = () => {
     setHamburgerOpen((prev) => !prev);
   };
 
   const addButtonHandler = () => {
-    TabNavigation.navigate("CreatePin")
+    TabNavigation.navigate("CreatePin");
     setCreatingNewMarker(true);
     hamburgerToggle();
   };
 
   const loginHandler = () => {
-    alert("Logging in...");
-    setIsLoggedIn(true);
+    // alert("Logging in...");
+    navigation.navigate("Login");
+    // setIsLoggedIn(true);
   };
 
   const logoutHandler = () => {
@@ -53,6 +52,7 @@ export default function NavBar() {
     inputRange: [0, 1],
     outputRange: ["0deg", "90deg"],
   });
+
 
   const HeightData = heightValueHolder.interpolate({
     inputRange: [0, 1],
@@ -74,6 +74,7 @@ export default function NavBar() {
       Animated.timing(heightValueHolder, {
         toValue: 1,
         duration: ANIMATION_TIME,
+
         useNativeDriver: false,
       }).start();
     } else {
@@ -124,8 +125,11 @@ export default function NavBar() {
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
       {isLoggedIn ? (
-        <Pressable style={styles.loginButton} onPress={() => logoutHandler()}>
-          <Text style={styles.buttonText}>Logout</Text>
+        <Pressable
+          style={styles.loginButton}
+          onPress={() => setIsProfileOpen(!isProfileOpen)}
+        >
+          <Text style={styles.buttonText}>Profile</Text>
         </Pressable>
       ) : (
         <Pressable style={styles.loginButton} onPress={() => loginHandler()}>
