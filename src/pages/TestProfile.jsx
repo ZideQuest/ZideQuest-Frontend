@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     zIndex: 5,
     justifyContent: "center",
     alignItems: "center",
-    top: -20,
+    bottom: 0,
   },
   container: {
     position: "absolute",
