@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 
 import { useAppContext } from "../data/AppContext";
 import { mapOptions, locations } from "../data/dev-data";
+import {mapCustomStyle} from "../data/map-style"
 
 import * as TabNavigation from "../data/TabNavigation";
 
@@ -91,13 +92,14 @@ export default function Map() {
       )}
       <MapView
         ref={mapRef}
-        style={{height: "100%"}}
         provider={PROVIDER_GOOGLE}
         minZoomLevel={15}
         onRegionChangeComplete={(region) => setRegion(region)}
         {...mapOptions}
         onPress={(data) => mapPressHandler(data)}
         onPoiClick={(data) => mapPressHandler(data)}
+        height="100%"
+        customMapStyle={mapCustomStyle}
       >
         {locations.map((pin) => (
           <Marker
