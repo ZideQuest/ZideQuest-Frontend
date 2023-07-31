@@ -15,7 +15,7 @@ import filter_icon from "../../assets/images/filter.png";
 import search_icon from "../../assets/images/search.png";
 import plus_icon from "../../assets/images/plus.png";
 
-const ANIMATION_TIME = 200
+const ANIMATION_TIME = 200;
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(null);
@@ -57,8 +57,8 @@ export default function NavBar() {
   });
 
   useEffect(() => {
-    if (hamburgerOpen === null) { 
-      return
+    if (hamburgerOpen === null) {
+      return;
     }
     if (hamburgerOpen) {
       Animated.timing(rotateValueHolder, {
@@ -80,7 +80,7 @@ export default function NavBar() {
         duration: ANIMATION_TIME,
         useNativeDriver: true,
       }).start();
-      
+
       heightValueHolder.setValue(1);
       Animated.timing(heightValueHolder, {
         toValue: 0,
@@ -142,8 +142,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     zIndex: 1,
     backgroundColor: "white",
-    // paddingTop: 50
-    // height: 20
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+
+    elevation: 6,
   },
   navLeft: {
     flexDirection: "row",
