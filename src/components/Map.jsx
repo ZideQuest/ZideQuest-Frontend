@@ -19,8 +19,10 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const { newMarker, setNewMarker } = useAppContext();
+  const { newMarker, setNewMarker, creatingNewMarker, setCreatingNewMarker } = useAppContext();
+  const { refresh, setRefresh } = useState(false);
 
+  
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 51.5079145,
@@ -35,7 +37,7 @@ export default function Map() {
     }
 
     const { lat, lng, name, placeId } = getDetailFromData(coordinate);
-
+    
     animateToRegion(lat, lng);
     setNewMarker({
       latitude: lat,
@@ -49,7 +51,7 @@ export default function Map() {
     const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
   };
-
+  
   const animateToRegion = (lat, lng) => {
     if (mapRef.current) {
       const region = {
@@ -61,6 +63,16 @@ export default function Map() {
       mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
     }
   };
+  
+  const toggleRefresh = () => {
+    setRefresh(prev => !prev)
+  }
+
+  const cancelCreatePin = () => {
+    setNewMarker(null);
+    setCreatingNewMarker(false)
+    TabNavigation.navigate("Recommend");
+  }
 
   useEffect(() => {
     mapRef.current.setMapBoundaries(
@@ -71,6 +83,12 @@ export default function Map() {
 
   return (
     <View style={styles.map}>
+      {creatingNewMarker && (
+        <View style={styles.mapCondition}>
+          <Text style={styles.mapConditionText}>เลือกสถานที่เพื่อปักหมุด</Text>
+          <Button title="ปิด" onPress={() => cancelCreatePin()} />
+        </View>
+      )}
       <MapView
         ref={mapRef}
         style={{height: "100%"}}
@@ -100,5 +118,18 @@ const styles = StyleSheet.create({
     position:"relative",
     width: "100%",
   },
-  
+  mapCondition: {
+    position: "absolute",
+    width: "100%",
+    zIndex: 3,
+    top: 10,
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  mapConditionText: {
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    padding: 10,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
 });

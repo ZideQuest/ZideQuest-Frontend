@@ -10,6 +10,7 @@ export const AppProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState("recommend");
   const [currentMarkerSelecting, setCurrentMarkerSelecting] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const cancelPinCreating = () => {
     setNewMarker(null);
@@ -19,20 +20,20 @@ export const AppProvider = ({ children }) => {
 
   const selectExistedPin = (pinId) => {
     cancelPinCreating();
-    setCurrentPage("markerDetail")
+    setCurrentPage("markerDetail");
     setCurrentMarkerSelecting(pinId);
-  }
+  };
 
   const backToRecommend = () => {
-    setCreatingNewMarker(false)
-    setNewMarker(null)
-    setCurrentMarkerSelecting(null)
-    setCurrentPage("recomemnd")
-  }
+    setCreatingNewMarker(false);
+    setNewMarker(null);
+    setCurrentMarkerSelecting(null);
+    setCurrentPage("recomemnd");
+  };
 
   useEffect(() => {
     console.log(currentPage);
-  }, [currentPage])
+  }, [currentPage]);
 
   return (
     <AppContext.Provider
@@ -49,6 +50,8 @@ export const AppProvider = ({ children }) => {
         selectExistedPin,
         backToRecommend,
         currentMarkerSelecting,
+        isProfileOpen,
+        setIsProfileOpen,
       }}
     >
       {children}

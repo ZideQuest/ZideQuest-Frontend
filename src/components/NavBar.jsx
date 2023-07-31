@@ -9,31 +9,38 @@ import {
 } from "react-native";
 
 import { useAppContext } from "../data/AppContext";
-import * as TabNavigation from '../data/TabNavigation';
+import * as TabNavigation from "../data/TabNavigation";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
 import search_icon from "../../assets/images/search.png";
 import plus_icon from "../../assets/images/plus.png";
 
-export default function NavBar() {
+export default function NavBar({ navigation }) {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn} =
-    useAppContext();
+  const {
+    setCreatingNewMarker,
+    setNewMarker,
+    isLoggedIn,
+    setIsLoggedIn,
+    isProfileOpen,
+    setIsProfileOpen,
+  } = useAppContext();
 
   const hamburgerToggle = () => {
     setHamburgerOpen((prev) => !prev);
   };
 
   const addButtonHandler = () => {
-    TabNavigation.navigate("CreatePin")
+    TabNavigation.navigate("CreatePin");
     setCreatingNewMarker(true);
     hamburgerToggle();
   };
 
   const loginHandler = () => {
-    alert("Logging in...");
-    setIsLoggedIn(true);
+    // alert("Logging in...");
+    navigation.navigate("Login");
+    // setIsLoggedIn(true);
   };
 
   const logoutHandler = () => {
@@ -51,19 +58,19 @@ export default function NavBar() {
     outputRange: ["0deg", "90deg"],
   });
 
-
   useEffect(() => {
     rotateValueHolder.setValue(hamburgerOpen ? 0 : 1);
     Animated.timing(rotateValueHolder, {
       toValue: hamburgerOpen ? 1 : 0,
       duration: 300,
       useNativeDriver: true,
-    },
-    ).start();
-   if (hamburgerOpen) {
+    }).start();
+    
+
+    if (hamburgerOpen) {
       Animated.timing(heightValueHolder, {
         toValue: 200,
-        duration: 300, 
+        duration: 300,
         useNativeDriver: false,
       }).start();
     } else {
@@ -73,11 +80,7 @@ export default function NavBar() {
         useNativeDriver: false,
       }).start();
     }
-   
-  },
-   [hamburgerOpen]);
-
-
+  }, [hamburgerOpen]);
 
   return (
     <View style={styles.container}>
@@ -94,9 +97,13 @@ export default function NavBar() {
             source={hamburger_icon}
           />
           <Animated.View
-            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none", height: heightValueHolder,
-            
-           }]}
+            style={[
+              styles.menus,
+              {
+                display: hamburgerOpen ? "flex" : "none",
+                height: heightValueHolder,
+              },
+            ]}
           >
             <Pressable onPress={() => alert("search")}>
               <Image style={styles.menuItem} source={search_icon} />
@@ -104,16 +111,21 @@ export default function NavBar() {
             <Pressable onPress={() => alert("filer")}>
               <Image style={styles.menuItem} source={filter_icon} />
             </Pressable>
-            {isLoggedIn && <Pressable onPress={addButtonHandler}>
-              <Image style={styles.menuItem} source={plus_icon} />
-            </Pressable>}
+            {isLoggedIn && (
+              <Pressable onPress={addButtonHandler}>
+                <Image style={styles.menuItem} source={plus_icon} />
+              </Pressable>
+            )}
           </Animated.View>
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
       {isLoggedIn ? (
-        <Pressable style={styles.loginButton} onPress={() => logoutHandler()}>
-          <Text style={styles.buttonText}>Logout</Text>
+        <Pressable
+          style={styles.loginButton}
+          onPress={() => setIsProfileOpen(!isProfileOpen)}
+        >
+          <Text style={styles.buttonText}>Profile</Text>
         </Pressable>
       ) : (
         <Pressable style={styles.loginButton} onPress={() => loginHandler()}>
@@ -166,7 +178,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     padding: 10,
-
   },
   logo: {
     color: "#E86A33",
