@@ -14,9 +14,9 @@ const StackNavigator = () => {
   const { creatingNewMarker, currentPage } = useAppContext();
 
   const screenSlector = () => {
-    if (currentPage === "addMarker") {
-      return <Stack.Screen name="CreatePin" component={CreatePinScreen} />;
-    }
+    // if (currentPage === "addMarker") {
+    //   return <Stack.Screen name="CreatePin" component={CreatePinScreen} />;
+    // }
 
     if (currentPage === "markerDetail") {
       return <Stack.Screen name="PinDetail" component={PinDetailScreen} />;

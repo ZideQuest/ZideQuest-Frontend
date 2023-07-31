@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 
 import { useAppContext } from "../data/AppContext";
 import { mapOptions, locations } from "../data/dev-data";
+import RB from "./Rbsheet";
 
 function getDetailFromData(coordinate) {
   const lat = coordinate.nativeEvent.coordinate.latitude;
@@ -112,6 +113,8 @@ export default function Map() {
               style={{ height: 35, width: 35 }}
             /></Marker>}
       </MapView>
+
+      <RB newMarker={newMarker}/>
     </View>
   );
 }

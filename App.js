@@ -5,6 +5,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { AppProvider } from "./src/data/AppContext";
 import HomeScreen from "./src/pages/HomeScreen";
 import NavBar from "./src/components/NavBar";
+import CreatePinScreen from "./src/pages/CreatePinScreen";
 
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
@@ -29,6 +30,7 @@ export default function App() {
       return (
         <SafeAreaProvider style={{ backgroundColor: "red" }}>
           <SafeAreaView style={styles.container}>
+            {/* <CreatePinScreen /> */}
             <NavBar />
             <HomeScreen style={{ flex: 1 }} />
           </SafeAreaView>

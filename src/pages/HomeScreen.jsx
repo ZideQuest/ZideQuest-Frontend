@@ -16,7 +16,7 @@ export default function HomeScreen() {
 
   return (
     <NavigationContainer style={{ position: "relative" }}>
-      <View style={styles.mapContainer}>
+     <View style={styles.mapContainer}>
         <Map />
         {creatingNewMarker && (
           <View style={styles.mapCondition}>
@@ -25,9 +25,9 @@ export default function HomeScreen() {
             </Text>
             <Button title="ปิด" onPress={() => cancelPinCreating()} />
           </View>
-        )}
+       )}
       </View>
-      <View style={styles.subMenu}>
+       <View style={styles.subMenu}>
         <StackNavigator />
       </View>
     </NavigationContainer>
@@ -41,15 +41,18 @@ const styles = StyleSheet.create({
   mapContainer: {
     height: "100%",
     position: "relative",
+    flex: 1,
   },
   subMenu: {
-    // flex: 1,
-    backgroundColor: "red",
-    position: "absolute",
-    bottom: 0,
-    backgroundColor: "red",
-    height: "30%",
-    width: "100%"
+    flex: 1,
+     height: "100%",
+    position: "relative",
+    // backgroundColor: "red",
+    // position: "absolute",
+    // bottom: 0,
+    // backgroundColor: "red",
+    // height: "30%",
+    // width: "100%"
   },
   mapCondition: {
     position: "absolute",

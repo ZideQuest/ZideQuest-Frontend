@@ -18,15 +18,16 @@ import Logo from "../../assets/images/Logo.png";
 
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn, setCurrentPage, } =
-    useAppContext();
-
-  const hamburgerPressHandler = () => {
-    setHamburgerOpen((prev) => !prev);
-  };
+  const {
+    setCreatingNewMarker,
+    setNewMarker,
+    isLoggedIn,
+    setIsLoggedIn,
+    setCurrentPage,
+  } = useAppContext();
 
   const addButtonHandler = () => {
-    setCurrentPage("addMarker")
+    setCurrentPage("addMarker");
     setCreatingNewMarker(true);
     hamburgerPressHandler();
   };
@@ -45,12 +46,16 @@ export default function NavBar() {
 
   const rotateValueHolder = new Animated.Value(0);
   const heightValueHolder = useState(new Animated.Value(0))[0];
+  const widthValueHolder = useState(new Animated.Value(0))[0];
+
+  const hamburgerPressHandler = () => {
+    setHamburgerOpen((prev) => !prev);
+  };
 
   const RotateData = rotateValueHolder.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "90deg"],
   });
-
 
   useEffect(() => {
     rotateValueHolder.setValue(hamburgerOpen ? 0 : 1);
@@ -58,26 +63,33 @@ export default function NavBar() {
       toValue: hamburgerOpen ? 1 : 0,
       duration: 300,
       useNativeDriver: true,
-    },
-    ).start();
-   if (hamburgerOpen) {
+    }).start();
+
+    if (hamburgerOpen) {
       Animated.timing(heightValueHolder, {
         toValue: 200,
-        duration: 300, 
+        duration: 300,
         useNativeDriver: false,
       }).start();
-    } else if (!hamburgerOpen)  {
+
+         Animated.timing(widthValueHolder, {
+           toValue: 40,
+           duration: 0,
+           useNativeDriver: false,
+         }).start();
+    } else if (!hamburgerOpen) {
       Animated.timing(heightValueHolder, {
         toValue: 0,
         duration: 150,
         useNativeDriver: false,
       }).start();
+      Animated.timing(widthValueHolder, {
+        toValue: 0,
+        duration: 0,
+        useNativeDriver: false,
+      }).start();
     }
-   
-  },
-   [hamburgerOpen]);
-
-
+  }, [hamburgerOpen]);
 
   return (
     <View style={styles.container}>
@@ -94,19 +106,48 @@ export default function NavBar() {
             source={hamburger_icon}
           />
           <Animated.View
-            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none", height: heightValueHolder,
-            
-           }]}
+            style={[
+              styles.menus,
+              {
+                height: heightValueHolder,
+                width: widthValueHolder,
+                borderRadius: hamburgerOpen ? 100 : 0,
+                padding: hamburgerOpen ? 10 : 0,
+              },
+            ]}
           >
-            <Pressable onPress={() => alert("search")}>
+            <Pressable
+              style={[
+                {
+                  display: hamburgerOpen ? "flex" : "none",
+                },
+              ]}
+              onPress={() => alert("search")}
+            >
               <Image style={styles.menuItem} source={search_icon} />
             </Pressable>
-            <Pressable onPress={() => alert("filer")}>
+            <Pressable
+              style={[
+                {
+                  display: hamburgerOpen ? "flex" : "none",
+                },
+              ]}
+              onPress={() => alert("filer")}
+            >
               <Image style={styles.menuItem} source={filter_icon} />
             </Pressable>
-            {isLoggedIn && <Pressable onPress={addButtonHandler}>
-              <Image style={styles.menuItem} source={plus_icon} />
-            </Pressable>}
+            {isLoggedIn && (
+              <Pressable
+                style={[
+                  {
+                    display: hamburgerOpen ? "flex" : "none",
+                  },
+                ]}
+                onPress={addButtonHandler}
+              >
+                <Image style={styles.menuItem} source={plus_icon} />
+              </Pressable>
+            )}
           </Animated.View>
         </Pressable>
         <Text style={styles.logo}>ZideQuest</Text>
@@ -156,17 +197,16 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
-    paddingHorizontal: 5,
+    alignItems:'center',
+    // width: 40,
     top: 60,
-    padding: 10,
-    gap: 10,
-    borderRadius: 100,
+    
+    gap: 10,    
   },
   menuItem: {
     width: 30,
     height: 30,
     padding: 10,
-
   },
   logo: {
     color: "#E86A33",
