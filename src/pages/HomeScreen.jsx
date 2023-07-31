@@ -1,71 +1,60 @@
 import React from "react";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { View, StyleSheet, Text, Button } from "react-native";
+
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { navigationRef } from "../data/TabNavigation";
 
-import { useAppContext } from "../data/AppContext";
-import StackNavigator from "./StackNavigator";
+// import { useAppContext } from "../data/AppContext";
+
 import Map from "../components/Map";
+import RecommendScreen from "./RecommendScreen";
+import CreatePinScreen from "./CreatePinScreen";
+import PinDetailScreen from "./PinDetailScreen";
 
-import { useState } from "react";
+import { TransitionPresets } from "@react-navigation/stack";
+
+const Stack = createNativeStackNavigator();
 
 export default function HomeScreen() {
-  const { creatingNewMarker, setCreatingNewMarker, setNewMarker } =
-    useAppContext();
-
-  const cancelCreateMarker = () => {
-    setNewMarker(null);
-    setCreatingNewMarker(false);
-  };
 
   return (
-    <NavigationContainer style={{ position: "relative" }}>
-      <View style={styles.mapContainer}>
-        <Map />
-        {creatingNewMarker && (
-          <View style={styles.mapCondition}>
-            <Text style={styles.mapConditionText}>
-              เลือกสถานที่เพื่อปักหมุด
-            </Text>
-            <Button title="ปิด" onPress={() => cancelCreateMarker()} />
-          </View>
-        )}
-      </View>
+    <View style={styles.mapContainer}>
+      <Map />
       <View style={styles.subMenu}>
-        <StackNavigator />
+        <NavigationContainer ref={navigationRef}>
+          <Stack.Navigator
+            screenOptions={({ route, navigation }) => ({
+              headerShown: false,
+              gestureEnabled: true,
+              ...TransitionPresets.ModalPresentationIOS,
+            })}
+          >
+            <Stack.Screen name="Recommend" component={RecommendScreen} />
+            <Stack.Screen name="CreatePin" component={CreatePinScreen} />
+            <Stack.Screen name="PinDetail" component={PinDetailScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </View>
-    </NavigationContainer>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  map: {
-    height: "100%",
-  },
   mapContainer: {
     height: "100%",
     position: "relative",
+    alignItems: "center",
   },
   subMenu: {
-    // flex: 1,
-    backgroundColor: "red",
     position: "absolute",
     bottom: 0,
-    backgroundColor: "red",
+    zIndex: 2,
     height: "30%",
-    width: "100%"
-  },
-  mapCondition: {
-    position: "absolute",
     width: "100%",
-    top: 10,
-    justifyContent: "center",
-    flexDirection: "row",
-  },
-  mapConditionText: {
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    padding: 10,
-    borderRadius: 10,
+    maxWidth: 700,
     overflow: "hidden",
-  },
+    borderTopEndRadius: 30,
+    borderTopLeftRadius: 30,
+  }
 });

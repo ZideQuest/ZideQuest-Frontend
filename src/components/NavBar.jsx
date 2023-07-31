@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import { useAppContext } from "../data/AppContext";
+import * as TabNavigation from '../data/TabNavigation';
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
@@ -20,15 +21,17 @@ const ANIMATION_TIME = 200;
 export default function NavBar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(null);
   const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn } =
+
     useAppContext();
 
-  const hamburgerPressHandler = () => {
+  const hamburgerToggle = () => {
     setHamburgerOpen((prev) => !prev);
   };
 
   const addButtonHandler = () => {
+    TabNavigation.navigate("CreatePin")
     setCreatingNewMarker(true);
-    hamburgerPressHandler();
+    hamburgerToggle();
   };
 
   const loginHandler = () => {
@@ -95,7 +98,7 @@ export default function NavBar() {
       <View style={styles.navLeft}>
         <Pressable
           style={styles.hamburgerContainer}
-          onPress={() => hamburgerPressHandler()}
+          onPress={() => hamburgerToggle()}
         >
           <Animated.Image
             style={[
