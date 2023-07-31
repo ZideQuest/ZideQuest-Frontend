@@ -18,7 +18,7 @@ import plus_icon from "../../assets/images/plus.png";
 
 const ANIMATION_TIME = 200;
 
-export default function NavBar() {
+export default function NavBar({navigation}) {
   const [hamburgerOpen, setHamburgerOpen] = useState(null);
   const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn, isProfileOpen, setIsProfileOpen } = useAppContext();
 
