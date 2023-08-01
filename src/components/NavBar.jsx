@@ -20,7 +20,7 @@ const ANIMATION_TIME = 200;
 
 export default function NavBar({navigation}) {
   const [hamburgerOpen, setHamburgerOpen] = useState(null);
-  const { setCreatingNewMarker, isLoggedIn, isProfileOpen, setIsProfileOpen } = useAppContext();
+  const { setCreatingNewMarker, isProfileOpen, setIsProfileOpen, userDetail } = useAppContext();
 
   const hamburgerToggle = () => {
     setHamburgerOpen((prev) => !prev);
@@ -33,9 +33,7 @@ export default function NavBar({navigation}) {
   };
 
   const loginHandler = () => {
-    // alert("Logging in...");
     navigation.navigate("Login");
-    // setIsLoggedIn(true);
   };
 
   const rotateValueHolder = new Animated.Value(0);
@@ -109,7 +107,7 @@ export default function NavBar({navigation}) {
           <Pressable onPress={() => alert("filer")}>
             <Image style={styles.menuItem} source={filter_icon} />
           </Pressable>
-          {isLoggedIn && (
+          {userDetail?.isAdmin && (
             <Pressable onPress={addButtonHandler}>
               <Image style={styles.menuItem} source={plus_icon} />
             </Pressable>
@@ -117,7 +115,7 @@ export default function NavBar({navigation}) {
         </Animated.View>
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
-      {isLoggedIn ? (
+      {userDetail?.token ? (
         <Pressable
           style={styles.loginButton}
           onPress={() => setIsProfileOpen(!isProfileOpen)}

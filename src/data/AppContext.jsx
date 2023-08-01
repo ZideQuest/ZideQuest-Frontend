@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
+import { sendLoginData } from "./authen";
 
 const AppContext = createContext();
 
@@ -10,20 +11,32 @@ export const AppProvider = ({ children }) => {
   const [newMarker, setNewMarker] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userDetail, setUserDetails] = useState({});
 
   const [isLoading, setIsLoading] = useState(false);
-  const [userToken, setUserToken] = useState(null);
 
   const login = async (username, password) => {
     setIsLoading(true);
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWI";
-    const user = "Akshay";
-    await SecureStore.setItemAsync("token", token);
-    setUserDetails({ user });
-    setUserToken(token);
-    setIsLoggedIn(true);
+    
+    const response = await sendLoginData(username, password);
+
+    if (response.status !== 200) {
+      setUserDetails({});
+      // setIsLoggedIn(false);
+      setIsLoading(false);
+      alert(response.message);
+      return
+    }
+
+    const user = {
+      token: response.token,
+      username: response.username,
+      isAdmin: response.isAdmin,
+    };
+    await SecureStore.setItemAsync("userDetail", JSON.stringify(user));
+    setUserDetails(user);
+    // setIsLoggedIn(true);
     setIsLoading(false);
   };
 
@@ -32,12 +45,10 @@ export const AppProvider = ({ children }) => {
     setCreatingNewMarker(false);
     setNewMarker(null);
     setIsProfileOpen(false);
-    await SecureStore.deleteItemAsync("token");
-
-    setIsLoggedIn(false);
+    
+    await SecureStore.deleteItemAsync("userDetail");
     setUserDetails({});
-    setUserToken(null);
-    setIsLoggedIn(false);
+    // setIsLoggedIn(false);
 
     setIsLoading(false);
   };
@@ -45,13 +56,15 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const token = await SecureStore.getItemAsync("token");
-        if (token) {
-          setUserToken(token);
-          setIsLoggedIn(true);
+        const data = await SecureStore.getItemAsync("userDetail");
+        const user = JSON.parse(data);
+        console.log("ayo : ", user)
+        if (user) {
+          setUserDetails(user)
+          // setIsLoggedIn(true);
         } else {
-          setUserToken(null);
-          setIsLoggedIn(false);
+          setUserDetails({})
+          // setIsLoggedIn(false);
         }
       } catch (error) {
         console.log("Error fetching token:", error);
@@ -68,14 +81,14 @@ export const AppProvider = ({ children }) => {
         setCreatingNewMarker,
         newMarker,
         setNewMarker,
-        isLoggedIn,
-        setIsLoggedIn,
+        // isLoggedIn,
+        // setIsLoggedIn,
         isProfileOpen,
         setIsProfileOpen,
         login,
         logout,
         isLoading,
-        userToken,
+        userDetail,
       }}
     >
       {children}
