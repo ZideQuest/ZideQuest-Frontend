@@ -1,38 +1,63 @@
 import React from "react";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Button } from "react-native";
 
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { navigationRef } from "../data/TabNavigation";
+
+// import { useAppContext } from "../data/AppContext";
+
+import Map from "../components/Map";
 import RecommendScreen from "./RecommendScreen";
 import CreatePinScreen from "./CreatePinScreen";
-import Map from "../components/Map";
+import PinDetailScreen from "./PinDetailScreen";
+import TestProfile from "./TestProfile";
 
-import { useState } from "react";
+import { TransitionPresets } from "@react-navigation/stack";
+
+const Stack = createNativeStackNavigator();
 
 export default function HomeScreen() {
-  const [newMarker, setNewMarker] = useState(null);
+
 
   return (
-    <View>
-      <View style={styles.mapContainer}>
-        <Map setNewMarker={setNewMarker} newMarker={newMarker} />
-      </View>
+    <View style={styles.mapContainer}>
+      <Map />
+      <TestProfile />
       <View style={styles.subMenu}>
-        <Text>Test</Text>
-        <RecommendScreen />
-        <CreatePinScreen />
+        <NavigationContainer ref={navigationRef} independent={true}>
+          <Stack.Navigator
+            screenOptions={({ route, navigation }) => ({
+              headerShown: false,
+              gestureEnabled: true,
+              ...TransitionPresets.ModalPresentationIOS,
+            })}
+          >
+            <Stack.Screen name="Recommend" component={RecommendScreen} />
+            <Stack.Screen name="CreatePin" component={CreatePinScreen} options={{gestureEnabled: false}}/>
+            <Stack.Screen name="PinDetail" component={PinDetailScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  map: {
-    height: "100%",
-  },
   mapContainer: {
-    height: "70%",
+    height: "100%",
+    position: "relative",
+    alignItems: "center",
   },
   subMenu: {
-    flex: 1,
-  },
+    position: "absolute",
+    bottom: 0,
+    zIndex: 2,
+    height: "30%",
+    width: "100%",
+    maxWidth: 700,
+    overflow: "hidden",
+    borderTopEndRadius: 30,
+    borderTopLeftRadius: 30,
+  }
 });
