@@ -10,6 +10,7 @@ import HomeScreen from "./src/pages/HomeScreen";
 import NavBar from "./src/components/NavBar";
 import LoginScreen from "./src/pages/LoginScreen";
 
+import Activity from"./src/components/Activity";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
 const Stack = createNativeStackNavigator();
