@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
 
 import yo from "../../assets/images/search.png";
 import { tag } from "../data/dev-data";
-
+import ActivityName from "../components/ActivityName.jsx";
 BGcolor = '#f5da80';
 
-export default function Activity() {
+export default function ActivityDetail() {
   return (
     <View style={styles.container}>
       <Image
@@ -14,20 +14,15 @@ export default function Activity() {
         source={yo}
       />
       <View style={styles.DataCon}>
-        <View style={styles.ActNameCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>สอนน้องร้องเพลงอุฟุฟวยฟ่วยฟวยฟวยฟวยฟวยฟวยฟวยฟวยฟวยฟวย</Text>
-        </View>
-        <View style={styles.countCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold' }}>xx/xx</Text>
-        </View>
+        <ActivityName />
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>todayyyy 77:77</Text>
+          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>date</Text>
         </View>
         <View style={styles.creatorCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>องกรวย</Text>
+          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>ชื่อหน่วยงาน</Text>
         </View>
         <View style={styles.creatorPicCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>องกรวย องกรวย องกรวย</Text>
+          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
         </View>
         <View style={{ backgroundColor: 'black', width: "100%", flexDirection: 'row', flexWrap: 'wrap', }}>
           {Array.from({ length: tag.length }).map((_, index) => (
@@ -39,11 +34,11 @@ export default function Activity() {
           ))}
         </View>
         <View style={styles.DescripCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription</Text>
+          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>Description</Text>
         </View>
         <Button
           onPress={() => Alert.alert('Cannot press this one')}
-          title="Learn More"
+          title="เข้าร่วมกิจกรรม"
           color="#ff9900"
           accessibilityLabel="Learn more about this purple button"
           style={styles.AcButton}
@@ -94,17 +89,6 @@ const styles = StyleSheet.create({
     borderRadius: 40,
 
   },
-  ActNameCon: {
-    backgroundColor: 'black',
-    width: "70%",
-    justifyContent: 'center',
-  },
-  countCon: {
-    backgroundColor: 'black',
-    width: "27%",
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   timePlaceCon: {
     backgroundColor: 'black',
     width: "45%",
@@ -127,4 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     width: "100%",
   },
+  AcButton: {
+  },
+
 });

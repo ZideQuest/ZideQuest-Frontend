@@ -10,7 +10,7 @@ import HomeScreen from "./src/pages/HomeScreen";
 import NavBar from "./src/components/NavBar";
 import LoginScreen from "./src/pages/LoginScreen";
 
-import Activity from"./src/components/Activity";
+import Activity from"./src/pages/ActivityDetail";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
 const Stack = createNativeStackNavigator();
@@ -43,9 +43,10 @@ export default function App() {
     if (Platform.OS == "android") {
       return (
         <SafeAreaProvider style={styles.AndroidSafeArea}>
+          
           <NavigationContainer>
             <Stack.Navigator>
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="App"
                 component={AppContent}
                 options={{ headerShown: false }}
@@ -54,9 +55,15 @@ export default function App() {
                 name="Login"
                 component={LoginScreen}
                 options={{ headerShown: false }}
+              /> */}
+              <Stack.Screen
+                name="Activity"
+                component={Activity}
+                options={{ headerShown: false }}
               />
             </Stack.Navigator>
           </NavigationContainer>
+          
         </SafeAreaProvider>
       );
     }
