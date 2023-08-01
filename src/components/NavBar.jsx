@@ -20,7 +20,7 @@ const ANIMATION_TIME = 200;
 
 export default function NavBar({navigation}) {
   const [hamburgerOpen, setHamburgerOpen] = useState(null);
-  const { setCreatingNewMarker, setNewMarker, isLoggedIn, setIsLoggedIn, isProfileOpen, setIsProfileOpen } = useAppContext();
+  const { setCreatingNewMarker, isLoggedIn, isProfileOpen, setIsProfileOpen } = useAppContext();
 
   const hamburgerToggle = () => {
     setHamburgerOpen((prev) => !prev);
@@ -36,13 +36,6 @@ export default function NavBar({navigation}) {
     // alert("Logging in...");
     navigation.navigate("Login");
     // setIsLoggedIn(true);
-  };
-
-  const logoutHandler = () => {
-    alert("Logging out...");
-    setCreatingNewMarker(false);
-    setIsLoggedIn(false);
-    setNewMarker(null);
   };
 
   const rotateValueHolder = new Animated.Value(0);
