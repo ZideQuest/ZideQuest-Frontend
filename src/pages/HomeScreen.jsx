@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   mapContainer: {
-    height: "100%",
+    flex: 1,
     position: "relative",
     alignItems: "center",
   },
