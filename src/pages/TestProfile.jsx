@@ -8,13 +8,13 @@ import { useAppContext } from "../data/AppContext";
 
 const Stack = createNativeStackNavigator();
 
-function Profile({navigation}) {
-  const { isProfileOpen, setIsProfileOpen, setIsLoggedIn } = useAppContext();
+function Profile({ navigation }) {
+  const { setIsProfileOpen, logout } = useAppContext();
 
   const logoutHandler = () => {
-    setIsProfileOpen(false)
-    setIsLoggedIn(false)
-  }
+    alert("Logging out...");
+    logout();
+  };
 
   return (
     <View style={styles.profile}>
@@ -24,7 +24,10 @@ function Profile({navigation}) {
       <Pressable onPress={logoutHandler} style={styles.exit}>
         <Text>Logout</Text>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate("Quests")} style={styles.exit}>
+      <Pressable
+        onPress={() => navigation.navigate("Quests")}
+        style={styles.exit}
+      >
         <Text>Quests</Text>
       </Pressable>
       <Text>Ayo 1</Text>
@@ -37,12 +40,15 @@ function Profile({navigation}) {
   );
 }
 
-function Quests({navigation}) {
+function Quests({ navigation }) {
   const { isProfileOpen, setIsProfileOpen } = useAppContext();
 
   return (
     <View style={styles.profile}>
-      <Pressable onPress={() => navigation.navigate("Profile")} style={styles.exit}>
+      <Pressable
+        onPress={() => navigation.navigate("Profile")}
+        style={styles.exit}
+      >
         <Text>Back</Text>
       </Pressable>
       <Text>Quests 1</Text>
