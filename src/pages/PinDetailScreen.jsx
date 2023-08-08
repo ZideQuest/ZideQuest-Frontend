@@ -1,16 +1,25 @@
 import react from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 import { useAppContext } from "../data/AppContext";
 
-export default function PinDetailScreen({route}) {
+export default function PinDetailScreen({route ,navigation}) {
+
+  const {userDetail} = useAppContext();
+
+  const questPressHandler = (questId) => {
+    if (userDetail.isAdmin) {
+      return navigation.navigate("Participant", {questId})
+    } 
+    navigation.navigate("QuestDetail", {questId})
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.textColor}>Pin: {route.params?.pinId}</Text>
-      <Text style={styles.textColor}>Detail 1</Text>
-      <Text style={styles.textColor}>Detail 2</Text>
-      <Text style={styles.textColor}>Detail 3</Text>
-      <Text style={styles.textColor}>Detail 4</Text>
+      <Pressable onPress={() => questPressHandler(1)}>
+        <Text>Quest 1</Text>
+      </Pressable>
     </View>
   );
 }
