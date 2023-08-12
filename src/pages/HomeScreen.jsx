@@ -7,21 +7,22 @@ import CreatePinScreen from "./CreatePinScreen";
 import Map from "../components/Map";
 
 import { useState } from "react";
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function HomeScreen() {
   const [newMarker, setNewMarker] = useState(null);
 
   return (
-    <View>
-      <View style={styles.mapContainer}>
-        <Map setNewMarker={setNewMarker} newMarker={newMarker} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View>
+        <View style={styles.mapContainer}>
+          <Map setNewMarker={setNewMarker} newMarker={newMarker} />
+        </View>
+        <Bottomsheet />
+        {/* <RecommendScreen /> */}
       </View>
-      <View style={styles.subMenu}>
-        <Text>Test</Text>
-        <RecommendScreen />
-        <CreatePinScreen />
-      </View>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   mapContainer: {
-    height: "70%",
+    height: "100%",
   },
   subMenu: {
     flex: 1,
