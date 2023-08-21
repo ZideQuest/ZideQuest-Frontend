@@ -8,7 +8,7 @@ import { StatusBar } from "expo-status-bar";
 import MinimalCard from "./MinimalCard";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
-const Bottomsheet = () => {
+const Bottomsheet = ({children}) => {
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ["30%", "90%"];
 
@@ -26,11 +26,7 @@ const Bottomsheet = () => {
           snapPoints={snapPoints}
           enablePanDownToClose={false}
         >
-          <Text style={styles.header_recommend}>กิจกรรมแนะนำ</Text>
-          <View style={styles.bottomSheetContent}>
-            <MinimalCard />
-            {/* put in card and scroll down the component */}
-          </View>
+          {children}
         </BottomSheetModal>
       </View>
     </BottomSheetModalProvider>

@@ -29,7 +29,7 @@ export default function HomeScreen() {
       <View style={styles.mapContainer}>
         <Map />
         <TestProfile />
-        <View style={styles.subMenu}>
+        <Bottomsheet style={styles.subMenu}>
           <NavigationContainer ref={navigationRef} independent={true}>
             <Stack.Navigator
               screenOptions={({ route, navigation }) => ({
@@ -43,7 +43,7 @@ export default function HomeScreen() {
               <Stack.Screen name="PinDetail" component={PinDetailScreen} />
             </Stack.Navigator>
           </NavigationContainer>
-        </View>
+        </Bottomsheet>
       </View>
     </GestureHandlerRootView>
   );
