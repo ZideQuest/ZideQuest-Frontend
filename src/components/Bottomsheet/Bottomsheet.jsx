@@ -8,6 +8,7 @@ import { StatusBar } from "expo-status-bar";
 import MinimalCard from "./MinimalCard";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+
 const Bottomsheet = ({children}) => {
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ["30%", "90%"];
@@ -19,7 +20,7 @@ const Bottomsheet = ({children}) => {
   return (
     <BottomSheetModalProvider>
       <View style={styles.bottomSheetContainer}>
-        <StatusBar style="auto" />
+        {/* <StatusBar style="auto" /> */}
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={0}
