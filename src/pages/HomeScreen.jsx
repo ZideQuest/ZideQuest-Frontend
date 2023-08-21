@@ -17,35 +17,44 @@ import { TransitionPresets } from "@react-navigation/stack";
 
 const Stack = createNativeStackNavigator();
 
+import { useState } from "react";
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 export default function HomeScreen() {
 
 
   return (
-    <View style={styles.mapContainer}>
-      <Map />
-      <TestProfile />
-      <View style={styles.subMenu}>
-        <NavigationContainer ref={navigationRef} independent={true}>
-          <Stack.Navigator
-            screenOptions={({ route, navigation }) => ({
-              headerShown: false,
-              gestureEnabled: true,
-              ...TransitionPresets.ModalPresentationIOS,
-            })}
-          >
-            <Stack.Screen name="Recommend" component={RecommendScreen} />
-            <Stack.Screen name="CreatePin" component={CreatePinScreen} options={{gestureEnabled: false}}/>
-            <Stack.Screen name="PinDetail" component={PinDetailScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.mapContainer}>
+        <Map />
+        <TestProfile />
+        <Bottomsheet style={styles.subMenu}>
+          <NavigationContainer ref={navigationRef} independent={true}>
+            <Stack.Navigator
+              screenOptions={({ route, navigation }) => ({
+                headerShown: false,
+                gestureEnabled: true,
+                ...TransitionPresets.ModalPresentationIOS,
+              })}
+            >
+              <Stack.Screen name="Recommend" component={RecommendScreen} />
+              <Stack.Screen name="CreatePin" component={CreatePinScreen} options={{gestureEnabled: false}}/>
+              <Stack.Screen name="PinDetail" component={PinDetailScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </Bottomsheet>
       </View>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   mapContainer: {
     height: "100%",
+  },
+  subMenu: {
+    flex: 1,
     position: "relative",
     alignItems: "center",
   },

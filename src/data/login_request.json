@@ -1,0 +1,20 @@
+{
+  "admin": {
+    "token": "ayojwthere123456789",
+    "isAdmin": true,
+    "username": "adminThe1st",
+    "message": "logged in successfully",
+    "status": 200
+  },
+  "user": {
+    "token": "ayonormaluserhere23948123",
+    "isAdmin": false,
+    "username": "userThe2nd",
+    "message": "logged in successfully",
+    "status": 200
+  },
+  "incorrect": {
+    "message": "failed to login",
+    "status": 401
+  }
+}
