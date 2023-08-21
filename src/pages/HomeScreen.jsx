@@ -1,39 +1,72 @@
 import React from "react";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Button } from "react-native";
 
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { navigationRef } from "../data/TabNavigation";
+
+// import { useAppContext } from "../data/AppContext";
+
+import Map from "../components/Map";
 import RecommendScreen from "./RecommendScreen";
 import CreatePinScreen from "./CreatePinScreen";
-import Map from "../components/Map";
+import PinDetailScreen from "./PinDetailScreen";
+import TestProfile from "./TestProfile";
+
+import { TransitionPresets } from "@react-navigation/stack";
+
+const Stack = createNativeStackNavigator();
 
 import { useState } from "react";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function HomeScreen() {
-  const [newMarker, setNewMarker] = useState(null);
+
 
   return (
-    <GestureHandlerRootView>
-      <View>
-        <View style={styles.mapContainer}>
-          <Map setNewMarker={setNewMarker} newMarker={newMarker} />
-        </View>
-        <Bottomsheet />
-        {/* <RecommendScreen /> */}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.mapContainer}>
+        <Map />
+        <TestProfile />
+        <Bottomsheet style={styles.subMenu}>
+          <NavigationContainer ref={navigationRef} independent={true}>
+            <Stack.Navigator
+              screenOptions={({ route, navigation }) => ({
+                headerShown: false,
+                gestureEnabled: true,
+                ...TransitionPresets.ModalPresentationIOS,
+              })}
+            >
+              <Stack.Screen name="Recommend" component={RecommendScreen} />
+              <Stack.Screen name="CreatePin" component={CreatePinScreen} options={{gestureEnabled: false}}/>
+              <Stack.Screen name="PinDetail" component={PinDetailScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </Bottomsheet>
       </View>
     </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  map: {
-    height: "100%",
-  },
   mapContainer: {
     height: "100%",
   },
   subMenu: {
     flex: 1,
+    position: "relative",
+    alignItems: "center",
   },
+  subMenu: {
+    position: "absolute",
+    bottom: 0,
+    zIndex: 2,
+    height: "30%",
+    width: "100%",
+    maxWidth: 700,
+    overflow: "hidden",
+    borderTopEndRadius: 30,
+    borderTopLeftRadius: 30,
+  }
 });

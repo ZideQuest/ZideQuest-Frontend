@@ -1,19 +1,31 @@
 import React, { useState } from "react";
-import { StyleSheet, View, StatusBar } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, StatusBar, View, Text } from "react-native";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import { AppProvider } from "./src/data/AppContext";
 import HomeScreen from "./src/pages/HomeScreen";
-
+import LoginScreen from "./src/pages/LoginScreen";
 import NavBar from "./src/components/NavBar";
-import Map from "./src/components/Map";
 
+import Activity from"./src/components/Activity";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
 
 const Stack = createNativeStackNavigator();
+const navTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "transparent",
+  },
+};
 
 export default function App() {
   const [hidden, setHidden] = useState(false);
@@ -22,35 +34,42 @@ export default function App() {
     TRANSITIONS[0]
   );
 
-  if(Platform.OS == "android") {
+  const AppContent = ({ navigation }) => {
+    const insets = useSafeAreaInsets();
     return (
-        <SafeAreaProvider style={styles.AndroidSafeArea}>
-          <NavBar />
-          <HomeScreen />
-        </SafeAreaProvider>
-    
+      <View style={{ paddingTop: insets.top, height: "100%" }}>
+        <StatusBar
+          animated={true}
+          backgroundColor="#61dafb"
+          barStyle={statusBarStyle}
+          showHideTransition={statusBarTransition}
+          hidden={hidden}
+          // style="auto"
+        />
+        <NavBar navigation={navigation} />
+        <HomeScreen />
+      </View>
     );
-  }
-  if(Platform.OS == "ios") {
-    return (
-      <SafeAreaProvider style={styles.container}>
-        <SafeAreaView>
-          <NavBar />
-          <HomeScreen />
-        </SafeAreaView>
+  };
+
+  return (
+    <AppProvider>
+      <SafeAreaProvider>
+        <NavigationContainer theme={navTheme}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="App"
+              component={AppContent}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </SafeAreaProvider>
-    );
-  }
-  
+    </AppProvider>
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  AndroidSafeArea: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight
-  }
-});
-

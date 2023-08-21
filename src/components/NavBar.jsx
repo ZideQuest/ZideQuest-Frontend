@@ -7,32 +7,82 @@ import {
   Image,
   Animated,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
+import { useAppContext } from "../data/AppContext";
+import * as TabNavigation from "../data/TabNavigation";
 
 import hamburger_icon from "../../assets/images/hamburger-icon.png";
 import filter_icon from "../../assets/images/filter.png";
+import search_icon from "../../assets/images/search.png";
+import plus_icon from "../../assets/images/plus.png";
 
-export default function NavBar() {
-  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+const ANIMATION_TIME = 200;
 
-  const hamburgerPressHandler = () => {
+export default function NavBar({navigation}) {
+  const [hamburgerOpen, setHamburgerOpen] = useState(null);
+  const { setCreatingNewMarker, isProfileOpen, setIsProfileOpen, userDetail } = useAppContext();
+
+  const hamburgerToggle = () => {
     setHamburgerOpen((prev) => !prev);
   };
 
+  const addButtonHandler = () => {
+    TabNavigation.navigate("CreatePin");
+    setCreatingNewMarker(true);
+    hamburgerToggle();
+  };
+
+  const loginHandler = () => {
+    navigation.navigate("Login");
+  };
+
   const rotateValueHolder = new Animated.Value(0);
+  const heightValueHolder = new Animated.Value(0);
 
   const RotateData = rotateValueHolder.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "90deg"],
   });
 
+
+  const HeightData = heightValueHolder.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 200],
+  });
+
   useEffect(() => {
-    rotateValueHolder.setValue(hamburgerOpen ? 0 : 1);
-    Animated.timing(rotateValueHolder, {
-      toValue: hamburgerOpen ? 1 : 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
+    if (hamburgerOpen === null) {
+      return;
+    }
+    if (hamburgerOpen) {
+      Animated.timing(rotateValueHolder, {
+        toValue: 1,
+        duration: ANIMATION_TIME,
+        useNativeDriver: true,
+      }).start();
+
+      // heightValueHolder.setValue(hamburgerOpen ? 0 : 1);
+      Animated.timing(heightValueHolder, {
+        toValue: 1,
+        duration: ANIMATION_TIME,
+
+        useNativeDriver: false,
+      }).start();
+    } else {
+      rotateValueHolder.setValue(1);
+      Animated.timing(rotateValueHolder, {
+        toValue: 0,
+        duration: ANIMATION_TIME,
+        useNativeDriver: true,
+      }).start();
+
+      heightValueHolder.setValue(1);
+      Animated.timing(heightValueHolder, {
+        toValue: 0,
+        duration: ANIMATION_TIME,
+        useNativeDriver: false,
+      }).start();
+    }
   }, [hamburgerOpen]);
 
   return (
@@ -40,7 +90,7 @@ export default function NavBar() {
       <View style={styles.navLeft}>
         <Pressable
           style={styles.hamburgerContainer}
-          onPress={() => hamburgerPressHandler()}
+          onPress={() => hamburgerToggle()}
         >
           <Animated.Image
             style={[
@@ -49,31 +99,34 @@ export default function NavBar() {
             ]}
             source={hamburger_icon}
           />
-          <View
-            style={[styles.menus, { display: hamburgerOpen ? "flex" : "none" }]}
-          >
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-            <Pressable onPress={() => alert("filer")}>
-              <Image style={styles.menuItem} source={filter_icon} />
-            </Pressable>
-          </View>
         </Pressable>
+        <Animated.View style={[styles.menus, { height: HeightData }]}>
+          <Pressable onPress={() => alert("search")}>
+            <Image style={styles.menuItem} source={search_icon} />
+          </Pressable>
+          <Pressable onPress={() => alert("filer")}>
+            <Image style={styles.menuItem} source={filter_icon} />
+          </Pressable>
+          {userDetail?.isAdmin && (
+            <Pressable onPress={addButtonHandler}>
+              <Image style={styles.menuItem} source={plus_icon} />
+            </Pressable>
+          )}
+        </Animated.View>
         <Text style={styles.logo}>ZideQuest</Text>
       </View>
-      <Pressable
-        style={styles.loginButton}
-        onPress={() => alert("logging in...")}
-      >
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
+      {userDetail?.token ? (
+        <Pressable
+          style={styles.loginButton}
+          onPress={() => setIsProfileOpen(!isProfileOpen)}
+        >
+          <Text style={styles.buttonText}>Profile</Text>
+        </Pressable>
+      ) : (
+        <Pressable style={styles.loginButton} onPress={() => loginHandler()}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -86,8 +139,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     zIndex: 1,
-    // paddingTop: 50
-    // height: 20
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+
+    elevation: 6,
   },
   navLeft: {
     flexDirection: "row",
@@ -106,15 +167,17 @@ const styles = StyleSheet.create({
   menus: {
     position: "absolute",
     backgroundColor: "#E86A33",
+    flexDirection: "column",
+    justifyContent: "space-around",
     top: 60,
-    padding: 10,
-    gap: 10,
-    borderRadius: 10,
+    borderRadius: 100,
+    overflow: "hidden",
   },
   menuItem: {
-    width: 40,
-    height: 40,
-    padding: 10,
+    width: 30,
+    height: 30,
+    padding: 20,
+    margin: 5,
   },
   logo: {
     color: "#E86A33",

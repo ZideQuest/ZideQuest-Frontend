@@ -9,7 +9,7 @@ import MinimalCard from "./MinimalCard";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const Bottomsheet = ({ children }) => {
+const Bottomsheet = ({children}) => {
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ["30%", "90%"];
 
