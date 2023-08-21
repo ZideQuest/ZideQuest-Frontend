@@ -14,7 +14,7 @@ export default function HomeScreen() {
   const [newMarker, setNewMarker] = useState(null);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView>
       <View>
         <View style={styles.mapContainer}>
           <Map setNewMarker={setNewMarker} newMarker={newMarker} />
