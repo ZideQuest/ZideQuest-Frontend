@@ -21,22 +21,24 @@ export const AppProvider = ({ children }) => {
     
     const response = await sendLoginData(username, password);
 
-    if (response.status !== 200) {
-      setUserDetails({});
-      // setIsLoggedIn(false);
-      setIsLoading(false);
-      alert(response.message);
-      return
-    }
+    // if (response.status !== 200) {
+    //   setUserDetails({});
+    //   // setIsLoggedIn(false);
+    //   setIsLoading(false);
+    //   alert(response.message);
+    //   return
+    // }
 
     const user = {
       token: response.token,
-      username: response.username,
+      user: response.user,
       isAdmin: response.isAdmin,
     };
+
+    console.log(user)
+    
     await SecureStore.setItemAsync("userDetail", JSON.stringify(user));
     setUserDetails(user);
-    // setIsLoggedIn(true);
     setIsLoading(false);
   };
 
