@@ -20,6 +20,7 @@ const Stack = createNativeStackNavigator();
 import { useState } from "react";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ActivityDetail from "./ActivityDetail";
 
 export default function HomeScreen() {
 
@@ -41,6 +42,7 @@ export default function HomeScreen() {
               <Stack.Screen name="Recommend" component={RecommendScreen} />
               <Stack.Screen name="CreatePin" component={CreatePinScreen} options={{gestureEnabled: false}}/>
               <Stack.Screen name="PinDetail" component={PinDetailScreen} />
+              <Stack.Screen name="QuestDetail" component={ActivityDetail} />
             </Stack.Navigator>
           </NavigationContainer>
         </Bottomsheet>
@@ -52,11 +54,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   mapContainer: {
     height: "100%",
-  },
-  subMenu: {
-    flex: 1,
-    position: "relative",
-    alignItems: "center",
   },
   subMenu: {
     position: "absolute",

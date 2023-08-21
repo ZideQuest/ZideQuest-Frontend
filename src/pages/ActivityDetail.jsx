@@ -55,13 +55,13 @@ export default function ActivityDetail() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FDFEFE',
-    borderRadius: 25,
+    // borderRadius: 25,
     width: "100%",
-    padding: 0,
     flexDirection: 'row',
     flexWrap: 'wrap',
     rowGap: 10,
     columnGap: 10,
+    flex: 1,
   },
   tagText: {
     color: "BGcolor",
