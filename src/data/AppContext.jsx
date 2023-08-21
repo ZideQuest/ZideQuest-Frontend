@@ -21,25 +21,21 @@ export const AppProvider = ({ children }) => {
     
     const response = await sendLoginData(username, password);
 
-    // if (response.status !== 200) {
-    //   setUserDetails({});
-    //   // setIsLoggedIn(false);
-    //   setIsLoading(false);
-    //   alert(response.message);
-    //   return
-    // }
+    if (!response.user) {
+      setUserDetails({});
+      setIsLoading(false);
+      return response;
+    }
 
     const user = {
       token: response.token,
       user: response.user,
-      isAdmin: response.isAdmin,
+      isAdmin: response.user.role,
     };
-
-    console.log(user)
-    
     await SecureStore.setItemAsync("userDetail", JSON.stringify(user));
     setUserDetails(user);
     setIsLoading(false);
+    return user
   };
 
   const logout = async () => {
@@ -60,13 +56,11 @@ export const AppProvider = ({ children }) => {
       try {
         const data = await SecureStore.getItemAsync("userDetail");
         const user = JSON.parse(data);
-        console.log("ayo : ", user)
+        console.log("ayo : ", user?.user.email)
         if (user) {
           setUserDetails(user)
-          // setIsLoggedIn(true);
         } else {
           setUserDetails({})
-          // setIsLoggedIn(false);
         }
       } catch (error) {
         console.log("Error fetching token:", error);

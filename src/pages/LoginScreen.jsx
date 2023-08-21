@@ -15,9 +15,15 @@ export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const loginHandler = () => {
-    login(username, password);
-    navigation.navigate("App");
+  const loginHandler = async () => {
+    const status = await login(username, password);
+
+    if (status.status !== 401) {
+      navigation.navigate("App");
+    }
+    else {
+      alert(status.message)
+    }
   };
 
   if (isLoading) {

@@ -9,10 +9,9 @@ export async function sendLoginData(username, password) {
       username,
       password,
     });
-    console.log(data);
     return data;
+    
   } catch (e) {
-    console.error(e);
     return {
       message: "failed to login",
       status: 401,
