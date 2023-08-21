@@ -5,10 +5,11 @@ import { StyleSheet, View, Text, Button } from "react-native";
 import { useState, useRef, useEffect } from "react";
 
 import { useAppContext } from "../data/AppContext";
-import { mapOptions, locations } from "../data/dev-data";
-import {mapCustomStyle} from "../data/map-style"
+import { mapCustomStyle } from "../data/map-style";
+import { mapOptions } from "../data/dev-data";
 
 import * as TabNavigation from "../data/TabNavigation";
+import axios from "axios";
 
 function getDetailFromData(coordinate) {
   const lat = coordinate.nativeEvent.coordinate.latitude;
@@ -20,10 +21,22 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const { newMarker, setNewMarker, creatingNewMarker, setCreatingNewMarker } = useAppContext();
+  const { newMarker, setNewMarker, creatingNewMarker, setCreatingNewMarker } =
+    useAppContext();
   const { refresh, setRefresh } = useState(false);
+  const [locations, setLocations] = useState([]);
 
-  
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get(
+        "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/api/location"
+      );
+      setLocations(data);
+    }
+    fetchData();
+    console.log(locations)
+  }, []);
+
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 51.5079145,
@@ -38,7 +51,7 @@ export default function Map() {
     }
 
     const { lat, lng, name, placeId } = getDetailFromData(coordinate);
-    
+
     animateToRegion(lat, lng);
     setNewMarker({
       latitude: lat,
@@ -52,7 +65,7 @@ export default function Map() {
     const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
   };
-  
+
   const animateToRegion = (lat, lng) => {
     if (mapRef.current) {
       const region = {
@@ -64,16 +77,16 @@ export default function Map() {
       mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
     }
   };
-  
+
   const toggleRefresh = () => {
-    setRefresh(prev => !prev)
-  }
+    setRefresh((prev) => !prev);
+  };
 
   const cancelCreatePin = () => {
     setNewMarker(null);
-    setCreatingNewMarker(false)
+    setCreatingNewMarker(false);
     TabNavigation.navigate("Recommend");
-  }
+  };
 
   useEffect(() => {
     mapRef.current.setMapBoundaries(
@@ -104,8 +117,8 @@ export default function Map() {
         {locations.map((pin) => (
           <Marker
             coordinate={pin}
-            key={pin.id}
-            onPress={(data) => markerPressHandler(pin.id, data)}
+            key={pin._id}
+            onPress={(data) => markerPressHandler(pin._id, data)}
           />
         ))}
         {newMarker && <Marker coordinate={newMarker} />}
@@ -117,7 +130,7 @@ export default function Map() {
 const styles = StyleSheet.create({
   map: {
     height: "100%",
-    position:"relative",
+    position: "relative",
     width: "100%",
   },
   mapCondition: {
