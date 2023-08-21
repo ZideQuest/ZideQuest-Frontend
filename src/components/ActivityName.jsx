@@ -1,16 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
 
-BGcolor = '#f5da80';
+BGcolor = 'white';
+textcolor = 'white';
 
 export default function ActivityDetail() {
     return (
         <View style={styles.container}>
             <View style={styles.ActNameCon}>
-              <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>ชื่อกิจกรรม</Text>
+              <Text style={{ color: textcolor, fontSize: 20, fontWeight: 'bold', }}>ชื่อกิจกรรม</Text>
             </View>
             <View style={styles.countCon}>
-              <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold' }}>จำนวนคนตอนนี้/max</Text>
+              <Text style={{ color: textcolor, fontSize: 20, fontWeight: 'bold' }}>จำนวนคนตอนนี้/max</Text>
             </View>
         </View>
     );
@@ -27,12 +28,12 @@ const styles = StyleSheet.create({
         columnGap: 10,
       },
       ActNameCon: {
-        backgroundColor: 'black',
+        backgroundColor: BGcolor,
         width: "70%",
         justifyContent: 'center',
       },
       countCon: {
-        backgroundColor: 'black',
+        backgroundColor: BGcolor,
         width: "27%",
         alignItems: 'center',
         justifyContent: 'center',

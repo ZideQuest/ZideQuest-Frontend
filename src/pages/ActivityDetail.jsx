@@ -1,32 +1,36 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
 
-import yo from "../../assets/images/search.png";
+import yo from "../../assets/images/KU2.jpg";
 import { tag } from "../data/dev-data";
 import ActivityName from "../components/ActivityName.jsx";
-BGcolor = '#f5da80';
+BGcolor = '#FDFEFE';
+textcolor = 'black';
 
 export default function ActivityDetail() {
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.pic}
-        source={yo}
-      />
+      <View style={styles.picCon}>
+        <Image
+          style={styles.pic}
+          source={yo}
+        />
+       
+      </View>
       <View style={styles.DataCon}>
         <ActivityName />
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>date</Text>
+          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>date</Text>
         </View>
         <View style={styles.creatorCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>ชื่อหน่วยงาน</Text>
+          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>ชื่อหน่วยงาน</Text>
         </View>
         <View style={styles.creatorPicCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
+          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
         </View>
-        <View style={{ backgroundColor: 'black', width: "100%", flexDirection: 'row', flexWrap: 'wrap', }}>
+        <View style={styles.tagCon}>
           {Array.from({ length: tag.length }).map((_, index) => (
-            <View style={styles.tagCon}>
+            <View style={styles.singleTag}>
               <Text key={index} style={styles.tagText}>
                 {tag[index]}
               </Text>
@@ -34,7 +38,7 @@ export default function ActivityDetail() {
           ))}
         </View>
         <View style={styles.DescripCon}>
-          <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold', }}>Description</Text>
+          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>Description</Text>
         </View>
         <Button
           onPress={() => Alert.alert('Cannot press this one')}
@@ -50,7 +54,7 @@ export default function ActivityDetail() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: BGcolor,
+    backgroundColor: '#FDFEFE',
     borderRadius: 25,
     width: "100%",
     padding: 0,
@@ -60,19 +64,26 @@ const styles = StyleSheet.create({
     columnGap: 10,
   },
   tagText: {
-    color: "black",
+    color: "BGcolor",
     padding: 5,
   },
-  pic: {
-    width: '100%',
-    resizeMode: 'contain',
-    backgroundColor: 'black',
+  picCon: {
+    width: "100%",
+    height: 200,
     borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    
+    borderTopRightRadius: 25,   
+    color: "black",
+  },
+  pic: {
+    width: "100%",
+    height: "100%",
+    transform: [{ scale: 1 }],
+    overflow: "hidden",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,    
   },
   DataCon: {
-    backgroundColor: '#aaff00',
+    backgroundColor: BGcolor,
     borderRadius: 25,
     width: "100%",
     padding: 10,
@@ -82,33 +93,39 @@ const styles = StyleSheet.create({
     columnGap: 10,
     justifyContent: 'center',
   },
-
   tagCon: {
-    backgroundColor: "white",
+    backgroundColor: 'BGcolor',
+    width: "100%", 
+    flexDirection: 'row', 
+    flexWrap: 'wrap',
+    rowGap: 10,
+    columnGap: 10,
+  },
+  singleTag: {
+    backgroundColor: "#FDEBD0",
     alignSelf: 'flex-start',
     borderRadius: 40,
-
   },
   timePlaceCon: {
-    backgroundColor: 'black',
+    backgroundColor: 'BGcolor',
     width: "45%",
     justifyContent: 'center',
   },
   creatorCon: {
-    backgroundColor: 'black',
+    backgroundColor: 'BGcolor',
     width: "29%",
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
   creatorPicCon: {
-    backgroundColor: 'black',
+    backgroundColor: 'BGcolor',
     width: "20%",
     justifyContent: 'center',
     alignItems: 'flex-end',
     aspectRatio: 1/1,
   },
   DescripCon: {
-    backgroundColor: 'black',
+    backgroundColor: 'BGcolor',
     width: "100%",
   },
   AcButton: {
