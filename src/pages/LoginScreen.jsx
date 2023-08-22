@@ -21,14 +21,18 @@ export default function LoginScreen({ navigation }) {
   const { login, isLoading } = useAppContext();
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
-
+  const [loginStatus, setLoginStatus] = useState(0);
+  const [loginText, setLoginText] = useState(null);
+ 
   const loginHandler = async () => {
     const status = await login(username, password);
-
+    setLoginStatus(0);
     if (status.status !== 401) {
       navigation.navigate("App");
     } else {
-      alert(status.message);
+      setLoginText(status.message);
+      setLoginStatus(1);
+      // alert(status.message);
     }
   };
 
@@ -52,21 +56,26 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.bannerText}>ALL-Login</Text>
         <TextInput
           label={"username"}
-          style={styles.textfield}
+          style={[styles.textfield, {borderColor: loginStatus ? "red": "white"}]}
           value={username}
           placeholder="username"
-          placeholderTextColor="grey"
+          placeholderTextColor={loginStatus ? "red" : "grey"}
           onChangeText={(text) => setUsername(text)}
         />
         <TextInput
           label={"password"}
-          style={styles.textfield}
+          style={[styles.textfield, {borderColor: loginStatus ? "red": "white"}]}
           value={password}
           placeholder="password"
-          placeholderTextColor="grey"
+          placeholderTextColor={loginStatus ? "red" : "grey"}
           secureTextEntry={true}
           onChangeText={(text) => setPassword(text)}
         />
+
+        {
+          loginStatus ? <Text style={styles.loginText}>{loginText}</Text> : ""
+        }
+
         <Pressable onPress={loginHandler} style={styles.signinButton}>
           <Text style={styles.signinText}>Sign In</Text>
         </Pressable>
@@ -104,7 +113,7 @@ const styles = StyleSheet.create({
     left: 30,
   },
   infoContainer: {
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    backgroundColor: "rgba(255, 255, 255, 0.75)",
     paddingVertical: 40,
     paddingHorizontal: 25,
     borderRadius: 15,
@@ -126,9 +135,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 30,
     transform: [{ scaleY: 1.5 }],
+    marginBottom: 10,
   },
   textfield: {
-    borderColor: "white",
     borderBottomWidth: 2,
     paddingVertical: 8,
     marginTop: 15,
@@ -157,4 +166,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     margin: 10,
   },
+  loginText: {
+    marginTop: 10,
+    color: "red",
+  }
 });
