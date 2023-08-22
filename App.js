@@ -14,7 +14,7 @@ import HomeScreen from "./src/pages/HomeScreen";
 import LoginScreen from "./src/pages/LoginScreen";
 import NavBar from "./src/components/NavBar";
 
-import Activity from"./src/components/Activity";
+import Activity from"./src/pages/ActivityDetail";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
 

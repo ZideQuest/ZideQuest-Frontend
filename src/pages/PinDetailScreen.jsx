@@ -1,7 +1,9 @@
 import react from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
 import { useAppContext } from "../data/AppContext";
+
+import * as TabNavigation from "../data/TabNavigation";
 
 import person_icon from "../../assets/images/participant.png";
 
@@ -46,7 +48,7 @@ export default function PinDetailScreen({ route }) {
       </View>
       <View style={styles.questListContainer}>
         {QUESTS.map((quest) => (
-          <View
+          <Pressable onPress={() => {TabNavigation.navigate("QuestDetail")}}
             key={quest.id}
             style={[
               styles.questItem,
@@ -70,7 +72,7 @@ export default function PinDetailScreen({ route }) {
                 }}
               ></View>
             </View>
-          </View>
+          </Pressable>
         ))}
       </View>
     </View>
