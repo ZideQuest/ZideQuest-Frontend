@@ -1,79 +1,82 @@
-import react from "react";
+import react, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
 import { useAppContext } from "../data/AppContext";
-
 import * as TabNavigation from "../data/TabNavigation";
+import { getLocationData } from "../data/locations";
 
 import person_icon from "../../assets/images/participant.png";
 
-const QUESTS = [
-  {
-    id: "asdasd",
-    name: "first",
-    status: "live",
-    currentParticipant: 40,
-    maxParticipant: 50,
-  },
-  {
-    id: "aassad",
-    name: "second",
-    status: "live",
-    currentParticipant: 50,
-    maxParticipant: 50,
-  },
-  {
-    id: "ghjhgj",
-    name: "third",
-    status: "not available",
-    currentParticipant: 30,
-    maxParticipant: 50,
-  },
-  {
-    id: "ertret",
-    name: "fourth",
-    status: "not available",
-    currentParticipant: 50,
-    maxParticipant: 50,
-  },
-];
+import sorror1 from "../../assets/images/sorror1.png";
 
 export default function PinDetailScreen({ route }) {
+  const { userDetail } = useAppContext();
+  const [locationData, setLocationData] = useState({});
+  const [quests, setQuests] = useState([]);
+
+  useEffect(() => {
+    const fetchLocationData = async () => {
+      try {
+        const {data, quests} = await getLocationData(route.params?.pinId);
+        setLocationData(data)
+        setQuests(quests)
+      } catch (error) {
+        console.log("Error fetching locations", error);
+      }
+    };
+    fetchLocationData();
+  },[]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Pin: {route.params?.pinId}</Text>
-      <View style={styles.subHeader}>
-        <Text style={styles.subHeaderText}>Quests</Text>
-        <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
+      <View style={styles.bannerContainer}>
+        <Image style={styles.bannerImage} source={{uri:locationData.locationPicturePath}} />
       </View>
-      <View style={styles.questListContainer}>
-        {QUESTS.map((quest) => (
-          <Pressable onPress={() => {TabNavigation.navigate("QuestDetail")}}
-            key={quest.id}
-            style={[
-              styles.questItem,
-              { opacity: quest.status == "live" ? 100 : 50 },
-            ]}
+      <View style={styles.quests}>
+        <Text style={styles.header}>{locationData.locationName}</Text>
+        <View style={styles.subHeader}>
+          <Text style={styles.subHeaderText}>Quests</Text>
+          <Pressable
+            onPress={() => TabNavigation.navigate("CreateQuest")}
+            style={{ display: userDetail.isAdmin ? "flex" : "none" }}
           >
-            <Text style={styles.questFont}>{quest.name}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-              <Text style={styles.questFont}>
-                {quest.currentParticipant}/{quest.maxParticipant}
-              </Text>
-              <View style={styles.pic}>
-                <Image source={person_icon} />
-              </View>
-              <View
-                style={{
-                  width: 14,
-                  height: 14,
-                  backgroundColor: quest.status == "live" ? "green" : "red",
-                  borderRadius: "50%",
-                }}
-              ></View>
-            </View>
+            <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
           </Pressable>
-        ))}
+        </View>
+        <View style={styles.questListContainer}>
+          {quests.map((quest) => (
+            <Pressable
+              onPress={() => {
+                TabNavigation.navigate("QuestDetail");
+              }}
+              key={quest.id}
+              style={[
+                styles.questItem,
+                { opacity: quest.status == "live" ? 100 : 50 },
+              ]}
+            >
+              <Text style={styles.questFont}>{quest.name}</Text>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+              >
+                <Text style={styles.questFont}>
+                  {quest.currentParticipant}/{quest.maxParticipant}
+                </Text>
+                <View style={styles.pic}>
+                  <Image source={person_icon} />
+                </View>
+                <View
+                  style={{
+                    width: 12,
+                    height: 12,
+                    backgroundColor: quest.status == "live" ? "green" : "red",
+                    borderRadius: "50%",
+                  }}
+                ></View>
+              </View>
+            </Pressable>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -82,10 +85,22 @@ export default function PinDetailScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    borderTopEndRadius: 30,
-    borderTopLeftRadius: 30,
-    padding: 30,
+    // borderTopEndRadius: 30,
+    // borderTopLeftRadius: 30,
+    // padding: 30,
     flex: 1,
+  },
+  bannerContainer: {
+    height: 220,
+    width: "100%",
+  },
+  bannerImage: {
+    height: "100%",
+    width: "100%",
+  },
+  quests: {
+    paddingHorizontal: 23,
+    paddingTop: 15,
   },
   header: {
     fontSize: 23,
@@ -103,7 +118,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#619B58",
     borderRadius: 10,
     overflow: "hidden",
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 7,
     color: "white",
     fontSize: 15,
   },
@@ -126,6 +142,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
     gap: 6,
     overflow: "scroll",
+    paddingLeft: 10,
   },
   questFont: {
     fontSize: 16,
