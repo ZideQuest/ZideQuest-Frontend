@@ -1,4 +1,7 @@
-import react, {useState, useEffect} from "react";
+import react, { useState, useEffect } from "react";
+import { createShimmerPlaceHolder } from "expo-shimmer-placeholder";
+import { LinearGradient } from "expo-linear-gradient";
+
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
 import { useAppContext } from "../data/AppContext";
@@ -7,31 +10,43 @@ import { getLocationData } from "../data/locations";
 
 import person_icon from "../../assets/images/participant.png";
 
-import sorror1 from "../../assets/images/sorror1.png";
+const ShimmerPlaceHolder = createShimmerPlaceHolder(LinearGradient);
 
 export default function PinDetailScreen({ route }) {
   const { userDetail } = useAppContext();
   const [locationData, setLocationData] = useState({});
+  const [loading, setLoading] = useState(true);
   const [quests, setQuests] = useState([]);
 
   useEffect(() => {
     const fetchLocationData = async () => {
       try {
-        const {location, quests} = await getLocationData(route.params?.pinId);
-        setLocationData(location)
-        setQuests(quests)
-        console.log(data.location)
+        const { location, quests } = await getLocationData(route.params?.pinId);
+        setLocationData(location);
+        setQuests(quests);
       } catch (error) {
         console.log("Error fetching locations", error);
       }
     };
     fetchLocationData();
-  },[]);
+  }, []);
+
+  const handleImageLoading = () => {
+    setLoading(false);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.bannerContainer}>
-        <Image style={styles.bannerImage} source={{uri:locationData.locationPicturePath}} />
+        <ShimmerPlaceHolder
+          style={{ position: "absolute", width: "100%", height: "100%", zIndex:10}}
+          visible={!loading}
+        />
+        <Image
+          style={styles.bannerImage}
+          source={{ uri: locationData.locationPicturePath }}
+          onLoad={handleImageLoading}
+        />
       </View>
       <View style={styles.quests}>
         <Text style={styles.header}>{locationData.locationName}</Text>
@@ -94,6 +109,7 @@ const styles = StyleSheet.create({
   bannerContainer: {
     height: 220,
     width: "100%",
+    position: "relative",
   },
   bannerImage: {
     height: "100%",
