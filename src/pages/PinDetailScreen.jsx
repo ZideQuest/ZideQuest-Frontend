@@ -71,7 +71,7 @@ export default function PinDetailScreen({ route }) {
                     width: 12,
                     height: 12,
                     backgroundColor: quest.status == "live" ? "green" : "red",
-                    borderRadius: "50%",
+                    borderRadius: 25,
                   }}
                 ></View>
               </View>

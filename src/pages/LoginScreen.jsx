@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     paddingHorizontal: 25,
     paddingVertical: 8,
-    borderRadius: "4",
+    borderRadius: 4.0,
   },
   signinText: {
     color: "white",
