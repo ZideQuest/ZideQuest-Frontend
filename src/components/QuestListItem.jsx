@@ -4,6 +4,17 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import * as TabNavigation from "../data/TabNavigation";
 import person_icon from "../../assets/images/participant.png";
 
+function statusIcon (currentP, maxP) {
+  const ratio = currentP/maxP;
+  if (ratio >= 1) {
+    return "red"
+  }
+  if (ratio > 0.8) {
+    return "yellow"
+  }
+  return "green"
+}
+
 export default function QuestListItem({ quest }) {
   return (
     <Pressable
@@ -13,10 +24,10 @@ export default function QuestListItem({ quest }) {
       key={quest.id}
       style={[styles.questItem, { opacity: quest.status == "live" ? 100 : 50 }]}
     >
-      <Text style={styles.questFont}>{quest.name}</Text>
+      <Text style={styles.questFont}>{quest.questName}</Text>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
         <Text style={styles.questFont}>
-          {quest.currentParticipant}/{quest.maxParticipant}
+          {quest.countParticipant}/{quest.maxParticipant}
         </Text>
         <View style={styles.pic}>
           <Image source={person_icon} />
@@ -25,7 +36,7 @@ export default function QuestListItem({ quest }) {
           style={{
             width: 12,
             height: 12,
-            backgroundColor: quest.status == "live" ? "green" : "red",
+            backgroundColor: statusIcon(quest.countParticipant, quest.maxParticipant),
             borderRadius: 25,
           }}
         ></View>

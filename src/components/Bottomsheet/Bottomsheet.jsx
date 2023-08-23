@@ -9,7 +9,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Bottomsheet = ({ children }) => {
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = ["30%", "90%"];
+  const snapPoints = ["15", "45%", "90%"];
 
   useEffect(() => {
     bottomSheetModalRef.current?.present();
@@ -23,7 +23,7 @@ const Bottomsheet = ({ children }) => {
           ref={bottomSheetModalRef}
           index={0}
           snapPoints={snapPoints}
-          enablePanDownToClose={true}
+          enablePanDownToClose={false}
           // backgroundStyle={styles.backgroundStyle}
           // style={styles.pullBar}
         >
@@ -39,15 +39,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIndicator: {
-    // width: 100,
-    // top: 25,
     height: 0,
   },
   contentContainer: {
     flex: 1,
-    borderTopEndRadius: 20,
-    borderTopLeftRadius: 20,
-    overflow: "hidden"
   },
   backgroundStyle: {
     backgroundColor: "transparent",

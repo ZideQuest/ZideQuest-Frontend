@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import userprofiletest from "../../assets/images/UserProfileTest.jpg";
 
+
 const MinimalCard = ({ event, time, location, userlevel, username, image }) => {
   return (
     <View style={styles.CardContainer}>

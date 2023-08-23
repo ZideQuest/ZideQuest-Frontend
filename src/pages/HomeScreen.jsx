@@ -17,7 +17,6 @@ import { TransitionPresets } from "@react-navigation/stack";
 
 const Stack = createNativeStackNavigator();
 
-import { useState } from "react";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ActivityDetail from "./ActivityDetail";
