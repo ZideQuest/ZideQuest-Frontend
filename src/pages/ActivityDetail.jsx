@@ -55,7 +55,6 @@ export default function ActivityDetail() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FDFEFE',
-    // borderRadius: 25,
     width: "100%",
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -69,18 +68,11 @@ const styles = StyleSheet.create({
   },
   picCon: {
     width: "100%",
-    height: 200,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,   
-    color: "black",
+    height: 200,  
   },
   pic: {
     width: "100%",
     height: "100%",
-    transform: [{ scale: 1 }],
-    overflow: "hidden",
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,    
   },
   DataCon: {
     backgroundColor: BGcolor,

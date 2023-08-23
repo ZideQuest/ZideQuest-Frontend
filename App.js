@@ -38,14 +38,14 @@ export default function App() {
     const insets = useSafeAreaInsets();
     return (
       <View style={{ paddingTop: insets.top, height: "100%" }}>
-        <StatusBar
+        {/* <StatusBar
           animated={true}
           backgroundColor="#61dafb"
           barStyle={statusBarStyle}
           showHideTransition={statusBarTransition}
           hidden={hidden}
           // style="auto"
-        />
+        /> */}
         <NavBar navigation={navigation} />
         <HomeScreen />
       </View>

@@ -1,17 +1,15 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
-import BottomSheet, {
+import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import { StatusBar } from "expo-status-bar";
-import MinimalCard from "./MinimalCard";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Bottomsheet = ({ children }) => {
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = ["30%", "90%"];
+  const snapPoints = ["15", "45%", "90%"];
 
   useEffect(() => {
     bottomSheetModalRef.current?.present();
@@ -21,12 +19,15 @@ const Bottomsheet = ({ children }) => {
     <BottomSheetModalProvider>
       <View style={styles.bottomSheetContainer}>
         <BottomSheetModal
+          // handleIndicatorStyle={styles.headerIndicator}
           ref={bottomSheetModalRef}
           index={0}
           snapPoints={snapPoints}
           enablePanDownToClose={false}
+          // backgroundStyle={styles.backgroundStyle}
+          // style={styles.pullBar}
         >
-          {children}
+          <View style={styles.contentContainer}>{children}</View>
         </BottomSheetModal>
       </View>
     </BottomSheetModalProvider>
@@ -37,17 +38,17 @@ const styles = StyleSheet.create({
   bottomSheetContainer: {
     flex: 1,
   },
-  bottomSheetContent: {
-    height: SCREEN_HEIGHT,
-    backgroundColor: "white",
-    alignItems: "center",
-    top: "5%",
+  headerIndicator: {
+    height: 0,
   },
-  header_recommend: {
-    top: "1%",
-    left: "3%",
-    fontWeight: "bold",
+  contentContainer: {
+    flex: 1,
   },
+  backgroundStyle: {
+    backgroundColor: "transparent",
+  },
+  pullBar: {
+  }
 });
 
 export default Bottomsheet;

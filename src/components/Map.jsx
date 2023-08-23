@@ -5,8 +5,9 @@ import { StyleSheet, View, Text, Button } from "react-native";
 import { useState, useRef, useEffect } from "react";
 
 import { useAppContext } from "../data/AppContext";
-import { mapOptions, locations } from "../data/dev-data";
-import {mapCustomStyle} from "../data/map-style"
+import { mapOptions } from "../data/dev-data";
+import { mapCustomStyle } from "../data/map-style";
+import { fetchLocations } from "../data/locations";
 
 import * as TabNavigation from "../data/TabNavigation";
 
@@ -20,10 +21,11 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const { newMarker, setNewMarker, creatingNewMarker, setCreatingNewMarker } = useAppContext();
-  const { refresh, setRefresh } = useState(false);
+  const { newMarker, setNewMarker, creatingNewMarker, setCreatingNewMarker } =
+    useAppContext();
+  const [refresh, setRefresh] = useState(false);
+  const [locations, setLocations] = useState([]);
 
-  
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 51.5079145,
@@ -38,7 +40,7 @@ export default function Map() {
     }
 
     const { lat, lng, name, placeId } = getDetailFromData(coordinate);
-    
+
     animateToRegion(lat, lng);
     setNewMarker({
       latitude: lat,
@@ -52,7 +54,7 @@ export default function Map() {
     const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
   };
-  
+
   const animateToRegion = (lat, lng) => {
     if (mapRef.current) {
       const region = {
@@ -61,25 +63,40 @@ export default function Map() {
         latitudeDelta: 0.0015, // The delta values control the zoom level
         longitudeDelta: 0.0015,
       };
-      mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
+
+      if (mapRef.current.onMapReady) {
+        mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
+      }
     }
   };
-  
+
   const toggleRefresh = () => {
-    setRefresh(prev => !prev)
-  }
+    setRefresh((prev) => !prev);
+  };
 
   const cancelCreatePin = () => {
     setNewMarker(null);
-    setCreatingNewMarker(false)
+    setCreatingNewMarker(false);
     TabNavigation.navigate("Recommend");
-  }
+  };
 
   useEffect(() => {
     mapRef.current.setMapBoundaries(
       { latitude: 13.856247, longitude: 100.565117 },
       { latitude: 13.842, longitude: 100.578 }
     );
+  }, []);
+
+  useEffect(() => {
+    const fetchMap = async () => {
+      try {
+        const data = await fetchLocations();
+        setLocations(data);
+      } catch (error) {
+        console.log("Error fetching locations", error);
+      }
+    };
+    fetchMap();
   }, []);
 
   return (
@@ -104,8 +121,8 @@ export default function Map() {
         {locations.map((pin) => (
           <Marker
             coordinate={pin}
-            key={pin.id}
-            onPress={(data) => markerPressHandler(pin.id, data)}
+            key={pin._id}
+            onPress={(data) => markerPressHandler(pin._id, data)}
           />
         ))}
         {newMarker && <Marker coordinate={newMarker} />}
@@ -117,7 +134,7 @@ export default function Map() {
 const styles = StyleSheet.create({
   map: {
     height: "100%",
-    position:"relative",
+    position: "relative",
     width: "100%",
   },
   mapCondition: {

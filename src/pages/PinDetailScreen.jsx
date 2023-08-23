@@ -1,79 +1,70 @@
-import react from "react";
+import react, { useState, useEffect } from "react";
+import { createShimmerPlaceHolder } from "expo-shimmer-placeholder";
+import { LinearGradient } from "expo-linear-gradient";
+
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
+import QuestListItem from "../components/QuestListItem"
 import { useAppContext } from "../data/AppContext";
-
 import * as TabNavigation from "../data/TabNavigation";
+import { getLocationData } from "../data/locations";
 
-import person_icon from "../../assets/images/participant.png";
 
-const QUESTS = [
-  {
-    id: "asdasd",
-    name: "first",
-    status: "live",
-    currentParticipant: 40,
-    maxParticipant: 50,
-  },
-  {
-    id: "aassad",
-    name: "second",
-    status: "live",
-    currentParticipant: 50,
-    maxParticipant: 50,
-  },
-  {
-    id: "ghjhgj",
-    name: "third",
-    status: "not available",
-    currentParticipant: 30,
-    maxParticipant: 50,
-  },
-  {
-    id: "ertret",
-    name: "fourth",
-    status: "not available",
-    currentParticipant: 50,
-    maxParticipant: 50,
-  },
-];
+
+const ShimmerPlaceHolder = createShimmerPlaceHolder(LinearGradient);
 
 export default function PinDetailScreen({ route }) {
+  const { userDetail } = useAppContext();
+  const [locationData, setLocationData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [quests, setQuests] = useState([]);
+
+  useEffect(() => {
+    const fetchLocationData = async () => {
+      try {
+        const { location, quests } = await getLocationData(route.params?.pinId);
+        setLocationData(location);
+        setQuests(quests);
+      } catch (error) {
+        console.log("Error fetching locations", error);
+      }
+    };
+    fetchLocationData();
+  }, []);
+
+  const handleImageLoading = () => {
+    setLoading(false);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Pin: {route.params?.pinId}</Text>
-      <View style={styles.subHeader}>
-        <Text style={styles.subHeaderText}>Quests</Text>
-        <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
+      <View style={styles.bannerContainer}>
+        <ShimmerPlaceHolder
+          style={{ position: "absolute", width: "100%", height: "100%", zIndex:10}}
+          visible={!loading}
+        />
+        <Image
+          style={styles.bannerImage}
+          source={{ uri: locationData.locationPicturePath }}
+          onLoad={handleImageLoading}
+        />
       </View>
-      <View style={styles.questListContainer}>
-        {QUESTS.map((quest) => (
-          <Pressable onPress={() => {TabNavigation.navigate("QuestDetail")}}
-            key={quest.id}
-            style={[
-              styles.questItem,
-              { opacity: quest.status == "live" ? 100 : 50 },
-            ]}
+      <View style={styles.quests}>
+        <Text style={styles.header}>{locationData.locationName}</Text>
+        <View style={styles.subHeader}>
+          <Text style={styles.subHeaderText}>Quests</Text>
+          <Pressable
+            onPress={() => TabNavigation.navigate("CreateQuest")}
+            style={{ display: userDetail.isAdmin ? "flex" : "none" }}
           >
-            <Text style={styles.questFont}>{quest.name}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-              <Text style={styles.questFont}>
-                {quest.currentParticipant}/{quest.maxParticipant}
-              </Text>
-              <View style={styles.pic}>
-                <Image source={person_icon} />
-              </View>
-              <View
-                style={{
-                  width: 14,
-                  height: 14,
-                  backgroundColor: quest.status == "live" ? "green" : "red",
-                  borderRadius: "50%",
-                }}
-              ></View>
-            </View>
+            <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
           </Pressable>
-        ))}
+        </View>
+        <View style={styles.questListContainer}>
+          {quests.map((quest) => (
+            <QuestListItem quest={quest}/>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -82,10 +73,20 @@ export default function PinDetailScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    borderTopEndRadius: 30,
-    borderTopLeftRadius: 30,
-    padding: 30,
     flex: 1,
+  },
+  bannerContainer: {
+    height: 220,
+    width: "100%",
+    position: "relative",
+  },
+  bannerImage: {
+    height: "100%",
+    width: "100%",
+  },
+  quests: {
+    paddingHorizontal: 23,
+    paddingTop: 15,
   },
   header: {
     fontSize: 23,
@@ -103,31 +104,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#619B58",
     borderRadius: 10,
     overflow: "hidden",
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 7,
     color: "white",
     fontSize: 15,
-  },
-  questItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#F5F5F5",
-    padding: 10,
-    borderRadius: 5,
-    paddingLeft: 15,
-    paddingRight: 15,
-  },
-  pic: {
-    width: 20,
-    height: 20,
-    // backgroundColor: "red"
-    resizeMode: "contain",
   },
   questListContainer: {
     marginTop: 6,
     gap: 6,
     overflow: "scroll",
-  },
-  questFont: {
-    fontSize: 16,
+    paddingLeft: 10,
   },
 });
