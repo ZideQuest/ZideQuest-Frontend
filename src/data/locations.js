@@ -18,40 +18,10 @@ export async function fetchLocations() {
 export async function getLocationData(id) {
   try {
     const { data } = await axios.get(`${BASE_URL}/location/${id}`);
-    // const { quests } = await axios.get(`${BASE_URL}/quest/findByLoc/${id}`);
-    // ยังไม่เสร็จ
-    const quests = [
-      {
-        id: "asdasd",
-        name: "first",
-        status: "live",
-        currentParticipant: 40,
-        maxParticipant: 50,
-      },
-      {
-        id: "aassad",
-        name: "second",
-        status: "live",
-        currentParticipant: 50,
-        maxParticipant: 50,
-      },
-      {
-        id: "ghjhgj",
-        name: "third",
-        status: "not available",
-        currentParticipant: 30,
-        maxParticipant: 50,
-      },
-      {
-        id: "ertret",
-        name: "fourth",
-        status: "not available",
-        currentParticipant: 50,
-        maxParticipant: 50,
-      },
-    ];
+    const location = data.location;
+    const quests = data.quests;
 
-    return { data, quests };
+    return { location, quests };
   } catch (e) {
     console.log(e);
     return {

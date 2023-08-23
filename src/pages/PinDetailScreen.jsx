@@ -17,9 +17,10 @@ export default function PinDetailScreen({ route }) {
   useEffect(() => {
     const fetchLocationData = async () => {
       try {
-        const {data, quests} = await getLocationData(route.params?.pinId);
-        setLocationData(data)
+        const {location, quests} = await getLocationData(route.params?.pinId);
+        setLocationData(location)
         setQuests(quests)
+        console.log(data.location)
       } catch (error) {
         console.log("Error fetching locations", error);
       }
