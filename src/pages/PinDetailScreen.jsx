@@ -4,11 +4,12 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
+import QuestListItem from "../components/QuestListItem"
 import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
 import { getLocationData } from "../data/locations";
 
-import person_icon from "../../assets/images/participant.png";
+
 
 const ShimmerPlaceHolder = createShimmerPlaceHolder(LinearGradient);
 
@@ -61,36 +62,7 @@ export default function PinDetailScreen({ route }) {
         </View>
         <View style={styles.questListContainer}>
           {quests.map((quest) => (
-            <Pressable
-              onPress={() => {
-                TabNavigation.navigate("QuestDetail");
-              }}
-              key={quest.id}
-              style={[
-                styles.questItem,
-                { opacity: quest.status == "live" ? 100 : 50 },
-              ]}
-            >
-              <Text style={styles.questFont}>{quest.name}</Text>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
-              >
-                <Text style={styles.questFont}>
-                  {quest.currentParticipant}/{quest.maxParticipant}
-                </Text>
-                <View style={styles.pic}>
-                  <Image source={person_icon} />
-                </View>
-                <View
-                  style={{
-                    width: 12,
-                    height: 12,
-                    backgroundColor: quest.status == "live" ? "green" : "red",
-                    borderRadius: 25,
-                  }}
-                ></View>
-              </View>
-            </Pressable>
+            <QuestListItem quest={quest}/>
           ))}
         </View>
       </View>
@@ -101,9 +73,6 @@ export default function PinDetailScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    // borderTopEndRadius: 30,
-    // borderTopLeftRadius: 30,
-    // padding: 30,
     flex: 1,
   },
   bannerContainer: {
@@ -140,28 +109,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
   },
-  questItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#F5F5F5",
-    padding: 10,
-    borderRadius: 5,
-    paddingLeft: 15,
-    paddingRight: 15,
-  },
-  pic: {
-    width: 20,
-    height: 20,
-    // backgroundColor: "red"
-    resizeMode: "contain",
-  },
   questListContainer: {
     marginTop: 6,
     gap: 6,
     overflow: "scroll",
     paddingLeft: 10,
-  },
-  questFont: {
-    fontSize: 16,
   },
 });
