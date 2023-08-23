@@ -63,7 +63,10 @@ export default function Map() {
         latitudeDelta: 0.0015, // The delta values control the zoom level
         longitudeDelta: 0.0015,
       };
-      mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
+
+      if (mapRef.current.onMapReady) {
+        mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
+      }
     }
   };
 
@@ -88,7 +91,7 @@ export default function Map() {
     const fetchMap = async () => {
       try {
         const data = await fetchLocations();
-        setLocations(data)
+        setLocations(data);
       } catch (error) {
         console.log("Error fetching locations", error);
       }
