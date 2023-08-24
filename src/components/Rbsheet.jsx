@@ -4,32 +4,50 @@ import RBSheet from "react-native-raw-bottom-sheet";
 
 import photo_icon from "../../assets/images/photo.png";
 import picture_icon from "../../assets/images/picture.png";
+
  
-export default class RB extends Component {
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.newMarker !== this.props.newMarker) {
-        console.log("prevProps", prevProps);
-        console.log(this.props);
-        this.RBSheet.open();
+onPress = () => {
+    if (!this.state.open) {
+      this.RBSheet.open();
+    } else {
+      this.RBSheet.close();
     }
+    this.setState({ open: !this.state.open });
+  };
+
+export default class RB extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
+    };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.newMarker !== this.props.newMarker) {
+        this.RBSheet.open();
+    }
 
-//  componentDidMount() {
-//     this.RBSheet.open();
-//  }
+  }
+  
+
   render() {
+    // const [open, setOpen] = useState(false);
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <RBSheet
           ref={ref => {
             this.RBSheet = ref;
           }}
+          closeOnDragDown={true}
           height={400}
           openDuration={250}
           customStyles={{
             container: {
-              padding: 30,
+             paddingBottom: 20,
+             paddingLeft: 20,
+              paddingRight: 20,
             }
           }}
         >
@@ -53,10 +71,12 @@ export default class RB extends Component {
                 <Image source={picture_icon}/>
                 </TouchableOpacity>
             </View>
-                <TouchableOpacity style={styles.btn} onPress={() => alert("สร้างสถานที่")}>
+                <TouchableOpacity style={styles.btn} onPress={() => {this.RBSheet.close() }}>
                     <Text style={{
                         color: "white",
                 }}>
+
+                   
                     สร้างสถานที่
                     </Text>
                 </TouchableOpacity>
@@ -71,9 +91,10 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "center",
     fontSize: 30,
+    marginTop: 20,
   },
     input:{
-        marginTop: 40,
+        marginTop: 30,
         gap: 10,    
         marginBottom: 20,
     },
