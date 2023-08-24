@@ -2,10 +2,12 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import userprofiletest from "../../assets/images/UserProfileTest.jpg";
 
+import SearchBar from "../components/SearchBar"
 
 const MinimalCard = ({ event, time, location, userlevel, username, image }) => {
   return (
     <View style={styles.CardContainer}>
+      <SearchBar />
       <View>
         <Text style={styles.event_name}>event</Text>
         {/* <Text style={styles.event_name}>{event}</Text> */}
@@ -35,11 +37,9 @@ const MinimalCard = ({ event, time, location, userlevel, username, image }) => {
 const styles = StyleSheet.create({
   Card: { height: "50%" },
   CardContainer: {
-    width: "95%",
-    height: "40%", //แก้
-    backgroundColor: "orange",
-    borderWidth: 2,
-    borderColor: "blue",
+    width: "100%",
+    flex: 1,
+    backgroundColor: "white",
   },
   event_name: {
     color: "white",

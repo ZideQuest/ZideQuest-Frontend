@@ -21,8 +21,14 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const { newMarker, setNewMarker, creatingNewMarker, setCreatingNewMarker } =
-    useAppContext();
+  const {
+    newMarker,
+    setNewMarker,
+    creatingNewMarker,
+    setCreatingNewMarker,
+    bottomModalRef,
+    setBottomModalRe,
+  } = useAppContext();
   const [refresh, setRefresh] = useState(false);
   const [locations, setLocations] = useState([]);
 
@@ -35,7 +41,10 @@ export default function Map() {
   });
 
   const mapPressHandler = (coordinate) => {
+
+    
     if (TabNavigation.currentScreen() != "CreatePin") {
+      bottomModalRef.current?.collapse()
       return;
     }
 
@@ -50,6 +59,9 @@ export default function Map() {
 
   const markerPressHandler = (pinId, data) => {
     data.stopPropagation();
+
+    bottomModalRef.current?.snapToIndex(1)
+
     TabNavigation.navigate("PinDetail", { pinId });
     const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
@@ -64,9 +76,9 @@ export default function Map() {
         longitudeDelta: 0.0015,
       };
 
-      if (mapRef.current.onMapReady) {
-        mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
-      }
+      // if (mapRef.current.onMapReady) {
+      // }
+      mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
     }
   };
 

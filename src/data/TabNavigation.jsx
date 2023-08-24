@@ -8,6 +8,12 @@ export function navigate(name, params) {
   }
 }
 
+export function goBack() {
+  if (navigationRef.isReady()) {
+    navigationRef.goBack();
+  }
+}
+
 export function push(...args) {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(StackActions.push(...args));
