@@ -27,8 +27,8 @@ export default function HomeScreen() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.mapContainer}>
-        <Map />
         <TestProfile />
+        <Map />
         <Bottomsheet style={styles.subMenu}>
           <NavigationContainer ref={navigationRef} independent={true}>
             <Stack.Navigator
@@ -56,14 +56,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   subMenu: {
-    position: "absolute",
-    bottom: 0,
-    zIndex: 2,
-    height: "30%",
-    width: "100%",
-    maxWidth: 700,
-    overflow: "hidden",
-    borderTopEndRadius: 30,
-    borderTopLeftRadius: 30,
+    // width: "100%",
+    // maxWidth: 700,
   }
 });

@@ -16,9 +16,11 @@ export const AppProvider = ({ children }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [bottomModalRef, setBottomModalRef] = useState(null);
+
   const login = async (username, password) => {
     setIsLoading(true);
-    
+
     const response = await sendLoginData(username, password);
 
     if (!response.user) {
@@ -35,7 +37,7 @@ export const AppProvider = ({ children }) => {
     await SecureStore.setItemAsync("userDetail", JSON.stringify(user));
     setUserDetails(user);
     setIsLoading(false);
-    return user
+    return user;
   };
 
   const logout = async () => {
@@ -43,7 +45,7 @@ export const AppProvider = ({ children }) => {
     setCreatingNewMarker(false);
     setNewMarker(null);
     setIsProfileOpen(false);
-    
+
     await SecureStore.deleteItemAsync("userDetail");
     setUserDetails({});
     // setIsLoggedIn(false);
@@ -56,11 +58,11 @@ export const AppProvider = ({ children }) => {
       try {
         const data = await SecureStore.getItemAsync("userDetail");
         const user = JSON.parse(data);
-        console.log("ayo : ", user?.user.email)
+        console.log("ayo : ", user?.user.email);
         if (user) {
-          setUserDetails(user)
+          setUserDetails(user);
         } else {
-          setUserDetails({})
+          setUserDetails({});
         }
       } catch (error) {
         console.log("Error fetching token:", error);
@@ -85,6 +87,8 @@ export const AppProvider = ({ children }) => {
         logout,
         isLoading,
         userDetail,
+        bottomModalRef,
+        setBottomModalRef,
       }}
     >
       {children}
