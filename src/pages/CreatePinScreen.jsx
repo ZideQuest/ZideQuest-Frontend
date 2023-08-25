@@ -3,27 +3,46 @@ import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
+import BigButton from "../components/button/BigButton";
 
 export default function CreatePinScreen() {
 
+  const {setNewMarker} = useAppContext();
+
+  const confirmHandler = () => {
+    TabNavigation.navigate("PinCreateInfo")
+  }
+
+  const cancelHandler = () => {
+    setNewMarker(null)
+    TabNavigation.navigate("Recommend")
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Create Pin</Text>
-      <TextInput />
+      <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
+      <View style={styles.buttonContainer}>
+        <BigButton text="ยืนยัน" bg="#E86A33" onPress={confirmHandler}/>
+        <BigButton text="ยกเลิก" bg="rgba(61, 61, 55, 0.28)"  onPress={cancelHandler}/>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
     backgroundColor: "white",
-    borderTopEndRadius: 30,
-    borderTopLeftRadius: 30,
-    padding: 30,
+    paddingHorizontal: 20,
     flex: 1,
+    gap: 8,
   },
-  textColor: {
-    color: "black",
+  headerText: {
+    fontWeight: 700,
+    fontSize: 20,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    gap: 20,
+    backgroundColor: "white",
   },
 });

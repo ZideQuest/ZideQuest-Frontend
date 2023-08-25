@@ -14,7 +14,7 @@ export default function BackButton() {
   const { bottomModalRef } = useAppContext();
 
   const closeHandler = () => {
-    TabNavigation.goBack();
+    TabNavigation.navigate("Recommend");
     bottomModalRef.current?.snapToIndex(1);
   };
 

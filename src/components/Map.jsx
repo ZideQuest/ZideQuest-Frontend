@@ -21,11 +21,7 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const {
-    newMarker,
-    setNewMarker,
-    bottomModalRef,
-  } = useAppContext();
+  const { newMarker, setNewMarker, bottomModalRef } = useAppContext();
   const [refresh, setRefresh] = useState(false);
   const [locations, setLocations] = useState([]);
 
@@ -48,6 +44,8 @@ export default function Map() {
     await setNewMarker({
       latitude: lat,
       longitude: lng,
+      name,
+      placeId,
     });
     animateToRegion(lat, lng);
   };
@@ -137,5 +135,5 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "relative",
     width: "100%",
-  }
+  },
 });
