@@ -9,12 +9,8 @@ export const useAppContext = () => useContext(AppContext);
 export const AppProvider = ({ children }) => {
   const [newMarker, setNewMarker] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userDetail, setUserDetails] = useState({});
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [bottomModalRef, setBottomModalRef] = useState(null);
 
   const login = async (username, password) => {
@@ -41,13 +37,11 @@ export const AppProvider = ({ children }) => {
 
   const logout = async () => {
     setIsLoading(true);
-    setCreatingNewMarker(false);
     setNewMarker(null);
     setIsProfileOpen(false);
 
     await SecureStore.deleteItemAsync("userDetail");
     setUserDetails({});
-    // setIsLoggedIn(false);
 
     setIsLoading(false);
   };
@@ -57,7 +51,7 @@ export const AppProvider = ({ children }) => {
       try {
         const data = await SecureStore.getItemAsync("userDetail");
         const user = JSON.parse(data);
-        console.log("ayo : ", user?.user.email);
+        console.log(user?.user ? `You are logged in as ${user?.user._id}` : "You are not logged in");
         if (user) {
           setUserDetails(user);
         } else {
