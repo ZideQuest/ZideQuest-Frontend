@@ -14,7 +14,7 @@ import HomeScreen from "./src/pages/HomeScreen";
 import LoginScreen from "./src/pages/LoginScreen";
 import NavBar from "./src/components/NavBar";
 
-import Activity from"./src/pages/ActivityDetail";
+import Activity from "./src/pages/ActivityDetail";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
 
@@ -37,17 +37,19 @@ export default function App() {
   const AppContent = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     return (
-      <View style={{ paddingTop: insets.top, height: "100%" }}>
-        {/* <StatusBar
+      <View>
+        <StatusBar
           animated={true}
           backgroundColor="#61dafb"
           barStyle={statusBarStyle}
           showHideTransition={statusBarTransition}
           hidden={hidden}
           // style="auto"
-        /> */}
-        <NavBar navigation={navigation} />
-        <HomeScreen />
+        />
+        <View style={{ paddingTop: insets.top, height: "100%" }}>
+          <NavBar navigation={navigation} />
+          <HomeScreen />
+        </View>
       </View>
     );
   };

@@ -1,6 +1,7 @@
 import react, { useState, useEffect } from "react";
 import { createShimmerPlaceHolder } from "expo-shimmer-placeholder";
 import { LinearGradient } from "expo-linear-gradient";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 import {
   View,
@@ -12,8 +13,8 @@ import {
 } from "react-native";
 
 import QuestListItem from "../components/QuestListItem";
-import BackButton from "../components/button/BackButton.jsx"
-import * as TabNavigation from "../data/TabNavigation.jsx"
+import BackButton from "../components/button/BackButton.jsx";
+import * as TabNavigation from "../data/TabNavigation.jsx";
 
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
@@ -44,7 +45,7 @@ export default function PinDetailScreen({ route }) {
   };
 
   return (
-    <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
+    <BottomSheetScrollView stickyHeaderIndices={[0]} style={{backgroundColor: "white"}}>
       <View style={styles.headerContainer}>
         <View
           style={{
@@ -61,6 +62,7 @@ export default function PinDetailScreen({ route }) {
           request.
         </Text>
       </View>
+
       <ScrollView style={styles.imageScrollContainer} horizontal>
         <View style={styles.bannerContainer}>
           <Image
@@ -91,7 +93,7 @@ export default function PinDetailScreen({ route }) {
           ))}
         </View>
       </View>
-    </ScrollView>
+    </BottomSheetScrollView>
   );
 }
 

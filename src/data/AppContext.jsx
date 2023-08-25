@@ -7,7 +7,6 @@ const AppContext = createContext();
 export const useAppContext = () => useContext(AppContext);
 
 export const AppProvider = ({ children }) => {
-  const [creatingNewMarker, setCreatingNewMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -75,12 +74,8 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        creatingNewMarker,
-        setCreatingNewMarker,
         newMarker,
         setNewMarker,
-        // isLoggedIn,
-        // setIsLoggedIn,
         isProfileOpen,
         setIsProfileOpen,
         login,

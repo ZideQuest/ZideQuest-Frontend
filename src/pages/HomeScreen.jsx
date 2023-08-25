@@ -34,7 +34,7 @@ export default function HomeScreen() {
             <Stack.Navigator
               screenOptions={({ route, navigation }) => ({
                 headerShown: false,
-                gestureEnabled: true,
+                gestureEnabled: false,
                 ...TransitionPresets.ModalPresentationIOS,
               })}
             >

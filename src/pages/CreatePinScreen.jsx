@@ -5,11 +5,6 @@ import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
 
 export default function CreatePinScreen() {
-  const { setCreatingNewMarker } = useAppContext();
-
-  useEffect(() => {
-    setCreatingNewMarker(true);
-  }, []);
 
   return (
     <View style={styles.container}>
