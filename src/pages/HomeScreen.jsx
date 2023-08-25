@@ -12,6 +12,7 @@ import RecommendScreen from "./RecommendScreen";
 import CreatePinScreen from "./CreatePinScreen";
 import PinDetailScreen from "./PinDetailScreen";
 import TestProfile from "./TestProfile";
+import PinCreateInfo from "./PinCreateInfo";
 
 import { TransitionPresets } from "@react-navigation/stack";
 
@@ -27,14 +28,14 @@ export default function HomeScreen() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.mapContainer}>
-        <Map />
         <TestProfile />
+        <Map />
         <Bottomsheet style={styles.subMenu}>
           <NavigationContainer ref={navigationRef} independent={true}>
             <Stack.Navigator
               screenOptions={({ route, navigation }) => ({
                 headerShown: false,
-                gestureEnabled: true,
+                gestureEnabled: false,
                 ...TransitionPresets.ModalPresentationIOS,
               })}
             >
@@ -43,6 +44,7 @@ export default function HomeScreen() {
               <Stack.Screen name="PinDetail" component={PinDetailScreen} />
               <Stack.Screen name="QuestDetail" component={ActivityDetail} />
               <Stack.Screen name="CreateQuest" component={RecommendScreen} />
+              <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
             </Stack.Navigator>
           </NavigationContainer>
         </Bottomsheet>
@@ -56,14 +58,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   subMenu: {
-    position: "absolute",
-    bottom: 0,
-    zIndex: 2,
-    height: "30%",
-    width: "100%",
-    maxWidth: 700,
-    overflow: "hidden",
-    borderTopEndRadius: 30,
-    borderTopLeftRadius: 30,
+    // width: "100%",
+    // maxWidth: 700,
   }
 });

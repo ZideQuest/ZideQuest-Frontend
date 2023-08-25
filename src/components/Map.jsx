@@ -21,8 +21,7 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const { newMarker, setNewMarker, creatingNewMarker, setCreatingNewMarker } =
-    useAppContext();
+  const { newMarker, setNewMarker, bottomModalRef } = useAppContext();
   const [refresh, setRefresh] = useState(false);
   const [locations, setLocations] = useState([]);
 
@@ -34,22 +33,33 @@ export default function Map() {
     longitudeDelta: 0.01,
   });
 
-  const mapPressHandler = (coordinate) => {
+  const mapPressHandler = async (coordinate) => {
     if (TabNavigation.currentScreen() != "CreatePin") {
+      bottomModalRef.current?.collapse();
       return;
     }
 
     const { lat, lng, name, placeId } = getDetailFromData(coordinate);
 
-    animateToRegion(lat, lng);
-    setNewMarker({
+    await setNewMarker({
       latitude: lat,
       longitude: lng,
+      name,
+      placeId,
     });
+    animateToRegion(lat, lng);
   };
 
   const markerPressHandler = (pinId, data) => {
     data.stopPropagation();
+
+    bottomModalRef.current?.snapToIndex(1);
+
+    setNewMarker({
+      latitude: lat,
+      longitude: lng,
+    });
+
     TabNavigation.navigate("PinDetail", { pinId });
     const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
@@ -60,23 +70,18 @@ export default function Map() {
       const region = {
         latitude: lat,
         longitude: lng,
-        latitudeDelta: 0.0015, // The delta values control the zoom level
-        longitudeDelta: 0.0015,
+        latitudeDelta: 0.0025, // The delta values control the zoom level
+        longitudeDelta: 0.0025,
       };
 
-      if (mapRef.current.onMapReady) {
-        mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
-      }
+      // if (mapRef.current.onMapReady) {
+      // }
+      mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
     }
-  };
-
-  const toggleRefresh = () => {
-    setRefresh((prev) => !prev);
   };
 
   const cancelCreatePin = () => {
     setNewMarker(null);
-    setCreatingNewMarker(false);
     TabNavigation.navigate("Recommend");
   };
 
@@ -101,12 +106,6 @@ export default function Map() {
 
   return (
     <View style={styles.map}>
-      {creatingNewMarker && (
-        <View style={styles.mapCondition}>
-          <Text style={styles.mapConditionText}>เลือกสถานที่เพื่อปักหมุด</Text>
-          <Button title="ปิด" onPress={() => cancelCreatePin()} />
-        </View>
-      )}
       <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
@@ -136,19 +135,5 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "relative",
     width: "100%",
-  },
-  mapCondition: {
-    position: "absolute",
-    width: "100%",
-    zIndex: 3,
-    top: 10,
-    justifyContent: "center",
-    flexDirection: "row",
-  },
-  mapConditionText: {
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    padding: 10,
-    borderRadius: 10,
-    overflow: "hidden",
   },
 });

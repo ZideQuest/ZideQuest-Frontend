@@ -20,7 +20,7 @@ const ANIMATION_TIME = 200;
 
 export default function NavBar({navigation}) {
   const [hamburgerOpen, setHamburgerOpen] = useState(null);
-  const { setCreatingNewMarker, isProfileOpen, setIsProfileOpen, userDetail } = useAppContext();
+  const { isProfileOpen, setIsProfileOpen, userDetail } = useAppContext();
 
   const hamburgerToggle = () => {
     setHamburgerOpen((prev) => !prev);
@@ -28,7 +28,6 @@ export default function NavBar({navigation}) {
 
   const addButtonHandler = () => {
     TabNavigation.navigate("CreatePin");
-    setCreatingNewMarker(true);
     hamburgerToggle();
   };
 
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 3,
     },
-    shadowOpacity: 0.27,
+    // shadowOpacity: 0.27,
     shadowRadius: 4.65,
 
     elevation: 6,

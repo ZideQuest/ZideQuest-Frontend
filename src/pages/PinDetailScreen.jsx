@@ -1,15 +1,23 @@
 import react, { useState, useEffect } from "react";
 import { createShimmerPlaceHolder } from "expo-shimmer-placeholder";
 import { LinearGradient } from "expo-linear-gradient";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  ScrollView,
+} from "react-native";
 
-import QuestListItem from "../components/QuestListItem"
+import QuestListItem from "../components/QuestListItem";
+import BackButton from "../components/button/BackButton.jsx";
+import * as TabNavigation from "../data/TabNavigation.jsx";
+
 import { useAppContext } from "../data/AppContext";
-import * as TabNavigation from "../data/TabNavigation";
 import { getLocationData } from "../data/locations";
-
-
 
 const ShimmerPlaceHolder = createShimmerPlaceHolder(LinearGradient);
 
@@ -37,20 +45,39 @@ export default function PinDetailScreen({ route }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.bannerContainer}>
-        <ShimmerPlaceHolder
-          style={{ position: "absolute", width: "100%", height: "100%", zIndex:10}}
-          visible={!loading}
-        />
-        <Image
-          style={styles.bannerImage}
-          source={{ uri: locationData.locationPicturePath }}
-          onLoad={handleImageLoading}
-        />
+    <BottomSheetScrollView stickyHeaderIndices={[0]} style={{backgroundColor: "white"}}>
+      <View style={styles.headerContainer}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.header}>{locationData.locationName}</Text>
+          <BackButton />
+        </View>
+        <Text style={styles.detail}>
+          Choose two branches to see what’s changed or to start a new pull
+          request.
+        </Text>
       </View>
+
+      <ScrollView style={styles.imageScrollContainer} horizontal>
+        <View style={styles.bannerContainer}>
+          <Image
+            style={styles.bannerImage}
+            source={{ uri: locationData.locationPicturePath }}
+          />
+        </View>
+        <View style={styles.bannerContainer}>
+          <Image
+            style={styles.bannerImage}
+            source={{ uri: locationData.locationPicturePath }}
+          />
+        </View>
+      </ScrollView>
       <View style={styles.quests}>
-        <Text style={styles.header}>{locationData.locationName}</Text>
         <View style={styles.subHeader}>
           <Text style={styles.subHeaderText}>Quests</Text>
           <Pressable
@@ -62,35 +89,53 @@ export default function PinDetailScreen({ route }) {
         </View>
         <View style={styles.questListContainer}>
           {quests.map((quest) => (
-            <QuestListItem quest={quest}/>
+            <QuestListItem quest={quest} key={quest._id} />
           ))}
         </View>
       </View>
-    </View>
+    </BottomSheetScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    flex: 1,
+    // flex: 1,
+    overflow: "scroll",
+  },
+  headerContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+    // marginBottom: 15,
+    backgroundColor: "white",
+  },
+  imageScrollContainer: {
+    height: 220,
+    flexDirection: "row",
+    // overflow: "scroll",
   },
   bannerContainer: {
-    height: 220,
-    width: "100%",
-    position: "relative",
+    height: "100%",
+    width: 300,
+    marginRight: 4,
   },
   bannerImage: {
     height: "100%",
     width: "100%",
+    // resizeMode: "stretch"
   },
   quests: {
     paddingHorizontal: 23,
     paddingTop: 15,
+    gap: 5,
+    paddingBottom: 40,
   },
   header: {
-    fontSize: 23,
-    fontWeight: 600,
+    fontSize: 25,
+    fontWeight: 700,
+  },
+  detail: {
+    fontSize: 15,
   },
   subHeader: {
     flexDirection: "row",
