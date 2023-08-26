@@ -19,7 +19,7 @@ export default function QuestListItem({ quest }) {
   return (
     <Pressable
       onPress={() => {
-        TabNavigation.navigate("QuestDetail");
+        TabNavigation.navigate("QuestDetail", { questId: quest._id });
       }}
       key={quest.id}
       style={[styles.questItem, { opacity: quest.status == "live" ? 100 : 50 }]}

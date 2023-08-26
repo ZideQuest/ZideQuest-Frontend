@@ -1,41 +1,63 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
+import React ,{ useState}from "react";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
-BGcolor = 'white';
-textcolor = 'white';
+import * as TabNavigation from "../data/TabNavigation";
+import person_icon from "../../assets/images/participant.png";
 
-export default function ActivityDetail() {
-    return (
-        <View style={styles.container}>
-            <View style={styles.ActNameCon}>
-              <Text style={{ color: textcolor, fontSize: 20, fontWeight: 'bold', }}>ชื่อกิจกรรม</Text>
-            </View>
-            <View style={styles.countCon}>
-              <Text style={{ color: textcolor, fontSize: 20, fontWeight: 'bold' }}>จำนวนคนตอนนี้/max</Text>
-            </View>
+function statusIcon (currentP, maxP) {
+  const ratio = currentP/maxP;
+  if (ratio >= 1) {
+    return "red"
+  }
+  if (ratio > 0.8) {
+    return "yellow"
+  }
+  return "green"
+}
+
+export default function QuestListItem({quest}) {
+  return (
+    <View style={[styles.questItem]}>
+      <Text style={styles.questFont}>{quest.questName}</Text>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <Text style={styles.questFont}>
+          {quest.countParticipant}/{quest.maxParticipant}
+        </Text>
+        <View style={styles.pic}>
+          <Image source={person_icon} />
         </View>
-    );
-};
+        <View
+          style={{
+            width: 12,
+            height: 12,
+            backgroundColor: statusIcon(quest.countParticipant, quest.maxParticipant),
+            borderRadius: 25,
+          }}
+        ></View>
+      </View>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: BGcolor,
-        width: "100%",
-        padding: 0,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        rowGap: 10,
-        columnGap: 10,
-      },
-      ActNameCon: {
-        backgroundColor: BGcolor,
-        width: "70%",
-        justifyContent: 'center',
-      },
-      countCon: {
-        backgroundColor: BGcolor,
-        width: "27%",
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-})
+  questItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#FFFFFF",
+    padding: 10,
+    borderRadius: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+    width: "100%",
+  },
+  pic: {
+    width: 20,
+    height: 20,
+    // backgroundColor: "red"
+    resizeMode: "contain",
+  },
+  questFont: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
