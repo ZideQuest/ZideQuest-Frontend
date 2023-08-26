@@ -9,10 +9,12 @@ import Map from "../components/Map";
 
 import { useState } from "react";
 
+
 export default function HomeScreen() {
   const { creatingNewMarker, setCreatingNewMarker, setNewMarker, cancelPinCreating } =
     useAppContext();
 
+  
 
   return (
     <NavigationContainer style={{ position: "relative" }}>

@@ -7,6 +7,9 @@ import { useState, useRef, useEffect } from "react";
 import { useAppContext } from "../data/AppContext";
 import { mapOptions, locations } from "../data/dev-data";
 import RB from "./Rbsheet";
+import {API} from "../api";
+import New_Quest from "../components/createquest";
+
 
 function getDetailFromData(coordinate) {
   const lat = coordinate.nativeEvent.coordinate.latitude;
@@ -14,14 +17,17 @@ function getDetailFromData(coordinate) {
   const name = coordinate.nativeEvent.name;
   const placeId = coordinate.nativeEvent.placeId;
 
+
   return { lat, lng, name, placeId };
 }
 
 export default function Map() {
   const {
     creatingNewMarker,
+    currentMarkerSelecting,
     setCreatingNewMarker,
     newMarker,
+    currentMarkerDetail,
     setNewMarker,
     cancelPinCreating,
     currentPage,
@@ -29,6 +35,22 @@ export default function Map() {
     selectExistedPin,
     backToRecommend,
   } = useAppContext();
+
+  const [location, setLocation] = useState([]);
+
+ useEffect(() => {
+    if (!newMarker) {
+      callAPI()
+    }
+  }, [newMarker]);
+
+ async function callAPI(){
+    const response = await API("GET","/location/","")
+    if(response.status === 200){
+      setLocation(response.data)
+      console.log(response.data)
+    }
+  }
 
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
@@ -59,8 +81,8 @@ export default function Map() {
     setMapLoaded(true);
   };
 
-  const markerPressHandler = (pinId, data) => {
-    selectExistedPin(pinId);
+  const markerPressHandler = (pinId, data,pin) => {
+    selectExistedPin(pinId,pin);
     const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
   };
@@ -96,11 +118,11 @@ export default function Map() {
         onPress={(data) => mapPressHandler(data)}
         onPoiClick={(data) => mapPressHandler(data)}
       >
-        {locations.map((pin) => (
+        {location.map((pin) => (
           <Marker
             coordinate={pin}
-            key={pin.id}
-            onPress={(data) => markerPressHandler(pin.id, data)}
+            key={pin._id}
+            onPress={(data) => markerPressHandler(pin._id, data,pin)}
           >
             <Image
               source={require("../../assets/images/location.png")}
@@ -115,6 +137,9 @@ export default function Map() {
       </MapView>
 
       <RB newMarker={newMarker}/>
+      <New_Quest 
+       currentMarkerDetail={currentMarkerDetail}
+      currentMarkerSelecting={currentMarkerSelecting}/>
     </View>
   );
 }

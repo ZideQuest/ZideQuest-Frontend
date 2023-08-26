@@ -10,6 +10,7 @@ export const AppProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState("recommend");
   const [currentMarkerSelecting, setCurrentMarkerSelecting] = useState(null);
+  const [currentMarkerDetail, setCurrentMarkerDetail] = useState(null);
 
   const cancelPinCreating = () => {
     setNewMarker(null);
@@ -17,10 +18,11 @@ export const AppProvider = ({ children }) => {
     setCurrentPage("recommend");
   };
 
-  const selectExistedPin = (pinId) => {
+  const selectExistedPin = (pinId,pin) => {
     cancelPinCreating();
     setCurrentPage("markerDetail")
     setCurrentMarkerSelecting(pinId);
+    setCurrentMarkerDetail(pin)
   }
 
   const backToRecommend = () => {
@@ -48,6 +50,7 @@ export const AppProvider = ({ children }) => {
         setCurrentPage,
         selectExistedPin,
         backToRecommend,
+        currentMarkerDetail,
         currentMarkerSelecting,
       }}
     >

@@ -7,6 +7,7 @@ import { useAppContext } from "../data/AppContext";
 import RecommendScreen from "./RecommendScreen";
 import CreatePinScreen from "./CreatePinScreen";
 import PinDetailScreen from "./PinDetailScreen";
+// import New_Quest from "../components/createquest";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,9 +19,9 @@ const StackNavigator = () => {
     //   return <Stack.Screen name="CreatePin" component={CreatePinScreen} />;
     // }
 
-    if (currentPage === "markerDetail") {
-      return <Stack.Screen name="PinDetail" component={PinDetailScreen} />;
-    }
+    // if (currentPage === "markerDetail") {
+    //   return <Stack.Screen name="PinDetail" component={New_Quest} />;
+    // }
 
     return <Stack.Screen name="Recommend" component={RecommendScreen} />;
   };
