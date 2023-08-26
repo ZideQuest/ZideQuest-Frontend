@@ -2,35 +2,39 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import userprofiletest from "../../assets/images/UserProfileTest.jpg";
 
-import SearchBar from "../components/SearchBar"
+import SearchBar from "../components/SearchBar";
+
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 const MinimalCard = ({ event, time, location, userlevel, username, image }) => {
   return (
-    <View style={styles.CardContainer}>
-      <SearchBar />
-      <View>
-        <Text style={styles.event_name}>event</Text>
-        {/* <Text style={styles.event_name}>{event}</Text> */}
-        <View style={styles.row}>
-          <View style={styles.row_inner}>
-            <Image style={styles.userprofile} source={userprofiletest} />
-            <View style={styles.userdescription}>
-              <Text>User Name</Text>
-              {/* <Text>{username}</Text> */}
-              <Text>User Level</Text>
-              {/* <Text>{userlevel}</Text> */}
+    <Bottomsheet>
+      <View style={styles.CardContainer}>
+        <SearchBar />
+        <View>
+          <Text style={styles.event_name}>event</Text>
+          {/* <Text style={styles.event_name}>{event}</Text> */}
+          <View style={styles.row}>
+            <View style={styles.row_inner}>
+              <Image style={styles.userprofile} source={userprofiletest} />
+              <View style={styles.userdescription}>
+                <Text>User Name</Text>
+                {/* <Text>{username}</Text> */}
+                <Text>User Level</Text>
+                {/* <Text>{userlevel}</Text> */}
+              </View>
+            </View>
+            <View style={styles.time_and_location}>
+              <Text style={styles.time}>Time</Text>
+              {/* <Text style={styles.time}>{time}</Text> */}
+              <Text style={styles.location}>Location</Text>
+              {/* <Text style={styles.location}>{location}</Text> */}
             </View>
           </View>
-          <View style={styles.time_and_location}>
-            <Text style={styles.time}>Time</Text>
-            {/* <Text style={styles.time}>{time}</Text> */}
-            <Text style={styles.location}>Location</Text>
-            {/* <Text style={styles.location}>{location}</Text> */}
-          </View>
         </View>
+        {/* <Image style={styles.event_image} source={userprofiletest} /> */}
       </View>
-      {/* <Image style={styles.event_image} source={userprofiletest} /> */}
-    </View>
+    </Bottomsheet>
   );
 };
 

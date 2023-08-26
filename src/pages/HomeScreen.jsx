@@ -5,6 +5,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { navigationRef } from "../data/TabNavigation";
 
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+
 // import { useAppContext } from "../data/AppContext";
 
 import Map from "../components/Map";
@@ -22,15 +27,23 @@ import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ActivityDetail from "./ActivityDetail";
 
+const modalGen = (component) => {
+  return (
+    <Bottomsheet>
+      {component}
+    </Bottomsheet>
+  )
+}
+
 export default function HomeScreen() {
-
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.mapContainer}>
-        <TestProfile />
-        <Map />
-        <Bottomsheet style={styles.subMenu}>
+      <BottomSheetModalProvider>
+        <View style={styles.mapContainer}>
+          <TestProfile />
+          <Map />
+        </View>
+        <View style={styles.subMenu}>
           <NavigationContainer ref={navigationRef} independent={true}>
             <Stack.Navigator
               screenOptions={({ route, navigation }) => ({
@@ -40,15 +53,15 @@ export default function HomeScreen() {
               })}
             >
               <Stack.Screen name="Recommend" component={RecommendScreen} />
-              <Stack.Screen name="CreatePin" component={CreatePinScreen} options={{gestureEnabled: false}}/>
+              <Stack.Screen name="CreatePin" component={CreatePinScreen} />
               <Stack.Screen name="PinDetail" component={PinDetailScreen} />
               <Stack.Screen name="QuestDetail" component={ActivityDetail} />
               <Stack.Screen name="CreateQuest" component={RecommendScreen} />
               <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
             </Stack.Navigator>
           </NavigationContainer>
-        </Bottomsheet>
-      </View>
+        </View>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 }
@@ -60,5 +73,5 @@ const styles = StyleSheet.create({
   subMenu: {
     // width: "100%",
     // maxWidth: 700,
-  }
+  },
 });

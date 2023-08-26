@@ -19,21 +19,19 @@ const Bottomsheet = ({ children }) => {
   }, []);
 
   return (
-    <BottomSheetModalProvider>
-      <View style={styles.bottomSheetContainer}>
-        <BottomSheetModal
-          handleIndicatorStyle={styles.headerIndicator}
-          ref={bottomSheetModalRef}
-          index={0}
-          snapPoints={snapPoints}
-          enablePanDownToClose={false}
-          // backgroundStyle={styles.backgroundStyle}
-          style={styles.pullBar}
-        >
-          <View style={styles.contentContainer}>{children}</View>
-        </BottomSheetModal>
-      </View>
-    </BottomSheetModalProvider>
+    <View style={styles.bottomSheetContainer}>
+      <BottomSheetModal
+        handleIndicatorStyle={styles.headerIndicator}
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        enablePanDownToClose={false}
+        // backgroundStyle={styles.backgroundStyle}
+        style={styles.pullBar}
+      >
+        <View style={styles.contentContainer}>{children}</View>
+      </BottomSheetModal>
+    </View>
   );
 };
 

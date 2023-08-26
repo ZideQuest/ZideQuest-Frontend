@@ -2,6 +2,7 @@ import react, { useState, useEffect } from "react";
 import { createShimmerPlaceHolder } from "expo-shimmer-placeholder";
 import { LinearGradient } from "expo-linear-gradient";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 import {
   View,
@@ -45,55 +46,60 @@ export default function PinDetailScreen({ route }) {
   };
 
   return (
-    <BottomSheetScrollView stickyHeaderIndices={[0]} style={{backgroundColor: "white"}}>
-      <View style={styles.headerContainer}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Text style={styles.header}>{locationData.locationName}</Text>
-          <BackButton />
-        </View>
-        <Text style={styles.detail}>
-          Choose two branches to see what’s changed or to start a new pull
-          request.
-        </Text>
-      </View>
-
-      <ScrollView style={styles.imageScrollContainer} horizontal>
-        <View style={styles.bannerContainer}>
-          <Image
-            style={styles.bannerImage}
-            source={{ uri: locationData.locationPicturePath }}
-          />
-        </View>
-        <View style={styles.bannerContainer}>
-          <Image
-            style={styles.bannerImage}
-            source={{ uri: locationData.locationPicturePath }}
-          />
-        </View>
-      </ScrollView>
-      <View style={styles.quests}>
-        <View style={styles.subHeader}>
-          <Text style={styles.subHeaderText}>Quests</Text>
-          <Pressable
-            onPress={() => TabNavigation.navigate("CreateQuest")}
-            style={{ display: userDetail.isAdmin ? "flex" : "none" }}
+    <Bottomsheet>
+      <BottomSheetScrollView
+        stickyHeaderIndices={[0]}
+        style={{ backgroundColor: "white" }}
+      >
+        <View style={styles.headerContainer}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
-          </Pressable>
+            <Text style={styles.header}>{locationData.locationName}</Text>
+            <BackButton />
+          </View>
+          <Text style={styles.detail}>
+            Choose two branches to see what’s changed or to start a new pull
+            request.
+          </Text>
         </View>
-        <View style={styles.questListContainer}>
-          {quests.map((quest) => (
-            <QuestListItem quest={quest} key={quest._id} />
-          ))}
+
+        <ScrollView style={styles.imageScrollContainer} horizontal>
+          <View style={styles.bannerContainer}>
+            <Image
+              style={styles.bannerImage}
+              source={{ uri: locationData.locationPicturePath }}
+            />
+          </View>
+          <View style={styles.bannerContainer}>
+            <Image
+              style={styles.bannerImage}
+              source={{ uri: locationData.locationPicturePath }}
+            />
+          </View>
+        </ScrollView>
+        <View style={styles.quests}>
+          <View style={styles.subHeader}>
+            <Text style={styles.subHeaderText}>Quests</Text>
+            <Pressable
+              onPress={() => TabNavigation.navigate("CreateQuest")}
+              style={{ display: userDetail.isAdmin ? "flex" : "none" }}
+            >
+              <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
+            </Pressable>
+          </View>
+          <View style={styles.questListContainer}>
+            {quests.map((quest) => (
+              <QuestListItem quest={quest} key={quest._id} />
+            ))}
+          </View>
         </View>
-      </View>
-    </BottomSheetScrollView>
+      </BottomSheetScrollView>
+    </Bottomsheet>
   );
 }
 
