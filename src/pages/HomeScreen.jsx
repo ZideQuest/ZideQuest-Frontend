@@ -28,41 +28,31 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ActivityDetail from "./ActivityDetail";
 
 const modalGen = (component) => {
-  return (
-    <Bottomsheet>
-      {component}
-    </Bottomsheet>
-  )
-}
+  return <Bottomsheet>{component}</Bottomsheet>;
+};
 
 export default function HomeScreen() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
-        <View style={styles.mapContainer}>
-          <TestProfile />
-          <Map />
-        </View>
-        <View style={styles.subMenu}>
-          <NavigationContainer ref={navigationRef} independent={true}>
-            <Stack.Navigator
-              screenOptions={({ route, navigation }) => ({
-                headerShown: false,
-                gestureEnabled: false,
-                ...TransitionPresets.ModalPresentationIOS,
-              })}
-            >
-              <Stack.Screen name="Recommend" component={RecommendScreen} />
-              <Stack.Screen name="CreatePin" component={CreatePinScreen} />
-              <Stack.Screen name="PinDetail" component={PinDetailScreen} />
-              <Stack.Screen name="QuestDetail" component={ActivityDetail} />
-              <Stack.Screen name="CreateQuest" component={RecommendScreen} />
-              <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+    <View style={styles.mapContainer}>
+      <TestProfile />
+      <Map />
+      <NavigationContainer ref={navigationRef} independent={true}>
+        <Stack.Navigator
+          screenOptions={({ route, navigation }) => ({
+            headerShown: false,
+            gestureEnabled: false,
+            ...TransitionPresets.ModalPresentationIOS,
+          })}
+        >
+          <Stack.Screen name="Recommend" component={RecommendScreen} />
+          <Stack.Screen name="CreatePin" component={CreatePinScreen} />
+          <Stack.Screen name="PinDetail" component={PinDetailScreen} />
+          <Stack.Screen name="QuestDetail" component={ActivityDetail} />
+          <Stack.Screen name="CreateQuest" component={RecommendScreen} />
+          <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
   );
 }
 

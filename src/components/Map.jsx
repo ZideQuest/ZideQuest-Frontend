@@ -53,14 +53,15 @@ export default function Map() {
   const markerPressHandler = (pinId, data) => {
     data.stopPropagation();
 
-    bottomModalRef.current?.snapToIndex(1);
-
     setNewMarker({
       latitude: lat,
       longitude: lng,
+      name,
+      placeId,
     });
 
     TabNavigation.navigate("PinDetail", { pinId });
+    // bottomModalRef.current?.snapToIndex(1);
     const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
   };
@@ -68,7 +69,7 @@ export default function Map() {
   const animateToRegion = (lat, lng) => {
     if (mapRef.current) {
       const region = {
-        latitude: lat,
+        latitude: lat - 0.001,
         longitude: lng,
         latitudeDelta: 0.0025, // The delta values control the zoom level
         longitudeDelta: 0.0025,

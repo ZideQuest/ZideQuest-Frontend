@@ -4,28 +4,34 @@ import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
 import BigButton from "../components/button/BigButton";
+import Buttomsheet from "../components/Bottomsheet/Bottomsheet"
 
 export default function CreatePinScreen() {
-
-  const {setNewMarker} = useAppContext();
+  const { setNewMarker } = useAppContext();
 
   const confirmHandler = () => {
-    TabNavigation.navigate("PinCreateInfo")
-  }
+    TabNavigation.navigate("PinCreateInfo");
+  };
 
   const cancelHandler = () => {
-    setNewMarker(null)
-    TabNavigation.navigate("Recommend")
-  }
+    setNewMarker(null);
+    TabNavigation.navigate("Recommend");
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
-      <View style={styles.buttonContainer}>
-        <BigButton text="ยืนยัน" bg="#E86A33" onPress={confirmHandler}/>
-        <BigButton text="ยกเลิก" bg="rgba(61, 61, 55, 0.28)"  onPress={cancelHandler}/>
+    <Buttomsheet snapPoints={["20%"]}>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
+        <View style={styles.buttonContainer}>
+          <BigButton text="ยืนยัน" bg="#E86A33" onPress={confirmHandler} />
+          <BigButton
+            text="ยกเลิก"
+            bg="rgba(61, 61, 55, 0.28)"
+            onPress={cancelHandler}
+          />
+        </View>
       </View>
-    </View>
+    </Buttomsheet>
   );
 }
 

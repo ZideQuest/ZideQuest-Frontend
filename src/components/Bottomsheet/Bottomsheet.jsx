@@ -8,9 +8,8 @@ import { useAppContext } from "../../data/AppContext";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const Bottomsheet = ({ children }) => {
+const Bottomsheet = ({ children, snapPoints, index=0}) => {
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = ["15", "45%", "90%"];
   const { bottomModalRef, setBottomModalRef } = useAppContext();
 
   useEffect(() => {
@@ -19,11 +18,10 @@ const Bottomsheet = ({ children }) => {
   }, []);
 
   return (
-    <View style={styles.bottomSheetContainer}>
       <BottomSheetModal
         handleIndicatorStyle={styles.headerIndicator}
         ref={bottomSheetModalRef}
-        index={0}
+        index={index}
         snapPoints={snapPoints}
         enablePanDownToClose={false}
         // backgroundStyle={styles.backgroundStyle}
@@ -31,7 +29,6 @@ const Bottomsheet = ({ children }) => {
       >
         <View style={styles.contentContainer}>{children}</View>
       </BottomSheetModal>
-    </View>
   );
 };
 

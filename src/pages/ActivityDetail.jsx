@@ -4,60 +4,75 @@ import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
 import yo from "../../assets/images/KU2.jpg";
 import { tag } from "../data/dev-data";
 import ActivityName from "../components/ActivityName.jsx";
-BGcolor = '#FDFEFE';
-textcolor = 'black';
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
+BGcolor = "#FDFEFE";
+textcolor = "black";
 
 export default function ActivityDetail() {
   return (
-    <View style={styles.container}>
-      <View style={styles.picCon}>
-        <Image
-          style={styles.pic}
-          source={yo}
-        />
-       
+    <Bottomsheet snapPoints={["10%", "90%"]}>
+      <View style={styles.container}>
+        <View style={styles.picCon}>
+          <Image style={styles.pic} source={yo} />
+        </View>
+        <View style={styles.DataCon}>
+          <ActivityName />
+          <View style={styles.timePlaceCon}>
+            <Text
+              style={{ color: "textcolor", fontSize: 20, fontWeight: "bold" }}
+            >
+              date
+            </Text>
+          </View>
+          <View style={styles.creatorCon}>
+            <Text
+              style={{ color: "textcolor", fontSize: 20, fontWeight: "bold" }}
+            >
+              ชื่อหน่วยงาน
+            </Text>
+          </View>
+          <View style={styles.creatorPicCon}>
+            <Text
+              style={{ color: "textcolor", fontSize: 20, fontWeight: "bold" }}
+            >
+              รูปหน่วยงาน
+            </Text>
+          </View>
+          <View style={styles.tagCon}>
+            {Array.from({ length: tag.length }).map((_, index) => (
+              <View style={styles.singleTag}>
+                <Text key={index} style={styles.tagText}>
+                  {tag[index]}
+                </Text>
+              </View>
+            ))}
+          </View>
+          <View style={styles.DescripCon}>
+            <Text
+              style={{ color: "textcolor", fontSize: 20, fontWeight: "bold" }}
+            >
+              Description
+            </Text>
+          </View>
+          <Button
+            onPress={() => Alert.alert("Cannot press this one")}
+            title="เข้าร่วมกิจกรรม"
+            color="#ff9900"
+            accessibilityLabel="Learn more about this purple button"
+            style={styles.AcButton}
+          />
+        </View>
       </View>
-      <View style={styles.DataCon}>
-        <ActivityName />
-        <View style={styles.timePlaceCon}>
-          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>date</Text>
-        </View>
-        <View style={styles.creatorCon}>
-          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>ชื่อหน่วยงาน</Text>
-        </View>
-        <View style={styles.creatorPicCon}>
-          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
-        </View>
-        <View style={styles.tagCon}>
-          {Array.from({ length: tag.length }).map((_, index) => (
-            <View style={styles.singleTag}>
-              <Text key={index} style={styles.tagText}>
-                {tag[index]}
-              </Text>
-            </View>
-          ))}
-        </View>
-        <View style={styles.DescripCon}>
-          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>Description</Text>
-        </View>
-        <Button
-          onPress={() => Alert.alert('Cannot press this one')}
-          title="เข้าร่วมกิจกรรม"
-          color="#ff9900"
-          accessibilityLabel="Learn more about this purple button"
-          style={styles.AcButton}
-        />
-      </View>
-    </View>
+    </Bottomsheet>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FDFEFE',
+    backgroundColor: "#FDFEFE",
     width: "100%",
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     rowGap: 10,
     columnGap: 10,
     flex: 1,
@@ -68,7 +83,7 @@ const styles = StyleSheet.create({
   },
   picCon: {
     width: "100%",
-    height: 200,  
+    height: 200,
   },
   pic: {
     width: "100%",
@@ -79,48 +94,46 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     width: "100%",
     padding: 10,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     rowGap: 10,
     columnGap: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   tagCon: {
-    backgroundColor: 'BGcolor',
-    width: "100%", 
-    flexDirection: 'row', 
-    flexWrap: 'wrap',
+    backgroundColor: "BGcolor",
+    width: "100%",
+    flexDirection: "row",
+    flexWrap: "wrap",
     rowGap: 10,
     columnGap: 10,
   },
   singleTag: {
     backgroundColor: "#FDEBD0",
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     borderRadius: 40,
   },
   timePlaceCon: {
-    backgroundColor: 'BGcolor',
+    backgroundColor: "BGcolor",
     width: "45%",
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   creatorCon: {
-    backgroundColor: 'BGcolor',
+    backgroundColor: "BGcolor",
     width: "29%",
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   creatorPicCon: {
-    backgroundColor: 'BGcolor',
+    backgroundColor: "BGcolor",
     width: "20%",
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    aspectRatio: 1/1,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    aspectRatio: 1 / 1,
   },
   DescripCon: {
-    backgroundColor: 'BGcolor',
+    backgroundColor: "BGcolor",
     width: "100%",
   },
-  AcButton: {
-  },
-
+  AcButton: {},
 });
