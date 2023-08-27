@@ -39,7 +39,7 @@ export default function ActivityDetail() {
 
   return (
 
-    <View style={styles.container}>
+    <Bottomsheet style={styles.container} snapPoints={["60%"]}>
       <View style={styles.picCon}>
         <Image
           style={styles.pic}
