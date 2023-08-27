@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import yo from "../../assets/images/KU2.jpg";
 import { tag } from "../data/dev-data";
+
 import {getQuestData} from "../data/Quest";
 import {timeConv} from "../data/time/time";
 import ActivityName from "../components/ActivityName"
@@ -37,6 +38,7 @@ export default function ActivityDetail() {
   }
 
   return (
+
     <View style={styles.container}>
       <View style={styles.picCon}>
         <Image
@@ -72,24 +74,17 @@ export default function ActivityDetail() {
         <View style={styles.DescripCon}>
           <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
         </View>
-        <Button
-          onPress={() => Alert.alert('Cannot press this one')}
-          title="เข้าร่วมกิจกรรม"
-          color="#ff9900"
-          accessibilityLabel="Learn more about this purple button"
-          style={styles.AcButton}
-        />
       </View>
-    </View>
+    </Bottomsheet>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FDFEFE',
+    backgroundColor: "#FDFEFE",
     width: "100%",
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     rowGap: 10,
     columnGap: 10,
     flex: 1,
@@ -101,7 +96,7 @@ const styles = StyleSheet.create({
   },
   picCon: {
     width: "100%",
-    height: 200,  
+    height: 200,
   },
   pic: {
     width: "100%",
@@ -111,46 +106,46 @@ const styles = StyleSheet.create({
     backgroundColor: BGcolor,
     width: "100%",
     padding: 10,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     rowGap: 10,
     columnGap: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   tagCon: {
-    backgroundColor: 'BGcolor',
-    width: "100%", 
-    flexDirection: 'row', 
-    flexWrap: 'wrap',
+    backgroundColor: "BGcolor",
+    width: "100%",
+    flexDirection: "row",
+    flexWrap: "wrap",
     rowGap: 10,
     columnGap: 10,
   },
   singleTag: {
     backgroundColor: "#FDEBD0",
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     borderRadius: 40,
   },
   timePlaceCon: {
     flexDirection: "row",
     backgroundColor: 'BGcolor',
     width: "45%",
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   creatorCon: {
-    backgroundColor: 'BGcolor',
+    backgroundColor: "BGcolor",
     width: "29%",
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   creatorPicCon: {
-    backgroundColor: 'BGcolor',
+    backgroundColor: "BGcolor",
     width: "20%",
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    aspectRatio: 1/1,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    aspectRatio: 1 / 1,
   },
   DescripCon: {
-    backgroundColor: 'BGcolor',
+    backgroundColor: "BGcolor",
     width: "100%",
   },
   AcButton: {
