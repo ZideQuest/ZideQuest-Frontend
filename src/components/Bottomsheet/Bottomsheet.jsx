@@ -27,7 +27,7 @@ const Bottomsheet = ({ children, snapPoints, index=0}) => {
         // backgroundStyle={styles.backgroundStyle}
         style={styles.pullBar}
       >
-        <View style={styles.contentContainer}>{children}</View>
+        {children}
       </BottomSheetModal>
   );
 };

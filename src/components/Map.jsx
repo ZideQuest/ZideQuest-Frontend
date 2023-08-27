@@ -117,6 +117,7 @@ export default function Map() {
         onPoiClick={(data) => mapPressHandler(data)}
         height="100%"
         customMapStyle={mapCustomStyle}
+        onTouchStart={() => bottomModalRef.current?.collapse()}
       >
         {locations.map((pin) => (
           <Marker

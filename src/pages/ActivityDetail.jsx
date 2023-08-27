@@ -10,7 +10,7 @@ textcolor = "black";
 
 export default function ActivityDetail() {
   return (
-    <Bottomsheet snapPoints={["10%", "90%"]}>
+    <Bottomsheet snapPoints={["20%", "90%"]} index={1}>
       <View style={styles.container}>
         <View style={styles.picCon}>
           <Image style={styles.pic} source={yo} />
