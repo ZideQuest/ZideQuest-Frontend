@@ -7,6 +7,7 @@ import { tag } from "../data/dev-data";
 import {getQuestData} from "../data/Quest";
 import {timeConv} from "../data/time/time";
 import ActivityName from "../components/ActivityName"
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet"
 
 BGcolor = '#FDFEFE';
 textcolor = 'black';
