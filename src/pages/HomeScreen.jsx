@@ -38,11 +38,13 @@ export default function HomeScreen() {
       <Map />
       <NavigationContainer ref={navigationRef} independent={true}>
         <Stack.Navigator
-          screenOptions={({ route, navigation }) => ({
-            headerShown: false,
-            gestureEnabled: false,
-            ...TransitionPresets.ModalPresentationIOS,
-          })}
+          initialRouteName="Recommend"
+          backBehavior="none"
+          // screenOptions={({ route, navigation }) => ({
+          //   headerShown: false,
+          //   gestureEnabled: false,
+          //   ...TransitionPresets.ModalPresentationIOS,
+          // })}
         >
           <Stack.Screen name="Recommend" component={RecommendScreen} />
           <Stack.Screen name="CreatePin" component={CreatePinScreen} />
