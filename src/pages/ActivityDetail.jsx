@@ -31,11 +31,10 @@ export default function ActivityDetail() {
 
     fetchData(questId); // Call fetchData to fetch data when the component mounts
   }, []); // Empty dependency array ensures the effect runs once
+
   if (isLoading) {
     return <View style={styles.container}><Text>Loading...</Text></View>;
   }
-
-  
 
   return (
     <View style={styles.container}>
