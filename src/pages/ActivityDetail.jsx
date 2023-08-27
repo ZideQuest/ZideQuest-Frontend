@@ -1,13 +1,41 @@
-import React from "react";
+import react, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
-
+import { useRoute } from '@react-navigation/native';
 import yo from "../../assets/images/KU2.jpg";
 import { tag } from "../data/dev-data";
-import ActivityName from "../components/ActivityName.jsx";
+import {getQuestData} from "../data/Quest";
+import {timeConv} from "../data/time/time";
+import ActivityName from "../components/ActivityName"
+
 BGcolor = '#FDFEFE';
 textcolor = 'black';
 
 export default function ActivityDetail() {
+  const [QuestDetail, setQuestDetail] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+
+  const route = useRoute();
+  const { questId } = route.params;
+
+  useEffect(() => {
+    const fetchData = async (questId) => {
+      try {
+        const response = await getQuestData(questId);
+        setQuestDetail(response); // Set the fetched data to the state
+        setLoading(false)
+      } catch (error) {
+        console.error(error);
+        // Handle errors
+      }
+    };
+
+    fetchData(questId); // Call fetchData to fetch data when the component mounts
+  }, []); // Empty dependency array ensures the effect runs once
+
+  if (isLoading) {
+    return <View style={styles.container}><Text>Loading...</Text></View>;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.picCon}>
@@ -15,12 +43,16 @@ export default function ActivityDetail() {
           style={styles.pic}
           source={yo}
         />
-       
       </View>
+      <ActivityName quest={QuestDetail}/>
       <View style={styles.DataCon}>
-        <ActivityName />
+          
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>date</Text>
+          
+          <Text style={{ color: "textcolor", fontSize: 16}}>
+            {timeConv(QuestDetail.timeStart)}{'\n'}{timeConv(QuestDetail.timeEnd)}{'\n'}สถานที่
+          </Text>
+          
         </View>
         <View style={styles.creatorCon}>
           <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>ชื่อหน่วยงาน</Text>
@@ -38,7 +70,7 @@ export default function ActivityDetail() {
           ))}
         </View>
         <View style={styles.DescripCon}>
-          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>Description</Text>
+          <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
         </View>
         <Button
           onPress={() => Alert.alert('Cannot press this one')}
@@ -61,6 +93,7 @@ const styles = StyleSheet.create({
     rowGap: 10,
     columnGap: 10,
     flex: 1,
+    overflow: "scroll",
   },
   tagText: {
     color: "BGcolor",
@@ -76,7 +109,6 @@ const styles = StyleSheet.create({
   },
   DataCon: {
     backgroundColor: BGcolor,
-    borderRadius: 25,
     width: "100%",
     padding: 10,
     flexDirection: 'row',
@@ -99,6 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
   },
   timePlaceCon: {
+    flexDirection: "row",
     backgroundColor: 'BGcolor',
     width: "45%",
     justifyContent: 'center',
@@ -122,5 +155,4 @@ const styles = StyleSheet.create({
   },
   AcButton: {
   },
-
 });
