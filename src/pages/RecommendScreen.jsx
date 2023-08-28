@@ -1,10 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
-import userprofiletest from "../../assets/images/UserProfileTest.jpg";
-import Activity from "../../assets/images/ActivityTest.jpg";
 
 import SearchBar from "../components/SearchBar";
-import MinimalCard from "../components/MinimalCard/MinimalCard";
 import GridCard from "../components/MinimalCard/Gridcard";
 
 const Recommend = () => {

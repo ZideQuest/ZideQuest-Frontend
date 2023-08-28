@@ -4,10 +4,12 @@ const MinimalCard = ({
   quest_name,
   quest_image,
   time,
+  timeEnd,
   location,
-  user_level,
   user_name,
   user_image,
+  countParticipant,
+  maxParticipant,
 }) => {
   return (
     <View>
@@ -18,11 +20,20 @@ const MinimalCard = ({
             <Image style={styles.userprofile} source={user_image} />
             <View style={styles.userdescription}>
               <Text>{user_name}</Text>
-              <Text>{user_level}</Text>
+              <View style={styles.participant}>
+                <Text style={styles.par_font}>จำนวนผู้เข้าร่วม: </Text>
+                <Text style={styles.par_font}>{countParticipant}</Text>
+                <Text style={styles.par_font}> / </Text>
+                <Text style={styles.par_font}>{maxParticipant}</Text>
+              </View>
             </View>
           </View>
           <View style={styles.time_and_location}>
-            <Text style={styles.time}>{time}</Text>
+            <View style={styles.timeSE}>
+              <Text style={styles.time}>{time}</Text>
+              <Text style={styles.time}> - </Text>
+              <Text style={styles.time}>{timeEnd}</Text>
+            </View>
             <Text style={styles.location}>{location}</Text>
           </View>
         </View>
@@ -86,6 +97,10 @@ const styles = StyleSheet.create({
     textAlign: "right",
     color: "grey",
   },
+  timeSE: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   location: {
     textAlign: "right",
     color: "grey",
@@ -104,6 +119,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     // borderWidth: 2,
     // borderColor: "blue",
+  },
+  participant: {
+    flexDirection: "row",
+  },
+  par_font: {
+    color: "grey",
   },
 });
 
