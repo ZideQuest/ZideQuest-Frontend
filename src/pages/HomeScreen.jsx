@@ -18,6 +18,7 @@ import CreatePinScreen from "./CreatePinScreen";
 import PinDetailScreen from "./PinDetailScreen";
 import TestProfile from "./TestProfile";
 import PinCreateInfo from "./PinCreateInfo";
+import QuestManagement from "./QuestManagement";
 
 import { TransitionPresets } from "@react-navigation/stack";
 
@@ -52,6 +53,7 @@ export default function HomeScreen() {
           <Stack.Screen name="QuestDetail" component={ActivityDetail} />
           <Stack.Screen name="CreateQuest" component={RecommendScreen} />
           <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
+          <Stack.Screen name="QuestManage" component={QuestManagement} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

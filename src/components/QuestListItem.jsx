@@ -4,23 +4,30 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import * as TabNavigation from "../data/TabNavigation";
 import person_icon from "../../assets/images/participant.png";
 
-function statusIcon (currentP, maxP) {
-  const ratio = currentP/maxP;
+function statusIcon(currentP, maxP) {
+  const ratio = currentP / maxP;
   if (ratio >= 1) {
-    return "red"
+    return "red";
   }
   if (ratio > 0.8) {
-    return "yellow"
+    return "yellow";
   }
-  return "green"
+  return "green";
 }
 
-export default function QuestListItem({ quest }) {
+export default function QuestListItem({ quest, isAdmin = false }) {
+  const questPressHandler = () => {
+    if (isAdmin) {
+      TabNavigation.navigate("QuestManage", { questId: quest._id });
+    } else {
+      TabNavigation.navigate("QuestDetail", { questId: quest._id });
+    }
+    // console.log("pressed")
+  };
+
   return (
     <Pressable
-      onPress={() => {
-        TabNavigation.navigate("QuestDetail", { questId: quest._id });
-      }}
+      onPress={questPressHandler}
       key={quest.id}
       style={[styles.questItem, { opacity: quest.status == "live" ? 100 : 50 }]}
     >
@@ -36,7 +43,10 @@ export default function QuestListItem({ quest }) {
           style={{
             width: 12,
             height: 12,
-            backgroundColor: statusIcon(quest.countParticipant, quest.maxParticipant),
+            backgroundColor: statusIcon(
+              quest.countParticipant,
+              quest.maxParticipant
+            ),
             borderRadius: 25,
           }}
         ></View>

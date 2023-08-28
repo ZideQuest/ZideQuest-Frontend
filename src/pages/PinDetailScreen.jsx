@@ -20,8 +20,6 @@ import * as TabNavigation from "../data/TabNavigation.jsx";
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
 
-const ShimmerPlaceHolder = createShimmerPlaceHolder(LinearGradient);
-
 export default function PinDetailScreen({ route, navigation }) {
   const { userDetail } = useAppContext();
   const [locationData, setLocationData] = useState({});
@@ -87,15 +85,15 @@ export default function PinDetailScreen({ route, navigation }) {
             <View style={styles.subHeader}>
               <Text style={styles.subHeaderText}>Quests</Text>
               <Pressable
-                onPress={() => TabNavigation.navigate("CreateQuest")}
-                style={{ display: userDetail.isAdmin ? "flex" : "none" }}
+                onPress={() => {TabNavigation.navigate("CreateQuest")}}
+                style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
               >
                 <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
               </Pressable>
             </View>
             <View style={styles.questListContainer}>
               {quests.map((quest) => (
-                <QuestListItem quest={quest} key={quest._id} />
+                <QuestListItem quest={quest} key={quest._id} isAdmin={userDetail?.isAdmin} />
               ))}
             </View>
           </View>
