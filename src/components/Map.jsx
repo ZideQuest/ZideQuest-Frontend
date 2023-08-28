@@ -116,11 +116,11 @@ export default function Map() {
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
         minZoomLevel={15}
+        height="100%"
         onRegionChangeComplete={(region) => setRegion(region)}
         {...mapOptions}
         onPress={(data) => mapPressHandler(data)}
         onPoiClick={(data) => mapPressHandler(data)}
-        height="100%"
         customMapStyle={mapCustomStyle}
         onTouchStart={() => bottomModalRef.current?.collapse()}
       >

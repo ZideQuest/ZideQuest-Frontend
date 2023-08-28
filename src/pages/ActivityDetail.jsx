@@ -58,7 +58,7 @@ export default function ActivityDetail() {
   
   return (
 
-    <Bottomsheet style={styles.container} snapPoints={["31%", "60%", "90%"]} index={1}>
+    <Bottomsheet style={styles.container} snapPoints={["31%", "65%", "90%"]} index={1}>
       <BottomSheetScrollView
           // stickyHeaderIndices={[0]}
           style={{ backgroundColor: "white" }}

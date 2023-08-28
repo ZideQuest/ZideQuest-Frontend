@@ -1,17 +1,12 @@
 const mapOptions = {
   // center: [13.84829, 100.569342],
   // zoom: 1,
-  initialRegion: {
+  region: {
     latitude: 13.84829,
     longitude: 100.569342,
     latitudeDelta: 0.0222,
     longitudeDelta: 0.0221,
   },
-  maxBounds: [
-    [13.858535, 100.560613],
-    [13.858535, 100.560613],
-  ],
-  maxBoundsViscosity: 1.0,
   showsUserLocation: true,
 };
 
