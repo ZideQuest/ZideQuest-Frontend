@@ -71,13 +71,13 @@ export default function PinDetailScreen({ route, navigation }) {
             <View style={styles.bannerContainer}>
               <Image
                 style={styles.bannerImage}
-                source={{ uri: locationData.locationPicturePath }}
+                source={{ uri: locationData.picturePath }}
               />
             </View>
             <View style={styles.bannerContainer}>
               <Image
                 style={styles.bannerImage}
-                source={{ uri: locationData.locationPicturePath }}
+                source={{ uri: locationData.picturePath }}
               />
             </View>
           </ScrollView>
