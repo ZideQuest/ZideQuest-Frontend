@@ -2,15 +2,33 @@ import react, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import yo from "../../assets/images/KU2.jpg";
-import { tag } from "../data/dev-data";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import {getQuestData} from "../data/Quest";
 import {timeConv} from "../data/time/time";
 import ActivityName from "../components/ActivityName"
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet"
+import BigButton from "../components/button/BigButton";
 
 BGcolor = '#FDFEFE';
 textcolor = 'black';
+
+const showAlert = () =>
+  Alert.alert(
+    'ยืนยันการเข้าร่วมกิจกรรม',
+    'ต้องการเข้าร่วม กด OK!',
+    [
+      {
+        text: 'OK!',
+        onPress: () => Alert.alert('ส่งคำขอเข้าร่วม...'),
+        
+      },
+      {
+        text: 'cancle',
+        onPress: () => Alert.alert('ยกเลิกการเข้าร่วม.'),
+        
+      },
+    ],
+  );
 
 export default function ActivityDetail() {
   const [QuestDetail, setQuestDetail] = useState(null);
@@ -37,10 +55,10 @@ export default function ActivityDetail() {
   if (isLoading) {
     return <View style={styles.container}><Text>Loading...</Text></View>;
   }
-
+  
   return (
 
-    <Bottomsheet style={styles.container} snapPoints={["80%"]}>
+    <Bottomsheet style={styles.container} snapPoints={["31%", "65%", "90%"]} index={1}>
       <BottomSheetScrollView
           // stickyHeaderIndices={[0]}
           style={{ backgroundColor: "white" }}
@@ -68,10 +86,10 @@ export default function ActivityDetail() {
             <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
           </View>
           <View style={styles.tagCon}>
-            {Array.from({ length: tag.length }).map((_, index) => (
+            {Array.from({ length: QuestDetail.tag.length }).map((_, index) => (
               <View style={styles.singleTag}>
                 <Text key={index} style={styles.tagText}>
-                  {tag[index]}
+                  {QuestDetail.tag[index]}
                 </Text>
               </View>
             ))}
@@ -79,6 +97,7 @@ export default function ActivityDetail() {
           <View style={styles.DescripCon}>
             <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
           </View>
+          <BigButton text="เข้าร่วมกิจกรรม" bg="#E86A33" onPress={() => showAlert()}/>
         </View>
       </BottomSheetScrollView>
     </Bottomsheet>

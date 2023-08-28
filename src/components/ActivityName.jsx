@@ -15,7 +15,7 @@ function statusIcon (currentP, maxP) {
   return "green"
 }
 
-export default function QuestListItem({quest}) {
+export default function ActivityName({quest}) {
   return (
     <View style={[styles.questItem]}>
       <Text style={styles.questFont}>{quest.questName}</Text>
