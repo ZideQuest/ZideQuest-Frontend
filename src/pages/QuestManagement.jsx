@@ -7,7 +7,7 @@ import { getQuestData } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BackButton from "../components/button/BackButton";
 import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
-import ActivityName from "../components/ActivityName";
+import ActivityName from "../components/Quest/ActivityName";
 
 const showConfirmDialog = (title, description) => {
   return Alert.alert(title, description, [

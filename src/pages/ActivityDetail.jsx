@@ -4,9 +4,9 @@ import { useRoute } from '@react-navigation/native';
 import yo from "../../assets/images/KU2.jpg";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import {getQuestData} from "../data/Quest";
-import {timeConv} from "../data/time/time";
-import ActivityName from "../components/ActivityName"
-import Bottomsheet from "../components/Bottomsheet/Bottomsheet"
+import Tag from "../components/Quest/Tag";
+import ActivityName from "../components/Quest/ActivityName";
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import BigButton from "../components/button/BigButton";
 
 BGcolor = '#FDFEFE';
@@ -69,36 +69,12 @@ export default function ActivityDetail() {
             source={yo}
           />
         </View>
-        <ActivityName quest={QuestDetail}/>
-        <View style={styles.DataCon}>
-            
-          <View style={styles.timePlaceCon}>
-            
-            <Text style={{ color: "textcolor", fontSize: 16}}>
-              {timeConv(QuestDetail.timeStart)}{'\n'}{timeConv(QuestDetail.timeEnd)}{'\n'}{QuestDetail.locationName}
-            </Text>
-            
-          </View>
-          <View style={styles.creatorCon}>
-            <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>{QuestDetail.creatorName}</Text>
-          </View>
-          <View style={styles.creatorPicCon}>
-            <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
-          </View>
-          <View style={styles.tagCon}>
-            {Array.from({ length: QuestDetail.tag.length }).map((_, index) => (
-              <View style={styles.singleTag}>
-                <Text key={index} style={styles.tagText}>
-                  {QuestDetail.tag[index]}
-                </Text>
-              </View>
-            ))}
-          </View>
-          <View style={styles.DescripCon}>
-            <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
-          </View>
-          <BigButton text="เข้าร่วมกิจกรรม" bg="#E86A33" onPress={() => showAlert()}/>
+        <ActivityName quest={QuestDetail}/>   
+        <Tag tags={QuestDetail?.tag}/> 
+        <View style={styles.DescripCon}>
+          <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
         </View>
+        <BigButton text="เข้าร่วมกิจกรรม" bg="#E86A33" onPress={() => showAlert()}/>
       </BottomSheetScrollView>
     </Bottomsheet>
   );
@@ -115,10 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: "scroll",
   },
-  tagText: {
-    color: "BGcolor",
-    padding: 5,
-  },
+
   picCon: {
     width: "100%",
     height: 200,
@@ -136,38 +109,6 @@ const styles = StyleSheet.create({
     rowGap: 10,
     columnGap: 10,
     justifyContent: "center",
-  },
-  tagCon: {
-    backgroundColor: "BGcolor",
-    width: "100%",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    rowGap: 10,
-    columnGap: 10,
-  },
-  singleTag: {
-    backgroundColor: "#FDEBD0",
-    alignSelf: "flex-start",
-    borderRadius: 40,
-  },
-  timePlaceCon: {
-    flexDirection: "row",
-    backgroundColor: 'BGcolor',
-    width: "45%",
-    justifyContent: "center",
-  },
-  creatorCon: {
-    backgroundColor: "BGcolor",
-    width: "29%",
-    justifyContent: "center",
-    alignItems: "flex-end",
-  },
-  creatorPicCon: {
-    backgroundColor: "BGcolor",
-    width: "20%",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    aspectRatio: 1 / 1,
   },
   DescripCon: {
     backgroundColor: "BGcolor",
