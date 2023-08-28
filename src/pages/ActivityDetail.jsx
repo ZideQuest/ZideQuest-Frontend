@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import yo from "../../assets/images/KU2.jpg";
 import { tag } from "../data/dev-data";
-
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import {getQuestData} from "../data/Quest";
 import {timeConv} from "../data/time/time";
 import ActivityName from "../components/ActivityName"
@@ -40,42 +40,47 @@ export default function ActivityDetail() {
 
   return (
 
-    <Bottomsheet style={styles.container} snapPoints={["60%"]}>
-      <View style={styles.picCon}>
-        <Image
-          style={styles.pic}
-          source={yo}
-        />
-      </View>
-      <ActivityName quest={QuestDetail}/>
-      <View style={styles.DataCon}>
-          
-        <View style={styles.timePlaceCon}>
-          
-          <Text style={{ color: "textcolor", fontSize: 16}}>
-            {timeConv(QuestDetail.timeStart)}{'\n'}{timeConv(QuestDetail.timeEnd)}{'\n'}สถานที่
-          </Text>
-          
+    <Bottomsheet style={styles.container} snapPoints={["80%"]}>
+      <BottomSheetScrollView
+          // stickyHeaderIndices={[0]}
+          style={{ backgroundColor: "white" }}
+      >
+        <View style={styles.picCon}>
+          <Image
+            style={styles.pic}
+            source={yo}
+          />
         </View>
-        <View style={styles.creatorCon}>
-          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>ชื่อหน่วยงาน</Text>
+        <ActivityName quest={QuestDetail}/>
+        <View style={styles.DataCon}>
+            
+          <View style={styles.timePlaceCon}>
+            
+            <Text style={{ color: "textcolor", fontSize: 16}}>
+              {timeConv(QuestDetail.timeStart)}{'\n'}{timeConv(QuestDetail.timeEnd)}{'\n'}{QuestDetail.locationName}
+            </Text>
+            
+          </View>
+          <View style={styles.creatorCon}>
+            <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>{QuestDetail.creatorName}</Text>
+          </View>
+          <View style={styles.creatorPicCon}>
+            <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
+          </View>
+          <View style={styles.tagCon}>
+            {Array.from({ length: tag.length }).map((_, index) => (
+              <View style={styles.singleTag}>
+                <Text key={index} style={styles.tagText}>
+                  {tag[index]}
+                </Text>
+              </View>
+            ))}
+          </View>
+          <View style={styles.DescripCon}>
+            <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
+          </View>
         </View>
-        <View style={styles.creatorPicCon}>
-          <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
-        </View>
-        <View style={styles.tagCon}>
-          {Array.from({ length: tag.length }).map((_, index) => (
-            <View style={styles.singleTag}>
-              <Text key={index} style={styles.tagText}>
-                {tag[index]}
-              </Text>
-            </View>
-          ))}
-        </View>
-        <View style={styles.DescripCon}>
-          <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
-        </View>
-      </View>
+      </BottomSheetScrollView>
     </Bottomsheet>
   );
 }

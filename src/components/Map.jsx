@@ -16,7 +16,12 @@ function getDetailFromData(coordinate) {
   const lng = coordinate.nativeEvent.coordinate.longitude;
   const name = coordinate.nativeEvent.name;
   const placeId = coordinate.nativeEvent.placeId;
-
+  // console.log('------------------');
+  // console.log(lat);
+  // console.log(lng);
+  // console.log(name);
+  // console.log(placeId);
+  // console.log('------------------');
   return { lat, lng, name, placeId };
 }
 
@@ -52,6 +57,7 @@ export default function Map() {
 
   const markerPressHandler = (pinId, data) => {
     data.stopPropagation();
+    const { lat, lng, name, placeId } = getDetailFromData(data);
 
     setNewMarker({
       latitude: lat,
@@ -62,7 +68,6 @@ export default function Map() {
 
     TabNavigation.navigate("PinDetail", { pinId });
     // bottomModalRef.current?.snapToIndex(1);
-    const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
   };
 
@@ -119,13 +124,16 @@ export default function Map() {
         customMapStyle={mapCustomStyle}
         onTouchStart={() => bottomModalRef.current?.collapse()}
       >
-        {locations.map((pin) => (
-          <Marker
-            coordinate={pin}
-            key={pin._id}
-            onPress={(data) => markerPressHandler(pin._id, data)}
-          />
-        ))}
+        {locations.map((pin) => {
+          // console.log(pin)
+          return (
+            <Marker
+              coordinate={pin}
+              key={pin._id}
+              onPress={(data) => markerPressHandler(pin._id, data)}
+            />
+          );
+        })}
         {newMarker && <Marker coordinate={newMarker} />}
       </MapView>
     </View>
