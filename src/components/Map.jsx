@@ -52,6 +52,7 @@ export default function Map() {
 
   const markerPressHandler = (pinId, data) => {
     data.stopPropagation();
+    const { lat, lng, name, placeId } = getDetailFromData(data);
 
     setNewMarker({
       latitude: lat,
@@ -62,7 +63,6 @@ export default function Map() {
 
     TabNavigation.navigate("PinDetail", { pinId });
     // bottomModalRef.current?.snapToIndex(1);
-    const { lat, lng, name, placeId } = getDetailFromData(data);
     animateToRegion(lat, lng);
   };
 
