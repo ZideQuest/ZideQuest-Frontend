@@ -11,8 +11,8 @@ const GridCard = () => {
         <View>
           {testdata.map((item) => (
             <MinimalCard
-              event_name={item.event_name}
-              event_image={item.event_image}
+              quest_name={item.quest_name}
+              quest_image={item.quest_image}
               time={item.time}
               location={item.location}
               user_level={item.user_level}

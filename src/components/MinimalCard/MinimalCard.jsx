@@ -1,11 +1,8 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useRef } from "react";
-import userprofiletest from "../../../assets/images/UserProfileTest.jpg";
-import Activity from "../../../assets/images/ActivityTest.jpg";
 
 const MinimalCard = ({
-  event_name,
-  event_image,
+  quest_name,
+  quest_image,
   time,
   location,
   user_level,
@@ -15,29 +12,22 @@ const MinimalCard = ({
   return (
     <View>
       <View style={styles.CardContainer}>
-        {/* <Text style={styles.event_name}>event</Text> */}
-        <Text style={styles.event_name}>{event_name}</Text>
+        <Text style={styles.quest_name}>{quest_name}</Text>
         <View style={styles.row}>
           <View style={styles.row_inner}>
-            {/* <Image style={styles.userprofile} source={userprofiletest} /> */}
             <Image style={styles.userprofile} source={user_image} />
             <View style={styles.userdescription}>
-              {/* <Text>User Name</Text> */}
               <Text>{user_name}</Text>
-              {/* <Text>User Level</Text> */}
               <Text>{user_level}</Text>
             </View>
           </View>
           <View style={styles.time_and_location}>
-            {/* <Text style={styles.time}>Time</Text> */}
             <Text style={styles.time}>{time}</Text>
-            {/* <Text style={styles.location}>Location</Text> */}
             <Text style={styles.location}>{location}</Text>
           </View>
         </View>
         <View style={styles.image_container}>
-          {/* <Image style={styles.event_image} source={Activity} /> */}
-          <Image style={styles.event_image} source={event_image} />
+          <Image style={styles.quest_image} source={quest_image} />
         </View>
       </View>
     </View>
@@ -56,14 +46,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 5,
     marginRight: 5,
-    elevation: 1,
-    shadowRadius: 2,
+    // borderWidth: 2,
+    // borderColor: "black",
+    elevation: 2,
+    shadowRadius: 1,
   },
-  event_name: {
-    color: "grey",
+  quest_name: {
+    color: "orange",
     left: 12,
     top: 10,
     fontSize: 20,
+    fontWeight: "bold",
   },
   row: {
     flexDirection: "row",
@@ -105,9 +98,9 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
   },
-  event_image: {
+  quest_image: {
     width: "100%",
-    height: "78%",
+    height: "79%",
     borderRadius: 10,
     // borderWidth: 2,
     // borderColor: "blue",

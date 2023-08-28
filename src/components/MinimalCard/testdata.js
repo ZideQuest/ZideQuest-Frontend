@@ -1,8 +1,8 @@
 const testdata = [
   {
     id: 1,
-    event_name: "งานรับน้อง",
-    event_image: require("../../../assets/images/ActivityTest.jpg"),
+    quest_name: "งานรับน้อง",
+    quest_image: require("../../../assets/images/ActivityTest.jpg"),
     time: "17.00-24.00",
     location: "สร3",
     user_level: "50",
@@ -11,8 +11,8 @@ const testdata = [
   },
   {
     id: 2,
-    event_name: "งานรับพี่",
-    event_image: require("../../../assets/images/KU.jpg"),
+    quest_name: "งานรับพี่",
+    quest_image: require("../../../assets/images/KU.jpg"),
     time: "18.00-25.00",
     location: "สร1",
     user_level: "60",
@@ -21,8 +21,8 @@ const testdata = [
   },
   {
     id: 3,
-    event_name: "งานรับน้อง",
-    event_image: require("../../../assets/images/sorror1.png"),
+    quest_name: "งานรับน้อง",
+    quest_image: require("../../../assets/images/sorror1.png"),
     time: "19.00-22.00",
     location: "สร2",
     user_level: "70",
