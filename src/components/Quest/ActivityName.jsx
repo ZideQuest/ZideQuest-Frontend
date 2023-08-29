@@ -81,18 +81,18 @@ const styles = StyleSheet.create({
   },
   timePlaceCon: {
     flexDirection: "row",
-    backgroundColor: 'BGcolor',
+    backgroundColor: BGcolor,
     width: "45%",
     justifyContent: "center",
   },
   creatorCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "29%",
     justifyContent: "center",
     alignItems: "flex-end",
   },
   creatorPicCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "20%",
     justifyContent: "center",
     alignItems: "flex-end",

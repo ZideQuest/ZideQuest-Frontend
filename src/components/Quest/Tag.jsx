@@ -22,11 +22,11 @@ export default function Tag({ tags }) {
 
 const styles = StyleSheet.create({
   tagText: {
-    color: "BGcolor",
+    color: textcolor,
     padding: 5,
   },
   tagCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
