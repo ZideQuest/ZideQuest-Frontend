@@ -23,7 +23,7 @@ export default function CreatePinScreen() {
       <View style={styles.container}>
         <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
         <View style={styles.buttonContainer}>
-          <BigButton text="ยืนยัน" bg="#E86A33" onPress={confirmHandler} />
+          <BigButton text="ยืนยัน" bg={primaryColor} onPress={confirmHandler} />
           <BigButton
             text="ยกเลิก"
             bg="rgba(61, 61, 55, 0.28)"

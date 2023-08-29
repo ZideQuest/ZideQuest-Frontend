@@ -9,6 +9,7 @@ import {
 
 import * as TabNavigation from "../../data/TabNavigation";
 import { useAppContext } from "../../data/AppContext";
+import { primaryColor } from "../../data/color";
 
 export default function BackButton() {
   const { bottomModalRef } = useAppContext();
@@ -22,7 +23,7 @@ export default function BackButton() {
     <TouchableHighlight
       onPress={closeHandler}
       style={{ width: 20, height: 20, borderRadius: 20 }}
-      underlayColor="orange"
+      underlayColor={primaryColor}
     >
       <Text style={styles.xText}>X</Text>
     </TouchableHighlight>
