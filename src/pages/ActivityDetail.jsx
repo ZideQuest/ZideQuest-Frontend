@@ -9,7 +9,7 @@ import ActivityName from "../components/Quest/ActivityName";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import BigButton from "../components/button/BigButton";
 
-import {textColor, BGcolor} from "../data/color"
+import {textColor, BGcolor, primaryColor} from "../data/color"
 
 const showAlert = () =>
   Alert.alert(
@@ -73,7 +73,7 @@ export default function ActivityDetail() {
         <View style={styles.DescripCon}>
           <Text style={{ color: textColor, fontSize: 16, }}>{QuestDetail.description}</Text>
         </View>
-        <BigButton text="เข้าร่วมกิจกรรม" bg="#E86A33" onPress={() => showAlert()}/>
+        <BigButton text="เข้าร่วมกิจกรรม" bg={primaryColor} onPress={() => showAlert()}/>
       </BottomSheetScrollView>
     </Bottomsheet>
   );
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   DescripCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "100%",
   },
   AcButton: {

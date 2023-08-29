@@ -19,6 +19,7 @@ import * as TabNavigation from "../data/TabNavigation.jsx";
 
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
+import { buttonNormalGreen } from "../data/color";
 
 export default function PinDetailScreen({ route, navigation }) {
   const { userDetail } = useAppContext();
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   addQuestButton: {
-    backgroundColor: "#619B58",
+    backgroundColor: buttonNormalGreen,
     borderRadius: 10,
     overflow: "hidden",
     paddingVertical: 5,

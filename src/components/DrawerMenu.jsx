@@ -10,6 +10,8 @@ import user_icon from "../../assets/images/user_icon.png";
 import plus_icon from "../../assets/images/plus.png";
 import leave_icon from "../../assets/images/leave_icon.png";
 
+import { buttonGrey, primaryColor, textColor } from "../data/color";
+
 function ProfileDisplay({ userDetail }) {
   return (
     <View style={styles.profileDisplayContainer}>
@@ -20,7 +22,7 @@ function ProfileDisplay({ userDetail }) {
         />
       </View>
       <View>
-        <Text style={{ color: "black" }}>{userDetail?.user?.organizeName}</Text>
+        <Text style={{ color: textColor }}>{userDetail?.user?.organizeName}</Text>
       </View>
     </View>
   );
@@ -115,7 +117,7 @@ export default function DrawerMenu({ navigation, children }) {
                 style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
                 onPress={logoutHandler}
               >
-                <Text style={[styles.smallMenuItem, { color: "#E86A33" }]}>
+                <Text style={[styles.smallMenuItem, { color: primaryColor }]}>
                   Logout
                 </Text>
                 <Image source={leave_icon} />
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
-    backgroundColor: "#E86A33",
+    backgroundColor: primaryColor,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logo: {
-    color: "#E86A33",
+    color: primaryColor,
     fontWeight: "bold",
     fontSize: 30,
   },
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   bigMenuIcon: {
-    backgroundColor: "#F2F2F2",
+    backgroundColor: buttonGrey,
     width: 80,
     height: 80,
     borderRadius: 10,

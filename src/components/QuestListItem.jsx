@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import person_icon from "../../assets/images/participant.png";
+import { buttonGrey } from "../data/color";
 
 function statusIcon(currentP, maxP) {
   const ratio = currentP / maxP;
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   questItem: {
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#F5F5F5",
+    backgroundColor: buttonGrey,
     padding: 10,
     borderRadius: 5,
     paddingLeft: 15,

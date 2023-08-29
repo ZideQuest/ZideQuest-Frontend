@@ -18,6 +18,7 @@ import * as TabNavigation from "../data/TabNavigation";
 
 import zidequest_icon from "../../assets/images/zidequest_icon.png";
 import SearchBar from "./SearchBar";
+import { primaryColor } from "../data/color";
 
 const ANIMATION_TIME = 200;
 
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     position: "relative",
     borderRadius: 30,
     overflow: "hidden",
-    borderColor: "#E86A33",
+    borderColor: primaryColor,
     borderWidth: 3,
   },
   hamburgerIcon: {
