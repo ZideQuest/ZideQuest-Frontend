@@ -9,8 +9,7 @@ import ActivityName from "../components/Quest/ActivityName";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import BigButton from "../components/button/BigButton";
 
-BGcolor = '#FDFEFE';
-textcolor = 'black';
+import {textColor, BGcolor} from "../data/color"
 
 const showAlert = () =>
   Alert.alert(
@@ -72,7 +71,7 @@ export default function ActivityDetail() {
         <ActivityName quest={QuestDetail}/>   
         <Tag tags={QuestDetail?.tag}/> 
         <View style={styles.DescripCon}>
-          <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
+          <Text style={{ color: textColor, fontSize: 16, }}>{QuestDetail.description}</Text>
         </View>
         <BigButton text="เข้าร่วมกิจกรรม" bg="#E86A33" onPress={() => showAlert()}/>
       </BottomSheetScrollView>

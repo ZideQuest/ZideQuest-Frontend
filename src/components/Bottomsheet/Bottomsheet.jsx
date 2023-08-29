@@ -8,7 +8,7 @@ import { useAppContext } from "../../data/AppContext";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const Bottomsheet = ({ children, snapPoints, index = 0, detached = false }) => {
+const Bottomsheet = ({ children, snapPoints, index = 0, detached = false, hideBar=false }) => {
   const bottomSheetModalRef = useRef(null);
   const { bottomModalRef, setBottomModalRef } = useAppContext();
 
@@ -21,7 +21,7 @@ const Bottomsheet = ({ children, snapPoints, index = 0, detached = false }) => {
     <BottomSheetModal
       handleIndicatorStyle={[
         styles.headerIndicator,
-        { height: detached ? 0 : 4 },
+        { height: hideBar ? 0 : 4 },
       ]}
       ref={bottomSheetModalRef}
       index={index}
@@ -30,7 +30,7 @@ const Bottomsheet = ({ children, snapPoints, index = 0, detached = false }) => {
       // backgroundStyle={styles.backgroundStyle}
       style={[styles.pullBar, { marginHorizontal: detached ? 24 : 0 }]}
       detached={detached}
-      bottomInset={detached ? 60 : 0}
+      bottomInset={detached ? 30 : 0}
       enableOverDrag={!detached}
     >
       {children}
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.81,
     shadowRadius: 13.16,
-
+    // maxWidth: 700,
     elevation: 20,
   },
 });

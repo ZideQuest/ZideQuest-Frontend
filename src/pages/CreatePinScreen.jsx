@@ -19,7 +19,7 @@ export default function CreatePinScreen() {
   };
 
   return (
-    <Buttomsheet snapPoints={["15%"]} detached={true}>
+    <Buttomsheet snapPoints={["14%"]} detached={true} hideBar={true}>
       <View style={styles.container}>
         <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
         <View style={styles.buttonContainer}>

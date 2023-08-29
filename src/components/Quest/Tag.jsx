@@ -1,32 +1,29 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-
-
-BGcolor = '#FDFEFE';
-textcolor = 'black';
+import { BGcolor, textColor } from "../../data/color";
 
 export default function Tag({ tags }) {
-    return (
-      <View style={styles.DataCon}>
-        <View style={styles.tagCon}>
-            {tags.map((tag, index) => (
-            <View style={styles.singleTag}>
-                <Text key={index} style={styles.tagText}>
-                {tag.tagName}
-                </Text>
-            </View>
-            ))}
-        </View>
+  return (
+    <View style={styles.DataCon}>
+      <View style={styles.tagCon}>
+        {tags.map((tag, index) => (
+          <View style={styles.singleTag}>
+            <Text key={index} style={styles.tagText}>
+              {tag.tagName}
+            </Text>
+          </View>
+        ))}
       </View>
-    );
-  }
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   tagText: {
-    color: "BGcolor",
+    color: BGcolor,
     padding: 5,
   },
   tagCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
@@ -48,4 +45,4 @@ const styles = StyleSheet.create({
     columnGap: 10,
     justifyContent: "center",
   },
-})
+});

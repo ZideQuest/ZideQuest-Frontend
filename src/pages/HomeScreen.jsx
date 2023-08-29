@@ -34,10 +34,6 @@ const modalGen = (component) => {
 
 export default function HomeScreen() {
 
-  useEffect(() => {
-    console.log("rendered")
-  }, [])
-
   return (
     <View style={styles.mapContainer}>
       <TestProfile />
