@@ -12,6 +12,7 @@ import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import photo_icon from "../../assets/images/photo.png";
 import picture_icon from "../../assets/images/picture.png";
 import BackButton from "../components/button/BackButton";
+import { primaryColor } from "../data/color";
 
 export default class PinCreateInfo extends Component {
   componentDidUpdate(prevProps, prevState) {
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     flex: 1,
-    backgroundColor: "#E86A33",
+    backgroundColor: primaryColor,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",

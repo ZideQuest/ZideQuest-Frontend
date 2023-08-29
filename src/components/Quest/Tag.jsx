@@ -1,8 +1,5 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-
-
-BGcolor = '#FDFEFE';
-textcolor = 'black';
+import { BGcolor, textColor } from "../../data/color";
 
 export default function Tag({ tags }) {
     return (
@@ -17,8 +14,9 @@ export default function Tag({ tags }) {
             ))}
         </View>
       </View>
-    );
-  }
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   tagText: {
@@ -48,4 +46,4 @@ const styles = StyleSheet.create({
     columnGap: 10,
     justifyContent: "center",
   },
-})
+});

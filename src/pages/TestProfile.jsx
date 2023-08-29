@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { useAppContext } from "../data/AppContext";
+import { BGcolor } from "../data/color";
 
 const Stack = createNativeStackNavigator();
 
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
   },
   profile: {
     height: "100%",
-    backgroundColor: "cyan",
+    backgroundColor: BGcolor,
     padding: 30,
   },
   exit: {

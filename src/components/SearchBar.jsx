@@ -3,6 +3,7 @@ import React from "react";
 import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
 
 import { useAppContext } from "../data/AppContext";
+import { primaryColor } from "../data/color";
 
 export default function SearchBar() {
   const { bottomModalRef } = useAppContext();
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchButton: {
-    backgroundColor: "orange",
+    backgroundColor: primaryColor,
     padding: 10,
     borderRadius: 10,
   },

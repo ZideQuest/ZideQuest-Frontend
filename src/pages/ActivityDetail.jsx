@@ -11,8 +11,7 @@ import BigButton from "../components/button/BigButton";
 import {join_leave} from "../data/join-leave";
 import { useAppContext } from "../data/AppContext";
 
-BGcolor = '#FDFEFE';
-textcolor = 'black';
+import {textColor, BGcolor, primaryColor} from "../data/color"
 
 const joinAlert = (questId) =>
   Alert.alert(

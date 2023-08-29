@@ -8,7 +8,7 @@ import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 const MinimalCard = ({ event, time, location, userlevel, username, image }) => {
   return (
-    <Bottomsheet snapPoints={["15%", "45%", "90%"]}>
+    <Bottomsheet snapPoints={["15%", "45%", "90%"]} index={1}>
       <View style={styles.CardContainer}>
         <SearchBar />
         <View>
