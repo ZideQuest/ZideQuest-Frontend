@@ -23,7 +23,7 @@ export default function ActivityName({quest}) {
       <View style={[styles.questItem]}>
         <Text style={styles.questFont}>{quest.questName}</Text>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <Text style={styles.questFont}>
+          <Text style={styles.ParticipantFont}>
             {quest.countParticipant}/{quest.maxParticipant}
           </Text>
           <View style={styles.pic}>
@@ -41,9 +41,9 @@ export default function ActivityName({quest}) {
       </View>
       <View style={styles.DataCon}>
         <View style={styles.timePlaceCon}>
-        <Text style={{ color: "textcolor", fontSize: 16}}>
-        {timeConv(quest.timeStart)}{'\n'}{timeConv(quest.timeEnd)}{'\n'}{quest.locationName}
-        </Text>
+          <Text style={{ color: "textcolor", fontSize: 16}}>
+            {timeConv(quest.timeStart)}{'\n'}{timeConv(quest.timeEnd)}{'\n'}{quest.locationName}
+          </Text>
         </View>
         <View style={styles.creatorCon}>
             <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: "#FFFFFF",
-    padding: 10,
-    borderRadius: 5,
-    paddingLeft: 15,
-    paddingRight: 15,
+    padding: 5,
+    // borderRadius: 5,
+    paddingLeft: 20,
+    paddingRight: 20,
     width: "100%",
   },
   pic: {
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   questFont: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
   },
   timePlaceCon: {
@@ -108,5 +108,9 @@ const styles = StyleSheet.create({
     rowGap: 10,
     columnGap: 10,
     justifyContent: "center",
+  },
+  ParticipantFont: {
+    fontSize: 20,
+    // fontWeight: 'bold',
   },
 });
