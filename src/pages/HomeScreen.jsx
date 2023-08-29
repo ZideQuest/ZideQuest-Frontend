@@ -33,7 +33,6 @@ const modalGen = (component) => {
 };
 
 export default function HomeScreen() {
-
   return (
     <View style={styles.mapContainer}>
       <TestProfile />

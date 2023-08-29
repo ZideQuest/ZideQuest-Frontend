@@ -1,14 +1,11 @@
 import React from "react";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { StyleSheet, View, Text, Button } from "react-native";
-
 import { useState, useRef, useEffect } from "react";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 
 import { useAppContext } from "../data/AppContext";
-import { mapOptions } from "../data/dev-data";
 import { mapCustomStyle } from "../data/map-style";
 import { fetchLocations } from "../data/locations";
-
 import * as TabNavigation from "../data/TabNavigation";
 
 function getDetailFromData(coordinate) {
@@ -16,26 +13,19 @@ function getDetailFromData(coordinate) {
   const lng = coordinate.nativeEvent.coordinate.longitude;
   const name = coordinate.nativeEvent.name;
   const placeId = coordinate.nativeEvent.placeId;
-  // console.log('------------------');
-  // console.log(lat);
-  // console.log(lng);
-  // console.log(name);
-  // console.log(placeId);
-  // console.log('------------------');
   return { lat, lng, name, placeId };
 }
 
 export default function Map() {
   const { newMarker, setNewMarker, bottomModalRef } = useAppContext();
-  const [refresh, setRefresh] = useState(false);
   const [locations, setLocations] = useState([]);
 
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
-    latitude: 51.5079145,
-    longitude: -0.0899163,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    latitude: 13.848236064906674,
+    longitude: 100.57200964540243,
+    latitudeDelta: 0.015,
+    longitudeDelta: 0.013,
   });
 
   const mapPressHandler = async (coordinate) => {
@@ -59,15 +49,16 @@ export default function Map() {
     data.stopPropagation();
     const { lat, lng, name, placeId } = getDetailFromData(data);
 
-    setNewMarker({
-      latitude: lat,
-      longitude: lng,
-      name,
-      placeId,
-    });
+    if (TabNavigation.currentScreen() == "CreatePin") {
+      setNewMarker({
+        latitude: lat,
+        longitude: lng,
+        name,
+        placeId,
+      });
+    }
 
     TabNavigation.navigate("PinDetail", { pinId });
-    // bottomModalRef.current?.snapToIndex(1);
     animateToRegion(lat, lng);
   };
 
@@ -76,19 +67,12 @@ export default function Map() {
       const region = {
         latitude: lat - 0.001,
         longitude: lng,
-        latitudeDelta: 0.0025, // The delta values control the zoom level
+        latitudeDelta: 0.0025,
         longitudeDelta: 0.0025,
       };
 
-      // if (mapRef.current.onMapReady) {
-      // }
-      mapRef.current.animateToRegion(region, 300); // 1000ms duration for the animation
+      mapRef.current.animateToRegion(region, 450);
     }
-  };
-
-  const cancelCreatePin = () => {
-    setNewMarker(null);
-    TabNavigation.navigate("Recommend");
   };
 
   useEffect(() => {
@@ -117,24 +101,22 @@ export default function Map() {
         provider={PROVIDER_GOOGLE}
         minZoomLevel={15}
         height="100%"
-        onRegionChangeComplete={(region) => setRegion(region)}
-        {...mapOptions}
+        // onRegionChangeComplete={(region) => setRegion(region)}
+        region={region}
+        showsUserLocation
         onPress={(data) => mapPressHandler(data)}
         onPoiClick={(data) => mapPressHandler(data)}
         customMapStyle={mapCustomStyle}
         onTouchStart={() => bottomModalRef.current?.collapse()}
       >
-        {locations.map((pin) => {
-          // console.log(pin)
-          return (
-            <Marker
-              coordinate={pin}
-              key={pin._id}
-              onPress={(data) => markerPressHandler(pin._id, data)}
-            />
-          );
-        })}
-        {newMarker && <Marker coordinate={newMarker} />}
+        {locations.map((pin) => (
+          <Marker
+            coordinate={pin}
+            key={pin._id}
+            onPress={(data) => markerPressHandler(pin._id, data)}
+          />
+        ))}
+        <Marker coordinate={newMarker} />
       </MapView>
     </View>
   );

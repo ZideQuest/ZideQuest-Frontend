@@ -2,17 +2,14 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { BGcolor, textColor } from "../../data/color";
 
 export default function Tag({ tags }) {
-    return (
-      <View style={styles.DataCon}>
-        <View style={styles.tagCon}>
-            {tags.map((tag, index) => (
-              <View style={styles.singleTag } key={index}>
-                  <Text  style={styles.tagText}>
-                    {tag.tagName}
-                  </Text>
-              </View>
-            ))}
-        </View>
+  return (
+    <View style={styles.DataCon}>
+      <View style={styles.tagCon}>
+        {tags.map((tag, index) => (
+          <View style={styles.singleTag} key={index}>
+            <Text style={styles.tagText}>{tag.tagName}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -20,7 +17,7 @@ export default function Tag({ tags }) {
 
 const styles = StyleSheet.create({
   tagText: {
-    color: textcolor,
+    color: textColor,
     padding: 5,
   },
   tagCon: {

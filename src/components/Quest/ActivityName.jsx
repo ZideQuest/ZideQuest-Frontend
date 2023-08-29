@@ -43,7 +43,7 @@ export default function ActivityName({ quest }) {
       </View>
       <View style={styles.DataCon}>
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: "textcolor", fontSize: 16}}>
+          <Text style={{ color: textColor, fontSize: 16}}>
             {timeConv(quest.timeStart)}{'\n'}{timeConv(quest.timeEnd)}{'\n'}{quest.locationName}
           </Text>
         </View>

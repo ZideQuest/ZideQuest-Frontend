@@ -15,8 +15,6 @@ import close_icon from "../../assets/images/close_icon.png";
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
 function ProfileDisplay({ userDetail }) {
-  console.log(userDetail);
-
   if (userDetail.isAdmin) {
     return (
       <View style={styles.profileDisplayContainer}>
@@ -57,11 +55,11 @@ export default function DrawerMenu({ navigation, children }) {
     TabNavigation.navigate("CreatePin");
     setDrawerOpen(false);
   };
-  
+
   const checkinButtonHandler = () => {
     navigation.navigate("Checkin");
     setDrawerOpen(false);
-  }
+  };
 
   const loginHandler = () => {
     setDrawerOpen(false);
@@ -107,7 +105,10 @@ export default function DrawerMenu({ navigation, children }) {
             )}
 
             <View style={styles.bigMenuContainer}>
-              <Pressable onPress={checkinButtonHandler} style={styles.bigMenuItem}>
+              <Pressable
+                onPress={checkinButtonHandler}
+                style={styles.bigMenuItem}
+              >
                 <View style={styles.bigMenuIcon}>
                   <Image style={styles.menuItem} source={qr_scanner_icon} />
                 </View>

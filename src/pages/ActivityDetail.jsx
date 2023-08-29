@@ -109,7 +109,7 @@ export default function ActivityDetail() {
           
           <Tag tags={QuestDetail?.tag}/> 
           <View style={styles.DescripCon}>
-            <Text style={{ color: textcolor, fontSize: 16, }}>{QuestDetail.description}</Text>
+            <Text style={{ color: textColor, fontSize: 16, }}>{QuestDetail.description}</Text>
           </View>
           <View style = {styles.ButtonCon}>
             {!QuestDetail.isJoin ? (
