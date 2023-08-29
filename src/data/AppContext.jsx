@@ -12,6 +12,7 @@ export const AppProvider = ({ children }) => {
   const [userDetail, setUserDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [bottomModalRef, setBottomModalRef] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -51,7 +52,11 @@ export const AppProvider = ({ children }) => {
       try {
         const data = await SecureStore.getItemAsync("userDetail");
         const user = JSON.parse(data);
-        console.log(user?.user ? `You are logged in as ${user?.user._id}` : "You are not logged in");
+        console.log(
+          user?.user
+            ? `You are logged in as ${user?.user._id}`
+            : "You are not logged in"
+        );
         if (user) {
           setUserDetails(user);
         } else {
@@ -78,6 +83,8 @@ export const AppProvider = ({ children }) => {
         userDetail,
         bottomModalRef,
         setBottomModalRef,
+        drawerOpen,
+        setDrawerOpen,
       }}
     >
       {children}

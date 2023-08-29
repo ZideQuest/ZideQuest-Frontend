@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
 import BigButton from "../components/button/BigButton";
-import Buttomsheet from "../components/Bottomsheet/Bottomsheet"
+import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
 
 export default function CreatePinScreen() {
   const { setNewMarker } = useAppContext();
@@ -19,7 +19,7 @@ export default function CreatePinScreen() {
   };
 
   return (
-    <Buttomsheet snapPoints={["20%"]}>
+    <Buttomsheet snapPoints={["15%"]} detached={true}>
       <View style={styles.container}>
         <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
         <View style={styles.buttonContainer}>
@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flex: 1,
     gap: 8,
+    overflow: "hidden",
+    borderRadius: 15,
   },
   headerText: {
     fontWeight: 700,

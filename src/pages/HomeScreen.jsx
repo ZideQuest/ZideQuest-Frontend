@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -33,6 +33,11 @@ const modalGen = (component) => {
 };
 
 export default function HomeScreen() {
+
+  useEffect(() => {
+    console.log("rendered")
+  }, [])
+
   return (
     <View style={styles.mapContainer}>
       <TestProfile />

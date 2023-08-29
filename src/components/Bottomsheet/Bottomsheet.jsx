@@ -8,7 +8,7 @@ import { useAppContext } from "../../data/AppContext";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const Bottomsheet = ({ children, snapPoints, index=0}) => {
+const Bottomsheet = ({ children, snapPoints, index = 0, detached = false }) => {
   const bottomSheetModalRef = useRef(null);
   const { bottomModalRef, setBottomModalRef } = useAppContext();
 
@@ -18,17 +18,23 @@ const Bottomsheet = ({ children, snapPoints, index=0}) => {
   }, []);
 
   return (
-      <BottomSheetModal
-        handleIndicatorStyle={styles.headerIndicator}
-        ref={bottomSheetModalRef}
-        index={index}
-        snapPoints={snapPoints}
-        enablePanDownToClose={false}
-        // backgroundStyle={styles.backgroundStyle}
-        style={styles.pullBar}
-      >
-        {children}
-      </BottomSheetModal>
+    <BottomSheetModal
+      handleIndicatorStyle={[
+        styles.headerIndicator,
+        { height: detached ? 0 : 4 },
+      ]}
+      ref={bottomSheetModalRef}
+      index={index}
+      snapPoints={snapPoints}
+      enablePanDownToClose={false}
+      // backgroundStyle={styles.backgroundStyle}
+      style={[styles.pullBar, { marginHorizontal: detached ? 24 : 0 }]}
+      detached={detached}
+      bottomInset={detached ? 60 : 0}
+      enableOverDrag={!detached}
+    >
+      {children}
+    </BottomSheetModal>
   );
 };
 
@@ -38,8 +44,6 @@ const styles = StyleSheet.create({
   },
   headerIndicator: {
     width: 80,
-    // backgroundColor: "lightgrey",
-    height: 4,
   },
   contentContainer: {
     flex: 1,
