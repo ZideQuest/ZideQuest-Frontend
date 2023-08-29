@@ -9,23 +9,44 @@ import Alert from "../components/misc/Alert";
 import user_icon from "../../assets/images/user_icon.png";
 import plus_icon from "../../assets/images/plus.png";
 import leave_icon from "../../assets/images/leave_icon.png";
+import qr_scanner_icon from "../../assets/images/qr_scanner_icon.png";
+import close_icon from "../../assets/images/close_icon.png";
 
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
 function ProfileDisplay({ userDetail }) {
-  return (
-    <View style={styles.profileDisplayContainer}>
-      <View style={styles.displayImageContainer}>
-        <Image
-          source={userDetail?.user?.picturePath || user_icon}
-          style={styles.displayImage}
-        />
+  console.log(userDetail);
+
+  if (userDetail.isAdmin) {
+    return (
+      <View style={styles.profileDisplayContainer}>
+        <View style={styles.displayImageContainer}>
+          <Image
+            source={userDetail?.user?.picturePath || user_icon}
+            style={styles.displayImage}
+          />
+        </View>
+        <View>
+          <Text style={styles.username}>{userDetail?.user?.organizeName}</Text>
+          <Text>{userDetail.user.role}</Text>
+        </View>
       </View>
-      <View>
-        <Text style={{ color: textColor }}>{userDetail?.user?.organizeName}</Text>
+    );
+  } else {
+    return (
+      <View style={styles.profileDisplayContainer}>
+        <View style={styles.displayImageContainer}>
+          <Image
+            source={userDetail?.user?.picturePath || user_icon}
+            style={styles.displayImage}
+          />
+        </View>
+        <View>
+          <Text style={styles.username}>{userDetail?.user?.organizeName}</Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 export default function DrawerMenu({ navigation, children }) {
@@ -36,6 +57,11 @@ export default function DrawerMenu({ navigation, children }) {
     TabNavigation.navigate("CreatePin");
     setDrawerOpen(false);
   };
+  
+  const checkinButtonHandler = () => {
+    navigation.navigate("Checkin");
+    setDrawerOpen(false);
+  }
 
   const loginHandler = () => {
     setDrawerOpen(false);
@@ -66,7 +92,7 @@ export default function DrawerMenu({ navigation, children }) {
                   setDrawerOpen(false);
                 }}
               >
-                <Text>Close</Text>
+                <Image source={close_icon} style={{ width: 15, height: 15 }} />
               </Pressable>
             </View>
             {userDetail?.token ? (
@@ -81,11 +107,11 @@ export default function DrawerMenu({ navigation, children }) {
             )}
 
             <View style={styles.bigMenuContainer}>
-              <Pressable onPress={addButtonHandler} style={styles.bigMenuItem}>
+              <Pressable onPress={checkinButtonHandler} style={styles.bigMenuItem}>
                 <View style={styles.bigMenuIcon}>
-                  <Image style={styles.menuItem} source={plus_icon} />
+                  <Image style={styles.menuItem} source={qr_scanner_icon} />
                 </View>
-                <Text>ปุ่มบางอย่าง</Text>
+                <Text style={styles.bigButtonText}>เช็คอิน</Text>
               </Pressable>
               {userDetail?.isAdmin && (
                 <Pressable
@@ -95,7 +121,7 @@ export default function DrawerMenu({ navigation, children }) {
                   <View style={styles.bigMenuIcon}>
                     <Image style={styles.menuItem} source={plus_icon} />
                   </View>
-                  <Text>เพิ่มสถานที่</Text>
+                  <Text style={styles.bigButtonText}>เพิ่มสถานที่</Text>
                 </Pressable>
               )}
             </View>
@@ -148,6 +174,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 20,
   },
   buttonText: {
     fontSize: 16,
@@ -165,6 +192,8 @@ const styles = StyleSheet.create({
   profileDisplayContainer: {
     flexDirection: "row",
     width: "100%",
+    marginTop: 20,
+    gap: 20,
   },
   displayImageContainer: {
     width: 50,
@@ -203,5 +232,13 @@ const styles = StyleSheet.create({
   menuItem: {
     width: "100%",
     height: "100%",
+  },
+  username: {
+    fontSize: 25,
+    fontWeight: "600",
+  },
+  bigButtonText: {
+    fontWeight: 500,
+    marginTop: 8,
   },
 });

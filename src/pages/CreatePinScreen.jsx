@@ -5,6 +5,7 @@ import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
 import BigButton from "../components/button/BigButton";
 import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
+import { primaryColor } from "../data/color";
 
 export default function CreatePinScreen() {
   const { setNewMarker } = useAppContext();

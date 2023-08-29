@@ -10,6 +10,7 @@ import HomeScreen from "./src/pages/HomeScreen";
 import LoginScreen from "./src/pages/LoginScreen";
 import NavBar from "./src/components/NavBar";
 import DrawerMenu from "./src/components/DrawerMenu";
+import CheckinScreen from "./src/pages/CheckinScreen";
 
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
@@ -71,6 +72,11 @@ export default function App() {
             <Stack.Screen
               name="Login"
               component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Checkin"
+              component={CheckinScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
