@@ -7,12 +7,13 @@ const BASE_URL =
 export async function getQuestData(id) {
   
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-  const {token} = userdetail
+  const {token} = userdetail;
+  // console.log(token)
   try {
     const { data } = await axios.get(`${BASE_URL}/quest/find/${id}`,{headers: {
       'Authorization': 'Bearer ' + token,
     }});
-    // console.log("API Response:", data);
+    console.log("API Response:", data);
     return data ;
   } catch (e) {
     console.log(e);
