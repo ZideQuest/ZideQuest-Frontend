@@ -9,11 +9,11 @@ export default function Tag({ tags }) {
       <View style={styles.DataCon}>
         <View style={styles.tagCon}>
             {tags.map((tag, index) => (
-            <View style={styles.singleTag}>
-                <Text key={index} style={styles.tagText}>
-                {tag.tagName}
-                </Text>
-            </View>
+              <View style={styles.singleTag } key={index}>
+                  <Text  style={styles.tagText}>
+                    {tag.tagName}
+                  </Text>
+              </View>
             ))}
         </View>
       </View>

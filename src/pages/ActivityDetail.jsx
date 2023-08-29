@@ -36,7 +36,7 @@ export default function ActivityDetail() {
 
   const route = useRoute();
   const { questId } = route.params;
-
+  
   useEffect(() => {
     const fetchData = async (questId) => {
       try {
