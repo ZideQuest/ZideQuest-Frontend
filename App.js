@@ -49,7 +49,6 @@ export default function App() {
 
         <GestureHandlerRootView style={{ flex: 1 }}>
           <DrawerMenu navigation={navigation}>
-            <NavBar navigation={navigation} />
             <BottomSheetModalProvider>
               <HomeScreen />
             </BottomSheetModalProvider>

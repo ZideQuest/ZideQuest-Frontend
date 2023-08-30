@@ -5,13 +5,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { navigationRef } from "../data/TabNavigation";
 
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-
-// import { useAppContext } from "../data/AppContext";
-
 import Map from "../components/Map";
 import RecommendScreen from "./RecommendScreen";
 import CreatePinScreen from "./CreatePinScreen";
@@ -19,18 +12,9 @@ import PinDetailScreen from "./PinDetailScreen";
 import TestProfile from "./TestProfile";
 import PinCreateInfo from "./PinCreateInfo";
 import QuestManagement from "./QuestManagement";
-
-import { TransitionPresets } from "@react-navigation/stack";
-
-const Stack = createNativeStackNavigator();
-
-import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ActivityDetail from "./ActivityDetail";
 
-const modalGen = (component) => {
-  return <Bottomsheet>{component}</Bottomsheet>;
-};
+const Stack = createNativeStackNavigator();
 
 export default function HomeScreen() {
   return (

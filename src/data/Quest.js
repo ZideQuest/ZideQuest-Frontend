@@ -1,24 +1,40 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-const BASE_URL =
-  "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/api";
-
+import { BASE_URL } from "./backend_url";
 
 export async function getQuestData(id) {
-  
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-  const {token} = userdetail;
+  const { token } = userdetail;
   // console.log(token)
   try {
-    const { data } = await axios.get(`${BASE_URL}/quest/find/${id}`,{headers: {
-      'Authorization': 'Bearer ' + token,
-    }});
+    const { data } = await axios.get(`${BASE_URL}/quest/find/${id}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
     // console.log("API Response:", data);
-    return data ;
+    return data;
   } catch (e) {
     console.log(e);
     return {
       message: "failed to load this Quest",
+      status: 400,
+    };
+  }
+}
+
+export async function searchQuest(name) {
+  console.log(name);
+
+  try {
+    const { data } = await axios.get(`${BASE_URL}/search`, {
+      params: { questName: name },
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+    return {
+      message: "failed to search Quest",
       status: 400,
     };
   }

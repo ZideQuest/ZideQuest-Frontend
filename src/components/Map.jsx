@@ -7,6 +7,7 @@ import { useAppContext } from "../data/AppContext";
 import { mapCustomStyle } from "../data/map-style";
 import { fetchLocations } from "../data/locations";
 import * as TabNavigation from "../data/TabNavigation";
+import NavBar from "./NavBar";
 
 function getDetailFromData(coordinate) {
   const lat = coordinate.nativeEvent.coordinate.latitude;
@@ -96,6 +97,7 @@ export default function Map() {
 
   return (
     <View style={styles.map}>
+      <NavBar />
       <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}

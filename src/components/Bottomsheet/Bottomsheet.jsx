@@ -8,7 +8,13 @@ import { useAppContext } from "../../data/AppContext";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const Bottomsheet = ({ children, snapPoints, index = 0, detached = false, hideBar=false }) => {
+const Bottomsheet = ({
+  children,
+  snapPoints,
+  index = 0,
+  detached = false,
+  hideBar = false,
+}) => {
   const bottomSheetModalRef = useRef(null);
   const { bottomModalRef, setBottomModalRef } = useAppContext();
 

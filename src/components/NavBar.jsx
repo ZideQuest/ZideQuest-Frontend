@@ -9,20 +9,17 @@ import {
   Button,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Drawer } from "react-native-drawer-layout";
 
 import Modal from "react-native-modal";
 
 import { useAppContext } from "../data/AppContext";
-import * as TabNavigation from "../data/TabNavigation";
 
 import zidequest_icon from "../../assets/images/zidequest_icon.png";
 import SearchBar from "./SearchBar";
 import { primaryColor } from "../data/color";
 
-const ANIMATION_TIME = 200;
 
-export default function NavBar({ navigation }) {
+export default function NavBar() {
   const insets = useSafeAreaInsets();
   const { drawerOpen, setDrawerOpen } = useAppContext();
 
@@ -37,9 +34,9 @@ export default function NavBar({ navigation }) {
           <Image source={zidequest_icon} style={styles.hamburgerIcon} />
         </Pressable>
       </View>
-      <View style={styles.searchContainer}>
+      {/* <View style={styles.searchContainer}>
         <SearchBar />
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -50,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     paddingHorizontal: 15,
-    zIndex: 15,
+    zIndex: 1,
     position: "absolute",
   },
   navLeft: {
