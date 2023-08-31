@@ -200,13 +200,12 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    borderWidth: 2,
+    borderWidth: 1,
     overflow: "hidden",
   },
   displayImage: {
     width: "100%",
     height: "100%",
-    resizeMode: "contain",
   },
   smallMenuContainer: {
     gap: 15,

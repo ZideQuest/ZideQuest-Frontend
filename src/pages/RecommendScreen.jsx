@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, Button, TextInput } from "react-native";
 import React, { useEffect, useRef } from "react";
 import userprofiletest from "../../assets/images/UserProfileTest.jpg";
 
@@ -11,6 +11,7 @@ const MinimalCard = ({ event, time, location, userlevel, username, image }) => {
     <Bottomsheet snapPoints={["10%", "35%", "85%"]} index={1}>
       <View style={styles.CardContainer}>
         <SearchBar />
+        <TextInput />
         <View>
           <Text style={styles.event_name}>event</Text>
           {/* <Text style={styles.event_name}>{event}</Text> */}

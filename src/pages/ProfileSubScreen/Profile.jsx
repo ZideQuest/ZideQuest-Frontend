@@ -2,11 +2,6 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import * as TabNavigation from "../../data/TabNavigation";
 
 export default function Profile({ navigation }) {
-  const logoutHandler = () => {
-    alert("Logging out...");
-    logout();
-  };
-
   return (
     <View style={styles.profile}>
       <Pressable
@@ -14,9 +9,6 @@ export default function Profile({ navigation }) {
         style={styles.exit}
       >
         <Text>Exit</Text>
-      </Pressable>
-      <Pressable onPress={logoutHandler} style={styles.exit}>
-        <Text>Logout</Text>
       </Pressable>
       <Pressable
         onPress={() => navigation.navigate("Quests")}

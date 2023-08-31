@@ -15,8 +15,10 @@ import { useAppContext } from "../data/AppContext";
 import { primaryColor } from "../data/color";
 import { searchQuest } from "../data/Quest";
 import SearchItem from "./Quest/SearchItem";
-import * as TabNavigation from "../data/TabNavigation"
+import RecentSearch from "./RecentSearch";
+import * as TabNavigation from "../data/TabNavigation";
 
+import { storeHistory } from "../data/async_storage";
 import { search_icon } from "../../assets/images/search_white.png";
 
 export default function SearchBar() {
@@ -40,8 +42,8 @@ export default function SearchBar() {
     debouncedFetch(q);
   };
 
-  const searchHandler = () => {
-    bottomModalRef.current?.snapToPosition("100%");
+  const onFocusHandler = () => {
+    bottomModalRef.current?.snapToPosition("95%");
     setSearching(true);
     setFocusing(true);
   };
@@ -52,6 +54,7 @@ export default function SearchBar() {
 
   const onSubmitHandler = () => {
     setFocusing(false);
+    storeHistory(search);
     bottomModalRef.current?.snapToIndex(1);
   };
 
@@ -64,18 +67,11 @@ export default function SearchBar() {
   };
 
   const profilePressHandler = () => {
-    TabNavigation.navigate("Profile")
-  }
+    TabNavigation.navigate("Profile");
+  };
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          marginTop: focusing ? insets.top : 0,
-        },
-      ]}
-    >
+    <View style={[styles.container]}>
       <View style={styles.topBarContainer}>
         <View style={styles.searchTextContainer}>
           <View style={styles.iconContainer}>
@@ -84,7 +80,7 @@ export default function SearchBar() {
           <TextInput
             style={styles.searchText}
             placeholder="ค้นหาเควส"
-            onFocus={searchHandler}
+            onFocus={onFocusHandler}
             onBlur={onBlurHandler}
             value={search}
             onChangeText={handleTextChange}
@@ -95,7 +91,10 @@ export default function SearchBar() {
         {searching ? (
           <Button title="Cancel" onPress={onCancelHander} />
         ) : (
-          <Pressable onPress={profilePressHandler} style={styles.profileContainer}>
+          <Pressable
+            onPress={profilePressHandler}
+            style={styles.profileContainer}
+          >
             <Image
               src={userDetail.user?.picturePath}
               style={styles.profilePicture}
@@ -109,6 +108,12 @@ export default function SearchBar() {
           {searchResult.map((quest) => (
             <SearchItem quest={quest} key={quest._id} />
           ))}
+        </View>
+      )}
+
+      {searching && (
+        <View>
+          <RecentSearch />
         </View>
       )}
     </View>
@@ -141,6 +146,7 @@ const styles = StyleSheet.create({
   },
   searchText: {
     margin: 10,
+    flex: 1,
   },
   searchButton: {
     backgroundColor: primaryColor,
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   searchResultContainer: {
-    marginTop: 20,
+    // marginTop: 20,
   },
   profileContainer: {
     width: 40,

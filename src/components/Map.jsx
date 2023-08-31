@@ -110,6 +110,7 @@ export default function Map() {
         onPoiClick={(data) => mapPressHandler(data)}
         customMapStyle={mapCustomStyle}
         onTouchStart={() => bottomModalRef.current?.collapse()}
+        loadingEnabled
       >
         {locations.map((pin) => (
           <Marker
