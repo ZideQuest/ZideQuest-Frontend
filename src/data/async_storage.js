@@ -1,16 +1,18 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const storeHistory = async (value) => {
-  console.log("store triggered");
-
   try {
     let history = await AsyncStorage.getItem("search-history");
     if (!history) history = [];
     history = JSON.parse(history);
 
-    console.log("storing : ", [value, ...history]);
-
-    const new_history = JSON.stringify([value, ...history]);
+    let new_history;
+    if (!history.includes(value)) {
+      new_history = JSON.stringify([value, ...history]);
+    } else {
+      const temp = history.filter(h => h != value);
+      new_history = JSON.stringify([value, ...temp])
+    }
     await AsyncStorage.setItem("search-history", new_history);
   } catch (e) {
     console.error("error storing history", e);

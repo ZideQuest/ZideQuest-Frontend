@@ -3,30 +3,26 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
 import * as TabNavigation from "../../data/TabNavigation";
 import { storeHistory } from "../../data/async_storage";
-import { timeConv } from "../../data/time/time";
 import { useAppContext } from "../../data/AppContext";
 
-export default function SearchItem({ quest }) {
+export default function LocationSearchItem({ location }) {
   const { mapMoveTo } = useAppContext();
 
   const queryPressHandler = () => {
-    storeHistory(quest.questName);
-    console.log(quest.locationId?.latitude, quest.locationId?.longitude);
-    mapMoveTo(quest.locationId?.latitude, quest.locationId?.longitude);
-    TabNavigation.navigate("QuestDetail", { questId: quest._id });
+    storeHistory(location.locationName);
+    mapMoveTo(location.latitude, location.longitude)
+    TabNavigation.navigate("PinDetail", { pinId: location._id });
   };
 
   return (
     <Pressable style={styles.container} onPress={queryPressHandler}>
       <View style={styles.imageContainer}>
-        <Image src={quest.picturePath} style={styles.image} />
+        <Image src={location.picturePath} style={styles.image} />
       </View>
       <View style={styles.detail}>
         <View>
-          <Text>{quest.questName}</Text>
-          <Text>{quest.description}</Text>
+          <Text>{location.locationName}</Text>
         </View>
-        <Text>{timeConv(quest.timeStart)}</Text>
       </View>
     </Pressable>
   );
@@ -52,9 +48,9 @@ const styles = StyleSheet.create({
   },
   detail: {
     flex: 1,
+    height: "100%",
     borderBottomWidth: 1,
     borderColor: "grey",
-    height: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     paddingRight: 10,

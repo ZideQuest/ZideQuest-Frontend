@@ -13,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [bottomModalRef, setBottomModalRef] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [mapMoveTo, setMapMoveTo] = useState(null);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -63,7 +64,7 @@ export const AppProvider = ({ children }) => {
           setUserDetails({});
         }
       } catch (error) {
-        console.log("Error fetching token:", error);
+        console.error("Error fetching token:", error);
       }
     };
     fetchToken();
@@ -85,6 +86,8 @@ export const AppProvider = ({ children }) => {
         setBottomModalRef,
         drawerOpen,
         setDrawerOpen,
+        mapMoveTo,
+        setMapMoveTo,
       }}
     >
       {children}

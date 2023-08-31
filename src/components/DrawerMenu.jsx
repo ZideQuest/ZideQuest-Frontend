@@ -14,39 +14,6 @@ import close_icon from "../../assets/images/close_icon.png";
 
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
-function ProfileDisplay({ userDetail }) {
-  if (userDetail.isAdmin) {
-    return (
-      <View style={styles.profileDisplayContainer}>
-        <View style={styles.displayImageContainer}>
-          <Image
-            src={userDetail?.user?.picturePath || user_icon}
-            style={styles.displayImage}
-          />
-        </View>
-        <View>
-          <Text style={styles.username}>{userDetail?.user?.organizeName}</Text>
-          <Text>{userDetail.user.role}</Text>
-        </View>
-      </View>
-    );
-  } else {
-    return (
-      <View style={styles.profileDisplayContainer}>
-        <View style={styles.displayImageContainer}>
-          <Image
-            source={userDetail?.user?.picturePath || user_icon}
-            style={styles.displayImage}
-          />
-        </View>
-        <View>
-          <Text style={styles.username}>{userDetail?.user?.organizeName}</Text>
-        </View>
-      </View>
-    );
-  }
-}
-
 export default function DrawerMenu({ navigation, children }) {
   const { userDetail, drawerOpen, setDrawerOpen, logout } = useAppContext();
   const insets = useSafeAreaInsets();
@@ -74,6 +41,50 @@ export default function DrawerMenu({ navigation, children }) {
     }
   };
 
+  const profilePressHander = () => {
+    setDrawerOpen(false);
+    TabNavigation.navigate("Profile");
+  };
+
+  const ProfileDisplay = ({ userDetail }) => {
+    if (userDetail.isAdmin) {
+      return (
+        <Pressable
+          style={styles.profileDisplayContainer}
+          onPress={profilePressHander}
+        >
+          <View style={styles.displayImageContainer}>
+            <Image
+              src={userDetail?.user?.picturePath || user_icon}
+              style={styles.displayImage}
+            />
+          </View>
+          <View>
+            <Text style={styles.username}>
+              {userDetail?.user?.organizeName}
+            </Text>
+            <Text>{userDetail.user.role}</Text>
+          </View>
+        </Pressable>
+      );
+    } else {
+      return (
+        <View style={styles.profileDisplayContainer}>
+          <View style={styles.displayImageContainer}>
+            <Image
+              source={userDetail?.user?.picturePath || user_icon}
+              style={styles.displayImage}
+            />
+          </View>
+          <View>
+            <Text style={styles.username}>
+              {userDetail?.user?.organizeName}
+            </Text>
+          </View>
+        </View>
+      );
+    }
+  };
   return (
     <Drawer
       open={drawerOpen}

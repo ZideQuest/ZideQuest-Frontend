@@ -7,7 +7,7 @@ import { useAppContext } from "../data/AppContext";
 import { BGcolor } from "../data/color";
 
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
-import * as TabNavigation from "../data/TabNavigation"
+import * as TabNavigation from "../data/TabNavigation";
 
 import MyQuests from "./ProfileSubScreen/MyQuest";
 import Profile from "./ProfileSubScreen/Profile";
@@ -18,11 +18,7 @@ export default function ProfileModal() {
   const { isProfileOpen, setIsProfileOpen } = useAppContext();
 
   return (
-    <Bottomsheet
-      snapPoints={["95%"]}
-      detached={true}
-      hideBar={true}
-    >
+    <Bottomsheet snapPoints={["95%"]} detached={true} hideBar={true}>
       <View style={styles.container}>
         <NavigationContainer independent={true}>
           <Stack.Navigator
@@ -43,5 +39,6 @@ export default function ProfileModal() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
   },
 });

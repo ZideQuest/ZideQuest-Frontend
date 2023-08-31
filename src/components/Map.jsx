@@ -18,7 +18,8 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const { newMarker, setNewMarker, bottomModalRef } = useAppContext();
+  const { newMarker, setNewMarker, bottomModalRef, setMapMoveTo } =
+    useAppContext();
   const [locations, setLocations] = useState([]);
 
   const mapRef = useRef(null);
@@ -84,12 +85,16 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
+    setMapMoveTo(() => animateToRegion);
+  }, []);
+
+  useEffect(() => {
     const fetchMap = async () => {
       try {
         const data = await fetchLocations();
         setLocations(data);
       } catch (error) {
-        console.log("Error fetching locations", error);
+        console.error("Error fetching locations", error);
       }
     };
     fetchMap();
@@ -103,6 +108,7 @@ export default function Map() {
         provider={PROVIDER_GOOGLE}
         minZoomLevel={15}
         height="100%"
+        width="100%"
         // onRegionChangeComplete={(region) => setRegion(region)}
         region={region}
         showsUserLocation

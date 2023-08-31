@@ -9,6 +9,7 @@ import {
   Pressable,
   Button,
   Image,
+  Keyboard,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppContext } from "../data/AppContext";
@@ -17,15 +18,16 @@ import { searchQuest } from "../data/Quest";
 import SearchItem from "./Quest/SearchItem";
 import RecentSearch from "./RecentSearch";
 import * as TabNavigation from "../data/TabNavigation";
+import LocationSearchItem from "./Location/LocationSearchItem"
 
 import { storeHistory } from "../data/async_storage";
-import { search_icon } from "../../assets/images/search_white.png";
+import search_icon from "../../assets/images/search.png";
 
 export default function SearchBar() {
   const { bottomModalRef, userDetail } = useAppContext();
   const insets = useSafeAreaInsets();
   const [searching, setSearching] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(null);
   const [focusing, setFocusing] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
 
@@ -59,11 +61,12 @@ export default function SearchBar() {
   };
 
   const onCancelHander = () => {
-    bottomModalRef.current?.snapToIndex(1);
+    setSearch(null);
     setFocusing(false);
     setSearchResult([]);
     setSearching(false);
-    setSearch("");
+    Keyboard.dismiss();
+    bottomModalRef.current?.snapToIndex(1);
   };
 
   const profilePressHandler = () => {
@@ -87,7 +90,6 @@ export default function SearchBar() {
             onSubmitEditing={onSubmitHandler}
           />
         </View>
-
         {searching ? (
           <Button title="Cancel" onPress={onCancelHander} />
         ) : (
@@ -103,17 +105,20 @@ export default function SearchBar() {
         )}
       </View>
 
-      {searchResult && search && (
+      {searchResult && searching && search && (
         <View style={styles.searchResultContainer}>
-          {searchResult.map((quest) => (
+          {searchResult.quests?.map((quest) => (
             <SearchItem quest={quest} key={quest._id} />
+          ))}
+          {searchResult.locations?.map((location) => (
+            <LocationSearchItem location={location} key={location._id} />
           ))}
         </View>
       )}
 
-      {searching && (
+      {searching && !search && (
         <View>
-          <RecentSearch />
+          <RecentSearch setSearch={setSearch} />
         </View>
       )}
     </View>
@@ -123,9 +128,9 @@ export default function SearchBar() {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: 10,
   },
   topBarContainer: {
+    paddingHorizontal: 10,
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
@@ -143,6 +148,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     height: "100%",
+    alignItems: "center",
+    paddingLeft: 10,
   },
   searchText: {
     margin: 10,
@@ -154,7 +161,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   searchResultContainer: {
-    // marginTop: 20,
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderColor: "grey",
   },
   profileContainer: {
     width: 40,
@@ -167,12 +176,13 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   iconContainer: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     // backgroundColor: "grey",
   },
   iconImage: {
     width: "100%",
     height: "100%",
+    opacity: 0.55,
   },
 });

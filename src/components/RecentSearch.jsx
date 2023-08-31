@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Button } from "react-native";
+import { View, Text, StyleSheet, Pressable, Button, Image } from "react-native";
 
 import { loadHistory, clearHistory } from "../data/async_storage";
+import { textColor } from "../data/color";
 
-export default function RecentSearch() {
+import search_icon from "../../assets/images/search.png";
+
+export default function RecentSearch({ setSearch }) {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
@@ -16,21 +19,76 @@ export default function RecentSearch() {
 
   const clearHandler = () => {
     clearHistory();
-    setHistory([])
-  }
+    setHistory([]);
+  };
 
   return (
-    <View>
-      <Button title="clear" onPress={clearHistory} />
+    <View style={styles.recentContainer}>
+      <View style={styles.recentHeaderContainer}>
+        <Text style={styles.recentHeaderText}>Recents</Text>
+        {history.length != 0 && <Button title="clear" onPress={clearHandler} />}
+      </View>
       {history.length != 0 ? (
         history.map((h, i) => (
-          <View key={`history-${i}`}>
-            <Text>{h}</Text>
-          </View>
+          <Pressable
+            key={`history-${i}`}
+            onPress={() => setSearch(h)}
+            style={styles.recentItem}
+          >
+            <View style={styles.searchIconContainer}>
+              <Image source={search_icon} style={styles.searchIconImage} />
+            </View>
+            <Text style={styles.recentText}>{h}</Text>
+          </Pressable>
         ))
       ) : (
-        <Text>No recent search history</Text>
+        <Text style={styles.noRecent}>No recent search history...</Text>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  recentContainer: {
+    paddingHorizontal: 15,
+    marginTop: 10,
+  },
+  recentHeaderContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    borderColor: "grey",
+  },
+  recentHeaderText: {
+    fontWeight: 700,
+    fontSize: 16,
+    color: textColor,
+  },
+  searchIconContainer: {
+    width: 20,
+    height: 20,
+  },
+  searchIconImage: {
+    width: "100%",
+    height: "100%",
+    opacity: 0.6,
+  },
+  recentItem: {
+    flexDirection: "row",
+    gap: 10,
+    padding: 5,
+    width: "100%",
+    alignItems: "center",
+  },
+  recentText: {
+    fontSize: 15,
+    fontWeight: 500,
+    color: textColor,
+  },
+  noRecent: {
+    color: textColor,
+    margin: 10,
+  }
+});
