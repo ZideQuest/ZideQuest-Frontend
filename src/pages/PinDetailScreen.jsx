@@ -93,7 +93,7 @@ export default function PinDetailScreen({ route, navigation }) {
             </View>
             <View style={styles.questListContainer}>
               {quests.map((quest) => (
-                <QuestListItem quest={quest} key={quest._id} isAdmin={userDetail?.isAdmin} />
+                <QuestListItem quest={quest} key={quest._id} isAdmin={userDetail?.isAdmin} token={userDetail?.token}/>
               ))}
             </View>
           </View>
