@@ -14,12 +14,9 @@ import { useAppContext } from "../data/AppContext";
 BGcolor = '#FDFEFE';
 textcolor = 'black';
 
-const delay = 100;
-
 export default function ActivityDetail() {
   const [QuestDetail, setQuestDetail] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const { userDetail } = useAppContext();
   const route = useRoute();
   const { questId } = route.params;
   
@@ -34,10 +31,6 @@ export default function ActivityDetail() {
           const isjoin = join_leave(questId);
           // console.log(questId);
           if(isjoin){
-            setLoading(true);
-            setTimeout(() => {
-              rePage()
-            }, delay);
             Alert.alert('เข้าร่วมสำเร็จ!'); 
           }else{
             Alert.alert('เข้าร่วมไม่สำเร็จ'); 
@@ -61,10 +54,6 @@ const leaveAlert = (questId) =>
           const isjoin = join_leave(questId);
           // console.log(questId);
           if(isjoin){
-            setLoading(true);
-            setTimeout(() => {
-              rePage()
-            }, delay);
             Alert.alert('ยกเลิกสำเร็จ!'); 
           }else{
             Alert.alert('ยกเลิกไม่สำเร็จ'); 
@@ -81,31 +70,16 @@ const leaveAlert = (questId) =>
     const fetchData = async (questId) => {
       try {
         const response = await getQuestData(questId);
-        setQuestDetail(response); // Set the fetched data to the state
+        setQuestDetail(response);
         setLoading(false);
       } catch (error) {
         console.error(error);
-        // Handle errors
       }
     };
 
-    fetchData(questId); // Call fetchData to fetch data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs once
-
-  function rePage(){
-    const fetchData = async (questId) => {
-      try {
-        const response = await getQuestData(questId);
-        setQuestDetail(response); // Set the fetched data to the state
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        // Handle errors
-      }
-    };
     fetchData(questId);
-  }
-
+  }, []);
+ 
   if (isLoading) {
     return (
       <Bottomsheet style={styles.container} snapPoints={["20%", "60%", "90%"]} index={1}>

@@ -21,7 +21,9 @@ export default function ActivityName({quest}) {
   return (
     <View style={styles.DataCon}>
       <View style={[styles.questItem]}>
-        <Text style={styles.questFont}>{quest.questName}</Text>
+        <View style={[styles.questNameCon]}>
+          <Text style={styles.questFont}>{quest.questName}</Text>
+        </View>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Text style={styles.ParticipantFont}>
             {quest.countParticipant}/{quest.maxParticipant}
@@ -113,4 +115,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     // fontWeight: 'bold',
   },
+  questNameCon: {
+    width: "70%",
+  }
 });
