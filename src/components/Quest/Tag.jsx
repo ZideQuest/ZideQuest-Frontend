@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
 
 BGcolor = '#FDFEFE';
-textcolor = 'black';
+textColor = 'black';
 
 export default function Tag({ tags }) {
     return (
@@ -22,11 +22,11 @@ export default function Tag({ tags }) {
 
 const styles = StyleSheet.create({
   tagText: {
-    color: "BGcolor",
+    color: textColor,
     padding: 5,
   },
   tagCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",

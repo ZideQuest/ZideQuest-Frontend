@@ -4,7 +4,7 @@ import {timeConv} from "../../data/time/time";
 import person_icon from "../../../assets/images/participant.png";
 
 BGcolor = '#FDFEFE';
-textcolor = 'black';
+textColor = 'black';
 
 function statusIcon (currentP, maxP) {
   const ratio = currentP/maxP;
@@ -41,15 +41,15 @@ export default function ActivityName({quest}) {
       </View>
       <View style={styles.DataCon}>
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: "textcolor", fontSize: 16}}>
+          <Text style={{ color: textcolor, fontSize: 16}}>
             {timeConv(quest.timeStart)}{'\n'}{timeConv(quest.timeEnd)}{'\n'}{quest.locationName}
           </Text>
         </View>
         <View style={styles.creatorCon}>
-            <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
+            <Text style={{ color: textcolor, fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
         </View>
         <View style={styles.creatorPicCon}>
-            <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
+            <Text style={{ color: textcolor, fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
         </View>
       </View>
     </View>
@@ -81,18 +81,18 @@ const styles = StyleSheet.create({
   },
   timePlaceCon: {
     flexDirection: "row",
-    backgroundColor: 'BGcolor',
+    backgroundColor: BGcolor,
     width: "45%",
     justifyContent: "center",
   },
   creatorCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "29%",
     justifyContent: "center",
     alignItems: "flex-end",
   },
   creatorPicCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "20%",
     justifyContent: "center",
     alignItems: "flex-end",
