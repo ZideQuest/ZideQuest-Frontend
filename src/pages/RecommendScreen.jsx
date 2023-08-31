@@ -11,7 +11,6 @@ const MinimalCard = ({ event, time, location, userlevel, username, image }) => {
     <Bottomsheet snapPoints={["10%", "35%", "85%"]} index={1}>
       <View style={styles.CardContainer}>
         <SearchBar />
-        <TextInput />
         <View>
           <Text style={styles.event_name}>event</Text>
           {/* <Text style={styles.event_name}>{event}</Text> */}
