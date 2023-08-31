@@ -23,7 +23,6 @@ const joinAlert = (questId) =>
         onPress: () => {
      
           const isjoin = join_leave(questId);
-          // console.log(questId);
           if(isjoin){
             Alert.alert('เข้าร่วมสำเร็จ!'); 
           }else{
@@ -48,7 +47,6 @@ const leaveAlert = (questId) =>
         text: 'YES',
         onPress: () => {
           const isjoin = join_leave(questId);
-          // console.log(questId);
           if(isjoin){
             Alert.alert('ยกเลิกสำเร็จ!'); 
           }else{

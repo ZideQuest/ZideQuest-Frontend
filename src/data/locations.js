@@ -21,7 +21,7 @@ export async function getLocationData(id) {
 
     return { location, quests };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return {
       message: "failed to load this location",
       status: 400,

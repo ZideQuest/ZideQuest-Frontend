@@ -25,7 +25,6 @@ export function push(...args) {
 
 export function currentScreen(...args) {
   if (navigationRef.isReady()) {
-    // console.log(navigationRef.current.getCurrentRoute().name)
     return navigationRef.current.getCurrentRoute().name;
   }
 }

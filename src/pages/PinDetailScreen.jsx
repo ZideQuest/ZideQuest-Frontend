@@ -34,7 +34,7 @@ export default function PinDetailScreen({ route, navigation }) {
         setLocationData(location);
         setQuests(quests);
       } catch (error) {
-        console.log("Error fetching locations", error);
+        console.error("Error fetching locations", error);
       }
     };
     fetchLocationData();

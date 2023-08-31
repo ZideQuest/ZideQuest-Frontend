@@ -5,17 +5,15 @@ import { BASE_URL } from "./backend_url";
 export async function getQuestData(id) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
-  // console.log(token)
   try {
     const { data } = await axios.get(`${BASE_URL}/quest/find/${id}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
     });
-    // console.log("API Response:", data);
     return data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return {
       message: "failed to load this Quest",
       status: 400,
@@ -24,15 +22,14 @@ export async function getQuestData(id) {
 }
 
 export async function searchQuest(name) {
-  console.log(name);
-
   try {
     const { data } = await axios.get(`${BASE_URL}/search`, {
       params: { questName: name },
     });
+
     return data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return {
       message: "failed to search Quest",
       status: 400,

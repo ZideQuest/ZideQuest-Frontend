@@ -23,7 +23,6 @@ export default function QuestListItem({ quest, isAdmin = false }) {
     } else {
       TabNavigation.navigate("QuestDetail", { questId: quest._id });
     }
-    // console.log("pressed")
   };
 
   return (

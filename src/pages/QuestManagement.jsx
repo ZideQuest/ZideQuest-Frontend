@@ -30,7 +30,7 @@ export default function QuestManagement({ route }) {
         const data = await getQuestData(route.params?.questId);
         setQuestData(data);
       } catch (error) {
-        console.log("Error fetching quest", error);
+        console.error("Error fetching quest", error);
       }
     };
     fetchLocationData();
