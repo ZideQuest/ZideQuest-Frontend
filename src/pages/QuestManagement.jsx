@@ -41,7 +41,7 @@ export default function QuestManagement({ route }) {
       <BackButton />
       <View style={styles.container}>
         <View style={styles.bannerContainer}>
-          <Image src={questData?.picturePath} style={styles.bannerImage} />
+          <Image source={questData?.picturePath} style={styles.bannerImage} />
         </View>
         {questData && <ActivityName quest={questData} />}
         <View style={styles.buttonContainer}>

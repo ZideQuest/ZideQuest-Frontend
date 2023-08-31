@@ -11,7 +11,7 @@ export default function SearchItem({ quest }) {
   return (
     <Pressable style={styles.container} onPress={queryPressHandler}>
       <View style={styles.imageContainer}>
-        <Image src={quest.picturePath} style={styles.image} />
+        <Image source={quest.picturePath} style={styles.image} />
       </View>
       <View>
         <Text>{quest.questName}</Text>

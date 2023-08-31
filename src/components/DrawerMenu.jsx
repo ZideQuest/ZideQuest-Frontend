@@ -20,7 +20,7 @@ function ProfileDisplay({ userDetail }) {
       <View style={styles.profileDisplayContainer}>
         <View style={styles.displayImageContainer}>
           <Image
-            src={userDetail?.user?.picturePath || user_icon}
+            source={userDetail?.user?.picturePath || user_icon}
             style={styles.displayImage}
           />
         </View>

@@ -79,7 +79,7 @@ export default function SearchBar() {
       <View style={styles.topBarContainer}>
         <View style={styles.searchTextContainer}>
           <View style={styles.iconContainer}>
-            <Image source={search_icon} style={styles.iconImage} />
+            {/* <Image source={search_icon} style={styles.iconImage} /> */}
           </View>
           <TextInput
             style={styles.searchText}
@@ -95,11 +95,14 @@ export default function SearchBar() {
         {searching ? (
           <Button title="Cancel" onPress={onCancelHander} />
         ) : (
-          <Pressable onPress={profilePressHandler} style={styles.profileContainer}>
-            <Image
-              src={userDetail.user?.picturePath}
+          <Pressable
+            onPress={profilePressHandler}
+            style={styles.profileContainer}
+          >
+            {/* <Image
+              source={userDetail.user?.picturePath}
               style={styles.profilePicture}
-            />
+            /> */}
           </Pressable>
         )}
       </View>

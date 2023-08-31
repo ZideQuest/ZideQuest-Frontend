@@ -19,16 +19,15 @@ const Stack = createNativeStackNavigator();
 export default function HomeScreen() {
   return (
     <View style={styles.mapContainer}>
-      <Map />
+      {/* <Map /> */}
       <NavigationContainer ref={navigationRef} independent={true}>
         <Stack.Navigator
           initialRouteName="Recommend"
           backBehavior="none"
-          // screenOptions={({ route, navigation }) => ({
-          //   headerShown: false,
-          //   gestureEnabled: false,
-          //   ...TransitionPresets.ModalPresentationIOS,
-          // })}
+          screenOptions={({ route, navigation }) => ({
+            headerShown: false,
+            gestureEnabled: false,
+          })}
         >
           <Stack.Screen name="Recommend" component={RecommendScreen} />
           <Stack.Screen name="CreatePin" component={CreatePinScreen} />
