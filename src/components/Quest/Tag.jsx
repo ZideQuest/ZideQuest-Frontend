@@ -5,7 +5,7 @@ export default function Tag({ tags }) {
   return (
     <View style={styles.DataCon}>
       <View style={styles.tagCon}>
-        {tags.map((tag, index) => (
+        {tags && tags.map((tag, index) => (
           <View style={styles.singleTag} key={index}>
             <Text style={styles.tagText}>{tag.tagName}</Text>
           </View>
