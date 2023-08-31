@@ -9,7 +9,7 @@ import Map from "../components/Map";
 import RecommendScreen from "./RecommendScreen";
 import CreatePinScreen from "./CreatePinScreen";
 import PinDetailScreen from "./PinDetailScreen";
-import TestProfile from "./TestProfile";
+import ProfileModal from "./ProfileModal";
 import PinCreateInfo from "./PinCreateInfo";
 import QuestManagement from "./QuestManagement";
 import ActivityDetail from "./ActivityDetail";
@@ -19,7 +19,6 @@ const Stack = createNativeStackNavigator();
 export default function HomeScreen() {
   return (
     <View style={styles.mapContainer}>
-      <TestProfile />
       <Map />
       <NavigationContainer ref={navigationRef} independent={true}>
         <Stack.Navigator
@@ -38,6 +37,7 @@ export default function HomeScreen() {
           <Stack.Screen name="CreateQuest" component={RecommendScreen} />
           <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
           <Stack.Screen name="QuestManage" component={QuestManagement} />
+          <Stack.Screen name="Profile" component={ProfileModal} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

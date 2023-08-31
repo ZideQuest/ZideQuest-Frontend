@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     gap: 8,
     overflow: "hidden",
     borderRadius: 15,
+    justifyContent: "center",
   },
   headerText: {
     fontWeight: 700,

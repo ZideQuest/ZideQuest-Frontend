@@ -5,8 +5,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
-
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+import { buttonGrey, buttonLightGrey } from "../../data/color";
 
 const Bottomsheet = ({
   children,
@@ -29,6 +28,7 @@ const Bottomsheet = ({
         styles.headerIndicator,
         { height: hideBar ? 0 : 4 },
       ]}
+      handleStyle={{ padding: hideBar ? 0 : 5 }}
       ref={bottomSheetModalRef}
       index={index}
       snapPoints={snapPoints}
@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIndicator: {
-    width: 80,
+    width: 35,
+    backgroundColor: "grey",
   },
   contentContainer: {
     flex: 1,
