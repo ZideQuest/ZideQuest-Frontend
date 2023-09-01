@@ -36,3 +36,4 @@ export async function createQuest(questDetail, locationId) {
         console.log(error)
         throw error
     }
+}
