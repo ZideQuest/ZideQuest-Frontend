@@ -1,5 +1,5 @@
 import react, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Button, Alert } from "react-native";
+import { View, Text, StyleSheet, Image, Button, Alert, RefreshControl} from "react-native";
 import { useRoute } from '@react-navigation/native';
 import yo from "../../assets/images/KU2.jpg";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
@@ -8,41 +8,81 @@ import Tag from "../components/Quest/Tag";
 import ActivityName from "../components/Quest/ActivityName";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import BigButton from "../components/button/BigButton";
+import {join_leave} from "../data/join-leave";
+import { useAppContext } from "../data/AppContext";
 
 BGcolor = '#FDFEFE';
 textcolor = 'black';
 
-const showAlert = () =>
+const delay = 100;
+
+export default function ActivityDetail() {
+  const [QuestDetail, setQuestDetail] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+  const { userDetail } = useAppContext();
+  const route = useRoute();
+  const { questId } = route.params;
+  
+  const joinAlert = (questId) =>
   Alert.alert(
     'ยืนยันการเข้าร่วมกิจกรรม',
     'ต้องการเข้าร่วม กด OK!',
     [
       {
         text: 'OK!',
-        onPress: () => Alert.alert('ส่งคำขอเข้าร่วม...'),
-        
+        onPress: () => {
+          const isjoin = join_leave(questId);
+          // console.log(questId);
+          if(isjoin){
+            setLoading(true);
+            setTimeout(() => {
+              rePage()
+            }, delay);
+            Alert.alert('เข้าร่วมสำเร็จ!'); 
+          }else{
+            Alert.alert('เข้าร่วมไม่สำเร็จ'); 
+          }
+        },
       },
       {
-        text: 'cancle',
-        onPress: () => Alert.alert('ยกเลิกการเข้าร่วม.'),
-        
+        text: 'cancel',        
       },
     ],
   );
 
-export default function ActivityDetail() {
-  const [QuestDetail, setQuestDetail] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+const leaveAlert = (questId) =>
+  Alert.alert(
+    'ยืนยันยกเลิกการเข้าร่วม',
+    'ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES',
+    [
+      {
+        text: 'YES',
+        onPress: () => {
+          const isjoin = join_leave(questId);
+          // console.log(questId);
+          if(isjoin){
+            setLoading(true);
+            setTimeout(() => {
+              rePage()
+            }, delay);
+            Alert.alert('ยกเลิกสำเร็จ!'); 
+          }else{
+            Alert.alert('ยกเลิกไม่สำเร็จ'); 
+          }
+        },
+      },
+      {
+        text: 'cancel',        
+      },
+    ],
+  );
 
-  const route = useRoute();
-  const { questId } = route.params;
-  
   useEffect(() => {
     const fetchData = async (questId) => {
       try {
         const response = await getQuestData(questId);
         setQuestDetail(response); // Set the fetched data to the state
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         console.error(error);
         // Handle errors
@@ -52,32 +92,65 @@ export default function ActivityDetail() {
     fetchData(questId); // Call fetchData to fetch data when the component mounts
   }, []); // Empty dependency array ensures the effect runs once
 
-  if (isLoading) {
-    return <View style={styles.container}><Text>Loading...</Text></View>;
+  function rePage(){
+    const fetchData = async (questId) => {
+      try {
+        const response = await getQuestData(questId);
+        setQuestDetail(response); // Set the fetched data to the state
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        // Handle errors
+      }
+    };
+    fetchData(questId);
   }
-  
-  return (
 
-    <Bottomsheet style={styles.container} snapPoints={["31%", "65%", "90%"]} index={1}>
-      <BottomSheetScrollView
-          // stickyHeaderIndices={[0]}
-          style={{ backgroundColor: "white" }}
-      >
-        <View style={styles.picCon}>
-          <Image
-            style={styles.pic}
-            source={yo}
-          />
-        </View>
-        <ActivityName quest={QuestDetail}/>   
-        <Tag tags={QuestDetail?.tag}/> 
-        <View style={styles.DescripCon}>
-          <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
-        </View>
-        <BigButton text="เข้าร่วมกิจกรรม" bg="#E86A33" onPress={() => showAlert()}/>
-      </BottomSheetScrollView>
-    </Bottomsheet>
-  );
+  if (isLoading) {
+    return (
+      <Bottomsheet style={styles.container} snapPoints={["20%", "60%", "90%"]} index={1}>
+
+      </Bottomsheet>
+    );
+  }else{
+    return (
+      <Bottomsheet style={styles.container} snapPoints={["20%", "60%", "90%"]} index={1}>
+        <BottomSheetScrollView
+            // stickyHeaderIndices={[0]}
+        >
+          <View style={styles.ScrollView}>
+            <ActivityName quest={QuestDetail}/>
+            <View style={styles.picCon}>
+              <Image
+                style={styles.pic}
+                source={yo}
+              />
+            </View>
+            
+            <Tag tags={QuestDetail?.tag}/> 
+            <View style={styles.DescripCon}>
+              <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
+            </View>
+            <View style = {styles.ButtonCon}>
+              {!QuestDetail.isJoin ? (
+                <BigButton
+                  text="เข้าร่วมกิจกรรม"
+                  bg="#E86A33"
+                  onPress={() => joinAlert(questId)}
+                />
+              ) : (
+                <BigButton
+                  text="ยกเลิกการเข้าร่วม"
+                  bg="#8C1C15"
+                  onPress={() => leaveAlert(questId)}
+                />
+              )}
+            </View>
+          </View>
+        </BottomSheetScrollView>
+      </Bottomsheet>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -111,9 +184,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   DescripCon: {
-    backgroundColor: "BGcolor",
+    padding: 15,
+    backgroundColor: BGcolor,
     width: "100%",
   },
   AcButton: {
+  },
+  ButtonCon: {
+    width: "87%",
+  },
+  ScrollView: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

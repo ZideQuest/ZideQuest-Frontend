@@ -5,7 +5,6 @@ const BASE_URL =
 
 
 export async function getQuestData(id) {
-
     const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
     const { token } = userdetail
     try {
@@ -37,5 +36,3 @@ export async function createQuest(questDetail, locationId) {
         console.log(error)
         throw error
     }
-
-}
