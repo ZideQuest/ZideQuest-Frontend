@@ -4,18 +4,14 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => {
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
 
     const onChangeStartDate = (event, selectedDate) => {
         const currentDate = selectedDate;
-        setShow(false);
+
         setStartDate(currentDate);
     };
     const onChangeEndDate = (event, selectedDate) => {
         const currentDate = selectedDate;
-        setShow(false);
         setEndDate(currentDate);
     };
 
@@ -53,19 +49,18 @@ export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => 
 const styles = StyleSheet.create({
     view: {
         flexDirection: "row",
-        // gap: 20
+        gap: 5
     },
     innerView: {
         flex: 1,
-        flexDirection: "column",
+        // flexDirection: "column",
         // justifyContent: "flex-start",
         // alignItems: "flex-start",
         // borderWidth: 1
     },
     datePicker: {
         borderColor: "#000",
-        padding: 0,
-        marginRight: 13,
+        // padding: 0,
         // borderWidth: 1
     }
 });

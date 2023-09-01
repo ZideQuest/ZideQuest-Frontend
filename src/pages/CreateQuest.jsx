@@ -3,9 +3,13 @@ import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import AddPhoto from '../components/AddPhoto';
 import SelectDropdown from 'react-native-select-dropdown'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TimePicker } from '../components/TimePicker';
-
+import axios from 'axios';
+import { useRoute } from '@react-navigation/native'
+import * as SecureStore from "expo-secure-store";
+import { createQuest } from '../data/Quest';
+const BASE_URL = "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/api";
 // const activityCategories = ["ไม่มีชั่วโมงกิจกรรม", "1 กิจกรรมมหาวิทยาลัย", "2.1 กิจกรรมเพื่อเสริมสร้างสมรรถนะ ด้านพัฒนาคุณธรรม จริยธรรม", "2.2 กิจกรรมเพื่อเสริมสร้างสมรรถนะ ด้านการคิดและการเรียนรู้", "2.3 กิจกรรมเพื่อเสริมสร้างสมรรถนะ ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล", "2.4 กิจกรรมเพื่อเสริมสร้างสมรรถนะ ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล", "3 กิจกรรมเพื่อสังคม"]
 const activityCategories = [
     "ไม่มีชั่วโมงกิจกรรม",
@@ -16,13 +20,6 @@ const activityCategories = [
     "2.4  ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล",
     "3 กิจกรรมเพื่อสังคม"
 ]
-const tag = [
-    "ไม่มีแท็ก",
-    "สนุกสนาน",
-    "ได้ความรู้",
-    "เขียนโปรแกรม",
-    "วิศวะ"
-]
 
 function CreateQuest() {
     const [startDate, setStartDate] = useState(new Date())
@@ -32,31 +29,63 @@ function CreateQuest() {
     const [maxParticipant, setMaxParticipant] = useState("")
     const [activity, setActivity] = useState("")
     const [activityHour, setActivityHour] = useState(0)
-
+    const [tags, setTags] = useState([])
+    const [tagId, setTagId] = useState("")
+    const route = useRoute()
+    const { locationId } = route.params
 
     const buttonHandler = async (e) => {
+        console.log(startDate, endDate)
+        try {
+            const questDetail = new FormData()
+            // questDetail.append("timeStart", "2023-07-24T00:19:54.519Z")
+            // questDetail.append("timeEnd", "2023-07-24T00:21:54.519Z")
+            questDetail.append("timeStart", startDate.toDateString())
+            questDetail.append("timeEnd", endDate.toDateString())
+            questDetail.append("questName", questName)
+            questDetail.append("description", description)
+            questDetail.append("maxParticipant", maxParticipant)
+            questDetail.append("autoComplete", true)
 
-        const questDetail = new FormData()
-        questDetail.append("timeStart", startDate)
-        questDetail.append("timeEnd", endDate)
-        questDetail.append("questName", questName)
-        questDetail.append("description", description)
-        questDetail.append("maxParticipant", maxParticipant)
-
-
-        if (activity != "" || activityHour != 0) {
-            const activityDetail = {
-                category: activity,
-                hour: activityHour
+            if (activity != "" || activityHour != 0) {
+                const activityDetail = {
+                    category: activity,
+                    hour: activityHour
+                }
+                questDetail.append("activityHour", activityDetail)
             }
-            questDetail.append("activityHour", activityDetail)
+
+            if (tagId != "") {
+                const handleTag = [tagId]
+                questDetail.append("tagId", handleTag)
+
+            }
+            await createQuest(questDetail, locationId)
+
+        } catch (error) {
+            console.log(error)
         }
-        console.log(questDetail)
     }
+
+    useEffect(() => {
+        const getTags = async () => {
+            try {
+                const { data } = await axios.get(`${BASE_URL}/tag`)
+                setTags(data)
+            } catch (error) {
+                return {
+                    message: "failed to load locations",
+                    status: 401,
+                };
+            }
+        }
+        getTags()
+    }, [])
+
+    const tagArray = ["ไม่มีแท็ก", ...tags.map((item) => item.tagName)]
     return (
         <Bottomsheet style={styles.container} snapPoints={["31%", "65%", "90%"]} index={1}>
             <BottomSheetScrollView
-                // stickyHeaderIndices={[0]}
                 style={{ backgroundColor: "white" }}>
                 <View style={styles.innerContainer}>
                     <Text style={styles.textXl}>
@@ -73,55 +102,68 @@ function CreateQuest() {
                             <TextInput style={styles.textIn} value={description} onChangeText={setDescription} />
 
                         </View>
-                        <View style={styles.box}>
-                            <Text style={styles.textMd}>แท็ก</Text>
-                            <SelectDropdown
-                                defaultValueByIndex={0}
-                                data={tag}
-                                onSelect={(selectedItem, index) => {
-                                    if (index === 0) {
-                                        setActivity("")
-                                    }
-                                    const activityType = selectedItem.split(" ")[0]
-                                    setActivity(activityType)
-                                    // console.log(selectedItem, index)
-                                }}
-                                buttonTextAfterSelection={(selectedItem, index) => {
-                                    // text represented after item is selected
-                                    // if data array is an array of objects then return selectedItem.property to render after item is selected
-                                    return selectedItem
-                                }}
-                                rowTextForSelection={(item, index) => {
-                                    // text represented for each item in dropdown
-                                    // if data array is an array of objects then return item.property to represent item in dropdown
-                                    return item
-                                }}
-                                // search={true}
-                                buttonTextStyle={{
-                                    fontSize: 16,
-                                }}
+                        <View style={{ flexDirection: "row", gap: 20, flex: 1, justifyContent: 'space-between' }}>
 
-                                dropdownStyle={{
-                                    borderRadius: 20,
-                                    backgroundColor: "#fbfbfb"
-                                }}
-                                rowTextStyle={{
-                                    fontSize: 16,
-                                    textAlign: 'left'
-                                }}
+                            <View style={{ ...styles.box, flex: 1 }}>
+                                <Text style={styles.textMd}>แท็ก</Text>
+                                <SelectDropdown
+                                    search={true}
+                                    defaultValueByIndex={0}
+                                    data={tagArray}
+                                    onSelect={(selectedItem, index) => {
+                                        if (index === 0) {
+                                            setTagId("")
+                                        } else {
+                                            setTagId(tags[index]._id)
+                                        }
+                                        const activityType = selectedItem.split(" ")[0]
+                                        // console.log(selectedItem, index)
+                                    }}
+                                    buttonTextAfterSelection={(selectedItem, index) => {
+                                        // text represented after item is selected
+                                        // if data array is an array of objects then return selectedItem.property to render after item is selected
+                                        return selectedItem
+                                    }}
+                                    rowTextForSelection={(item, index) => {
+                                        // text represented for each item in dropdown
+                                        // if data array is an array of objects then return item.property to represent item in dropdown
+                                        return item
+                                    }}
+                                    // search={true}
+                                    buttonTextStyle={{
+                                        fontSize: 16,
+                                    }}
 
-                                buttonStyle={{
-                                    height: 30,
-                                    borderColor: "#CDCDCD",
-                                    borderWidth: 1,
-                                    width: "100%",
+                                    dropdownStyle={{
+                                        borderRadius: 20,
+                                        backgroundColor: "#fbfbfb"
+                                    }}
+                                    rowTextStyle={{
+                                        fontSize: 16,
+                                        textAlign: 'left'
+                                    }}
 
-                                    backgroundColor: "#fbfbfb",
-                                    borderRadius: 10,
-                                    fontSize: 16
-                                }}
+                                    buttonStyle={{
+                                        height: 30,
+                                        borderColor: "#CDCDCD",
+                                        borderWidth: 1,
+                                        width: "100%",
 
-                            />
+                                        backgroundColor: "#fbfbfb",
+                                        borderRadius: 10,
+                                        fontSize: 16
+                                    }}
+                                />
+                            </View>
+                            <View style={styles.box}>
+                                <Text style={styles.textMd}>จำนวนคน</Text>
+                                <TextInput style={styles.textIn} value={maxParticipant} onChangeText={setMaxParticipant} />
+                            </View>
+                            <View style={styles.box}>
+                                <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
+                                <AddPhoto />
+
+                            </View>
                         </View>
                         <View style={styles.box}>
                             {/* <Text style={styles.textMd}>ช่วงเวลาจัดกิจกรรม</Text> */}
@@ -129,15 +171,6 @@ function CreateQuest() {
                         </View>
 
                         <View style={{ flexDirection: "row", gap: 40, flex: 1 }}>
-                            <View style={styles.box}>
-                                <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
-                                <AddPhoto />
-
-                            </View>
-                            <View style={styles.box}>
-                                <Text style={styles.textMd}>จำนวนคน</Text>
-                                <TextInput style={styles.textIn} value={maxParticipant} onChangeText={setMaxParticipant} />
-                            </View>
                         </View>
                         <View style={{ flexDirection: "row", gap: 40, flex: 1 }}>
                             <View style={styles.box}>
@@ -201,7 +234,7 @@ function CreateQuest() {
                     </Pressable>
                 </View>
             </BottomSheetScrollView>
-        </Bottomsheet>
+        </Bottomsheet >
     )
 }
 
@@ -258,7 +291,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: "white",
         fontWeight: "bold"
-
     }
 });
 
