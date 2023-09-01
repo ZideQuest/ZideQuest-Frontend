@@ -35,6 +35,7 @@ function CreateQuest() {
     const { locationId } = route.params
 
     const buttonHandler = async (e) => {
+
         console.log(startDate, endDate)
         try {
             const questDetail = new FormData()
@@ -61,8 +62,10 @@ function CreateQuest() {
 
             }
             await createQuest(questDetail, locationId)
+            alert("create quest succesfuly!!!");
 
         } catch (error) {
+            alert("failed to create quest");
             console.log(error)
         }
     }
