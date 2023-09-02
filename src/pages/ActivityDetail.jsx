@@ -9,7 +9,7 @@ import ActivityName from "../components/Quest/ActivityName";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import BigButton from "../components/button/BigButton";
 import {join_leave} from "../data/join-leave";
-import { useAppContext } from "../data/AppContext";
+
 
 BGcolor = '#FDFEFE';
 textcolor = 'black';
@@ -19,52 +19,59 @@ export default function ActivityDetail() {
   const [isLoading, setLoading] = useState(true);
   const route = useRoute();
   const { questId } = route.params;
-  
-  const joinAlert = (questId) =>
-  Alert.alert(
-    'ยืนยันการเข้าร่วมกิจกรรม',
-    'ต้องการเข้าร่วม กด OK!',
-    [
-      {
-        text: 'OK!',
-        onPress: () => {
-          const isjoin = join_leave(questId);
-          // console.log(questId);
-          if(isjoin){
-            Alert.alert('เข้าร่วมสำเร็จ!'); 
-          }else{
-            Alert.alert('เข้าร่วมไม่สำเร็จ'); 
-          }
-        },
-      },
-      {
-        text: 'cancel',        
-      },
-    ],
-  );
+  const [isJoined, setIsJoined] = useState(false);
 
-const leaveAlert = (questId) =>
-  Alert.alert(
-    'ยืนยันยกเลิกการเข้าร่วม',
-    'ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES',
-    [
-      {
-        text: 'YES',
-        onPress: () => {
-          const isjoin = join_leave(questId);
-          // console.log(questId);
-          if(isjoin){
-            Alert.alert('ยกเลิกสำเร็จ!'); 
-          }else{
-            Alert.alert('ยกเลิกไม่สำเร็จ'); 
-          }
+  const joinAlert = (questId) =>
+    Alert.alert(
+      'ยืนยันการเข้าร่วมกิจกรรม',
+      'ต้องการเข้าร่วม กด OK!',
+      [
+        {
+          text: 'OK!',
+          onPress:async () => {
+            setLoading(true);
+            const detail = await join_leave(questId);
+            if(detail != null){
+              setQuestDetail(detail); 
+              setIsJoined(true);
+              Alert.alert('เข้าร่วมสำเร็จ!');         
+            }else{
+              Alert.alert('เข้าร่วมไม่สำเร็จ'); 
+            }
+            setLoading(false);
+          },
         },
-      },
-      {
-        text: 'cancel',        
-      },
-    ],
-  );
+        {
+          text: 'cancel',        
+        },
+      ],
+    );
+
+  const leaveAlert = (questId) =>
+    Alert.alert(
+      'ยืนยันยกเลิกการเข้าร่วม',
+      'ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES',
+      [
+        {
+          text: 'YES',
+          onPress:async () => {
+            setLoading(true);
+            const detail = await join_leave(questId);
+            if(detail != null){
+              setQuestDetail(detail); 
+              setIsJoined(false);
+              Alert.alert('ยกเลิกสำเร็จ!');
+            }else{
+              Alert.alert('ยกเลิกไม่สำเร็จ'); 
+            }
+            setLoading(false);    
+          },
+        },
+        {
+          text: 'cancel',        
+        },
+      ],
+    );
 
   useEffect(() => {
     const fetchData = async (questId) => {
@@ -72,6 +79,7 @@ const leaveAlert = (questId) =>
         const response = await getQuestData(questId);
         setQuestDetail(response);
         setLoading(false);
+        setIsJoined(response.isJoin)
       } catch (error) {
         console.error(error);
       }
@@ -103,20 +111,20 @@ const leaveAlert = (questId) =>
             
             <Tag tags={QuestDetail?.tag}/> 
             <View style={styles.DescripCon}>
-              <Text style={{ color: "textcolor", fontSize: 16, }}>{QuestDetail.description}</Text>
+              <Text style={{ color: textcolor, fontSize: 16, }}>{QuestDetail.description}</Text>
             </View>
             <View style = {styles.ButtonCon}>
-              {!QuestDetail.isJoin ? (
-                <BigButton
-                  text="เข้าร่วมกิจกรรม"
-                  bg="#E86A33"
-                  onPress={() => joinAlert(questId)}
-                />
-              ) : (
+              {isJoined ?(
                 <BigButton
                   text="ยกเลิกการเข้าร่วม"
                   bg="#8C1C15"
                   onPress={() => leaveAlert(questId)}
+                />
+              ) : (
+                <BigButton
+                  text="เข้าร่วมกิจกรรม"
+                  bg="#E86A33"
+                  onPress={() => joinAlert(questId)}
                 />
               )}
             </View>
