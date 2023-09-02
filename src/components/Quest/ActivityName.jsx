@@ -4,7 +4,7 @@ import {timeConv} from "../../data/time/time";
 import person_icon from "../../../assets/images/participant.png";
 
 BGcolor = '#FDFEFE';
-textcolor = 'black';
+textColor = 'black';
 
 function statusIcon (currentP, maxP) {
   const ratio = currentP/maxP;
@@ -21,7 +21,9 @@ export default function ActivityName({quest}) {
   return (
     <View style={styles.DataCon}>
       <View style={[styles.questItem]}>
-        <Text style={styles.questFont}>{quest.questName}</Text>
+        <View style={[styles.questNameCon]}>
+          <Text style={styles.questFont}>{quest.questName}</Text>
+        </View>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Text style={styles.ParticipantFont}>
             {quest.countParticipant}/{quest.maxParticipant}
@@ -41,15 +43,20 @@ export default function ActivityName({quest}) {
       </View>
       <View style={styles.DataCon}>
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: "textcolor", fontSize: 16}}>
+          <Text style={{ color: textcolor, fontSize: 16}}>
             {timeConv(quest.timeStart)}{'\n'}{timeConv(quest.timeEnd)}{'\n'}{quest.locationName}
           </Text>
         </View>
         <View style={styles.creatorCon}>
-            <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
+            <Text style={{ color: textcolor, fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
         </View>
         <View style={styles.creatorPicCon}>
-            <Text style={{ color: "textcolor", fontSize: 20, fontWeight: 'bold', }}>รูปหน่วยงาน</Text>
+          <Image
+            style={styles.picCreator}
+            source={{
+              uri: quest.creatorPic,
+              }}
+          ></Image>
         </View>
       </View>
     </View>
@@ -69,10 +76,9 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     width: "100%",
   },
-  pic: {
-    width: 20,
-    height: 20,
-    // backgroundColor: "red"
+  picCreator: {
+    width: "100%",
+    height: "100%",
     resizeMode: "contain",
   },
   questFont: {
@@ -81,36 +87,44 @@ const styles = StyleSheet.create({
   },
   timePlaceCon: {
     flexDirection: "row",
-    backgroundColor: 'BGcolor',
+    backgroundColor: BGcolor,
     width: "45%",
     justifyContent: "center",
+    alignItems: "center",
   },
   creatorCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "29%",
     justifyContent: "center",
     alignItems: "flex-end",
   },
   creatorPicCon: {
-    backgroundColor: "BGcolor",
+    backgroundColor: BGcolor,
     width: "20%",
-    justifyContent: "center",
-    alignItems: "flex-end",
     aspectRatio: 1 / 1,
   },
   
   DataCon: {
     backgroundColor: BGcolor,
     width: "100%",
-    padding: 10,
+    padding: 5,
     flexDirection: "row",
     flexWrap: "wrap",
-    rowGap: 10,
+    rowGap: 3,
     columnGap: 10,
     justifyContent: "center",
   },
   ParticipantFont: {
     fontSize: 20,
     // fontWeight: 'bold',
+  },
+  questNameCon: {
+    width: "70%",
+  },
+  pic: {
+    width: 20,
+    height: 20,
+    // backgroundColor: "red"
+    resizeMode: "contain",
   },
 });

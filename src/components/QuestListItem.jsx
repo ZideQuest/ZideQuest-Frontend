@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Alert } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import person_icon from "../../assets/images/participant.png";
@@ -15,12 +15,14 @@ function statusIcon(currentP, maxP) {
   return "green";
 }
 
-export default function QuestListItem({ quest, isAdmin = false }) {
+export default function QuestListItem({ quest, isAdmin = false, token }) {
   const questPressHandler = () => {
     if (isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
-    } else {
+    } else if (token != null){
       TabNavigation.navigate("QuestDetail", { questId: quest._id });
+    } else {
+      alert('กรุณา login');
     }
     // console.log("pressed")
   };
