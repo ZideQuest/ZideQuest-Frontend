@@ -6,8 +6,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { navigationRef } from "../data/TabNavigation";
 
 import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
+    BottomSheetModal,
+    BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 
 // import { useAppContext } from "../data/AppContext";
@@ -27,45 +27,46 @@ const Stack = createNativeStackNavigator();
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ActivityDetail from "./ActivityDetail";
+import CreateQuest from "./CreateQuest";
 
 const modalGen = (component) => {
-  return <Bottomsheet>{component}</Bottomsheet>;
+    return <Bottomsheet>{component}</Bottomsheet>;
 };
 
 export default function HomeScreen() {
-  return (
-    <View style={styles.mapContainer}>
-      <TestProfile />
-      <Map />
-      <NavigationContainer ref={navigationRef} independent={true}>
-        <Stack.Navigator
-          initialRouteName="Recommend"
-          backBehavior="none"
-          // screenOptions={({ route, navigation }) => ({
-          //   headerShown: false,
-          //   gestureEnabled: false,
-          //   ...TransitionPresets.ModalPresentationIOS,
-          // })}
-        >
-          <Stack.Screen name="Recommend" component={RecommendScreen} />
-          <Stack.Screen name="CreatePin" component={CreatePinScreen} />
-          <Stack.Screen name="PinDetail" component={PinDetailScreen} />
-          <Stack.Screen name="QuestDetail" component={ActivityDetail} />
-          <Stack.Screen name="CreateQuest" component={RecommendScreen} />
-          <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
-          <Stack.Screen name="QuestManage" component={QuestManagement} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
-  );
+    return (
+        <View style={styles.mapContainer}>
+            <TestProfile />
+            <Map />
+            <NavigationContainer ref={navigationRef} independent={true}>
+                <Stack.Navigator
+                    initialRouteName="Recommend"
+                    backBehavior="none"
+                // screenOptions={({ route, navigation }) => ({
+                //   headerShown: false,
+                //   gestureEnabled: false,
+                //   ...TransitionPresets.ModalPresentationIOS,
+                // })}
+                >
+                    <Stack.Screen name="Recommend" component={RecommendScreen} />
+                    <Stack.Screen name="CreatePin" component={CreatePinScreen} />
+                    <Stack.Screen name="PinDetail" component={PinDetailScreen} />
+                    <Stack.Screen name="QuestDetail" component={ActivityDetail} />
+                    <Stack.Screen name="CreateQuest" component={CreateQuest} />
+                    <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
+                    <Stack.Screen name="QuestManage" component={QuestManagement} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  mapContainer: {
-    height: "100%",
-  },
-  subMenu: {
-    // width: "100%",
-    // maxWidth: 700,
-  },
+    mapContainer: {
+        height: "100%",
+    },
+    subMenu: {
+        // width: "100%",
+        // maxWidth: 700,
+    },
 });
