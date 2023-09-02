@@ -31,6 +31,7 @@ export default function ActivityDetail() {
           onPress:async () => {
             setLoading(true);
             const detail = await join_leave(questId);
+            console.log(detail);
             if(detail != null){
               setQuestDetail(detail); 
               setIsJoined(true);
@@ -57,6 +58,7 @@ export default function ActivityDetail() {
           onPress:async () => {
             setLoading(true);
             const detail = await join_leave(questId);
+            console.log(detail);
             if(detail != null){
               setQuestDetail(detail); 
               setIsJoined(false);

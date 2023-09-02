@@ -13,7 +13,7 @@ export async function getQuestData(id) {
     const { data } = await axios.get(`${BASE_URL}/quest/find/${id}`,{headers: {
       'Authorization': 'Bearer ' + token,
     }});
-    // console.log("API Response:", data);
+    console.log("API Response:", data);
     return data ;
   } catch (e) {
     console.log(e);
