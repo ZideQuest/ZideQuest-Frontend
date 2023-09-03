@@ -107,7 +107,9 @@ export default function ActivityDetail() {
             <View style={styles.picCon}>
               <Image
                 style={styles.pic}
-                source={yo}
+                source={{
+                  uri: QuestDetail.picturePath,
+                  }}
               />
             </View>
             
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
   pic: {
     width: "100%",
     height: "100%",
+    // resizeMode: "contain",
   },
   DataCon: {
     backgroundColor: BGcolor,
