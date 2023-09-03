@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View, Platform } from 'react-native'
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import AddPhoto from '../components/AddPhoto';
@@ -33,20 +33,28 @@ function CreateQuest() {
     const [tagId, setTagId] = useState("")
     const route = useRoute()
     const { locationId } = route.params
+    const [image, setImage] = useState(null)
 
     const buttonHandler = async (e) => {
+        alert("loading...");
 
-        console.log(startDate, endDate)
         try {
             const questDetail = new FormData()
-            // questDetail.append("timeStart", "2023-07-24T00:19:54.519Z")
-            // questDetail.append("timeEnd", "2023-07-24T00:21:54.519Z")
             questDetail.append("timeStart", startDate.toDateString())
             questDetail.append("timeEnd", endDate.toDateString())
             questDetail.append("questName", questName)
             questDetail.append("description", description)
             questDetail.append("maxParticipant", maxParticipant)
             questDetail.append("autoComplete", true)
+
+            if (image != null) {
+                questDetail.append("img", {
+                    name: image.fileName,
+                    type: image.type,
+                    uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
+                })
+
+            }
 
             if (activity != "" || activityHour != 0) {
                 const activityDetail = {
@@ -65,8 +73,8 @@ function CreateQuest() {
             alert("create quest succesfuly!!!");
 
         } catch (error) {
+            console.log(error.message)
             alert("failed to create quest");
-            console.log(error)
         }
     }
 
@@ -119,8 +127,6 @@ function CreateQuest() {
                                         } else {
                                             setTagId(tags[index]._id)
                                         }
-                                        const activityType = selectedItem.split(" ")[0]
-                                        // console.log(selectedItem, index)
                                     }}
                                     buttonTextAfterSelection={(selectedItem, index) => {
                                         // text represented after item is selected
@@ -162,19 +168,13 @@ function CreateQuest() {
                                 <Text style={styles.textMd}>จำนวนคน</Text>
                                 <TextInput style={styles.textIn} value={maxParticipant} onChangeText={setMaxParticipant} />
                             </View>
-                            <View style={styles.box}>
-                                <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
-                                <AddPhoto />
-
-                            </View>
                         </View>
                         <View style={styles.box}>
                             {/* <Text style={styles.textMd}>ช่วงเวลาจัดกิจกรรม</Text> */}
                             <TimePicker startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />
                         </View>
 
-                        <View style={{ flexDirection: "row", gap: 40, flex: 1 }}>
-                        </View>
+
                         <View style={{ flexDirection: "row", gap: 40, flex: 1 }}>
                             <View style={styles.box}>
                                 <Text style={styles.textMd}>ชั่วโมงกิจกรรม</Text>
@@ -187,19 +187,14 @@ function CreateQuest() {
                                         }
                                         const activityType = selectedItem.split(" ")[0]
                                         setActivity(activityType)
-                                        // console.log(selectedItem, index)
+
                                     }}
                                     buttonTextAfterSelection={(selectedItem, index) => {
-                                        // text represented after item is selected
-                                        // if data array is an array of objects then return selectedItem.property to render after item is selected
                                         return selectedItem
                                     }}
                                     rowTextForSelection={(item, index) => {
-                                        // text represented for each item in dropdown
-                                        // if data array is an array of objects then return item.property to represent item in dropdown
                                         return item
                                     }}
-                                    // search={true}
                                     buttonTextStyle={{
                                         fontSize: 16,
                                     }}
@@ -222,14 +217,26 @@ function CreateQuest() {
                                         borderRadius: 10,
                                         fontSize: 16
                                     }}
-
                                 />
-
                             </View>
                             <View style={styles.box}>
                                 <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
                                 <TextInput style={styles.textIn} value={activityHour} onChangeText={setActivityHour} />
                             </View>
+                        </View>
+
+
+                        <View style={styles.box}>
+                            <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
+                            <AddPhoto image={image} setImage={setImage} />
+                            {image &&
+                                <View style={styles.image}>
+                                    <Pressable style={styles.xBtn} onPress={() => { setImage(null) }}>
+                                        <Text style={styles.xtextbtn}>X</Text>
+                                    </Pressable>
+                                    <Image source={{ uri: image.uri }} style={{ height: 150, flex: 1 }} />
+                                </View>
+                            }
                         </View>
                     </View>
                     <Pressable style={styles.btn} onPress={buttonHandler}>
@@ -294,6 +301,31 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: "white",
         fontWeight: "bold"
+    },
+    image: {
+        borderRadius: 10,
+        overflow: 'hidden',
+        shadowColor: '#171717',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        position: 'relative'
+    },
+    xBtn: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        zIndex: 10,
+        backgroundColor: "white",
+        borderRadius: 100,
+        padding: 3,
+        width: 20,
+        height: 20,
+    },
+    xtextbtn: {
+        color: "text",
+        fontWeight: 'bold',
+        textAlign: 'center'
     }
 });
 
