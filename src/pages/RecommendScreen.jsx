@@ -3,14 +3,16 @@ import React, { useEffect, useRef } from "react";
 
 import SearchBar from "../components/SearchBar";
 import GridCard from "../components/MinimalCard/Gridcard";
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 const Recommend = () => {
   return (
-    <View style={styles.Container}>
-      <SearchBar />
-      <GridCard />
-    </View>
-   
+    <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
+      <View style={styles.Container}>
+        <SearchBar />
+        <GridCard />
+      </View>
+    </Bottomsheet>
   );
 };
 

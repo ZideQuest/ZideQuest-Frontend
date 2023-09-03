@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   quest_image: {
     width: "100%",
-    height: "79%",
+    height: "75%",
     borderRadius: 10,
     // borderWidth: 2,
     // borderColor: "blue",
