@@ -1,4 +1,9 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { getLocationData } from "../../data/locations";
+import { getCreatorData } from "../../data/creator";
+import React, { useState, useEffect } from "react";
+import defaultCreatorImage from "../../../assets/images/UserProfileTest.jpg";
+import defaultQuestImage from "../../../assets/images/defaultQuestLocationImage.jpg";
 
 function month_to_thai(datestring) {
   switch (datestring) {
@@ -47,8 +52,7 @@ const MinimalCard = ({
   time,
   timeEnd,
   location,
-  user_name,
-  user_image,
+  creator_id,
   countParticipant,
   maxParticipant,
 }) => {
@@ -57,6 +61,35 @@ const MinimalCard = ({
   const year = time.slice(0, 4);
   const formattedTime = time.slice(14, 19);
   const formattedTimeEnd = timeEnd.slice(14, 19);
+  const [loading, setLoading] = useState(true);
+  const [locationData, setLocationData] = useState({});
+  const [creatorData, setCreatorData] = useState({});
+  const questImageSource =
+    quest_image !== "" ? { uri: quest_image } : defaultQuestImage;
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const LocationData = await getLocationData(location);
+        const CreatorData = await getCreatorData(creator_id);
+        setLocationData(LocationData);
+        setCreatorData(CreatorData);
+        // console.log(CreatorData);
+      } catch (error) {
+        console.error("Error fetching location and creator:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const locationName = locationData.location
+    ? locationData.location.locationName
+    : "Location Name Not Available";
+  const creatorImageSource = creatorData.picturePath
+    ? { uri: creatorData.picturePath }
+    : defaultCreatorImage;
 
   return (
     <View>
@@ -64,9 +97,16 @@ const MinimalCard = ({
         <Text style={styles.quest_name}>{quest_name}</Text>
         <View style={styles.row}>
           <View style={styles.row_inner}>
-            <Image style={styles.userprofile} source={{ uri: user_image }} />
+            <Image
+              style={styles.userprofile}
+              source={creatorImageSource} //แก้ไอสัส
+            />
             <View style={styles.userdescription}>
-              <Text>{user_name}</Text>
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
+                <Text>สถานที่: {locationName}</Text>
+              )}
               <View style={styles.participant}>
                 <Text style={styles.par_font}>จำนวนผู้เข้าร่วม: </Text>
                 <Text style={styles.par_font}>{countParticipant}</Text>
@@ -87,7 +127,7 @@ const MinimalCard = ({
           </View>
         </View>
         <View style={styles.image_container}>
-          <Image style={styles.quest_image} source={{ uri: quest_image }} />
+          <Image style={styles.quest_image} source={questImageSource} />
         </View>
       </View>
     </View>
@@ -106,18 +146,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 5,
     marginRight: 5,
-    // borderWidth: 2,
-    // borderColor: "black",
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 1,
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 20,
   },
   quest_name: {
-    color: "orange",
+    color: "#E86A33",
     left: 12,
     top: 10,
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
   },
   row: {

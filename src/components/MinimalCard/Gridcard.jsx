@@ -31,9 +31,8 @@ const GridCard = () => {
               quest_image={item.picturePath}
               time={item.timeStart}
               timeEnd={item.timeEnd}
-              location={item.countParticipant}
-              user_name={item.creatorId}
-              user_image={item.picturePath}
+              location={item.locationId}
+              creator_id={item.creatorId}
               countParticipant={item.countParticipant}
               maxParticipant={item.maxParticipant}
             />
