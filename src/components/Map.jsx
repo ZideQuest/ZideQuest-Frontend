@@ -16,7 +16,12 @@ function getDetailFromData(coordinate) {
   const lng = coordinate.nativeEvent.coordinate.longitude;
   const name = coordinate.nativeEvent.name;
   const placeId = coordinate.nativeEvent.placeId;
-
+  // console.log('------------------');
+  // console.log(lat);
+  // console.log(lng);
+  // console.log(name);
+  // console.log(placeId);
+  // console.log('------------------');
   return { lat, lng, name, placeId };
 }
 
@@ -52,23 +57,24 @@ export default function Map() {
 
   const markerPressHandler = (pinId, data) => {
     data.stopPropagation();
-
-    bottomModalRef.current?.snapToIndex(1);
+    const { lat, lng, name, placeId } = getDetailFromData(data);
 
     setNewMarker({
       latitude: lat,
       longitude: lng,
+      name,
+      placeId,
     });
 
     TabNavigation.navigate("PinDetail", { pinId });
-    const { lat, lng, name, placeId } = getDetailFromData(data);
+    // bottomModalRef.current?.snapToIndex(1);
     animateToRegion(lat, lng);
   };
 
   const animateToRegion = (lat, lng) => {
     if (mapRef.current) {
       const region = {
-        latitude: lat,
+        latitude: lat - 0.001,
         longitude: lng,
         latitudeDelta: 0.0025, // The delta values control the zoom level
         longitudeDelta: 0.0025,
@@ -110,20 +116,24 @@ export default function Map() {
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
         minZoomLevel={15}
+        height="100%"
         onRegionChangeComplete={(region) => setRegion(region)}
         {...mapOptions}
         onPress={(data) => mapPressHandler(data)}
         onPoiClick={(data) => mapPressHandler(data)}
-        height="100%"
         customMapStyle={mapCustomStyle}
+        onTouchStart={() => bottomModalRef.current?.collapse()}
       >
-        {locations.map((pin) => (
-          <Marker
-            coordinate={pin}
-            key={pin._id}
-            onPress={(data) => markerPressHandler(pin._id, data)}
-          />
-        ))}
+        {locations.map((pin) => {
+          // console.log(pin)
+          return (
+            <Marker
+              coordinate={pin}
+              key={pin._id}
+              onPress={(data) => markerPressHandler(pin._id, data)}
+            />
+          );
+        })}
         {newMarker && <Marker coordinate={newMarker} />}
       </MapView>
     </View>

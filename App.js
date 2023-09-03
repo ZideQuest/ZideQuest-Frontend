@@ -18,6 +18,12 @@ import Activity from "./src/pages/ActivityDetail";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
 
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+
 const Stack = createNativeStackNavigator();
 const navTheme = {
   ...DefaultTheme,
@@ -37,7 +43,7 @@ export default function App() {
   const AppContent = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     return (
-      <View>
+      <View style={{ paddingTop: insets.top, flex: 1 }}>
         <StatusBar
           animated={true}
           backgroundColor="#61dafb"
@@ -46,10 +52,12 @@ export default function App() {
           hidden={hidden}
           // style="auto"
         />
-        <View style={{ paddingTop: insets.top, height: "100%" }}>
-          <NavBar navigation={navigation} />
-          <HomeScreen />
-        </View>
+        <NavBar navigation={navigation} />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BottomSheetModalProvider style={{ flex: 1 }}>
+            <HomeScreen />
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
       </View>
     );
   };

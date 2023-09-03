@@ -1,10 +1,13 @@
-import { createNavigationContainerRef } from '@react-navigation/native';
+import { StackActions } from "@react-navigation/routers";
 
-export const navigationRef = createNavigationContainerRef()
+import { createNavigationContainerRef } from "@react-navigation/native";
+
+export const navigationRef = createNavigationContainerRef();
 
 export function navigate(name, params) {
   if (navigationRef.isReady()) {
-    navigationRef.navigate(name, params);
+    // navigationRef.navigate(name, params)
+    navigationRef.current?.dispatch(StackActions.replace(name, params));
   }
 }
 
@@ -23,6 +26,6 @@ export function push(...args) {
 export function currentScreen(...args) {
   if (navigationRef.isReady()) {
     // console.log(navigationRef.current.getCurrentRoute().name)
-    return navigationRef.current.getCurrentRoute().name
+    return navigationRef.current.getCurrentRoute().name;
   }
 }

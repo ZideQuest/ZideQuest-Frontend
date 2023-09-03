@@ -10,6 +10,7 @@ const Recommend = () => {
       <SearchBar />
       <GridCard />
     </View>
+   
   );
 };
 
