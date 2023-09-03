@@ -5,9 +5,10 @@ const BASE_URL =
 
 export async function getRecQuestData() {
   try {
-    const { data } = await axios.post(`${BASE_URL}/quest/recommend`);
+    const { data } = await axios.get(`${BASE_URL}/quest/recommend`);
     return data;
   } catch (e) {
+    console.error("Error:", e);
     return {
       message: "failed to get recommened quest",
       status: 400,

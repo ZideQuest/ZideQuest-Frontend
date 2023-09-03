@@ -1,39 +1,39 @@
-import { Image, StyleSheet, Text, View, FlatList } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import MinimalCard from "./MinimalCard";
 import React, { useEffect, useState } from "react";
-import testdata from "./testdata";
 import { ScrollView } from "react-native-gesture-handler";
-import { getRecQuestData } from "../../data/quest_rec";
+import { getRecQuestData } from "../../data/quest_rec.js";
 
 const GridCard = () => {
-  //   const [questData, setQuestData] = useState([]);
+  const [questData, setQuestData] = useState([]);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const data = await getRecQuestData();
-  //         console.log(data);
-  //         setQuestData(data);
-  //       } catch (error) {
-  //         console.error("Error fetching recommended quests:", error);
-  //       }
-  //     };
-  //     fetchData();
-  //   }, []);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getRecQuestData();
+        // console.log(data);
+        setQuestData(data);
+      } catch (error) {
+        console.error("Error fetching recommended quests:", error);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.GridContainer}>
       <ScrollView overScrollMode="never">
         <View>
-          {testdata.map((item) => (
+          {questData.map((item) => (
             <MinimalCard
-              quest_name={item.quest_name}
-              quest_image={item.quest_image}
-              time={item.time}
+              key={item._id}
+              quest_name={item.questName}
+              quest_image={item.picturePath}
+              time={item.timeStart}
               timeEnd={item.timeEnd}
-              location={item.location}
-              user_name={item.user_name}
-              user_image={item.user_image}
+              location={item.countParticipant}
+              user_name={item.creatorId}
+              user_image={item.picturePath}
               countParticipant={item.countParticipant}
               maxParticipant={item.maxParticipant}
             />
