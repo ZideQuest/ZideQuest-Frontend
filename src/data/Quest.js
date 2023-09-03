@@ -26,6 +26,7 @@ export async function getQuestData(id) {
 export async function createQuest(questDetail, locationId) {
     try {
         const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"))
+        console.log(token)
         const res = await axios.post(`${BASE_URL}/quest/location/${locationId}`, questDetail, {
             headers: {
                 Authorization: 'Bearer ' + token,

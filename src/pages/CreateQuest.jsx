@@ -73,8 +73,8 @@ function CreateQuest() {
             alert("create quest succesfuly!!!");
 
         } catch (error) {
+            console.log(error.message)
             alert("failed to create quest");
-            console.log(error)
         }
     }
 
@@ -127,8 +127,6 @@ function CreateQuest() {
                                         } else {
                                             setTagId(tags[index]._id)
                                         }
-                                        const activityType = selectedItem.split(" ")[0]
-                                        // console.log(selectedItem, index)
                                     }}
                                     buttonTextAfterSelection={(selectedItem, index) => {
                                         // text represented after item is selected
@@ -189,19 +187,14 @@ function CreateQuest() {
                                         }
                                         const activityType = selectedItem.split(" ")[0]
                                         setActivity(activityType)
-                                        // console.log(selectedItem, index)
+
                                     }}
                                     buttonTextAfterSelection={(selectedItem, index) => {
-                                        // text represented after item is selected
-                                        // if data array is an array of objects then return selectedItem.property to render after item is selected
                                         return selectedItem
                                     }}
                                     rowTextForSelection={(item, index) => {
-                                        // text represented for each item in dropdown
-                                        // if data array is an array of objects then return item.property to represent item in dropdown
                                         return item
                                     }}
-                                    // search={true}
                                     buttonTextStyle={{
                                         fontSize: 16,
                                     }}
@@ -224,9 +217,7 @@ function CreateQuest() {
                                         borderRadius: 10,
                                         fontSize: 16
                                     }}
-
                                 />
-
                             </View>
                             <View style={styles.box}>
                                 <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
@@ -234,19 +225,19 @@ function CreateQuest() {
                             </View>
                         </View>
 
-                        <View style={{ flexDirection: "row", gap: 20, flex: 1, justifyContent: 'space-between' }}>
-                            <View style={styles.box}>
-                                <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
-                                <AddPhoto image={image} setImage={setImage} />
-                            </View>
-                            <View style={styles.box}>
-                                {image && <Image source={{ uri: image.uri }} style={{ width: 100, height: 100 }} />}
 
-                            </View>
-
-
+                        <View style={styles.box}>
+                            <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
+                            <AddPhoto image={image} setImage={setImage} />
+                            {image &&
+                                <View style={styles.image}>
+                                    <Pressable style={styles.xBtn} onPress={() => { setImage(null) }}>
+                                        <Text style={styles.xtextbtn}>X</Text>
+                                    </Pressable>
+                                    <Image source={{ uri: image.uri }} style={{ height: 150, flex: 1 }} />
+                                </View>
+                            }
                         </View>
-
                     </View>
                     <Pressable style={styles.btn} onPress={buttonHandler}>
                         <Text style={styles.textBtn}>สร้างกิจกรรม</Text>
@@ -310,6 +301,31 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: "white",
         fontWeight: "bold"
+    },
+    image: {
+        borderRadius: 10,
+        overflow: 'hidden',
+        shadowColor: '#171717',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        position: 'relative'
+    },
+    xBtn: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        zIndex: 10,
+        backgroundColor: "white",
+        borderRadius: 100,
+        padding: 3,
+        width: 20,
+        height: 20,
+    },
+    xtextbtn: {
+        color: "text",
+        fontWeight: 'bold',
+        textAlign: 'center'
     }
 });
 

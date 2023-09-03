@@ -49,17 +49,20 @@ export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => 
 const styles = StyleSheet.create({
     view: {
         flexDirection: "row",
-        gap: 5
+        gap: 5,
+        // borderWidth: 1
     },
     innerView: {
         flex: 1,
+        gap: 10
         // flexDirection: "column",
         // justifyContent: "flex-start",
         // alignItems: "flex-start",
         // borderWidth: 1
     },
     datePicker: {
-        borderColor: "#000",
+        // borderColor: "#000",
+        // backgroundColor: "white"
         // padding: 0,
         // borderWidth: 1
     }
