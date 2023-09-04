@@ -13,6 +13,7 @@ import ProfileModal from "./ProfileModal";
 import PinCreateInfo from "./PinCreateInfo";
 import QuestManagement from "./QuestManagement";
 import ActivityDetail from "./ActivityDetail";
+import CreateQuest from "./CreateQuest";
 
 const Stack = createNativeStackNavigator();
 
@@ -45,11 +46,11 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  mapContainer: {
-    height: "100%",
-  },
-  subMenu: {
-    // width: "100%",
-    // maxWidth: 700,
-  },
+    mapContainer: {
+        height: "100%",
+    },
+    subMenu: {
+        // width: "100%",
+        // maxWidth: 700,
+    },
 });

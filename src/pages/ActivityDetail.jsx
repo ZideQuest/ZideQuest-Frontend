@@ -9,125 +9,133 @@ import ActivityName from "../components/Quest/ActivityName";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import BigButton from "../components/button/BigButton";
 import {join_leave} from "../data/join-leave";
-import { useAppContext } from "../data/AppContext";
+
 
 import {textColor, BGcolor, primaryColor} from "../data/color"
-
-const joinAlert = (questId) =>
-  Alert.alert(
-    'ยืนยันการเข้าร่วมกิจกรรม',
-    'ต้องการเข้าร่วม กด OK!',
-    [
-      {
-        text: 'OK!',
-        onPress: () => {
-     
-          const isjoin = join_leave(questId);
-          if(isjoin){
-            Alert.alert('เข้าร่วมสำเร็จ!'); 
-          }else{
-            Alert.alert('เข้าร่วมไม่สำเร็จ'); 
-          }
-        },
-      },
-      {
-        text: 'cancel',
-        onPress: () => Alert.alert('ยกเลิกการเข้าร่วม.'),
-        
-      },
-    ],
-  );
-
-const leaveAlert = (questId) =>
-  Alert.alert(
-    'ยืนยันยกเลิกการเข้าร่วม',
-    'ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES',
-    [
-      {
-        text: 'YES',
-        onPress: () => {
-          const isjoin = join_leave(questId);
-          if(isjoin){
-            Alert.alert('ยกเลิกสำเร็จ!'); 
-          }else{
-            Alert.alert('ยกเลิกไม่สำเร็จ'); 
-          }
-        },
-      },
-      {
-        text: 'cancel',
-        onPress: () => Alert.alert('คุณยังเข้าร่วมกิจกรรมอยู่.'),
-        
-      },
-    ],
-  );
-  
-  
 
 export default function ActivityDetail() {
   const [QuestDetail, setQuestDetail] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const { userDetail } = useAppContext();
   const route = useRoute();
   const { questId } = route.params;
-  
+  const [isJoined, setIsJoined] = useState(false);
+
+  const joinAlert = (questId) =>
+    Alert.alert(
+      'ยืนยันการเข้าร่วมกิจกรรม',
+      'ต้องการเข้าร่วม กด OK!',
+      [
+        {
+          text: 'OK!',
+          onPress:async () => {
+            setLoading(true);
+            const detail = await join_leave(questId);
+            console.log(detail);
+            if(detail != null){
+              setQuestDetail(detail); 
+              setIsJoined(true);
+              Alert.alert('เข้าร่วมสำเร็จ!');         
+            }else{
+              Alert.alert('เข้าร่วมไม่สำเร็จ'); 
+            }
+            setLoading(false);
+          },
+        },
+        {
+          text: 'cancel',        
+        },
+      ],
+    );
+
+  const leaveAlert = (questId) =>
+    Alert.alert(
+      'ยืนยันยกเลิกการเข้าร่วม',
+      'ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES',
+      [
+        {
+          text: 'YES',
+          onPress:async () => {
+            setLoading(true);
+            const detail = await join_leave(questId);
+            console.log(detail);
+            if(detail != null){
+              setQuestDetail(detail); 
+              setIsJoined(false);
+              Alert.alert('ยกเลิกสำเร็จ!');
+            }else{
+              Alert.alert('ยกเลิกไม่สำเร็จ'); 
+            }
+            setLoading(false);    
+          },
+        },
+        {
+          text: 'cancel',        
+        },
+      ],
+    );
+
   useEffect(() => {
     const fetchData = async (questId) => {
       try {
         const response = await getQuestData(questId);
-        setQuestDetail(response); // Set the fetched data to the state
-        setLoading(false)
+        setQuestDetail(response);
+        setLoading(false);
+        setIsJoined(response.isJoin)
       } catch (error) {
         console.error(error);
-        // Handle errors
       }
     };
 
-    fetchData(questId); // Call fetchData to fetch data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs once
-
+    fetchData(questId);
+  }, []);
+ 
   if (isLoading) {
-    return <View style={styles.container}><Text>Loading...</Text></View>;
-  }
-  
-  return (
+    return (
+      <Bottomsheet style={styles.container} snapPoints={["20%", "60%", "90%"]} index={1}>
 
-    <Bottomsheet style={styles.container} snapPoints={["20%", "60%", "90%"]} index={1}>
-      <BottomSheetScrollView
-          // stickyHeaderIndices={[0]}
-      >
-        <View style={styles.ScrollView}>
-          <ActivityName quest={QuestDetail}/>
-          <View style={styles.picCon}>
-            <Image
-              style={styles.pic}
-              source={yo}
-            />
-          </View>
-          
-          <Tag tags={QuestDetail?.tag}/> 
-          <View style={styles.DescripCon}>
-            <Text style={{ color: textColor, fontSize: 16, }}>{QuestDetail.description}</Text>
-          </View>
-          <View style = {styles.ButtonCon}>
-            {!QuestDetail.isJoin ? (
-              <BigButton
-                text="เข้าร่วมกิจกรรม"
-                bg="#E86A33"
-                onPress={() => joinAlert(questId)}
+      </Bottomsheet>
+    );
+  }else{
+    return (
+      <Bottomsheet style={styles.container} snapPoints={["20%", "60%", "90%"]} index={1}>
+        <BottomSheetScrollView
+            // stickyHeaderIndices={[0]}
+        >
+          <View style={styles.ScrollView}>
+            <ActivityName quest={QuestDetail}/>
+            <View style={styles.picCon}>
+              <Image
+                style={styles.pic}
+                source={{
+                  uri: QuestDetail.picturePath,
+                  }}
               />
-            ) : (
-              <BigButton
-                text="ยกเลิกการเข้าร่วม"
-                bg="#8C1C15"
-                onPress={() => leaveAlert(questId)}
-              />
-            )}
+            </View>
+            
+            <Tag tags={QuestDetail?.tag}/> 
+            <View style={styles.DescripCon}>
+              <Text style={{ color: textcolor, fontSize: 16, }}>{QuestDetail.description}</Text>
+            </View>
+            <View style = {styles.ButtonCon}>
+              {isJoined ?(
+                <BigButton
+                  text="ยกเลิกการเข้าร่วม"
+                  bg="#8C1C15"
+                  onPress={() => leaveAlert(questId)}
+                />
+              ) : (
+                <BigButton
+                  text="เข้าร่วมกิจกรรม"
+                  bg="#E86A33"
+                  onPress={() => joinAlert(questId)}
+                />
+              )}
+            </View>
           </View>
-        </View>
-      </BottomSheetScrollView>
-    </Bottomsheet>
-  );
+        </BottomSheetScrollView>
+      </Bottomsheet>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -149,6 +157,7 @@ const styles = StyleSheet.create({
   pic: {
     width: "100%",
     height: "100%",
+    // resizeMode: "contain",
   },
   DataCon: {
     backgroundColor: BGcolor,

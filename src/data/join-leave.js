@@ -19,9 +19,12 @@ export async function join_leave(id) {
         },
       },
     );
-    return true;
+    const questDetail = response.data.questDetail
+    // console.log('join-leave',questDetail);
+    return questDetail;
+    // console.log("API Response:", response.data);
   } catch (error) {
     console.error(error);
-    return false;
+    return null;
   }
 }

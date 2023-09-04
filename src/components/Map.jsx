@@ -132,9 +132,9 @@ export default function Map() {
 }
 
 const styles = StyleSheet.create({
-  map: {
-    height: "100%",
-    position: "relative",
-    width: "100%",
-  },
+    map: {
+        height: "100%",
+        position: "relative",
+        width: "100%",
+    },
 });

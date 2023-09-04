@@ -20,7 +20,9 @@ export default function ActivityName({ quest }) {
   return (
     <View style={styles.DataCon}>
       <View style={[styles.questItem]}>
-        <Text style={styles.questFont}>{quest.questName}</Text>
+        <View style={[styles.questNameCon]}>
+          <Text style={styles.questFont}>{quest.questName}</Text>
+        </View>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Text style={styles.ParticipantFont}>
             {quest.countParticipant}/{quest.maxParticipant}
@@ -48,14 +50,15 @@ export default function ActivityName({ quest }) {
           </Text>
         </View>
         <View style={styles.creatorCon}>
-          <Text style={{ color: textColor, fontSize: 20, fontWeight: "bold" }}>
-            {quest.creatorName}
-          </Text>
+            <Text style={{ color: textColor, fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
         </View>
         <View style={styles.creatorPicCon}>
-          <Text style={{ color: textColor, fontSize: 20, fontWeight: "bold" }}>
-            รูปหน่วยงาน
-          </Text>
+          <Image
+            style={styles.picCreator}
+            source={{
+              uri: quest.creatorPic,
+              }}
+          ></Image>
         </View>
       </View>
     </View>
@@ -73,9 +76,9 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     width: "100%",
   },
-  pic: {
-    width: 20,
-    height: 20,
+  picCreator: {
+    width: "100%",
+    height: "100%",
     resizeMode: "contain",
   },
   questFont: {
@@ -87,6 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: BGcolor,
     width: "45%",
     justifyContent: "center",
+    alignItems: "center",
   },
   creatorCon: {
     backgroundColor: BGcolor,
@@ -97,23 +101,30 @@ const styles = StyleSheet.create({
   creatorPicCon: {
     backgroundColor: BGcolor,
     width: "20%",
-    justifyContent: "center",
-    alignItems: "flex-end",
     aspectRatio: 1 / 1,
   },
 
   DataCon: {
     backgroundColor: BGcolor,
     width: "100%",
-    padding: 10,
+    padding: 5,
     flexDirection: "row",
     flexWrap: "wrap",
-    rowGap: 10,
+    rowGap: 3,
     columnGap: 10,
     justifyContent: "center",
   },
   ParticipantFont: {
     fontSize: 20,
     // fontWeight: 'bold',
+  },
+  questNameCon: {
+    width: "70%",
+  },
+  pic: {
+    width: 20,
+    height: 20,
+    // backgroundColor: "red"
+    resizeMode: "contain",
   },
 });
