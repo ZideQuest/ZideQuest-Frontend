@@ -19,12 +19,14 @@ import * as TabNavigation from "../data/TabNavigation.jsx";
 
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
+import { buttonNormalGreen } from "../data/color";
 
 export default function PinDetailScreen({ route, navigation }) {
     const { userDetail } = useAppContext();
     const [locationData, setLocationData] = useState({});
     const [loading, setLoading] = useState(true);
     const [quests, setQuests] = useState([]);
+  
     useEffect(() => {
         const fetchLocationData = async () => {
             try {
@@ -32,15 +34,11 @@ export default function PinDetailScreen({ route, navigation }) {
                 setLocationData(location);
                 setQuests(quests);
             } catch (error) {
-                console.log("Error fetching locations", error);
+                console.error("Error fetching locations", error);
             }
         };
         fetchLocationData();
     }, []);
-
-    const handleImageLoading = () => {
-        setLoading(false);
-    };
 
     return (
         <View>
@@ -103,66 +101,66 @@ export default function PinDetailScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "white",
-        // flex: 1,
-        overflow: "scroll",
-    },
-    headerContainer: {
-        paddingHorizontal: 20,
-        paddingBottom: 15,
-        // marginBottom: 15,
-        backgroundColor: "white",
-    },
-    imageScrollContainer: {
-        height: 220,
-        flexDirection: "row",
-        // overflow: "scroll",
-    },
-    bannerContainer: {
-        height: "100%",
-        width: 300,
-        marginRight: 4,
-    },
-    bannerImage: {
-        height: "100%",
-        width: "100%",
-        // resizeMode: "stretch"
-    },
-    quests: {
-        paddingHorizontal: 23,
-        paddingTop: 15,
-        gap: 5,
-        paddingBottom: 40,
-    },
-    header: {
-        fontSize: 25,
-        fontWeight: 700,
-    },
-    detail: {
-        fontSize: 15,
-    },
-    subHeader: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    subHeaderText: {
-        fontSize: 20,
-    },
-    addQuestButton: {
-        backgroundColor: "#619B58",
-        borderRadius: 10,
-        overflow: "hidden",
-        paddingVertical: 5,
-        paddingHorizontal: 7,
-        color: "white",
-        fontSize: 15,
-    },
-    questListContainer: {
-        marginTop: 6,
-        gap: 6,
-        overflow: "scroll",
-        paddingLeft: 10,
-    },
+  container: {
+    backgroundColor: "white",
+    // flex: 1,
+    overflow: "scroll",
+  },
+  headerContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+    // marginBottom: 15,
+    backgroundColor: "white",
+  },
+  imageScrollContainer: {
+    height: 220,
+    flexDirection: "row",
+    // overflow: "scroll",
+  },
+  bannerContainer: {
+    height: "100%",
+    width: 300,
+    marginRight: 4,
+  },
+  bannerImage: {
+    height: "100%",
+    width: "100%",
+    // resizeMode: "stretch"
+  },
+  quests: {
+    paddingHorizontal: 23,
+    paddingTop: 15,
+    gap: 5,
+    paddingBottom: 40,
+  },
+  header: {
+    fontSize: 25,
+    fontWeight: 700,
+  },
+  detail: {
+    fontSize: 15,
+  },
+  subHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  subHeaderText: {
+    fontSize: 20,
+  },
+  addQuestButton: {
+    backgroundColor: buttonNormalGreen,
+    borderRadius: 10,
+    overflow: "hidden",
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    color: "white",
+    fontSize: 15,
+  },
+  questListContainer: {
+    marginTop: 6,
+    gap: 6,
+    overflow: "scroll",
+    paddingLeft: 10,
+  },
 });

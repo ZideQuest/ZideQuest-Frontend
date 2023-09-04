@@ -1,23 +1,22 @@
-import React ,{ useState}from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import {timeConv} from "../../data/time/time";
+import { timeConv } from "../../data/time/time";
 import person_icon from "../../../assets/images/participant.png";
 
-BGcolor = '#FDFEFE';
-textColor = 'black';
+import { BGcolor, textColor } from "../../data/color";
 
-function statusIcon (currentP, maxP) {
-  const ratio = currentP/maxP;
+function statusIcon(currentP, maxP) {
+  const ratio = currentP / maxP;
   if (ratio >= 1) {
-    return "red"
+    return "red";
   }
   if (ratio > 0.8) {
-    return "yellow"
+    return "yellow";
   }
-  return "green"
+  return "green";
 }
 
-export default function ActivityName({quest}) {
+export default function ActivityName({ quest }) {
   return (
     <View style={styles.DataCon}>
       <View style={[styles.questItem]}>
@@ -35,7 +34,10 @@ export default function ActivityName({quest}) {
             style={{
               width: 12,
               height: 12,
-              backgroundColor: statusIcon(quest.countParticipant, quest.maxParticipant),
+              backgroundColor: statusIcon(
+                quest.countParticipant,
+                quest.maxParticipant
+              ),
               borderRadius: 25,
             }}
           ></View>
@@ -43,12 +45,12 @@ export default function ActivityName({quest}) {
       </View>
       <View style={styles.DataCon}>
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: textcolor, fontSize: 16}}>
+          <Text style={{ color: textColor, fontSize: 16}}>
             {timeConv(quest.timeStart)}{'\n'}{timeConv(quest.timeEnd)}{'\n'}{quest.locationName}
           </Text>
         </View>
         <View style={styles.creatorCon}>
-            <Text style={{ color: textcolor, fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
+            <Text style={{ color: textColor, fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
         </View>
         <View style={styles.creatorPicCon}>
           <Image
@@ -60,8 +62,6 @@ export default function ActivityName({quest}) {
         </View>
       </View>
     </View>
-    
-
   );
 }
 
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     width: "20%",
     aspectRatio: 1 / 1,
   },
-  
+
   DataCon: {
     backgroundColor: BGcolor,
     width: "100%",

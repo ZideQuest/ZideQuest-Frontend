@@ -11,8 +11,7 @@ import BigButton from "../components/button/BigButton";
 import {join_leave} from "../data/join-leave";
 
 
-BGcolor = '#FDFEFE';
-textcolor = 'black';
+import {textColor, BGcolor, primaryColor} from "../data/color"
 
 export default function ActivityDetail() {
   const [QuestDetail, setQuestDetail] = useState(null);

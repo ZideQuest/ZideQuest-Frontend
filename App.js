@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, StatusBar, View, Text } from "react-native";
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,16 +9,14 @@ import { AppProvider } from "./src/data/AppContext";
 import HomeScreen from "./src/pages/HomeScreen";
 import LoginScreen from "./src/pages/LoginScreen";
 import NavBar from "./src/components/NavBar";
+import DrawerMenu from "./src/components/DrawerMenu";
+import CheckinScreen from "./src/pages/CheckinScreen";
 
-import Activity from "./src/pages/ActivityDetail";
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const Stack = createNativeStackNavigator();
 const navTheme = {
@@ -39,24 +33,26 @@ export default function App() {
   const [statusBarTransition, setStatusBarTransition] = useState(
     TRANSITIONS[0]
   );
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const AppContent = ({ navigation }) => {
-    const insets = useSafeAreaInsets();
     return (
-      <View style={{ paddingTop: insets.top, flex: 1 }}>
+      <View style={{ flex: 1, position: "relative" }}>
         <StatusBar
           animated={true}
           backgroundColor="#61dafb"
           barStyle={statusBarStyle}
           showHideTransition={statusBarTransition}
           hidden={hidden}
-          // style="auto"
+          style="auto"
         />
-        <NavBar navigation={navigation} />
+
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider style={{ flex: 1 }}>
-            <HomeScreen />
-          </BottomSheetModalProvider>
+          <DrawerMenu navigation={navigation}>
+            <BottomSheetModalProvider>
+              <HomeScreen />
+            </BottomSheetModalProvider>
+          </DrawerMenu>
         </GestureHandlerRootView>
       </View>
     );
@@ -75,6 +71,11 @@ export default function App() {
             <Stack.Screen
               name="Login"
               component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Checkin"
+              component={CheckinScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

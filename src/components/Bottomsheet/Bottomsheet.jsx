@@ -5,10 +5,15 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
+import { buttonGrey, buttonLightGrey } from "../../data/color";
 
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
-
-const Bottomsheet = ({ children, snapPoints, index=0}) => {
+const Bottomsheet = ({
+  children,
+  snapPoints,
+  index = 0,
+  detached = false,
+  hideBar = false,
+}) => {
   const bottomSheetModalRef = useRef(null);
   const { bottomModalRef, setBottomModalRef } = useAppContext();
 
@@ -18,17 +23,24 @@ const Bottomsheet = ({ children, snapPoints, index=0}) => {
   }, []);
 
   return (
-      <BottomSheetModal
-        handleIndicatorStyle={styles.headerIndicator}
-        ref={bottomSheetModalRef}
-        index={index}
-        snapPoints={snapPoints}
-        enablePanDownToClose={false}
-        // backgroundStyle={styles.backgroundStyle}
-        style={styles.pullBar}
-      >
-        {children}
-      </BottomSheetModal>
+    <BottomSheetModal
+      handleIndicatorStyle={[
+        styles.headerIndicator,
+        { height: hideBar ? 0 : 4 },
+      ]}
+      handleStyle={{ padding: hideBar ? 0 : 5 }}
+      ref={bottomSheetModalRef}
+      index={index}
+      snapPoints={snapPoints}
+      enablePanDownToClose={false}
+      // backgroundStyle={styles.backgroundStyle}
+      style={[styles.pullBar, { marginHorizontal: detached ? 24 : 0 }]}
+      detached={detached}
+      bottomInset={detached ? 30 : 0}
+      enableOverDrag={!detached}
+    >
+      {children}
+    </BottomSheetModal>
   );
 };
 
@@ -37,9 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerIndicator: {
-    width: 80,
-    // backgroundColor: "lightgrey",
-    height: 4,
+    width: 35,
+    backgroundColor: "grey",
   },
   contentContainer: {
     flex: 1,
@@ -57,7 +68,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.81,
     shadowRadius: 13.16,
-
+    // maxWidth: 700,
     elevation: 20,
   },
 });
