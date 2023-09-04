@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Pressable, Alert } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import person_icon from "../../assets/images/participant.png";
 import { buttonGrey } from "../data/color";
+import { useAppContext } from "../data/AppContext";
 
 function statusIcon(currentP, maxP) {
   const ratio = currentP / maxP;
@@ -16,14 +17,31 @@ function statusIcon(currentP, maxP) {
   return "green";
 }
 
-export default function QuestListItem({ quest, isAdmin = false, token }) {
+export default function QuestListItem({
+  quest,
+  isAdmin = false,
+  token,
+  onPress,
+  panMap = false,
+}) {
+  const { userDetail, mapMoveTo } = useAppContext();
   const questPressHandler = () => {
     if (isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
-    } else if (token != null){
+    } else if (userDetail.token != null) {
       TabNavigation.navigate("QuestDetail", { questId: quest._id });
     } else {
-      alert('กรุณา login');
+      alert("กรุณา login");
+      return;
+    }
+
+    if (onPress) {
+      onPress();
+    }
+
+    if (panMap) {
+      // console.log(quest.locationId);
+      mapMoveTo(quest.locationId.latitude, quest.locationId.longitude);
     }
   };
 

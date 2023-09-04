@@ -51,7 +51,9 @@ export default function SearchBar() {
   };
 
   const onBlurHandler = () => {
-    setFocusing(false);
+    if (!search) {
+      setSearching(false)
+    }
   };
 
   const onSubmitHandler = () => {

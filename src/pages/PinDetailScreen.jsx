@@ -5,12 +5,12 @@ import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    Pressable,
-    ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  ScrollView,
 } from "react-native";
 
 import QuestListItem from "../components/QuestListItem";
@@ -22,82 +22,91 @@ import { getLocationData } from "../data/locations";
 import { buttonNormalGreen } from "../data/color";
 
 export default function PinDetailScreen({ route, navigation }) {
-    const { userDetail } = useAppContext();
-    const [locationData, setLocationData] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [quests, setQuests] = useState([]);
-  
-    useEffect(() => {
-        const fetchLocationData = async () => {
-            try {
-                const { location, quests } = await getLocationData(route.params?.pinId);
-                setLocationData(location);
-                setQuests(quests);
-            } catch (error) {
-                console.error("Error fetching locations", error);
-            }
-        };
-        fetchLocationData();
-    }, []);
+  const { userDetail } = useAppContext();
+  const [locationData, setLocationData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [quests, setQuests] = useState([]);
 
-    return (
-        <View>
-            <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
-                <BottomSheetScrollView
-                    stickyHeaderIndices={[0]}
-                    style={{ backgroundColor: "white" }}
-                >
-                    <View style={styles.headerContainer}>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Text style={styles.header}>{locationData.locationName}</Text>
-                            <BackButton />
-                        </View>
-                        <Text style={styles.detail}>
-                            Choose two branches to see what’s changed or to start a new pull
-                            request.
-                        </Text>
-                    </View>
+  useEffect(() => {
+    const fetchLocationData = async () => {
+      try {
+        const { location, quests } = await getLocationData(route.params?.pinId);
+        setLocationData(location);
+        setQuests(quests);
+      } catch (error) {
+        console.error("Error fetching locations", error);
+      }
+    };
+    fetchLocationData();
+  }, []);
 
-                    <ScrollView style={styles.imageScrollContainer} horizontal>
-                        <View style={styles.bannerContainer}>
-                            <Image
-                                style={styles.bannerImage}
-                                source={{ uri: locationData.picturePath }}
-                            />
-                        </View>
-                        <View style={styles.bannerContainer}>
-                            <Image
-                                style={styles.bannerImage}
-                                source={{ uri: locationData.picturePath }}
-                            />
-                        </View>
-                    </ScrollView>
-                    <View style={styles.quests}>
-                        <View style={styles.subHeader}>
-                            <Text style={styles.subHeaderText}>Quests</Text>
-                            <Pressable
-                                onPress={() => { TabNavigation.navigate("CreateQuest", { locationId: locationData._id }) }}
-                                style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
-                            >
-                                <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
-                            </Pressable>
-                        </View>
-                        <View style={styles.questListContainer}>
-                            {quests.map((quest) => (
-                                <QuestListItem quest={quest} key={quest._id} isAdmin={userDetail?.isAdmin} token={userDetail?.token} />
-                            ))}
-                        </View>
-                    </View>
-                </BottomSheetScrollView>
-            </Bottomsheet>
-        </View>
-    );
+  return (
+    <View>
+      <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
+        <BottomSheetScrollView
+          stickyHeaderIndices={[0]}
+          style={{ backgroundColor: "white" }}
+        >
+          <View style={styles.headerContainer}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text style={styles.header}>{locationData.locationName}</Text>
+              <BackButton />
+            </View>
+            <Text style={styles.detail}>
+              Choose two branches to see what’s changed or to start a new pull
+              request.
+            </Text>
+          </View>
+
+          <ScrollView style={styles.imageScrollContainer} horizontal>
+            <View style={styles.bannerContainer}>
+              <Image
+                style={styles.bannerImage}
+                src={locationData.picturePath}
+              />
+            </View>
+            <View style={styles.bannerContainer}>
+              <Image
+                style={styles.bannerImage}
+                src={locationData.picturePath}
+              />
+            </View>
+          </ScrollView>
+          <View style={styles.quests}>
+            <View style={styles.subHeader}>
+              <Text style={styles.subHeaderText}>Quests</Text>
+              <Pressable
+                onPress={() => {
+                  TabNavigation.navigate("CreateQuest", {
+                    locationId: locationData._id,
+                  });
+                }}
+                style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
+              >
+                <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
+              </Pressable>
+            </View>
+            <View style={styles.questListContainer}>
+              {quests.map((quest) => (
+                <QuestListItem
+                  quest={quest}
+                  key={quest._id}
+                  isAdmin={userDetail?.isAdmin}
+                  token={userDetail?.token}
+                />
+              ))}
+            </View>
+          </View>
+        </BottomSheetScrollView>
+      </Bottomsheet>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

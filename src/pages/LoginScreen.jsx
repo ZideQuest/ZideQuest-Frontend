@@ -13,9 +13,7 @@ import {
 import { useAppContext } from "../data/AppContext";
 import loginBanner from "../../assets/images/login_logo.png";
 
-const image = {
-  uri: "https://alllogin.ku.ac.th/resources/3iyb6/login/kubase/img/bg1.jpg",
-};
+const image = "https://alllogin.ku.ac.th/resources/3iyb6/login/kubase/img/bg1.jpg";
 
 export default function LoginScreen({ navigation }) {
   const { login, isLoading } = useAppContext();
@@ -45,7 +43,7 @@ export default function LoginScreen({ navigation }) {
   }
 
   return (
-    <ImageBackground source={image} style={styles.container}>
+    <ImageBackground src={image} style={styles.container}>
       <Pressable
         onPress={() => navigation.navigate("App")}
         style={styles.backButton}

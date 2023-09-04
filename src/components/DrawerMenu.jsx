@@ -11,12 +11,15 @@ import plus_icon from "../../assets/images/plus.png";
 import leave_icon from "../../assets/images/leave_icon.png";
 import qr_scanner_icon from "../../assets/images/qr_scanner_icon.png";
 import close_icon from "../../assets/images/close_icon.png";
+import QuestListItem from "../components/QuestListItem";
 
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
 export default function DrawerMenu({ navigation, children }) {
-  const { userDetail, drawerOpen, setDrawerOpen, logout } = useAppContext();
+  const { userDetail, drawerOpen, setDrawerOpen, logout, fetchUser } =
+    useAppContext();
   const insets = useSafeAreaInsets();
+  const [loading, setLoading] = useState(false);
 
   const addButtonHandler = () => {
     TabNavigation.navigate("CreatePin");
@@ -46,6 +49,16 @@ export default function DrawerMenu({ navigation, children }) {
     TabNavigation.navigate("Profile");
   };
 
+  const fetchNewData = async () => {
+    setLoading(true);
+    fetchUser();
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchNewData();
+  }, [drawerOpen]);
+
   const ProfileDisplay = ({ userDetail }) => {
     if (userDetail.isAdmin) {
       return (
@@ -69,19 +82,31 @@ export default function DrawerMenu({ navigation, children }) {
       );
     } else {
       return (
-        <View style={styles.profileDisplayContainer}>
-          <View style={styles.displayImageContainer}>
-            <Image
-              source={userDetail?.user?.picturePath || user_icon}
-              style={styles.displayImage}
-            />
+        <Pressable onPress={profilePressHander} style={{ gap: 10 }}>
+          <View style={styles.profileDisplayContainer}>
+            <View style={styles.displayImageContainer}>
+              <Image
+                src={userDetail?.user?.picturePath || user_icon}
+                style={styles.displayImage}
+              />
+            </View>
+            <View>
+              <Text style={styles.username}>{userDetail?.user?.firstName}</Text>
+              <Text>
+                Level{" "}
+                <Text style={{ color: "teal", fontWeight: 600 }}>
+                  {userDetail?.user?.level}
+                </Text>
+              </Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.username}>
-              {userDetail?.user?.organizeName}
-            </Text>
+          <View style={{ gap: 3, alignItems: "flex-end" }}>
+            <Text>EXP : {userDetail.user?.exp}</Text>
+            <View
+              style={{ width: "100%", backgroundColor: "green", height: 6 }}
+            ></View>
           </View>
-        </View>
+        </Pressable>
       );
     }
   };
@@ -113,6 +138,23 @@ export default function DrawerMenu({ navigation, children }) {
               >
                 <Text style={styles.buttonText}>Login</Text>
               </Pressable>
+            )}
+
+            {userDetail.user?.joinedQuest?.length && (
+              <View style={{ marginTop: 20, gap: 6 }}>
+                <Text
+                  style={{ color: textColor, fontWeight: 600, fontSize: 14 }}
+                >
+                  เควสที่กำลังจะมาถึง
+                </Text>
+                {userDetail.user?.joinedQuest?.map((q) => (
+                  <QuestListItem
+                    quest={q}
+                    onPress={() => setDrawerOpen(false)}
+                    panMap={true}
+                  />
+                ))}
+              </View>
             )}
 
             <View style={styles.bigMenuContainer}>

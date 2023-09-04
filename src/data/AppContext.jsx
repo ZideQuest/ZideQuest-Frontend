@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
-import { sendLoginData } from "./authen";
+import { sendLoginData, fetchUserData } from "./authen";
 
 const AppContext = createContext();
 
@@ -48,6 +48,16 @@ export const AppProvider = ({ children }) => {
     setIsLoading(false);
   };
 
+  const fetchUser = async () => {
+    const response = await fetchUserData();
+    setUserDetails((prev) => {
+      return {
+        ...prev,
+        user: response,
+      };
+    });
+  };
+
   useEffect(() => {
     const fetchToken = async () => {
       try {
@@ -88,6 +98,7 @@ export const AppProvider = ({ children }) => {
         setDrawerOpen,
         mapMoveTo,
         setMapMoveTo,
+        fetchUser,
       }}
     >
       {children}

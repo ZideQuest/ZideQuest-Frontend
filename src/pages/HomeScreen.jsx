@@ -35,7 +35,7 @@ export default function HomeScreen() {
           <Stack.Screen name="CreatePin" component={CreatePinScreen} />
           <Stack.Screen name="PinDetail" component={PinDetailScreen} />
           <Stack.Screen name="QuestDetail" component={ActivityDetail} />
-          <Stack.Screen name="CreateQuest" component={RecommendScreen} />
+          <Stack.Screen name="CreateQuest" component={CreateQuest} />
           <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
           <Stack.Screen name="QuestManage" component={QuestManagement} />
           <Stack.Screen name="Profile" component={ProfileModal} />

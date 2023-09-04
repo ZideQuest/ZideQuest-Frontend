@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View, Keyboard } from "react-native";
 import React, { useEffect, useRef } from "react";
 import {
   BottomSheetModal,
@@ -22,6 +22,12 @@ const Bottomsheet = ({
     setBottomModalRef(bottomSheetModalRef);
   }, []);
 
+  const collapsDragHandler = (e) => {
+    if (e == 1 || e == 0) {
+      Keyboard.dismiss()
+    }
+  }
+
   return (
     <BottomSheetModal
       handleIndicatorStyle={[
@@ -34,12 +40,20 @@ const Bottomsheet = ({
       snapPoints={snapPoints}
       enablePanDownToClose={false}
       // backgroundStyle={styles.backgroundStyle}
-      style={[styles.pullBar, { marginHorizontal: detached ? 24 : 0 }]}
+      style={[
+        styles.pullBar,
+        {
+          marginHorizontal: detached ? 24 : 0,
+        },
+      ]}
       detached={detached}
       bottomInset={detached ? 30 : 0}
       enableOverDrag={!detached}
+      onChange={collapsDragHandler}
     >
-      {children}
+      <View style={{ flex: 1, borderRadius: 15, overflow: "hidden" }}>
+        {children}
+      </View>
     </BottomSheetModal>
   );
 };

@@ -45,20 +45,21 @@ export default function ActivityName({ quest }) {
       </View>
       <View style={styles.DataCon}>
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: textColor, fontSize: 16}}>
-            {timeConv(quest.timeStart)}{'\n'}{timeConv(quest.timeEnd)}{'\n'}{quest.locationName}
+          <Text style={{ color: textColor, fontSize: 16 }}>
+            {timeConv(quest.timeStart)}
+            {"\n"}
+            {timeConv(quest.timeEnd)}
+            {"\n"}
+            {quest.locationName}
           </Text>
         </View>
         <View style={styles.creatorCon}>
-            <Text style={{ color: textColor, fontSize: 20, fontWeight: 'bold', }}>{quest.creatorName}</Text>
+          <Text style={{ color: textColor, fontSize: 20, fontWeight: "bold" }}>
+            {quest.creatorName}
+          </Text>
         </View>
         <View style={styles.creatorPicCon}>
-          <Image
-            style={styles.picCreator}
-            source={{
-              uri: quest.creatorPic,
-              }}
-          ></Image>
+          <Image style={styles.picCreator} src={quest.creatorPic}></Image>
         </View>
       </View>
     </View>
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   },
   questFont: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   timePlaceCon: {
     flexDirection: "row",
