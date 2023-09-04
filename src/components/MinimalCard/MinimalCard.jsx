@@ -1,9 +1,15 @@
-import { Image, StyleSheet, Text, View, ActivityIndicator } from "react-native";
-import { getLocationData } from "../../data/locations";
-import { getCreatorData } from "../../data/creator";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  Pressable,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import defaultCreatorImage from "../../../assets/images/UserProfileTest.jpg";
 import defaultQuestImage from "../../../assets/images/defaultQuestLocationImage.jpg";
+import * as TabNavigation from "../../data/TabNavigation";
 
 function month_to_thai(datestring) {
   switch (datestring) {
@@ -47,6 +53,7 @@ function month_to_thai(datestring) {
 }
 
 const MinimalCard = ({
+  id,
   quest_name,
   quest_image,
   time,
@@ -55,6 +62,8 @@ const MinimalCard = ({
   creator_picture,
   countParticipant,
   maxParticipant,
+  isAdmin = false,
+  token,
 }) => {
   const date = time.slice(8, 10);
   const month = month_to_thai(time.slice(5, 7));
@@ -67,8 +76,18 @@ const MinimalCard = ({
   const creatorImageSource =
     creator_picture != "" ? { uri: creator_picture } : defaultCreatorImage;
 
+  const questPressHandler = () => {
+    if (isAdmin) {
+      TabNavigation.navigate("QuestManage", { questId: id });
+    } else if (token != null) {
+      TabNavigation.navigate("QuestDetail", { questId: id });
+    } else {
+      alert("กรุณา login");
+    }
+  };
+
   return (
-    <View>
+    <Pressable onPress={questPressHandler}>
       <View style={styles.CardContainer}>
         <Text style={styles.quest_name}>{quest_name}</Text>
         <View style={styles.row}>
@@ -99,7 +118,7 @@ const MinimalCard = ({
           <Image style={styles.quest_image} source={questImageSource} />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
