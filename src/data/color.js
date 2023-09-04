@@ -1,0 +1,10 @@
+export const primaryColor = '#E86A33';
+export const textColor = '#474747';
+export const BGcolor = '#FDFEFE';
+export const buttonGrey = '#F5F5F5';
+export const buttonLightGrey = "rgba(245, 245, 245, 0.5)";
+export const buttonNormalGreen = "#619B58";
+export const buttonBrightGreen = "#72D250";
+export const buttonBlue = "#0075FF";
+export const buttonOrange = "#E86A33";
+export const buttonDarkRed = "#8C1C15";

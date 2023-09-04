@@ -13,9 +13,7 @@ import {
 import { useAppContext } from "../data/AppContext";
 import loginBanner from "../../assets/images/login_logo.png";
 
-const image = {
-  uri: "https://alllogin.ku.ac.th/resources/3iyb6/login/kubase/img/bg1.jpg",
-};
+const image = "https://alllogin.ku.ac.th/resources/3iyb6/login/kubase/img/bg1.jpg";
 
 export default function LoginScreen({ navigation }) {
   const { login, isLoading } = useAppContext();
@@ -23,7 +21,7 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState(null);
   const [loginStatus, setLoginStatus] = useState(0);
   const [loginText, setLoginText] = useState(null);
- 
+
   const loginHandler = async () => {
     const status = await login(username, password);
     setLoginStatus(0);
@@ -45,9 +43,20 @@ export default function LoginScreen({ navigation }) {
   }
 
   return (
-    <ImageBackground source={image} style={styles.container}>
-      <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Text>Back</Text>
+    <ImageBackground src={image} style={styles.container}>
+      <Pressable
+        onPress={() => navigation.navigate("App")}
+        style={styles.backButton}
+      >
+        <Text
+          style={{
+            fontWeight: 500,
+            fontSize: 20,
+            color: "rgba(255,255,255,0.7)",
+          }}
+        >
+          Back
+        </Text>
       </Pressable>
       <View style={styles.infoContainer}>
         <View style={styles.bannerContainer}>
@@ -56,7 +65,10 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.bannerText}>ALL-Login</Text>
         <TextInput
           label={"username"}
-          style={[styles.textfield, {borderColor: loginStatus ? "red": "white"}]}
+          style={[
+            styles.textfield,
+            { borderColor: loginStatus ? "red" : "white" },
+          ]}
           value={username}
           placeholder="username"
           placeholderTextColor={loginStatus ? "red" : "grey"}
@@ -64,7 +76,10 @@ export default function LoginScreen({ navigation }) {
         />
         <TextInput
           label={"password"}
-          style={[styles.textfield, {borderColor: loginStatus ? "red": "white"}]}
+          style={[
+            styles.textfield,
+            { borderColor: loginStatus ? "red" : "white" },
+          ]}
           value={password}
           placeholder="password"
           placeholderTextColor={loginStatus ? "red" : "grey"}
@@ -72,9 +87,7 @@ export default function LoginScreen({ navigation }) {
           onChangeText={(text) => setPassword(text)}
         />
 
-        {
-          loginStatus ? <Text style={styles.loginText}>{loginText}</Text> : ""
-        }
+        {loginStatus ? <Text style={styles.loginText}>{loginText}</Text> : ""}
 
         <Pressable onPress={loginHandler} style={styles.signinButton}>
           <Text style={styles.signinText}>Sign In</Text>
@@ -169,5 +182,5 @@ const styles = StyleSheet.create({
   loginText: {
     marginTop: 10,
     color: "red",
-  }
+  },
 });

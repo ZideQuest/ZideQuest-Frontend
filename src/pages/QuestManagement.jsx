@@ -8,6 +8,7 @@ import BigButton from "../components/button/BigButton";
 import BackButton from "../components/button/BackButton";
 import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
 import ActivityName from "../components/Quest/ActivityName";
+import { buttonBlue, buttonBrightGreen } from "../data/color";
 
 const showConfirmDialog = (title, description) => {
   return Alert.alert(title, description, [
@@ -29,7 +30,7 @@ export default function QuestManagement({ route }) {
         const data = await getQuestData(route.params?.questId);
         setQuestData(data);
       } catch (error) {
-        console.log("Error fetching quest", error);
+        console.error("Error fetching quest", error);
       }
     };
     fetchLocationData();
@@ -46,7 +47,7 @@ export default function QuestManagement({ route }) {
         <View style={styles.buttonContainer}>
           <BigButton
             text="ยืนยัน Quest Completed"
-            bg="#72D250"
+            bg={buttonBrightGreen}
             onPress={() =>
               showConfirmDialog(
                 "Confirm Quest completed",
@@ -58,7 +59,7 @@ export default function QuestManagement({ route }) {
         <View style={styles.buttonContainer}>
           <BigButton
             text="สร้าง Check-in QR Code"
-            bg="#0075FF"
+            bg={buttonBlue}
             onPress={() =>
               showConfirmDialog(
                 "Confirm Quest completed",

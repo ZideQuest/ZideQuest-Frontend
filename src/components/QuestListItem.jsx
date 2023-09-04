@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Pressable, Alert } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import person_icon from "../../assets/images/participant.png";
+import { buttonGrey } from "../data/color";
+import { useAppContext } from "../data/AppContext";
 
 function statusIcon(currentP, maxP) {
   const ratio = currentP / maxP;
@@ -15,22 +17,37 @@ function statusIcon(currentP, maxP) {
   return "green";
 }
 
-export default function QuestListItem({ quest, isAdmin = false, token }) {
+export default function QuestListItem({
+  quest,
+  isAdmin = false,
+  onPress,
+  panMap = false,
+}) {
+  const { userDetail, mapMoveTo } = useAppContext();
   const questPressHandler = () => {
     if (isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
-    } else if (token != null){
+    } else if (userDetail?.token != null) {
       TabNavigation.navigate("QuestDetail", { questId: quest._id });
     } else {
-      alert('กรุณา login');
+      alert("กรุณา login");
+      return;
     }
-    // console.log("pressed")
+
+    if (onPress) {
+      onPress();
+    }
+
+    if (panMap) {
+      // console.log(quest.locationId);
+      mapMoveTo(quest.locationId.latitude, quest.locationId.longitude);
+    }
   };
 
   return (
     <Pressable
       onPress={questPressHandler}
-      key={quest.id}
+      key={quest._id}
       style={[styles.questItem, { opacity: quest.status == "live" ? 100 : 50 }]}
     >
       <Text style={styles.questFont}>{quest.questName}</Text>
@@ -61,7 +78,7 @@ const styles = StyleSheet.create({
   questItem: {
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#F5F5F5",
+    backgroundColor: buttonGrey,
     padding: 10,
     borderRadius: 5,
     paddingLeft: 15,
