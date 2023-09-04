@@ -20,7 +20,6 @@ function statusIcon(currentP, maxP) {
 export default function QuestListItem({
   quest,
   isAdmin = false,
-  token,
   onPress,
   panMap = false,
 }) {
@@ -28,7 +27,7 @@ export default function QuestListItem({
   const questPressHandler = () => {
     if (isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
-    } else if (userDetail.token != null) {
+    } else if (userDetail?.token != null) {
       TabNavigation.navigate("QuestDetail", { questId: quest._id });
     } else {
       alert("กรุณา login");
@@ -48,7 +47,7 @@ export default function QuestListItem({
   return (
     <Pressable
       onPress={questPressHandler}
-      key={quest.id}
+      key={quest._id}
       style={[styles.questItem, { opacity: quest.status == "live" ? 100 : 50 }]}
     >
       <Text style={styles.questFont}>{quest.questName}</Text>

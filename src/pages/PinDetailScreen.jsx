@@ -98,7 +98,6 @@ export default function PinDetailScreen({ route, navigation }) {
                   quest={quest}
                   key={quest._id}
                   isAdmin={userDetail?.isAdmin}
-                  token={userDetail?.token}
                 />
               ))}
             </View>

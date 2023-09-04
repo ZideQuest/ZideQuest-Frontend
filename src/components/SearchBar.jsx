@@ -18,12 +18,12 @@ import { searchQuest } from "../data/Quest";
 import SearchItem from "./Quest/SearchItem";
 import RecentSearch from "./RecentSearch";
 import * as TabNavigation from "../data/TabNavigation";
-import LocationSearchItem from "./Location/LocationSearchItem"
+import LocationSearchItem from "./Location/LocationSearchItem";
 
 import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
 
-export default function SearchBar() {
+export default function SearchBar({ navigation }) {
   const { bottomModalRef, userDetail } = useAppContext();
   const insets = useSafeAreaInsets();
   const [searching, setSearching] = useState(false);
@@ -52,7 +52,7 @@ export default function SearchBar() {
 
   const onBlurHandler = () => {
     if (!search) {
-      setSearching(false)
+      setSearching(false);
     }
   };
 
@@ -75,6 +75,34 @@ export default function SearchBar() {
     TabNavigation.navigate("Profile");
   };
 
+  const ProfileImage = () => {
+    if (userDetail.user?._id) {
+      return (
+        <Pressable
+          onPress={profilePressHandler}
+          style={styles.profileContainer}
+        >
+          <Image
+            src={userDetail.user?.picturePath}
+            style={styles.profilePicture}
+          />
+        </Pressable>
+      );
+    }
+
+    return (
+      <Pressable
+        onPress={() => alert("Login first")}
+        style={[styles.profileContainer, { padding: 6, borderWidth: 1 }]}
+      >
+        <Image
+          src="https://img.icons8.com/material-outlined/24/cat--v1.png"
+          style={styles.profilePicture}
+        />
+      </Pressable>
+    );
+  };
+
   return (
     <View style={[styles.container]}>
       <View style={styles.topBarContainer}>
@@ -95,15 +123,7 @@ export default function SearchBar() {
         {searching ? (
           <Button title="Cancel" onPress={onCancelHander} />
         ) : (
-          <Pressable
-            onPress={profilePressHandler}
-            style={styles.profileContainer}
-          >
-            <Image
-              src={userDetail.user?.picturePath}
-              style={styles.profilePicture}
-            />
-          </Pressable>
+          <ProfileImage />
         )}
       </View>
 

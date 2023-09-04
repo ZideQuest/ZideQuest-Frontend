@@ -18,22 +18,20 @@ export async function sendLoginData(username, password) {
 }
 
 export async function fetchUserData() {
-
-  console.log('data fetched');
-
   try {
-    const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-    const { data } = await axios.get(
-      `${BASE_URL}/user/info`,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    return data
+    const user = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    if (!user || !user.token) {
+      return {};
+    }
+
+    const { data } = await axios.get(`${BASE_URL}/user/info`, {
+      headers: {
+        Authorization: "Bearer " + user.token,
+      },
+    });
+    return data;
   } catch (error) {
     console.error("error fetching user data:", error);
-    return {}
+    return {};
   }
 }
