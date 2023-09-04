@@ -52,7 +52,7 @@ const MinimalCard = ({
   time,
   timeEnd,
   location,
-  creator_id,
+  creator_picture,
   countParticipant,
   maxParticipant,
 }) => {
@@ -61,35 +61,11 @@ const MinimalCard = ({
   const year = time.slice(0, 4);
   const formattedTime = time.slice(14, 19);
   const formattedTimeEnd = timeEnd.slice(14, 19);
-  const [loading, setLoading] = useState(true);
-  const [locationData, setLocationData] = useState({});
-  const [creatorData, setCreatorData] = useState({});
   const questImageSource =
     quest_image !== "" ? { uri: quest_image } : defaultQuestImage;
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const LocationData = await getLocationData(location);
-        const CreatorData = await getCreatorData(creator_id);
-        setLocationData(LocationData);
-        setCreatorData(CreatorData);
-        // console.log(CreatorData);
-      } catch (error) {
-        console.error("Error fetching location and creator:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
-
-  const locationName = locationData.location
-    ? locationData.location.locationName
-    : "Location Name Not Available";
-  const creatorImageSource = creatorData.picturePath
-    ? { uri: creatorData.picturePath }
-    : defaultCreatorImage;
+  const creatorImageSource =
+    creator_picture != "" ? { uri: creator_picture } : defaultCreatorImage;
 
   return (
     <View>
@@ -97,16 +73,9 @@ const MinimalCard = ({
         <Text style={styles.quest_name}>{quest_name}</Text>
         <View style={styles.row}>
           <View style={styles.row_inner}>
-            <Image
-              style={styles.userprofile}
-              source={creatorImageSource} //แก้ไอสัส
-            />
+            <Image style={styles.userprofile} source={creatorImageSource} />
             <View style={styles.userdescription}>
-              {loading ? (
-                <ActivityIndicator />
-              ) : (
-                <Text>สถานที่: {locationName}</Text>
-              )}
+              <Text>สถานที่: {location}</Text>
               <View style={styles.participant}>
                 <Text style={styles.par_font}>จำนวนผู้เข้าร่วม: </Text>
                 <Text style={styles.par_font}>{countParticipant}</Text>
