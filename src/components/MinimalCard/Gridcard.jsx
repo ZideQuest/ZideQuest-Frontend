@@ -3,10 +3,12 @@ import MinimalCard from "./MinimalCard";
 import React, { useEffect, useState } from "react";
 import { ScrollView, RefreshControl } from "react-native-gesture-handler";
 import { getRecQuestData } from "../../data/quest_rec.js";
+import { useAppContext } from "../../data/AppContext";
 
 const GridCard = () => {
   const [questData, setQuestData] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { userDetail } = useAppContext();
 
   const fetchData = async () => {
     try {
@@ -40,7 +42,8 @@ const GridCard = () => {
         <View>
           {questData.map((item) => (
             <MinimalCard
-              key={item._id}
+              key={item.id}
+              _id={item._id}
               quest_name={item.questName}
               quest_image={item.picturePath}
               time={item.timeStart}
@@ -49,6 +52,8 @@ const GridCard = () => {
               creator_picture={item.creatorId.picturePath}
               countParticipant={item.countParticipant}
               maxParticipant={item.maxParticipant}
+              isAdmin={userDetail?.isAdmin}
+              token={userDetail?.token}
             />
           ))}
         </View>
