@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   Container: {
     width: "100%",
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "lightgrey",
   },
 });
 

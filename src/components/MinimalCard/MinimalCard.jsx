@@ -11,6 +11,7 @@ import defaultCreatorImage from "../../../assets/images/UserProfileTest.jpg";
 import defaultQuestImage from "../../../assets/images/defaultQuestLocationImage.jpg";
 import * as TabNavigation from "../../data/TabNavigation";
 import { useAppContext } from "../../data/AppContext";
+import { buttonOrange, textColor } from "../../data/color";
 
 function month_to_thai(datestring) {
   switch (datestring) {
@@ -56,12 +57,11 @@ function month_to_thai(datestring) {
 const MinimalCard = ({ quest }) => {
   const { userDetail } = useAppContext();
   const {
-    _id,
     questName,
     picturePath,
     timeStart,
     timeEnd,
-    location,
+    locationId,
     creatorId,
     countParticipant,
     maxParticipant,
@@ -99,12 +99,9 @@ const MinimalCard = ({ quest }) => {
           <View style={styles.row_inner}>
             <Image style={styles.userprofile} source={creatorImageSource} />
             <View style={styles.userdescription}>
-              <Text>สถานที่: {location}</Text>
+              <Text>สถานที่: {locationId.locationName}</Text>
               <View style={styles.participant}>
-                <Text style={styles.par_font}>จำนวนผู้เข้าร่วม: </Text>
-                <Text style={styles.par_font}>{countParticipant}</Text>
-                <Text style={styles.par_font}> / </Text>
-                <Text style={styles.par_font}>{maxParticipant}</Text>
+                <Text style={styles.par_font}>จำนวนผู้เข้าร่วม: {countParticipant} / {maxParticipant}</Text>
               </View>
             </View>
           </View>
@@ -128,57 +125,37 @@ const MinimalCard = ({ quest }) => {
 };
 
 const styles = StyleSheet.create({
-  Card: { height: "50%" },
-  Container: {
-    width: "100%",
-    flex: 1,
-    backgroundColor: "white",
-  },
   CardContainer: {
-    height: 300,
-    marginTop: 20,
-    marginLeft: 5,
-    marginRight: 5,
-    elevation: 2,
     backgroundColor: "white",
-    // borderWidth: 1,
-    // borderColor: "black",
-    // borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    marginBottom: 7,
   },
   quest_name: {
-    color: "#E86A33",
-    left: 12,
-    top: 10,
-    fontSize: 30,
-    fontWeight: "bold",
+    color: buttonOrange,
+    fontSize: 25,
+    fontWeight: 600,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 20,
-    height: "20%",
-    // borderWidth: 2,
-    // borderColor: "orange",
+    marginTop: 7,
   },
   row_inner: {
-    height: 60,
     flexDirection: "row",
-    // borderWidth: 2,
-    // borderColor: "blue",
+    gap: 10,
+    justifyContent: "center",
   },
   userdescription: {
-    marginTop: 5,
-    marginLeft: 5,
+    justifyContent: "center",
   },
   time_and_date: {
-    marginTop: 5,
     textAlign: "right",
+    justifyContent: "center",
   },
   time: {
     textAlign: "right",
-    color: "grey",
+    color: textColor,
   },
   timeSE: {
     flexDirection: "row",
@@ -186,29 +163,30 @@ const styles = StyleSheet.create({
   },
   date: {
     textAlign: "right",
-    color: "grey",
+    color: textColor,
     fontWeight: "bold",
   },
   userprofile: {
     width: 50,
     height: 50,
+    borderRadius: 25,
   },
   image_container: {
-    marginLeft: 5,
-    marginRight: 5,
+    width: "100%",
+    height: 200,
+    borderRadius: 7,
+    overflow: "hidden",
+    marginTop: 7,
   },
   quest_image: {
     width: "100%",
-    height: "75%",
-    borderRadius: 10,
-    // borderWidth: 2,
-    // borderColor: "blue",
+    height: "100%",
   },
   participant: {
     flexDirection: "row",
   },
   par_font: {
-    color: "grey",
+    color: textColor,
   },
 });
 
