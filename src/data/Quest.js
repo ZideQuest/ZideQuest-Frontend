@@ -6,7 +6,7 @@ export async function createQuest(questDetail, locationId) {
   try {
     const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
     console.log(token);
-    const res = await axios.post(
+    const {data} = await axios.post(
       `${BASE_URL}/quest/location/${locationId}`,
       questDetail,
       {
@@ -16,6 +16,8 @@ export async function createQuest(questDetail, locationId) {
         },
       }
     );
+
+    return data
   } catch (error) {
     console.log(error);
     throw error;
