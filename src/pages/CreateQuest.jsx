@@ -31,9 +31,11 @@ const activityCategories = [
   "3 กิจกรรมเพื่อสังคม",
 ];
 
+import Spinner from "../components/Animations/Spinner"
 import BigButton from "../components/button/BigButton.jsx";
 import BackButton from "../components/button/BackButton"
 import { buttonOrange, textColor } from "../data/color";
+import * as TabNavigation from "../data/TabNavigation"
 
 function CreateQuest() {
   const [startDate, setStartDate] = useState(new Date());
@@ -49,8 +51,10 @@ function CreateQuest() {
   const { locationId } = route.params;
   const [image, setImage] = useState(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const buttonHandler = async (e) => {
-    alert("loading...");
+    setIsLoading(true)
 
     try {
       const questDetail = new FormData();
@@ -84,11 +88,13 @@ function CreateQuest() {
         const handleTag = [tagId];
         questDetail.append("tagId", handleTag);
       }
-      await createQuest(questDetail, locationId);
-      alert("create quest succesfuly!!!");
+      const newQuest = await createQuest(questDetail, locationId);
+      setIsLoading(false)
+      TabNavigation.navigate("QuestManage", {questId: newQuest._id})
     } catch (error) {
-      console.log(error.message);
-      alert("failed to create quest");
+
+      setIsLoading(false)
+      alert("failed to create quest", error);
     }
   };
 
@@ -115,6 +121,9 @@ function CreateQuest() {
       index={1}
     >
       <BottomSheetScrollView style={{ backgroundColor: "white" }}>
+        {isLoading ? <Spinner/>: 
+        
+
         <View style={styles.innerContainer}>
             <View style={{flexDirection: "row", alignItems:"center", justifyContent:"space-between"}}>
                 <Text style={styles.textXl}>เพิ่มเควสใหม่</Text>
@@ -128,7 +137,7 @@ function CreateQuest() {
                 style={styles.textIn}
                 value={questName}
                 onChangeText={setQuestName}
-              />
+                />
             </View>
             <View style={styles.box}>
               <Text style={styles.textMd}>รายละเอียด</Text>
@@ -136,7 +145,7 @@ function CreateQuest() {
                 style={styles.textIn}
                 value={description}
                 onChangeText={setDescription}
-              />
+                />
             </View>
             <View
               style={{
@@ -145,7 +154,7 @@ function CreateQuest() {
                 flex: 1,
                 justifyContent: "space-between",
               }}
-            >
+              >
               <View style={{ ...styles.box, flex: 1 }}>
                 <Text style={styles.textMd}>แท็ก</Text>
                 <SelectDropdown
@@ -186,12 +195,12 @@ function CreateQuest() {
                     borderColor: "#CDCDCD",
                     borderWidth: 1,
                     width: "100%",
-
+                    
                     backgroundColor: "#fbfbfb",
                     borderRadius: 10,
                     fontSize: 16,
                   }}
-                />
+                  />
               </View>
               <View style={styles.box}>
                 <Text style={styles.textMd}>จำนวนคน</Text>
@@ -199,7 +208,7 @@ function CreateQuest() {
                   style={styles.textIn}
                   value={maxParticipant}
                   onChangeText={setMaxParticipant}
-                />
+                  />
               </View>
             </View>
             <View style={styles.box}>
@@ -209,7 +218,7 @@ function CreateQuest() {
                 setStartDate={setStartDate}
                 endDate={endDate}
                 setEndDate={setEndDate}
-              />
+                />
             </View>
 
             <View style={{ flexDirection: "row", gap: 40, flex: 1 }}>
@@ -246,12 +255,12 @@ function CreateQuest() {
                     height: 30,
                     borderColor: "#CDCDCD",
                     borderWidth: 1,
-
+                    
                     backgroundColor: "#fbfbfb",
                     borderRadius: 10,
                     fontSize: 16,
                   }}
-                />
+                  />
               </View>
               <View style={styles.box}>
                 <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
@@ -259,7 +268,7 @@ function CreateQuest() {
                   style={styles.textIn}
                   value={activityHour}
                   onChangeText={setActivityHour}
-                />
+                  />
               </View>
             </View>
 
@@ -273,13 +282,13 @@ function CreateQuest() {
                     onPress={() => {
                       setImage(null);
                     }}
-                  >
+                    >
                     <Text style={styles.xtextbtn}>X</Text>
                   </Pressable>
                   <Image
                     source={{ uri: image.uri }}
                     style={{ height: 150, flex: 1 }}
-                  />
+                    />
                 </View>
               )}
             </View>
@@ -288,8 +297,9 @@ function CreateQuest() {
             bg={buttonOrange}
             text="สร้างกิจกรรม"
             onPress={buttonHandler}
-          />
+            />
         </View>
+        }
       </BottomSheetScrollView>
     </Bottomsheet>
   );
