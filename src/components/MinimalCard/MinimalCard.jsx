@@ -90,11 +90,12 @@ const MinimalCard = ({
     <Pressable onPress={questPressHandler}>
       <View style={styles.CardContainer}>
         <Text style={styles.quest_name}>{quest_name}</Text>
+
         <View style={styles.row}>
           <View style={styles.row_inner}>
             <Image style={styles.userprofile} source={creatorImageSource} />
             <View style={styles.userdescription}>
-              <Text>สถานที่: {location}</Text>
+              <Text style={styles.location}>สถานที่: {location}</Text>
               <View style={styles.participant}>
                 <Text style={styles.par_font}>จำนวนผู้เข้าร่วม: </Text>
                 <Text style={styles.par_font}>{countParticipant}</Text>
@@ -132,9 +133,7 @@ const styles = StyleSheet.create({
   CardContainer: {
     height: 300,
     marginTop: 20,
-    marginLeft: 5,
-    marginRight: 5,
-    elevation: 2,
+    elevation: 10,
     backgroundColor: "white",
     // borderWidth: 1,
     // borderColor: "black",
@@ -187,15 +186,17 @@ const styles = StyleSheet.create({
   userprofile: {
     width: 50,
     height: 50,
+    borderRadius: 50,
   },
   image_container: {
     marginLeft: 5,
     marginRight: 5,
+    height: 190,
   },
   quest_image: {
     width: "100%",
-    height: "75%",
-    borderRadius: 10,
+    height: "100%",
+    borderRadius: 5,
     // borderWidth: 2,
     // borderColor: "blue",
   },
@@ -204,6 +205,10 @@ const styles = StyleSheet.create({
   },
   par_font: {
     color: "grey",
+  },
+  location: {
+    color: "grey",
+    fontWeight: "bold",
   },
 });
 
