@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { timeConv } from "../../data/time/time";
 import person_icon from "../../../assets/images/participant.png";
+import BackButton from "../button/BackButton"
 
 import { BGcolor, textColor } from "../../data/color";
 
@@ -21,45 +22,43 @@ export default function ActivityName({ quest }) {
     <View style={styles.DataCon}>
       <View style={[styles.questItem]}>
         <View style={[styles.questNameCon]}>
-          <Text style={styles.questFont}>{quest.questName}</Text>
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <Text style={styles.ParticipantFont}>
-            {quest.countParticipant}/{quest.maxParticipant}
-          </Text>
-          <View style={styles.pic}>
-            <Image source={person_icon} />
-          </View>
-          <View
-            style={{
-              width: 12,
-              height: 12,
-              backgroundColor: statusIcon(
-                quest.countParticipant,
-                quest.maxParticipant
-              ),
-              borderRadius: 25,
-            }}
-          ></View>
+          <Text style={styles.questFont}>{quest?.questName}</Text>
+          <BackButton />
         </View>
       </View>
-      <View style={styles.DataCon}>
+      <View style={styles.infoText}>
         <View style={styles.timePlaceCon}>
-          <Text style={{ color: textColor, fontSize: 16 }}>
-            {timeConv(quest.timeStart)}
-            {"\n"}
-            {timeConv(quest.timeEnd)}
-            {"\n"}
-            {quest.locationName}
-          </Text>
+          <Text style={styles.smallDetail}>{timeConv(quest?.timeStart)}</Text>
+          <Text style={styles.smallDetail}>{timeConv(quest?.timeEnd)}</Text>
+          <Text style={styles.locationText}>ที่ {quest?.locationName}</Text>
         </View>
-        <View style={styles.creatorCon}>
-          <Text style={{ color: textColor, fontSize: 20, fontWeight: "bold" }}>
-            {quest.creatorName}
-          </Text>
-        </View>
-        <View style={styles.creatorPicCon}>
-          <Image style={styles.picCreator} src={quest.creatorPic}></Image>
+        <View style={{ alignItems: "flex-end" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <Text style={styles.ParticipantFont}>
+              {quest?.countParticipant}/{quest?.maxParticipant}
+            </Text>
+            <Image source={person_icon} style={styles.pic} />
+            <View
+              style={{
+                width: 12,
+                height: 12,
+                backgroundColor: statusIcon(
+                  quest?.countParticipant,
+                  quest?.maxParticipant
+                ),
+                borderRadius: 25,
+              }}
+            ></View>
+          </View>
+          <View style={styles.creatorCon}>
+            <Text style={styles.creatorText}>
+              Created By {"\n"}
+              {quest?.creatorName}
+            </Text>
+            <View style={styles.creatorPicCon}>
+              <Image style={styles.picCreator} src={quest?.creatorPic}></Image>
+            </View>
+          </View>
         </View>
       </View>
     </View>
@@ -70,62 +69,74 @@ const styles = StyleSheet.create({
   questItem: {
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
-    padding: 5,
-    // borderRadius: 5,
-    paddingLeft: 20,
-    paddingRight: 20,
+    backgroundColor: "white",
     width: "100%",
+    // alignItems: "flex-end",
   },
   picCreator: {
     width: "100%",
     height: "100%",
-    resizeMode: "contain",
   },
   questFont: {
-    fontSize: 30,
-    fontWeight: "bold",
+    fontSize: 28,
+    fontFamily: "Kanit300",
   },
   timePlaceCon: {
-    flexDirection: "row",
     backgroundColor: BGcolor,
-    width: "45%",
     justifyContent: "center",
-    alignItems: "center",
   },
   creatorCon: {
     backgroundColor: BGcolor,
-    width: "29%",
-    justifyContent: "center",
-    alignItems: "flex-end",
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10,
   },
   creatorPicCon: {
     backgroundColor: BGcolor,
-    width: "20%",
-    aspectRatio: 1 / 1,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: "hidden",
   },
 
   DataCon: {
+    paddingVertical: 5,
     backgroundColor: BGcolor,
     width: "100%",
-    padding: 5,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    rowGap: 3,
-    columnGap: 10,
-    justifyContent: "center",
   },
   ParticipantFont: {
-    fontSize: 20,
-    // fontWeight: 'bold',
+    fontSize: 18,
+    fontFamily: "Kanit300",
   },
   questNameCon: {
-    width: "70%",
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   pic: {
     width: 20,
     height: 20,
-    // backgroundColor: "red"
     resizeMode: "contain",
+  },
+  infoText: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  smallDetail: {
+    fontSize: 16,
+    fontFamily: "Kanit300",
+    lineHeight: 20,
+  },
+  creatorText: {
+    fontSize: 16,
+    fontFamily: "Kanit300",
+    color: textColor,
+    textAlign: "right",
+  },
+  locationText: {
+    fontSize: 16,
+    fontFamily: "Kanit400",
   },
 });

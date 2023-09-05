@@ -39,17 +39,16 @@ const GridCard = () => {
       }
     >
       <View style={styles.GridContainer}>
-      {questData.map((item) => (
-        <MinimalCard key={item._id} quest={item} />
-      ))}
-    </View>
+        {questData.map((item) => (
+          <MinimalCard key={item._id} quest={item} />
+        ))}
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  GridContainer: {
-  },
+  GridContainer: {},
 });
 
 export default GridCard;

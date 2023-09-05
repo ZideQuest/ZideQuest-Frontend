@@ -8,7 +8,7 @@ import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 const Recommend = () => {
   return (
-    <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
+    <Bottomsheet snapPoints={["10%", "50%", "90%"]} index={1}>
       <BottomSheetScrollView style={styles.Container}>
         <SearchBar />
         <GridCard />

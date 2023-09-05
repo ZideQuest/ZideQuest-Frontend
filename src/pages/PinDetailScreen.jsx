@@ -111,19 +111,16 @@ export default function PinDetailScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    // flex: 1,
     overflow: "scroll",
   },
   headerContainer: {
     paddingHorizontal: 20,
     paddingBottom: 15,
-    // marginBottom: 15,
     backgroundColor: "white",
   },
   imageScrollContainer: {
     height: 220,
     flexDirection: "row",
-    // overflow: "scroll",
   },
   bannerContainer: {
     height: "100%",
@@ -133,7 +130,6 @@ const styles = StyleSheet.create({
   bannerImage: {
     height: "100%",
     width: "100%",
-    // resizeMode: "stretch"
   },
   quests: {
     paddingHorizontal: 23,
@@ -143,10 +139,11 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 25,
-    fontWeight: 700,
+    fontFamily: 'Kanit400'
   },
   detail: {
-    fontSize: 15,
+    fontSize: 16,
+    fontFamily: "Kanit300"
   },
   subHeader: {
     flexDirection: "row",
@@ -155,6 +152,7 @@ const styles = StyleSheet.create({
   },
   subHeaderText: {
     fontSize: 20,
+    fontFamily: "Kanit300",
   },
   addQuestButton: {
     backgroundColor: buttonNormalGreen,

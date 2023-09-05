@@ -1,16 +1,7 @@
 import react, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Button,
-  Alert,
-  RefreshControl,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import yo from "../../assets/images/KU2.jpg";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { getQuestData } from "../data/Quest";
 import Tag from "../components/Quest/Tag";
 import ActivityName from "../components/Quest/ActivityName";
@@ -34,7 +25,6 @@ export default function ActivityDetail() {
         onPress: async () => {
           setLoading(true);
           const detail = await join_leave(questId);
-          console.log(detail);
           if (detail != null) {
             setQuestDetail(detail);
             setIsJoined(true);
@@ -60,7 +50,6 @@ export default function ActivityDetail() {
           onPress: async () => {
             setLoading(true);
             const detail = await join_leave(questId);
-            console.log(detail);
             if (detail != null) {
               setQuestDetail(detail);
               setIsJoined(false);
@@ -106,13 +95,12 @@ export default function ActivityDetail() {
         style={styles.container}
         snapPoints={["20%", "60%", "90%"]}
         index={1}
-        // hideBar={true}
       >
-        <BottomSheetScrollView
-        // stickyHeaderIndices={[0]}
-        >
+        <BottomSheetScrollView>
           <View style={styles.ScrollView}>
-            <ActivityName quest={QuestDetail} />
+            <View style={{ width: "100%", paddingHorizontal: 15 }}>
+              <ActivityName quest={QuestDetail} />
+            </View>
             <View style={styles.picCon}>
               <Image style={styles.pic} src={QuestDetail.picturePath} />
             </View>
@@ -133,7 +121,7 @@ export default function ActivityDetail() {
               ) : (
                 <BigButton
                   text="เข้าร่วมกิจกรรม"
-                  bg="#E86A33"
+                  bg={primaryColor}
                   onPress={() => joinAlert(questId)}
                 />
               )}
@@ -147,46 +135,28 @@ export default function ActivityDetail() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FDFEFE",
+    backgroundColor: BGcolor,
     width: "100%",
     flexDirection: "row",
-    flexWrap: "wrap",
-    rowGap: 10,
-    columnGap: 10,
     flex: 1,
-    overflow: "scroll",
   },
-
   picCon: {
     width: "100%",
     height: 200,
+    marginTop: 10,
   },
   pic: {
     width: "100%",
     height: "100%",
-    // resizeMode: "contain",
-  },
-  DataCon: {
-    backgroundColor: BGcolor,
-    width: "100%",
-    padding: 10,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    rowGap: 10,
-    columnGap: 10,
-    justifyContent: "center",
   },
   DescripCon: {
-    padding: 15,
+    paddingHorizontal: 15,
     backgroundColor: BGcolor,
     width: "100%",
   },
-  AcButton: {},
   ButtonCon: {
-    width: "87%",
+    width: "100%",
+    padding: 15,
   },
-  ScrollView: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  ScrollView: {},
 });

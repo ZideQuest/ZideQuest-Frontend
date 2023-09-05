@@ -5,7 +5,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
-import { buttonGrey, buttonLightGrey } from "../../data/color";
+import { BGcolor, buttonGrey, buttonLightGrey } from "../../data/color";
 
 const Bottomsheet = ({
   children,
@@ -39,7 +39,7 @@ const Bottomsheet = ({
       index={index}
       snapPoints={snapPoints}
       enablePanDownToClose={false}
-      // backgroundStyle={styles.backgroundStyle}
+      backgroundStyle={styles.backgroundStyle}
       style={[
         styles.pullBar,
         {
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   },
   backgroundStyle: {
     // backgroundColor: "transparent",
+    // backgroundColor: "red",
   },
   pullBar: {
     backgroundColor: "white",
