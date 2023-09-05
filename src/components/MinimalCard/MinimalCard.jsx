@@ -101,7 +101,9 @@ const MinimalCard = ({ quest }) => {
             <View style={styles.userdescription}>
               <Text>สถานที่: {locationId.locationName}</Text>
               <View style={styles.participant}>
-                <Text style={styles.par_font}>จำนวนผู้เข้าร่วม: {countParticipant} / {maxParticipant}</Text>
+                <Text style={styles.par_font}>
+                  จำนวนผู้เข้าร่วม: {countParticipant} / {maxParticipant}
+                </Text>
               </View>
             </View>
           </View>
@@ -135,8 +137,6 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   quest_name: {
-    left: 12,
-    top: 10,
     color: buttonOrange,
     fontSize: 25,
     fontWeight: 600,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
   image_container: {
     width: "100%",
-    height: 200,
+    height: 180,
     borderRadius: 7,
     overflow: "hidden",
     marginTop: 7,
