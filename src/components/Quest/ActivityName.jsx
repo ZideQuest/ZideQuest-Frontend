@@ -21,11 +21,11 @@ export default function ActivityName({ quest }) {
     <View style={styles.DataCon}>
       <View style={[styles.questItem]}>
         <View style={[styles.questNameCon]}>
-          <Text style={styles.questFont}>{quest.questName}</Text>
+          <Text style={styles.questFont}>{quest?.questName}</Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Text style={styles.ParticipantFont}>
-            {quest.countParticipant}/{quest.maxParticipant}
+            {quest?.countParticipant}/{quest?.maxParticipant}
           </Text>
           <View style={styles.pic}>
             <Image source={person_icon} />
@@ -35,8 +35,8 @@ export default function ActivityName({ quest }) {
               width: 12,
               height: 12,
               backgroundColor: statusIcon(
-                quest.countParticipant,
-                quest.maxParticipant
+                quest?.countParticipant,
+                quest?.maxParticipant
               ),
               borderRadius: 25,
             }}
@@ -46,20 +46,20 @@ export default function ActivityName({ quest }) {
       <View style={styles.DataCon}>
         <View style={styles.timePlaceCon}>
           <Text style={{ color: textColor, fontSize: 16 }}>
-            {timeConv(quest.timeStart)}
+            {timeConv(quest?.timeStart)}
             {"\n"}
-            {timeConv(quest.timeEnd)}
+            {timeConv(quest?.timeEnd)}
             {"\n"}
-            {quest.locationName}
+            {quest?.locationName}
           </Text>
         </View>
         <View style={styles.creatorCon}>
           <Text style={{ color: textColor, fontSize: 20, fontWeight: "bold" }}>
-            {quest.creatorName}
+            {quest?.creatorName}
           </Text>
         </View>
         <View style={styles.creatorPicCon}>
-          <Image style={styles.picCreator} src={quest.creatorPic}></Image>
+          <Image style={styles.picCreator} src={quest?.creatorPic}></Image>
         </View>
       </View>
     </View>

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: buttonGrey,
-    padding: 10,
+    padding: 7,
     borderRadius: 5,
     paddingLeft: 15,
     paddingRight: 15,
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   questFont: {
-    fontSize: 16,
+    fontFamily: "Kanit300",
+    fontSize: 17,
   },
 });

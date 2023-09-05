@@ -9,6 +9,7 @@ import BackButton from "../components/button/BackButton";
 import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
 import ActivityName from "../components/Quest/ActivityName";
 import { buttonBlue, buttonBrightGreen } from "../data/color";
+import Participants from "../components/Participants/Participants";
 
 const showConfirmDialog = (title, description) => {
   return Alert.alert(title, description, [
@@ -25,7 +26,7 @@ export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
 
   useEffect(() => {
-    const fetchLocationData = async () => {
+    const fetchQuestData = async () => {
       try {
         const data = await getQuestData(route.params?.questId);
         setQuestData(data);
@@ -33,40 +34,43 @@ export default function QuestManagement({ route }) {
         console.error("Error fetching quest", error);
       }
     };
-    fetchLocationData();
+    fetchQuestData();
   }, []);
 
   return (
-    <Buttomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
-      <BackButton />
+    <Buttomsheet snapPoints={["20%", "60%", "90%"]} index={1} hideBar={true}>
+      {/* <BackButton /> */}
       <View style={styles.container}>
         <View style={styles.bannerContainer}>
           <Image src={questData?.picturePath} style={styles.bannerImage} />
         </View>
-        {questData && <ActivityName quest={questData} />}
-        <View style={styles.buttonContainer}>
-          <BigButton
-            text="ยืนยัน Quest Completed"
-            bg={buttonBrightGreen}
-            onPress={() =>
-              showConfirmDialog(
-                "Confirm Quest completed",
-                "Are you sure you want to end this quest?"
-              )
-            }
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <BigButton
-            text="สร้าง Check-in QR Code"
-            bg={buttonBlue}
-            onPress={() =>
-              showConfirmDialog(
-                "Confirm Quest completed",
-                "Are you sure you want to end this quest?"
-              )
-            }
-          />
+        <View style={styles.infoContainer}>
+          <ActivityName quest={questData} />
+          <Participants questId={route.params.questId}/>
+          <View style={styles.buttonContainer}>
+            <BigButton
+              text="ยืนยัน Quest Completed"
+              bg={buttonBrightGreen}
+              onPress={() =>
+                showConfirmDialog(
+                  "Confirm Quest completed",
+                  "Are you sure you want to end this quest?"
+                )
+              }
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <BigButton
+              text="สร้าง Check-in QR Code"
+              bg={buttonBlue}
+              onPress={() =>
+                showConfirmDialog(
+                  "Confirm Quest completed",
+                  "Are you sure you want to end this quest?"
+                )
+              }
+            />
+          </View>
         </View>
       </View>
     </Buttomsheet>
@@ -75,9 +79,11 @@ export default function QuestManagement({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    paddingHorizontal: 20,
-    flex: 1,
+    // backgroundColor: "white",
+    // flex: 1,
+  },
+  infoContainer: {
+    padding: 10,
     gap: 8,
   },
   buttonContainer: {
@@ -87,11 +93,10 @@ const styles = StyleSheet.create({
   },
   bannerContainer: {
     width: "100%",
-    height: 200,
+    height: 240,
   },
   bannerImage: {
     width: "100%",
     height: "100%",
-    // resizeMode: "contain"
   },
 });
