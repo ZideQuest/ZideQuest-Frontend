@@ -42,7 +42,6 @@ const GridCard = () => {
         <View>
           {questData.map((item) => (
             <MinimalCard
-              key={item.id}
               _id={item._id}
               quest_name={item.questName}
               quest_image={item.picturePath}

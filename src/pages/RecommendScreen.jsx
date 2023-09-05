@@ -25,6 +25,10 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     // borderColor: "blue",
   },
+  Rec_text: {
+    marginTop: 30,
+    marginLeft: 30,
+  },
 });
 
 export default Recommend;

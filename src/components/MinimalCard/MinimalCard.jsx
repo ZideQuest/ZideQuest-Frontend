@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     color: "#E86A33",
     left: 12,
     top: 10,
-    fontSize: 30,
+    fontSize: 17,
     fontWeight: "bold",
   },
   row: {
