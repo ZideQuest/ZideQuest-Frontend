@@ -41,20 +41,7 @@ const GridCard = () => {
       <View style={styles.GridContainer}>
         <View>
           {questData.map((item) => (
-            <MinimalCard
-              key={item.id}
-              _id={item._id}
-              quest_name={item.questName}
-              quest_image={item.picturePath}
-              time={item.timeStart}
-              timeEnd={item.timeEnd}
-              location={item.locationId.locationName}
-              creator_picture={item.creatorId.picturePath}
-              countParticipant={item.countParticipant}
-              maxParticipant={item.maxParticipant}
-              isAdmin={userDetail?.isAdmin}
-              token={userDetail?.token}
-            />
+            <MinimalCard key={item._id} quest={item} />
           ))}
         </View>
       </View>

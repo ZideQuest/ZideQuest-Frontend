@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import defaultCreatorImage from "../../../assets/images/UserProfileTest.jpg";
 import defaultQuestImage from "../../../assets/images/defaultQuestLocationImage.jpg";
 import * as TabNavigation from "../../data/TabNavigation";
+import { useAppContext } from "../../data/AppContext";
 
 function month_to_thai(datestring) {
   switch (datestring) {
@@ -52,35 +53,39 @@ function month_to_thai(datestring) {
   }
 }
 
-const MinimalCard = ({
-  id,
-  quest_name,
-  quest_image,
-  time,
-  timeEnd,
-  location,
-  creator_picture,
-  countParticipant,
-  maxParticipant,
-  isAdmin = false,
-  token,
-}) => {
-  const date = time.slice(8, 10);
-  const month = month_to_thai(time.slice(5, 7));
-  const year = time.slice(0, 4);
-  const formattedTime = time.slice(14, 19);
+const MinimalCard = ({ quest }) => {
+  const { userDetail } = useAppContext();
+  const {
+    _id,
+    questName,
+    picturePath,
+    timeStart,
+    timeEnd,
+    location,
+    creatorId,
+    countParticipant,
+    maxParticipant,
+  } = quest;
+
+  const date = timeStart.slice(8, 10);
+  const month = month_to_thai(timeStart.slice(5, 7));
+  const year = timeStart.slice(0, 4);
+  const formattedTime = timeStart.slice(14, 19);
   const formattedTimeEnd = timeEnd.slice(14, 19);
+
   const questImageSource =
-    quest_image !== "" ? { uri: quest_image } : defaultQuestImage;
+    picturePath !== "" ? { uri: picturePath } : defaultQuestImage;
 
   const creatorImageSource =
-    creator_picture != "" ? { uri: creator_picture } : defaultCreatorImage;
+    creatorId.picturePath != ""
+      ? { uri: creatorId.picturePath }
+      : defaultCreatorImage;
 
   const questPressHandler = () => {
-    if (isAdmin) {
-      TabNavigation.navigate("QuestManage", { questId: id });
-    } else if (token != null) {
-      TabNavigation.navigate("QuestDetail", { questId: id });
+    if (userDetail.isAdmin) {
+      TabNavigation.navigate("QuestManage", { questId: quest._id });
+    } else if (userDetail.token != null) {
+      TabNavigation.navigate("QuestDetail", { questId: quest._id });
     } else {
       alert("กรุณา login");
     }
@@ -89,7 +94,7 @@ const MinimalCard = ({
   return (
     <Pressable onPress={questPressHandler}>
       <View style={styles.CardContainer}>
-        <Text style={styles.quest_name}>{quest_name}</Text>
+        <Text style={styles.quest_name}>{questName}</Text>
         <View style={styles.row}>
           <View style={styles.row_inner}>
             <Image style={styles.userprofile} source={creatorImageSource} />
