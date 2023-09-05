@@ -1,18 +1,24 @@
 import react, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Button, Alert, RefreshControl} from "react-native";
-import { useRoute } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Button,
+  Alert,
+  RefreshControl,
+} from "react-native";
+import { useRoute } from "@react-navigation/native";
 import yo from "../../assets/images/KU2.jpg";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import {getQuestData} from "../data/Quest";
+import { getQuestData } from "../data/Quest";
 import Tag from "../components/Quest/Tag";
 import ActivityName from "../components/Quest/ActivityName";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import BigButton from "../components/button/BigButton";
-import {join_leave} from "../data/join-leave";
+import { join_leave } from "../data/join-leave";
 
-
-BGcolor = '#FDFEFE';
-textcolor = 'black';
+import { textColor, BGcolor, primaryColor } from "../data/color";
 
 export default function ActivityDetail() {
   const [QuestDetail, setQuestDetail] = useState(null);
@@ -22,57 +28,53 @@ export default function ActivityDetail() {
   const [isJoined, setIsJoined] = useState(false);
 
   const joinAlert = (questId) =>
+    Alert.alert("ยืนยันการเข้าร่วมกิจกรรม", "ต้องการเข้าร่วม กด OK!", [
+      {
+        text: "OK!",
+        onPress: async () => {
+          setLoading(true);
+          const detail = await join_leave(questId);
+          console.log(detail);
+          if (detail != null) {
+            setQuestDetail(detail);
+            setIsJoined(true);
+            Alert.alert("เข้าร่วมสำเร็จ!");
+          } else {
+            Alert.alert("เข้าร่วมไม่สำเร็จ");
+          }
+          setLoading(false);
+        },
+      },
+      {
+        text: "cancel",
+      },
+    ]);
+
+  const leaveAlert = (questId) =>
     Alert.alert(
-      'ยืนยันการเข้าร่วมกิจกรรม',
-      'ต้องการเข้าร่วม กด OK!',
+      "ยืนยันยกเลิกการเข้าร่วม",
+      "ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES",
       [
         {
-          text: 'OK!',
-          onPress:async () => {
+          text: "YES",
+          onPress: async () => {
             setLoading(true);
             const detail = await join_leave(questId);
             console.log(detail);
-            if(detail != null){
-              setQuestDetail(detail); 
-              setIsJoined(true);
-              Alert.alert('เข้าร่วมสำเร็จ!');         
-            }else{
-              Alert.alert('เข้าร่วมไม่สำเร็จ'); 
+            if (detail != null) {
+              setQuestDetail(detail);
+              setIsJoined(false);
+              Alert.alert("ยกเลิกสำเร็จ!");
+            } else {
+              Alert.alert("ยกเลิกไม่สำเร็จ");
             }
             setLoading(false);
           },
         },
         {
-          text: 'cancel',        
+          text: "cancel",
         },
-      ],
-    );
-
-  const leaveAlert = (questId) =>
-    Alert.alert(
-      'ยืนยันยกเลิกการเข้าร่วม',
-      'ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES',
-      [
-        {
-          text: 'YES',
-          onPress:async () => {
-            setLoading(true);
-            const detail = await join_leave(questId);
-            console.log(detail);
-            if(detail != null){
-              setQuestDetail(detail); 
-              setIsJoined(false);
-              Alert.alert('ยกเลิกสำเร็จ!');
-            }else{
-              Alert.alert('ยกเลิกไม่สำเร็จ'); 
-            }
-            setLoading(false);    
-          },
-        },
-        {
-          text: 'cancel',        
-        },
-      ],
+      ]
     );
 
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function ActivityDetail() {
         const response = await getQuestData(questId);
         setQuestDetail(response);
         setLoading(false);
-        setIsJoined(response.isJoin)
+        setIsJoined(response.isJoin);
       } catch (error) {
         console.error(error);
       }
@@ -89,36 +91,40 @@ export default function ActivityDetail() {
 
     fetchData(questId);
   }, []);
- 
+
   if (isLoading) {
     return (
-      <Bottomsheet style={styles.container} snapPoints={["20%", "60%", "90%"]} index={1}>
-
-      </Bottomsheet>
+      <Bottomsheet
+        style={styles.container}
+        snapPoints={["20%", "60%", "90%"]}
+        index={1}
+      ></Bottomsheet>
     );
-  }else{
+  } else {
     return (
-      <Bottomsheet style={styles.container} snapPoints={["20%", "60%", "90%"]} index={1}>
+      <Bottomsheet
+        style={styles.container}
+        snapPoints={["20%", "60%", "90%"]}
+        index={1}
+        // hideBar={true}
+      >
         <BottomSheetScrollView
-            // stickyHeaderIndices={[0]}
+        // stickyHeaderIndices={[0]}
         >
           <View style={styles.ScrollView}>
-            <ActivityName quest={QuestDetail}/>
+            <ActivityName quest={QuestDetail} />
             <View style={styles.picCon}>
-              <Image
-                style={styles.pic}
-                source={{
-                  uri: QuestDetail.picturePath,
-                  }}
-              />
+              <Image style={styles.pic} src={QuestDetail.picturePath} />
             </View>
-            
-            <Tag tags={QuestDetail?.tag}/> 
+
+            <Tag tags={QuestDetail?.tag} />
             <View style={styles.DescripCon}>
-              <Text style={{ color: textcolor, fontSize: 16, }}>{QuestDetail.description}</Text>
+              <Text style={{ color: textColor, fontSize: 16 }}>
+                {QuestDetail.description}
+              </Text>
             </View>
-            <View style = {styles.ButtonCon}>
-              {isJoined ?(
+            <View style={styles.ButtonCon}>
+              {isJoined ? (
                 <BigButton
                   text="ยกเลิกการเข้าร่วม"
                   bg="#8C1C15"
@@ -175,8 +181,7 @@ const styles = StyleSheet.create({
     backgroundColor: BGcolor,
     width: "100%",
   },
-  AcButton: {
-  },
+  AcButton: {},
   ButtonCon: {
     width: "87%",
   },

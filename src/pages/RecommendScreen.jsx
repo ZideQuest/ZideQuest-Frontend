@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, Button, TextInput } from "react-native";
 import React, { useEffect, useRef } from "react";
 
 import SearchBar from "../components/SearchBar";
