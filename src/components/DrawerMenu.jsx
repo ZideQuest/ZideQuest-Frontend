@@ -5,6 +5,8 @@ import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import UpComingQuest from "../components/Quest/UpComingQuest";
+
 import Alert from "../components/misc/Alert";
 import user_icon from "../../assets/images/user_icon.png";
 import plus_icon from "../../assets/images/plus.png";
@@ -140,22 +142,7 @@ export default function DrawerMenu({ navigation, children }) {
               </Pressable>
             )}
 
-            {userDetail.user?.joinedQuest?.length && (
-              <View style={{ marginTop: 20, gap: 6 }}>
-                <Text
-                  style={{ color: textColor, fontWeight: 600, fontSize: 14 }}
-                >
-                  เควสที่กำลังจะมาถึง
-                </Text>
-                {userDetail.user?.joinedQuest?.map((q) => (
-                  <QuestListItem
-                    quest={q}
-                    onPress={() => setDrawerOpen(false)}
-                    panMap={true}
-                  />
-                ))}
-              </View>
-            )}
+            <UpComingQuest onPress={() => setDrawerOpen(false)} />
 
             <View style={styles.bigMenuContainer}>
               <Pressable

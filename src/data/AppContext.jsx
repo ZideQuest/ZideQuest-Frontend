@@ -14,6 +14,7 @@ export const AppProvider = ({ children }) => {
   const [bottomModalRef, setBottomModalRef] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mapMoveTo, setMapMoveTo] = useState(null);
+  const [soonQuest, setSoonQuest] = useState(null);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -56,6 +57,7 @@ export const AppProvider = ({ children }) => {
         user: response,
       };
     });
+    setSoonQuest(response.joinedQuest);
   };
 
   useEffect(() => {
@@ -99,6 +101,8 @@ export const AppProvider = ({ children }) => {
         mapMoveTo,
         setMapMoveTo,
         fetchUser,
+        soonQuest,
+        setSoonQuest,
       }}
     >
       {children}
