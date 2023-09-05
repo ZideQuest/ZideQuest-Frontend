@@ -125,16 +125,16 @@ export default function Map() {
             onPress={(data) => markerPressHandler(pin._id, data)}
           />
         ))}
-        <Marker coordinate={newMarker} />
+        {newMarker && <Marker coordinate={newMarker} />}
       </MapView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    map: {
-        height: "100%",
-        position: "relative",
-        width: "100%",
-    },
+  map: {
+    height: "100%",
+    position: "relative",
+    width: "100%",
+  },
 });

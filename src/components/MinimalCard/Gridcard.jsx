@@ -32,11 +32,18 @@ const GridCard = () => {
   };
 
   return (
-    <View style={styles.GridContainer}>
+    <ScrollView
+      overScrollMode="never"
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+      }
+    >
+      <View style={styles.GridContainer}>
       {questData.map((item) => (
         <MinimalCard key={item._id} quest={item} />
       ))}
     </View>
+    </ScrollView>
   );
 };
 

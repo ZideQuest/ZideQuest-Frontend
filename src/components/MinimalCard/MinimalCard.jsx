@@ -126,12 +126,17 @@ const MinimalCard = ({ quest }) => {
 
 const styles = StyleSheet.create({
   CardContainer: {
+    height: 300,
+    marginTop: 20,
+    elevation: 10,
     backgroundColor: "white",
     paddingHorizontal: 10,
     paddingVertical: 15,
     marginBottom: 7,
   },
   quest_name: {
+    left: 12,
+    top: 10,
     color: buttonOrange,
     fontSize: 25,
     fontWeight: 600,
@@ -187,6 +192,10 @@ const styles = StyleSheet.create({
   },
   par_font: {
     color: textColor,
+  },
+  location: {
+    color: "grey",
+    fontWeight: "bold",
   },
 });
 
