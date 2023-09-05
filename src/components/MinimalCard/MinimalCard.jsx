@@ -55,7 +55,7 @@ function month_to_thai(datestring) {
 }
 
 const MinimalCard = ({ quest }) => {
-  const { userDetail } = useAppContext();
+  const { userDetail, mapMoveTo } = useAppContext();
   const {
     questName,
     picturePath,
@@ -82,6 +82,8 @@ const MinimalCard = ({ quest }) => {
       : defaultCreatorImage;
 
   const questPressHandler = () => {
+    mapMoveTo(locationId.latitude, locationId.longitude);
+
     if (userDetail.isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
     } else if (userDetail.token != null) {
@@ -99,7 +101,9 @@ const MinimalCard = ({ quest }) => {
           <View style={styles.row_inner}>
             <Image style={styles.userprofile} source={creatorImageSource} />
             <View style={styles.userdescription}>
-              <Text style={{fontFamily: "Kanit400"}}>สถานที่: {locationId.locationName}</Text>
+              <Text style={{ fontFamily: "Kanit400" }}>
+                สถานที่: {locationId.locationName}
+              </Text>
               <View style={styles.participant}>
                 <Text style={styles.par_font}>
                   จำนวนผู้เข้าร่วม: {countParticipant} / {maxParticipant}
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
   quest_name: {
     color: buttonOrange,
     fontSize: 27,
-    fontFamily: 'Kanit400',
+    fontFamily: "Kanit400",
   },
   row: {
     flexDirection: "row",
@@ -156,7 +160,7 @@ const styles = StyleSheet.create({
   },
   time: {
     color: textColor,
-    fontFamily: "Kanit300"
+    fontFamily: "Kanit300",
   },
   timeSE: {
     flexDirection: "row",
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
   date: {
     color: textColor,
     fontWeight: "bold",
-    fontFamily: "Kanit300"
+    fontFamily: "Kanit300",
   },
   userprofile: {
     width: 50,
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
   },
   par_font: {
     color: textColor,
-    fontFamily: "Kanit400"
+    fontFamily: "Kanit400",
   },
   location: {
     color: "grey",

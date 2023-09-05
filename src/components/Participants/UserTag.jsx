@@ -4,9 +4,9 @@ import { buttonGrey, buttonLightGrey } from "../../data/color";
 
 export default function UserTag({ user }) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} key={user?.user?._id}>
       <Text style={styles.textInfo}>
-        {user?.userId?.firstName} {user?.userId?.lastName}
+        {user?.user?.firstName} {user?.user?.lastName}
       </Text>
       <View
         style={{
@@ -26,10 +26,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: buttonGrey,
-    padding: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 6,
     borderRadius: 10,
   },
   textInfo: {
-    fontSize: 15,
+    fontSize: 16,
+    fontFamily: "Kanit300"
   },
 });

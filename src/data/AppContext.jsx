@@ -50,14 +50,19 @@ export const AppProvider = ({ children }) => {
   };
 
   const fetchUser = async () => {
-    const response = await fetchUserData();
-    setUserDetails((prev) => {
-      return {
-        ...prev,
-        user: response,
-      };
-    });
-    setSoonQuest(response.joinedQuest);
+    try {
+      const response = await fetchUserData();
+      setUserDetails((prev) => {
+        return {
+          ...prev,
+          user: response,
+        };
+      });
+      setSoonQuest(response.joinedQuest);
+    } catch (error) {
+      await SecureStore.deleteItemAsync("userDetail");
+      alert("Please Login again");
+    }
   };
 
   useEffect(() => {

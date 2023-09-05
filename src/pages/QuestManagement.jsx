@@ -38,15 +38,14 @@ export default function QuestManagement({ route }) {
   }, []);
 
   return (
-    <Buttomsheet snapPoints={["20%", "60%", "90%"]} index={1} hideBar={true}>
-      {/* <BackButton /> */}
+    <Buttomsheet snapPoints={["20%", "60%", "90%"]} index={2} hideBar={true}>
       <View style={styles.container}>
         <View style={styles.bannerContainer}>
           <Image src={questData?.picturePath} style={styles.bannerImage} />
         </View>
         <View style={styles.infoContainer}>
           <ActivityName quest={questData} />
-          <Participants questId={route.params.questId}/>
+          <Participants questId={route.params.questId} />
           <View style={styles.buttonContainer}>
             <BigButton
               text="ยืนยัน Quest Completed"
@@ -78,12 +77,9 @@ export default function QuestManagement({ route }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    // backgroundColor: "white",
-    // flex: 1,
-  },
+  container: {},
   infoContainer: {
-    padding: 10,
+    paddingHorizontal: 20,
     gap: 8,
   },
   buttonContainer: {
