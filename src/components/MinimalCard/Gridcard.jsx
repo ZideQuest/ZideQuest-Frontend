@@ -39,33 +39,16 @@ const GridCard = () => {
       }
     >
       <View style={styles.GridContainer}>
-        <View>
-          {questData.map((item) => (
-            <MinimalCard
-              key={item._id}
-              _id={item._id}
-              quest_name={item.questName}
-              quest_image={item.picturePath}
-              time={item.timeStart}
-              timeEnd={item.timeEnd}
-              location={item.locationId.locationName}
-              creator_picture={item.creatorId.picturePath}
-              countParticipant={item.countParticipant}
-              maxParticipant={item.maxParticipant}
-              isAdmin={userDetail?.isAdmin}
-              token={userDetail?.token}
-            />
-          ))}
-        </View>
-      </View>
+      {questData.map((item) => (
+        <MinimalCard key={item._id} quest={item} />
+      ))}
+    </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   GridContainer: {
-    flex: 1,
-    padding: 16,
   },
 });
 

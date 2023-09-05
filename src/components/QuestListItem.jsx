@@ -22,6 +22,7 @@ export default function QuestListItem({
   isAdmin = false,
   onPress,
   panMap = false,
+  keyTag
 }) {
   const { userDetail, mapMoveTo } = useAppContext();
   const questPressHandler = () => {
@@ -47,7 +48,6 @@ export default function QuestListItem({
   return (
     <Pressable
       onPress={questPressHandler}
-      key={quest._id}
       style={[styles.questItem, { opacity: quest.status == "live" ? 100 : 50 }]}
     >
       <Text style={styles.questFont}>{quest.questName}</Text>

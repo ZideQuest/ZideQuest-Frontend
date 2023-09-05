@@ -150,6 +150,8 @@ export default function SearchBar({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    backgroundColor: "white",
+    paddingBottom: 10,
   },
   topBarContainer: {
     paddingHorizontal: 10,
