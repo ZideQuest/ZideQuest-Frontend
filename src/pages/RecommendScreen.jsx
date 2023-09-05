@@ -1,11 +1,10 @@
 import { Image, StyleSheet, Text, View, Button, TextInput } from "react-native";
 import React, { useEffect, useRef } from "react";
-import {BottomSheetScrollView} from "@gorhom/bottom-sheet"
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 import SearchBar from "../components/SearchBar";
 import GridCard from "../components/MinimalCard/Gridcard";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
-
 
 const Recommend = () => {
   return (
