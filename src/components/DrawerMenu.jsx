@@ -18,13 +18,14 @@ import QuestListItem from "../components/QuestListItem";
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
 export default function DrawerMenu({ navigation, children }) {
-  const { userDetail, drawerOpen, setDrawerOpen, logout, fetchUser } =
+  const { userDetail, drawerOpen, setDrawerOpen, logout, fetchUser, setFocusedPin } =
     useAppContext();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(false);
 
   const addButtonHandler = () => {
     TabNavigation.navigate("CreatePin");
+    setFocusedPin(null)
     setDrawerOpen(false);
   };
 
