@@ -22,10 +22,12 @@ export default function QuestListItem({
   isAdmin = false,
   onPress,
   panMap = false,
-  keyTag
+  keyTag,
 }) {
-  const { userDetail, mapMoveTo } = useAppContext();
+  const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
   const questPressHandler = () => {
+
+    
     if (isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
     } else if (userDetail?.token != null) {
@@ -34,13 +36,13 @@ export default function QuestListItem({
       alert("กรุณา login");
       return;
     }
-
+    
     if (onPress) {
       onPress();
     }
-
+    
     if (panMap) {
-      // console.log(quest.locationId);
+      setFocusedPin(quest.locationId._id)
       mapMoveTo(quest.locationId.latitude, quest.locationId.longitude);
     }
   };
@@ -53,7 +55,8 @@ export default function QuestListItem({
       <Text style={styles.questFont}>{quest.questName}</Text>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
         <Text style={styles.questFont}>
-          {quest.countParticipant}/{quest.maxParticipant}
+          {quest.countParticipant}
+          {quest.maxParticipant ? `/${quest.maxParticipant}` : ""}
         </Text>
         <View style={styles.pic}>
           <Image source={person_icon} />

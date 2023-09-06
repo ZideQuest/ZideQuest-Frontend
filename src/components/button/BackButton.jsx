@@ -6,12 +6,14 @@ import { useAppContext } from "../../data/AppContext";
 import { primaryColor } from "../../data/color";
 import close_icon from "../../../assets/images/close_icon.png";
 
-export default function BackButton({ color = "black" }) {
-  const { bottomModalRef } = useAppContext();
+export default function BackButton() {
+  const { bottomModalRef, mapRefetch, setFocusedPin } = useAppContext();
 
   const closeHandler = () => {
     TabNavigation.navigate("Recommend");
     bottomModalRef.current?.snapToIndex(1);
+    mapRefetch();
+    setFocusedPin(null);
   };
 
   return (

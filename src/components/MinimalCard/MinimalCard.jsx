@@ -55,7 +55,7 @@ function month_to_thai(datestring) {
 }
 
 const MinimalCard = ({ quest }) => {
-  const { userDetail, mapMoveTo } = useAppContext();
+  const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
   const {
     questName,
     picturePath,
@@ -83,6 +83,7 @@ const MinimalCard = ({ quest }) => {
 
   const questPressHandler = () => {
     mapMoveTo(locationId.latitude, locationId.longitude);
+    setFocusedPin(locationId._id)
 
     if (userDetail.isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });

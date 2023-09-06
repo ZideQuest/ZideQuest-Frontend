@@ -18,8 +18,16 @@ function getDetailFromData(coordinate) {
 }
 
 export default function Map() {
-  const { newMarker, setNewMarker, bottomModalRef, setMapMoveTo } =
-    useAppContext();
+  const {
+    newMarker,
+    setNewMarker,
+    bottomModalRef,
+    setMapMoveTo,
+    setMapRefetch,
+    setMapSearchedLocation,
+    focusedPin,
+    setFocusedPin,
+  } = useAppContext();
   const [locations, setLocations] = useState([]);
 
   const mapRef = useRef(null);
@@ -62,6 +70,7 @@ export default function Map() {
 
     TabNavigation.navigate("PinDetail", { pinId });
     animateToRegion(lat, lng);
+    setFocusedPin(pinId);
   };
 
   const animateToRegion = (lat, lng) => {
@@ -77,6 +86,27 @@ export default function Map() {
     }
   };
 
+  const mapRefetch = async () => {
+    try {
+      const data = await fetchLocations();
+      setLocations(data);
+    } catch (error) {
+      console.error("Error fetching locations", error);
+    }
+  };
+
+  const mapSearchedLocation = (locations) => {
+    setLocations(locations);
+  };
+
+  const markerOpacityHandler = (pinId) => {
+    if (!focusedPin || pinId == focusedPin) {
+      return { opacity: 1 };
+    } else {
+      return { opacity: 0.5 };
+    }
+  };
+
   useEffect(() => {
     mapRef.current.setMapBoundaries(
       { latitude: 13.856247, longitude: 100.565117 },
@@ -86,6 +116,8 @@ export default function Map() {
 
   useEffect(() => {
     setMapMoveTo(() => animateToRegion);
+    setMapSearchedLocation(() => mapSearchedLocation);
+    setMapRefetch(() => mapRefetch);
   }, []);
 
   useEffect(() => {
@@ -123,6 +155,7 @@ export default function Map() {
             coordinate={pin}
             key={pin._id}
             onPress={(data) => markerPressHandler(pin._id, data)}
+            style={markerOpacityHandler(pin._id)}
           />
         ))}
         {newMarker && <Marker coordinate={newMarker} />}
