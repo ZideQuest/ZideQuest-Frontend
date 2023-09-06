@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { timeConv } from "../../data/time/time";
 import person_icon from "../../../assets/images/participant.png";
-import BackButton from "../button/BackButton"
+import BackButton from "../button/BackButton";
+import official_icon from "../../../assets/images/official_icon.png";
 
 import { BGcolor, textColor } from "../../data/color";
 
@@ -35,7 +36,8 @@ export default function ActivityName({ quest }) {
         <View style={{ alignItems: "flex-end" }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <Text style={styles.ParticipantFont}>
-              {quest?.countParticipant}/{quest?.maxParticipant}
+              {quest?.countParticipant}{" "}
+              {quest?.maxParticipant ? `/ ${quest?.maxParticipant}` : ""}
             </Text>
             <Image source={person_icon} style={styles.pic} />
             <View
@@ -51,10 +53,25 @@ export default function ActivityName({ quest }) {
             ></View>
           </View>
           <View style={styles.creatorCon}>
-            <Text style={styles.creatorText}>
-              Created By {"\n"}
-              {quest?.creatorName}
-            </Text>
+            <View>
+              <Text style={styles.creatorText}>Created By</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={styles.creatorText}>{quest?.creatorName}</Text>
+                <View style={styles.badgeIcon}>
+                  <Image
+                    source={official_icon}
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </View>
+                <Text style={styles.badgeText}>Official</Text>
+              </View>
+            </View>
             <View style={styles.creatorPicCon}>
               <Image style={styles.picCreator} src={quest?.creatorPic}></Image>
             </View>
@@ -133,10 +150,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Kanit300",
     color: textColor,
-    textAlign: "right",
+    textAlign: "right"
   },
   locationText: {
     fontSize: 16,
     fontFamily: "Kanit400",
   },
+  badgeIcon: {
+    width: 13,
+    height: 13,
+    marginLeft: 4,
+    marginRight: 1,
+  },
+  badgeText: {
+    fontFamily: "Kanit400",
+    color: "teal"
+  }
 });

@@ -15,12 +15,12 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 15,
     overflow: "hidden",
-    height: 45,
+    // height: 45,
     justifyContent: "center",
   },
   bigButtonText: {
-    fontSize: 16,
-    fontWeight: 800,
+    fontSize: 17,
     color: "white",
+    fontFamily: "Kanit600",
   },
 });
