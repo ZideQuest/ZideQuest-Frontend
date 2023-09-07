@@ -77,3 +77,25 @@ export async function fetchParticipants(questId) {
     };
   }
 }
+
+export async function usersQuest() {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  try {
+    const {data} = await axios.get(
+      `${BASE_URL}/user/quest`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return data;
+    
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}

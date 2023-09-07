@@ -6,11 +6,12 @@ import { storeHistory } from "../../data/async_storage";
 import { useAppContext } from "../../data/AppContext";
 
 export default function LocationSearchItem({ location }) {
-  const { mapMoveTo } = useAppContext();
+  const { mapMoveTo, setFocusedPin } = useAppContext();
 
   const queryPressHandler = () => {
     storeHistory(location.locationName);
     mapMoveTo(location.latitude, location.longitude)
+    setFocusedPin(location._id)
     TabNavigation.navigate("PinDetail", { pinId: location._id });
   };
 

@@ -22,12 +22,9 @@ export default function QuestListItem({
   isAdmin = false,
   onPress,
   panMap = false,
-  keyTag,
 }) {
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
   const questPressHandler = () => {
-
-    
     if (isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
     } else if (userDetail?.token != null) {
@@ -36,13 +33,13 @@ export default function QuestListItem({
       alert("กรุณา login");
       return;
     }
-    
+
     if (onPress) {
       onPress();
     }
-    
+
     if (panMap) {
-      setFocusedPin(quest.locationId._id)
+      setFocusedPin(quest.locationId._id);
       mapMoveTo(quest.locationId.latitude, quest.locationId.longitude);
     }
   };
