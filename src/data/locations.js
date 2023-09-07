@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BASE_URL} from "./backend_url"
+import { BASE_URL } from "./backend_url";
 
 export async function fetchLocations() {
   try {
@@ -28,3 +28,23 @@ export async function getLocationData(id) {
     };
   }
 }
+
+export const createLocation = async ({ method, url, data, headers }) => {
+  try {
+    const res = await axios({
+      method,
+      url,
+      data,
+      headers,
+    });
+    return res;
+  } catch (error) {
+    if (error.response) {
+      console.log(error?.response?.data);
+      console.log(error?.response?.status);
+      console.log(error?.response?.headers);
+    } else if (error.request) {
+    }
+    return error;
+  }
+};

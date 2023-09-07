@@ -15,11 +15,11 @@ import picture_icon from "../../assets/images/picture.png";
 import BackButton from "../components/button/BackButton";
 import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
-import {requestAPI} from "../API/api";
+import {createLocation} from "../data/locations";
+
 
 export default function PinCreateInfo () {
-  const token ="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWI0ZWNlZWIyZTc0OTZkN2FjYWNjOCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY5Mzc1MzMxMywiZXhwIjoxNjk0MzU4MTEzfQ.fPcUcXbzpyECXMRSQLHFcVYwZddyvEdjA9kylGdOt9ncnGGB4ahgH_yuVLSmK8YOdltrQDj4EWhNlrq9QutPCCYutUvVASxfJFXEQVOoRuojywbmepEJ2fU_EpYpPzlWxMgoAX2O8XGluRqIt-u7jcCCHAtjAn1UFw-fOJ_EK9oOZQ4732y_AMC1gZCqlEddlrcOShOuGtEV6JviuvWL5NM_RsaA_xgNRsRZhtCa1WIFqigSeQKBmfKoDNM7pGQK4nexTCKbOcvhr9uyQATUs5xfgd7bA9qLCM4YkTJOQOMtHR6QhZ9Man4IMZLnKgMvYCwTW1AgjZNxUMHB980QHw";
-  const { newMarker, setNewMarker, bottomModalRef } = useAppContext();
+  const { newMarker, setNewMarker, bottomModalRef, userDetail } = useAppContext();
 
   const closeHandler = () => {
     TabNavigation.navigate("Recommend");
@@ -44,7 +44,7 @@ export default function PinCreateInfo () {
              <TouchableOpacity onPress={()=>{setModalVisible(false)}} style={{position:"absolute" , top: 15 , left: 15}}>
                   <Text style={{color: "white" ,fontSize: 20}}>X</Text>
                 </TouchableOpacity>
-             <View style={{height: "50%" , width: "70%" }}>
+              <View style={{height: "50%" , width: "70%" }}>
                <Image resizeMode="contain" source={{uri: state?.image.assets?.[0]?.uri}} style={{height: "100%" , width: "100%" }} />
              </View>
           </View>
@@ -72,8 +72,7 @@ export default function PinCreateInfo () {
                   mediaTypes: ImagePicker.MediaTypeOptions.All,
                   allowsEditing: true,
                   aspect: [4, 3],
-                  quality: 1,
-                  base64: true,
+                  quality: 0.3,
                 });
                 console.log(result);
                 if (!result.cancelled) {
@@ -95,8 +94,7 @@ export default function PinCreateInfo () {
                   mediaTypes: ImagePicker.MediaTypeOptions.All,
                   allowsEditing: true,
                   aspect: [4, 3],
-                  quality: 1,
-                  base64: true,
+                  quality: 0.3,
                 });
                 // console.log(result.assets);
                 if (!result.cancelled) {
@@ -111,10 +109,10 @@ export default function PinCreateInfo () {
             <Image source={picture_icon} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.img} onPress={()=>{setModalVisible(true)}}>
+        {state?.image&&<TouchableOpacity style={styles.img} onPress={()=>{setModalVisible(true)}}>
           <Image source={{uri: state?.image.assets?.[0]?.uri}} style={{height: 35 , width: 35}} />
           <Text style={styles.txt_img}>{state?.image?.assets?.[0]?.fileName}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>}
         {/* {console.log(state?.image?.assets?.[0])} */}
         <TouchableOpacity
           // disabled={!place || !detail}
@@ -137,17 +135,24 @@ export default function PinCreateInfo () {
             bodyFormData.append('locationName', place);
             bodyFormData.append('latitude', newMarker.latitude);
             bodyFormData.append('longitude', newMarker.longitude);
-            // bodyFormData.append('description', detail);
-            bodyFormData.append('img', state?.image?.assets?.[0]?.uri?.replace("file://",""));
-            const response= await requestAPI({method: "POST", url: "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/api/location/", headers: {
+            console.log(bodyFormData)
+            bodyFormData.append('img', {
+               uri: state?.image?.assets?.[0]?.uri,
+               name: state?.image?.assets?.[0]?.fileName,
+               type: state?.image?.assets?.[0]?.type,
+             });
+            console.log(state?.image)
+            bodyFormData.append('description', detail);
+            // bodyFormData.append('img', state?.image?.assets?.[0]);
+            const response= await createLocation({method: "POST", url: "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/api/location/", headers: {
               "Content-Type":'multipart/form-data',
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${userDetail?.token}`
             }, data: bodyFormData})
-            console.log(state?.image?.assets?.[0]?.uri)
+            
+            console.log("response",response)
             if(response.status === 200){
               closeHandler()
             }
-            
            }}
         >
           <Text
