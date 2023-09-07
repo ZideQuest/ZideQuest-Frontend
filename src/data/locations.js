@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 import { BASE_URL } from "./backend_url";
 
 export async function fetchLocations() {
@@ -29,20 +30,26 @@ export async function getLocationData(id) {
   }
 }
 
-export const createLocation = async ({ method, url, data, headers }) => {
+export const createLocation = async (data) => {
   try {
-    const res = await axios({
-      method,
-      url,
-      data,
-      headers,
+    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { token } = userdetail;
+    const res = await axios.post(`${BASE_URL}/location`, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
     });
+
     return res;
   } catch (error) {
     if (error.response) {
-      console.log(error?.response?.data);
-      console.log(error?.response?.status);
-      console.log(error?.response?.headers);
+      console.error(
+        error?.response?.data,
+        error?.response?.status,
+        error?.response?.headers
+      );
     } else if (error.request) {
     }
     return error;

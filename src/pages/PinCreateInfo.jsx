@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -6,7 +6,6 @@ import {
   Image,
   Text,
   TextInput,
-  Modal
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
@@ -15,158 +14,160 @@ import picture_icon from "../../assets/images/picture.png";
 import BackButton from "../components/button/BackButton";
 import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
-import {createLocation} from "../data/locations";
+import { createLocation } from "../data/locations";
+import { primaryColor } from "../data/color";
+import BigButton from "../components/button/BigButton";
+import ImagePreviewModal from "../components/misc/ImagePreviewModal";
 
+export default function PinCreateInfo() {
+  const { newMarker, setNewMarker } = useAppContext();
 
-export default function PinCreateInfo () {
-  const { newMarker, setNewMarker, bottomModalRef, userDetail } = useAppContext();
-
-  const closeHandler = () => {
-    TabNavigation.navigate("Recommend");
-    bottomModalRef.current?.snapToIndex(1);
+  const closeHandler = (pinId) => {
+    alert("สร้างสถานที่สำเร็จ");
+    TabNavigation.navigate("PinDetail", { pinId });
   };
 
-  const [state, setState] = useState();
+  const [state, setState] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  const [place, setPlace] = useState("");
+  const [place, setPlace] = useState(newMarker.name);
   const [detail, setDetail] = useState("");
 
-    return (
-      <Bottomsheet
-        style={{ flex: 1, justifyContent: "center", alignItems: "center"}}
-        snapPoints={["60%", "90%"]}
-        index={0}
-      >
-      
-        <Modal transparent={true} visible={modalVisible} >
-          
-          <View style={{flex: 1, justifyContent: "center", alignItems: "center",backgroundColor: "#000000aa"}}>
-             <TouchableOpacity onPress={()=>{setModalVisible(false)}} style={{position:"absolute" , top: 15 , left: 15}}>
-                  <Text style={{color: "white" ,fontSize: 20}}>X</Text>
-                </TouchableOpacity>
-              <View style={{height: "50%" , width: "70%" }}>
-               <Image resizeMode="contain" source={{uri: state?.image.assets?.[0]?.uri}} style={{height: "100%" , width: "100%" }} />
-             </View>
-          </View>
-        </Modal>
-        <View style={styles.container}>
-        <BackButton />
+  const submitHandler = async () => {
+    if (!place && !detail) {
+      alert("กรุณากรอกชื่อสถานที่และรายละเอียด");
+      return;
+    }
+    if (!place) {
+      alert("กรุณากรอกชื่อสถานที่");
+      return;
+    }
+    if (!detail) {
+      alert("กรุณากรอกรายละเอียด");
+      return;
+    }
+    let bodyFormData = new FormData();
+
+    bodyFormData.append("locationName", place);
+    bodyFormData.append("description", detail);
+    bodyFormData.append("latitude", newMarker.latitude);
+    bodyFormData.append("longitude", newMarker.longitude);
+    bodyFormData.append("img", {
+      uri: state.image?.assets?.[0]?.uri,
+      name: state.image?.assets?.[0]?.fileName,
+      type: state.image?.assets?.[0]?.type,
+    });
+    const response = await createLocation(bodyFormData);
+    if (response.status === 200) {
+      const { data } = response;
+      closeHandler(data._id);
+    }
+  };
+
+  const cameraRequest = async () => {
+    const results = await ImagePicker.requestCameraPermissionsAsync();
+    if (results.granted) {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.3,
+      });
+      console.log(result);
+      if (!result.canceled) {
+        setState({
+          image: result,
+        });
+      }
+    }
+  };
+
+  const galleryRequest = async () => {
+    const results = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (results.granted) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.3,
+      });
+      // console.log(result.assets);
+      if (!result.canceled) {
+        setState({
+          image: result,
+        });
+      }
+    }
+    console.log(results);
+  };
+
+  return (
+    <Bottomsheet
+      snapPoints={["60%", "90%"]}
+      index={0}
+    >
+      <ImagePreviewModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        imageUri={state.image?.assets?.[0]?.uri}
+      />
+
+      <View style={styles.container}>
+        <BackButton onPress={() => setNewMarker(null)} />
         <Text style={styles.txt}>เพิ่มสถานที่ใหม่</Text>
         <View style={styles.input}>
           <View>
             <Text>ชื่อสถานที่*</Text>
-            <TextInput style={styles.txtin} defaultValue={place} onChangeText={setPlace} multiline />
+            <TextInput
+              style={styles.txtin}
+              value={place}
+              onChangeText={setPlace}
+            />
           </View>
           <View>
             <Text>รายละเอียด*</Text>
-            <TextInput style={styles.txtin} defaultValue={detail} onChangeText={setDetail}  multiline />
+            <TextInput
+              style={styles.txtin}
+              value={detail}
+              onChangeText={setDetail}
+            />
           </View>
         </View>
         <Text>เพิ่มรูปภาพ</Text>
         <View style={styles.icon}>
-          <TouchableOpacity
-            onPress={async () => {
-              const results = await ImagePicker.requestCameraPermissionsAsync();
-              if (results.granted) {
-                let result = await ImagePicker.launchCameraAsync({
-                  mediaTypes: ImagePicker.MediaTypeOptions.All,
-                  allowsEditing: true,
-                  aspect: [4, 3],
-                  quality: 0.3,
-                });
-                console.log(result);
-                if (!result.cancelled) {
-                  setState({
-                    image: result,
-                  });
-                }
-              }
-            }}
-          >
+          <TouchableOpacity onPress={cameraRequest}>
             <Image source={photo_icon} />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={async () => {
-              const results =
-                await ImagePicker.requestMediaLibraryPermissionsAsync();
-              if (results.granted) {
-                let result = await ImagePicker.launchImageLibraryAsync({
-                  mediaTypes: ImagePicker.MediaTypeOptions.All,
-                  allowsEditing: true,
-                  aspect: [4, 3],
-                  quality: 0.3,
-                });
-                // console.log(result.assets);
-                if (!result.cancelled) {
-                  setState({
-                    image: result,
-                  });
-                }
-              }
-              console.log(results)
-            }}
-          >
+          <TouchableOpacity onPress={galleryRequest}>
             <Image source={picture_icon} />
           </TouchableOpacity>
         </View>
-        {state?.image&&<TouchableOpacity style={styles.img} onPress={()=>{setModalVisible(true)}}>
-          <Image source={{uri: state?.image.assets?.[0]?.uri}} style={{height: 35 , width: 35}} />
-          <Text style={styles.txt_img}>{state?.image?.assets?.[0]?.fileName}</Text>
-        </TouchableOpacity>}
-        {/* {console.log(state?.image?.assets?.[0])} */}
-        <TouchableOpacity
-          // disabled={!place || !detail}
-          style={styles.btn}
-          onPress={async() => {
-            if(!place && !detail){
-              alert("กรุณากรอกชื่อสถานที่และรายละเอียด")
-              return
-            }
-            if(!place){
-              alert("กรุณากรอกชื่อสถานที่")
-              return
-            }
-            if(!detail){
-              alert("กรุณากรอกรายละเอียด")
-              return
-            }
-            var bodyFormData = new FormData();
-
-            bodyFormData.append('locationName', place);
-            bodyFormData.append('latitude', newMarker.latitude);
-            bodyFormData.append('longitude', newMarker.longitude);
-            console.log(bodyFormData)
-            bodyFormData.append('img', {
-               uri: state?.image?.assets?.[0]?.uri,
-               name: state?.image?.assets?.[0]?.fileName,
-               type: state?.image?.assets?.[0]?.type,
-             });
-            console.log(state?.image)
-            bodyFormData.append('description', detail);
-            // bodyFormData.append('img', state?.image?.assets?.[0]);
-            const response= await createLocation({method: "POST", url: "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/api/location/", headers: {
-              "Content-Type":'multipart/form-data',
-              Authorization: `Bearer ${userDetail?.token}`
-            }, data: bodyFormData})
-            
-            console.log("response",response)
-            if(response.status === 200){
-              closeHandler()
-            }
-           }}
-        >
-          <Text
-            style={{
-              color: "white",
+        {state.image && (
+          <TouchableOpacity
+            style={styles.img}
+            onPress={() => {
+              setModalVisible(true);
             }}
           >
-            สร้างสถานที่
-          </Text>
-        </TouchableOpacity>
+            <Image
+              source={{ uri: state?.image.assets?.[0]?.uri }}
+              style={{ height: 35, width: 35 }}
+            />
+            <Text style={styles.txt_img}>
+              {state?.image?.assets?.[0]?.fileName}
+            </Text>
+          </TouchableOpacity>
+        )}
+        <View style={{ height: 45 }}>
+          <BigButton
+            bg={primaryColor}
+            onPress={submitHandler}
+            text="สร้างสถานที่"
+          />
+        </View>
       </View>
-      </Bottomsheet>
-    );
-  }
+    </Bottomsheet>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -174,7 +175,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   txt: {
-    display: "flex",
     textAlign: "center",
     fontSize: 30,
     marginTop: 20,
@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
   },
   img: {
     marginTop: 10,
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
@@ -202,16 +201,15 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginTop: 10,
-    display: "flex",
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
   },
   btn: {
-    position: "absolute",
-    bottom: 20,
-    flex: 1,
-    backgroundColor: "#E86A33",
+    // position: "absolute",
+    // bottom: 20,
+    // flex: 1,
+    backgroundColor: primaryColor,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
