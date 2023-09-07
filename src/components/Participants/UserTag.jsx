@@ -4,7 +4,7 @@ import { buttonGrey, buttonLightGrey } from "../../data/color";
 
 export default function UserTag({ user }) {
   return (
-    <View style={styles.container} key={user?.user?._id}>
+    <View style={styles.container}>
       <Text style={styles.textInfo}>
         {user?.user?.firstName} {user?.user?.lastName}
       </Text>
@@ -32,6 +32,6 @@ const styles = StyleSheet.create({
   },
   textInfo: {
     fontSize: 16,
-    fontFamily: "Kanit300"
+    fontFamily: "Kanit300",
   },
 });

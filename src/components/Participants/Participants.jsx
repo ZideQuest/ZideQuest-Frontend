@@ -23,13 +23,17 @@ export default function Participants({ questId }) {
     <View style={{ width: "100%" }}>
       {participants?.length ? (
         <View style={{ gap: 7 }}>
-          <Text style={{fontFamily: "Kanit400", fontSize: 17}}>ผู้เข้าร่วม</Text>
+          <Text style={{ fontFamily: "Kanit400", fontSize: 17 }}>
+            ผู้เข้าร่วม
+          </Text>
           {participants?.map((user) => (
-            <UserTag user={user} />
+            <UserTag user={user} key={`participant-${user?.user?._id}`} />
           ))}
         </View>
       ) : (
-        <Text>ยังไม่มีผู้เข้าร่วม</Text>
+        <Text style={{ fontFamily: "Kanit400", fontSize: 17 }}>
+          ยังไม่มีผู้เข้าร่วม
+        </Text>
       )}
     </View>
   );

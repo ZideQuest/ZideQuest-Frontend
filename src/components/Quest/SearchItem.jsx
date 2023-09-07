@@ -6,14 +6,22 @@ import { storeHistory } from "../../data/async_storage";
 import { timeConv } from "../../data/time/time";
 import { useAppContext } from "../../data/AppContext";
 
-export default function SearchItem({ quest }) {
-  const { mapMoveTo } = useAppContext();
+export default function SearchItem({ quest, isAdmin }) {
+  const { mapMoveTo, setFocusedPin, userDetail } = useAppContext();
 
   const queryPressHandler = () => {
     storeHistory(quest.questName);
-    console.log(quest.locationId?.latitude, quest.locationId?.longitude);
     mapMoveTo(quest.locationId?.latitude, quest.locationId?.longitude);
-    TabNavigation.navigate("QuestDetail", { questId: quest._id });
+    setFocusedPin(quest.locationId?._id);
+
+    if (isAdmin) {
+      TabNavigation.navigate("QuestManage", { questId: quest._id });
+    } else if (userDetail?.token != null) {
+      TabNavigation.navigate("QuestDetail", { questId: quest._id });
+    } else {
+      alert("กรุณา login");
+      return;
+    }
   };
 
   return (

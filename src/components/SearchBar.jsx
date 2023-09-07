@@ -131,7 +131,7 @@ export default function SearchBar({ navigation }) {
       {searchResult && searching && search && (
         <View style={styles.searchResultContainer}>
           {searchResult.quests?.map((quest) => (
-            <SearchItem quest={quest} key={quest._id} />
+            <SearchItem quest={quest} key={quest._id} isAdmin={userDetail.isAdmin}/>
           ))}
           {searchResult.locations?.map((location) => (
             <LocationSearchItem location={location} key={location._id} />

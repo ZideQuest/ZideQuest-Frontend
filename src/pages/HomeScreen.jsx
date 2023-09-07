@@ -46,11 +46,11 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-    mapContainer: {
-        height: "100%",
-    },
-    subMenu: {
-        // width: "100%",
-        // maxWidth: 700,
-    },
+  mapContainer: {
+    height: "100%",
+  },
+  subMenu: {
+    // width: "100%",
+    // maxWidth: 700,
+  },
 });
