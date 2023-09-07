@@ -6,7 +6,7 @@ import { textColor } from "../data/color";
 
 import search_icon from "../../assets/images/search.png";
 
-export default function RecentSearch({ setSearch }) {
+export default function RecentSearch({ setSearch, handleTextChange }) {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
@@ -22,6 +22,11 @@ export default function RecentSearch({ setSearch }) {
     setHistory([]);
   };
 
+  const recentPressHandler = (h) => {
+    handleTextChange(h);
+    setSearch(h);
+  };
+
   return (
     <View style={styles.recentContainer}>
       <View style={styles.recentHeaderContainer}>
@@ -32,7 +37,7 @@ export default function RecentSearch({ setSearch }) {
         history.map((h, i) => (
           <Pressable
             key={`history-${i}`}
-            onPress={() => setSearch(h)}
+            onPress={() => recentPressHandler(h)}
             style={styles.recentItem}
           >
             <View style={styles.searchIconContainer}>
@@ -90,5 +95,5 @@ const styles = StyleSheet.create({
   noRecent: {
     color: textColor,
     margin: 10,
-  }
+  },
 });

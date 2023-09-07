@@ -11,7 +11,6 @@ import {
   Image,
   Keyboard,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppContext } from "../data/AppContext";
 import { primaryColor } from "../data/color";
 import { searchQuest } from "../data/Quest";
@@ -25,20 +24,22 @@ import search_icon from "../../assets/images/search.png";
 
 export default function SearchBar({ navigation }) {
   const { bottomModalRef, userDetail, mapSearchedLocation } = useAppContext();
-  const insets = useSafeAreaInsets();
   const [searching, setSearching] = useState(false);
   const [search, setSearch] = useState(null);
   const [focusing, setFocusing] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const searchFetching = async (query) => {
     const data = await searchQuest(query);
     setSearchResult(data);
+    setLoading(false);
   };
 
-  const debouncedFetch = useCallback(debounce(searchFetching, 1000), []);
+  const debouncedFetch = useCallback(debounce(searchFetching, 500), []);
 
   const handleTextChange = (q) => {
+    setLoading(true);
     setSearch(q);
     setSearchResult([]);
     debouncedFetch(q);
@@ -60,7 +61,7 @@ export default function SearchBar({ navigation }) {
     setFocusing(false);
     storeHistory(search);
     bottomModalRef.current?.snapToIndex(1);
-    mapSearchedLocation(searchResult.locations)
+    mapSearchedLocation(searchResult.locations);
   };
 
   const onCancelHander = () => {
@@ -128,10 +129,20 @@ export default function SearchBar({ navigation }) {
         )}
       </View>
 
-      {searchResult && searching && search && (
+      {loading && search && <Text>Loading...</Text>}
+
+      {searching && search && (
         <View style={styles.searchResultContainer}>
+          {!loading &&
+            !searchResult.quests?.length &&
+            !searchResult.locations?.length && <Text>No Result</Text>}
+
           {searchResult.quests?.map((quest) => (
-            <SearchItem quest={quest} key={quest._id} isAdmin={userDetail.isAdmin}/>
+            <SearchItem
+              quest={quest}
+              key={quest._id}
+              isAdmin={userDetail.isAdmin}
+            />
           ))}
           {searchResult.locations?.map((location) => (
             <LocationSearchItem location={location} key={location._id} />
@@ -141,7 +152,10 @@ export default function SearchBar({ navigation }) {
 
       {searching && !search && (
         <View>
-          <RecentSearch setSearch={setSearch} />
+          <RecentSearch
+            setSearch={setSearch}
+            handleTextChange={handleTextChange}
+          />
         </View>
       )}
     </View>
