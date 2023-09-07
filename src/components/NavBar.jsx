@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
-  Text,
   View,
   Pressable,
   StyleSheet,
   Image,
-  Animated,
-  Button,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import Modal from "react-native-modal";
-
 import { useAppContext } from "../data/AppContext";
-
 import zidequest_icon from "../../assets/images/zidequest_icon.png";
-import SearchBar from "./SearchBar";
 import { primaryColor } from "../data/color";
 
 
@@ -28,15 +20,12 @@ export default function NavBar() {
   };
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View style={[styles.container, { paddingTop: insets.top + 15 }]}>
       <View>
         <Pressable style={styles.hamburgerContainer} onPress={DrawerToggle}>
           <Image source={zidequest_icon} style={styles.hamburgerIcon} />
         </Pressable>
       </View>
-      {/* <View style={styles.searchContainer}>
-        <SearchBar />
-      </View> */}
     </View>
   );
 }

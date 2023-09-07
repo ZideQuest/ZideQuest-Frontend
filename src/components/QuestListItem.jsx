@@ -6,16 +6,7 @@ import person_icon from "../../assets/images/participant.png";
 import { buttonGrey } from "../data/color";
 import { useAppContext } from "../data/AppContext";
 
-function statusIcon(currentP, maxP) {
-  const ratio = currentP / maxP;
-  if (ratio >= 1) {
-    return "red";
-  }
-  if (ratio > 0.8) {
-    return "yellow";
-  }
-  return "green";
-}
+import {statusIcon} from "../components/misc/Status"
 
 export default function QuestListItem({
   quest,
@@ -47,7 +38,7 @@ export default function QuestListItem({
   return (
     <Pressable
       onPress={questPressHandler}
-      style={[styles.questItem, { opacity: quest.status == "live" ? 100 : 50 }]}
+      style={[styles.questItem, { opacity: quest.status ? 0.5 : 1 }]}
     >
       <Text style={styles.questFont}>{quest.questName}</Text>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
@@ -64,7 +55,8 @@ export default function QuestListItem({
             height: 12,
             backgroundColor: statusIcon(
               quest.countParticipant,
-              quest.maxParticipant
+              quest.maxParticipant,
+              quest.status
             ),
             borderRadius: 25,
           }}

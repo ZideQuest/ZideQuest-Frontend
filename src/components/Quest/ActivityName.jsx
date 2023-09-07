@@ -6,17 +6,7 @@ import BackButton from "../button/BackButton";
 import official_icon from "../../../assets/images/official_icon.png";
 
 import { BGcolor, textColor } from "../../data/color";
-
-function statusIcon(currentP, maxP) {
-  const ratio = currentP / maxP;
-  if (ratio >= 1) {
-    return "red";
-  }
-  if (ratio > 0.8) {
-    return "yellow";
-  }
-  return "green";
-}
+import { statusIcon } from "../misc/Status";
 
 export default function ActivityName({ quest }) {
   return (
@@ -46,7 +36,8 @@ export default function ActivityName({ quest }) {
                 height: 12,
                 backgroundColor: statusIcon(
                   quest?.countParticipant,
-                  quest?.maxParticipant
+                  quest?.maxParticipant,
+                  quest?.status
                 ),
                 borderRadius: 25,
               }}
@@ -150,7 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Kanit300",
     color: textColor,
-    textAlign: "right"
+    textAlign: "right",
   },
   locationText: {
     fontSize: 16,
@@ -164,6 +155,6 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontFamily: "Kanit400",
-    color: "teal"
-  }
+    color: "teal",
+  },
 });
