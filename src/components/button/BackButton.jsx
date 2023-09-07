@@ -11,12 +11,15 @@ import * as TabNavigation from "../../data/TabNavigation";
 import { useAppContext } from "../../data/AppContext";
 import { primaryColor } from "../../data/color";
 
-export default function BackButton() {
+export default function BackButton({onPress}) {
   const { bottomModalRef } = useAppContext();
 
   const closeHandler = () => {
     TabNavigation.navigate("Recommend");
     bottomModalRef.current?.snapToIndex(1);
+    if (onPress) {
+      onPress()
+    }
   };
 
   return (
