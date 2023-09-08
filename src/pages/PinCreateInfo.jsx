@@ -21,11 +21,14 @@ import ImagePreviewModal from "../components/misc/ImagePreviewModal";
 import Spinner from "../components/Animations/Spinner";
 
 export default function PinCreateInfo() {
-  const { newMarker, setNewMarker } = useAppContext();
+  const { newMarker, setNewMarker, mapRefetch, setFocusedPin } = useAppContext();
 
   const closeHandler = (pinId) => {
     alert("สร้างสถานที่สำเร็จ");
     TabNavigation.navigate("PinDetail", { pinId });
+    mapRefetch();
+    setNewMarker(null)
+    setFocusedPin(pinId)
   };
 
   const [state, setState] = useState({});
