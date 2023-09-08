@@ -18,6 +18,7 @@ import SearchItem from "./Quest/SearchItem";
 import RecentSearch from "./RecentSearch";
 import * as TabNavigation from "../data/TabNavigation";
 import LocationSearchItem from "./Location/LocationSearchItem";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
 import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
@@ -112,7 +113,7 @@ export default function SearchBar({ navigation }) {
           <View style={styles.iconContainer}>
             <Image source={search_icon} style={styles.iconImage} />
           </View>
-          <TextInput
+          <BottomSheetTextInput
             style={styles.searchText}
             placeholder="ค้นหาเควส"
             onFocus={onFocusHandler}
@@ -153,7 +154,6 @@ export default function SearchBar({ navigation }) {
       {searching && !search && (
         <View>
           <RecentSearch
-            setSearch={setSearch}
             handleTextChange={handleTextChange}
           />
         </View>

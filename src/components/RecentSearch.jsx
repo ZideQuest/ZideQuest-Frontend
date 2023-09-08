@@ -6,7 +6,7 @@ import { textColor } from "../data/color";
 
 import search_icon from "../../assets/images/search.png";
 
-export default function RecentSearch({ setSearch, handleTextChange }) {
+export default function RecentSearch({ handleTextChange }) {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
@@ -23,8 +23,8 @@ export default function RecentSearch({ setSearch, handleTextChange }) {
   };
 
   const recentPressHandler = (h) => {
+    console.log(h);
     handleTextChange(h);
-    setSearch(h);
   };
 
   return (
