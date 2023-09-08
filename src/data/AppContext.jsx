@@ -15,6 +15,9 @@ export const AppProvider = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mapMoveTo, setMapMoveTo] = useState(null);
   const [soonQuest, setSoonQuest] = useState(null);
+  const [mapRefetch, setMapRefetch] = useState(null);
+  const [mapSearchedLocation, setMapSearchedLocation] = useState(null);
+  const [focusedPin, setFocusedPin] = useState(null);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -50,14 +53,19 @@ export const AppProvider = ({ children }) => {
   };
 
   const fetchUser = async () => {
-    const response = await fetchUserData();
-    setUserDetails((prev) => {
-      return {
-        ...prev,
-        user: response,
-      };
-    });
-    setSoonQuest(response.joinedQuest);
+    try {
+      const response = await fetchUserData();
+      setUserDetails((prev) => {
+        return {
+          ...prev,
+          user: response,
+        };
+      });
+      setSoonQuest(response.joinedQuest);
+    } catch (error) {
+      await SecureStore.deleteItemAsync("userDetail");
+      alert("Please Login again");
+    }
   };
 
   useEffect(() => {
@@ -103,6 +111,12 @@ export const AppProvider = ({ children }) => {
         fetchUser,
         soonQuest,
         setSoonQuest,
+        mapRefetch,
+        setMapRefetch,
+        mapSearchedLocation,
+        setMapSearchedLocation,
+        focusedPin,
+        setFocusedPin,
       }}
     >
       {children}

@@ -55,7 +55,7 @@ function month_to_thai(datestring) {
 }
 
 const MinimalCard = ({ quest }) => {
-  const { userDetail } = useAppContext();
+  const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
   const {
     questName,
     picturePath,
@@ -82,6 +82,9 @@ const MinimalCard = ({ quest }) => {
       : defaultCreatorImage;
 
   const questPressHandler = () => {
+    mapMoveTo(locationId.latitude, locationId.longitude);
+    setFocusedPin(locationId._id)
+
     if (userDetail.isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
     } else if (userDetail.token != null) {
@@ -99,7 +102,9 @@ const MinimalCard = ({ quest }) => {
           <View style={styles.row_inner}>
             <Image style={styles.userprofile} source={creatorImageSource} />
             <View style={styles.userdescription}>
-              <Text>สถานที่: {locationId.locationName}</Text>
+              <Text style={{ fontFamily: "Kanit400" }}>
+                สถานที่: {locationId.locationName}
+              </Text>
               <View style={styles.participant}>
                 <Text style={styles.par_font}>
                   จำนวนผู้เข้าร่วม: {countParticipant} / {maxParticipant}
@@ -128,9 +133,6 @@ const MinimalCard = ({ quest }) => {
 
 const styles = StyleSheet.create({
   CardContainer: {
-    height: 300,
-    marginTop: 20,
-    elevation: 10,
     backgroundColor: "white",
     paddingHorizontal: 10,
     paddingVertical: 15,
@@ -138,8 +140,8 @@ const styles = StyleSheet.create({
   },
   quest_name: {
     color: buttonOrange,
-    fontSize: 25,
-    fontWeight: 600,
+    fontSize: 27,
+    fontFamily: "Kanit400",
   },
   row: {
     flexDirection: "row",
@@ -155,21 +157,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   time_and_date: {
-    textAlign: "right",
     justifyContent: "center",
   },
   time: {
-    textAlign: "right",
     color: textColor,
+    fontFamily: "Kanit300",
   },
   timeSE: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   date: {
-    textAlign: "right",
     color: textColor,
     fontWeight: "bold",
+    fontFamily: "Kanit300",
   },
   userprofile: {
     width: 50,
@@ -192,6 +193,7 @@ const styles = StyleSheet.create({
   },
   par_font: {
     color: textColor,
+    fontFamily: "Kanit400",
   },
   location: {
     color: "grey",

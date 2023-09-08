@@ -98,6 +98,17 @@ TabNavigation.navigate(page, params);
 อยู่ใน `/components` Import มาใช้ได้เลย จะเพิ่มก็เพิ่มเข้าไปได้ครับ  
 - [x] Quest list Item  
 - [x] Back to recommend screen button  
-- [ ] Participants List Item  
-- [ ] Quest Detail Header  
+- [x] Participants List Item  
+- [x] Quest Detail Header  
 
+---  
+
+### เลื่อนตำแหน่ง map
+ 1. import mapMoveTo จาก useAppContext
+ ```js
+const {mapMoveTo} = useAppContext();
+```
+ 2. เรียกใช้ mapMoveTo
+ ```js
+mapMoveTo(latitude, longitude)
+```

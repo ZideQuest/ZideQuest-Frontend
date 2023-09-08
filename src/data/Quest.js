@@ -6,7 +6,7 @@ export async function createQuest(questDetail, locationId) {
   try {
     const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
     console.log(token);
-    const {data} = await axios.post(
+    const { data } = await axios.post(
       `${BASE_URL}/quest/location/${locationId}`,
       questDetail,
       {
@@ -17,7 +17,7 @@ export async function createQuest(questDetail, locationId) {
       }
     );
 
-    return data
+    return data;
   } catch (error) {
     console.log(error);
     throw error;
@@ -28,14 +28,11 @@ export async function getQuestData(id) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
   try {
-    const { data } = await axios.get(
-      `${BASE_URL}/quest/find/${id}`,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+    const { data } = await axios.get(`${BASE_URL}/quest/find/${id}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
     return data;
   } catch (e) {
     console.error(e);
@@ -59,5 +56,46 @@ export async function searchQuest(name) {
       message: "failed to search Quest",
       status: 400,
     };
+  }
+}
+
+export async function fetchParticipants(questId) {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  try {
+    const { data } = await axios.get(`${BASE_URL}/quest/participants/${questId}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    return data.participant;
+  } catch (e) {
+    console.error(e);
+    return {
+      message: "failed to load this Quest",
+      status: 400,
+    };
+  }
+}
+
+export async function usersQuest() {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  try {
+    const {data} = await axios.get(
+      `${BASE_URL}/user/quest`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return data;
+    
+  } catch (error) {
+    console.error(error);
+    return false;
   }
 }

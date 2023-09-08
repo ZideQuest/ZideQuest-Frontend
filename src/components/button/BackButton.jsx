@@ -1,46 +1,49 @@
 import React from "react";
-import {
-  View,
-  Pressable,
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-} from "react-native";
+import { StyleSheet, TouchableHighlight, Image } from "react-native";
 
 import * as TabNavigation from "../../data/TabNavigation";
 import { useAppContext } from "../../data/AppContext";
 import { primaryColor } from "../../data/color";
+import close_icon from "../../../assets/images/close_icon.png";
 
 export default function BackButton({onPress}) {
-  const { bottomModalRef } = useAppContext();
+  const { bottomModalRef, mapRefetch, setFocusedPin } = useAppContext();
 
   const closeHandler = () => {
     TabNavigation.navigate("Recommend");
     bottomModalRef.current?.snapToIndex(1);
+    
     if (onPress) {
       onPress()
     }
+    
+    mapRefetch();
+    setFocusedPin(null);
   };
 
   return (
     <TouchableHighlight
       onPress={closeHandler}
-      style={{ width: 20, height: 20, borderRadius: 20 }}
+      style={styles.button}
       underlayColor={primaryColor}
     >
-      <Text style={styles.xText}>X</Text>
+      <Image source={close_icon} style={styles.x} />
     </TouchableHighlight>
   );
 }
 
 const styles = StyleSheet.create({
-  button: { 
-    width: 30, 
-    height: 30, 
-    borderRadius: 30,
+  button: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 4,
   },
-  xText: {
-    textAlign: "center",
+  x: {
     width: "100%",
-  }
+    height: "100%",
+  },
 });

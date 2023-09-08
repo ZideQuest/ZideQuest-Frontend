@@ -24,7 +24,7 @@ import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
 
 export default function SearchBar({ navigation }) {
-  const { bottomModalRef, userDetail } = useAppContext();
+  const { bottomModalRef, userDetail, mapSearchedLocation } = useAppContext();
   const insets = useSafeAreaInsets();
   const [searching, setSearching] = useState(false);
   const [search, setSearch] = useState(null);
@@ -60,6 +60,7 @@ export default function SearchBar({ navigation }) {
     setFocusing(false);
     storeHistory(search);
     bottomModalRef.current?.snapToIndex(1);
+    mapSearchedLocation(searchResult.locations)
   };
 
   const onCancelHander = () => {
@@ -130,7 +131,7 @@ export default function SearchBar({ navigation }) {
       {searchResult && searching && search && (
         <View style={styles.searchResultContainer}>
           {searchResult.quests?.map((quest) => (
-            <SearchItem quest={quest} key={quest._id} />
+            <SearchItem quest={quest} key={quest._id} isAdmin={userDetail.isAdmin}/>
           ))}
           {searchResult.locations?.map((location) => (
             <LocationSearchItem location={location} key={location._id} />
