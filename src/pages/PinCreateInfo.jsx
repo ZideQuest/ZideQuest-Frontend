@@ -18,6 +18,7 @@ import { createLocation } from "../data/locations";
 import { primaryColor } from "../data/color";
 import BigButton from "../components/button/BigButton";
 import ImagePreviewModal from "../components/misc/ImagePreviewModal";
+import Spinner from "../components/Animations/Spinner";
 
 export default function PinCreateInfo() {
   const { newMarker, setNewMarker } = useAppContext();
@@ -31,6 +32,7 @@ export default function PinCreateInfo() {
   const [modalVisible, setModalVisible] = useState(false);
   const [place, setPlace] = useState(newMarker.name);
   const [detail, setDetail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const submitHandler = async () => {
     if (!place && !detail) {
@@ -45,6 +47,8 @@ export default function PinCreateInfo() {
       alert("กรุณากรอกรายละเอียด");
       return;
     }
+    setIsLoading(true);
+
     let bodyFormData = new FormData();
 
     bodyFormData.append("locationName", place);
@@ -61,6 +65,7 @@ export default function PinCreateInfo() {
       const { data } = response;
       closeHandler(data._id);
     }
+    setIsLoading(false);
   };
 
   const cameraRequest = async () => {
@@ -100,11 +105,16 @@ export default function PinCreateInfo() {
     console.log(results);
   };
 
+  if (isLoading) {
+    return (
+      <Bottomsheet snapPoints={["60%"]} index={0}>
+          <Spinner />
+      </Bottomsheet>
+    );
+  }
+
   return (
-    <Bottomsheet
-      snapPoints={["60%", "90%"]}
-      index={0}
-    >
+    <Bottomsheet snapPoints={["60%", "90%"]} index={0}>
       <ImagePreviewModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
