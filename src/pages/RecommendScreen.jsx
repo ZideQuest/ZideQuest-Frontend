@@ -7,7 +7,7 @@ import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 const Recommend = () => {
   return (
-    <Bottomsheet snapPoints={["10%", "50%", "90%"]} index={1}>
+    <Bottomsheet snapPoints={["10%", "20%", "50%", "90%"]} index={1}>
       <BottomSheetScrollView
         style={styles.Container}
         keyboardShouldPersistTaps="handled"
@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
   Container: {
     width: "100%",
     flex: 1,
-    backgroundColor: "#F2F2F2",
+    // backgroundColor: "#F2F2F2",
+    backgroundColor: "white",
   },
   Rec_text: {
     marginTop: 30,

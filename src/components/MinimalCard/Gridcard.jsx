@@ -41,7 +41,9 @@ const GridCard = () => {
 };
 
 const styles = StyleSheet.create({
-  GridContainer: {},
+  GridContainer: {
+    backgroundColor: "#F2F2F2",
+  },
 });
 
 export default GridCard;

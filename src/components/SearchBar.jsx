@@ -53,7 +53,7 @@ export default function SearchBar() {
   };
 
   const onFocusHandler = () => {
-    bottomModalRef.current?.snapToPosition("95%");
+    bottomModalRef.current?.snapToIndex(3);
     setSearching(true);
     setFocusing(true);
   };
@@ -80,6 +80,7 @@ export default function SearchBar() {
     Keyboard.dismiss();
     bottomModalRef.current?.snapToIndex(1);
     mapRefetch();
+    snapBack();
   };
 
   const profilePressHandler = () => {
@@ -137,49 +138,50 @@ export default function SearchBar() {
           <ProfileImage />
         )}
       </View>
+      <View style={styles.greyBackground}>
+        {searching && search && (
+          <View style={styles.searchResultContainer}>
+            {!loading &&
+              !searchResult.quests?.length &&
+              !searchResult.locations?.length && (
+                <View style={styles.searchStatusText}>
+                  <Text
+                    style={{
+                      color: textColor,
+                      fontFamily: "Kanit300",
+                      fontSize: 16,
+                    }}
+                  >
+                    No Result Found
+                  </Text>
+                </View>
+              )}
 
-      {searching && search && (
-        <View style={styles.searchResultContainer}>
-          {!loading &&
-            !searchResult.quests?.length &&
-            !searchResult.locations?.length && (
-              <View style={styles.searchStatusText}>
-                <Text
-                  style={{
-                    color: textColor,
-                    fontFamily: "Kanit300",
-                    fontSize: 16,
-                  }}
-                >
-                  No Result Found
-                </Text>
-              </View>
-            )}
+            <SearchItem
+              quests={searchResult.quests}
+              isAdmin={userDetail.isAdmin}
+            />
 
-          <SearchItem
-            quests={searchResult.quests}
-            isAdmin={userDetail.isAdmin}
-          />
+            <LocationSearchItem locations={searchResult.locations} />
+          </View>
+        )}
 
-          <LocationSearchItem locations={searchResult.locations} />
-        </View>
-      )}
+        {loading && search && (
+          <View style={styles.searchStatusText}>
+            <Text
+              style={{ color: textColor, fontFamily: "Kanit300", fontSize: 16 }}
+            >
+              Search for <Text style={{ color: "black" }}>'{search}'</Text>
+            </Text>
+          </View>
+        )}
 
-      {loading && search && (
-        <View style={styles.searchStatusText}>
-          <Text
-            style={{ color: textColor, fontFamily: "Kanit300", fontSize: 16 }}
-          >
-            Search for <Text style={{ color: "black" }}>'{search}'</Text>
-          </Text>
-        </View>
-      )}
-
-      {searching && !search && (
-        <View>
-          <RecentSearch handleTextChange={handleTextChange} />
-        </View>
-      )}
+        {searching && !search && (
+          <View>
+            <RecentSearch handleTextChange={handleTextChange} />
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -250,6 +252,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 20,
     alignItems: "center",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
+  greyBackground: { 
+    backgroundColor: "#F2F2F2",
+  }
 });

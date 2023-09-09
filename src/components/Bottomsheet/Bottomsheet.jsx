@@ -1,11 +1,9 @@
-import { Dimensions, StyleSheet, Text, View, Keyboard } from "react-native";
+import { StyleSheet, Text, View, } from "react-native";
 import React, { useEffect, useRef } from "react";
 import {
   BottomSheetModal,
-  BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
-import { BGcolor, buttonGrey, buttonLightGrey } from "../../data/color";
 
 const Bottomsheet = ({
   children,
@@ -15,18 +13,12 @@ const Bottomsheet = ({
   hideBar = false,
 }) => {
   const bottomSheetModalRef = useRef(null);
-  const { bottomModalRef, setBottomModalRef } = useAppContext();
+  const { setBottomModalRef } = useAppContext();
 
   useEffect(() => {
     bottomSheetModalRef.current?.present();
     setBottomModalRef(bottomSheetModalRef);
   }, []);
-
-  const collapsDragHandler = (e) => {
-    if (e == 1 || e == 0) {
-      Keyboard.dismiss()
-    }
-  }
 
   return (
     <BottomSheetModal
@@ -49,11 +41,9 @@ const Bottomsheet = ({
       detached={detached}
       bottomInset={detached ? 30 : 0}
       enableOverDrag={!detached}
-      onChange={collapsDragHandler}
+      keyboardBehavior="extend"
     >
-      <View style={{ flex: 1, borderRadius: 15, overflow: "hidden" }}>
-        {children}
-      </View>
+      <View style={styles.contentContainer}>{children}</View>
     </BottomSheetModal>
   );
 };
@@ -68,6 +58,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
+    borderRadius: 15,
+    overflow: "hidden",
   },
   backgroundStyle: {
     // backgroundColor: "transparent",
