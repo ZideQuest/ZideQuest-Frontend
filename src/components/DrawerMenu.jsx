@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Drawer } from "react-native-drawer-layout";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,7 +13,6 @@ import plus_icon from "../../assets/images/plus.png";
 import leave_icon from "../../assets/images/leave_icon.png";
 import qr_scanner_icon from "../../assets/images/qr_scanner_icon.png";
 import close_icon from "../../assets/images/close_icon.png";
-import QuestListItem from "../components/QuestListItem";
 
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
@@ -65,7 +64,7 @@ export default function DrawerMenu({ navigation, children }) {
   const ProfileDisplay = ({ userDetail }) => {
     if (userDetail.isAdmin) {
       return (
-        <Pressable
+        <TouchableOpacity
           style={styles.profileDisplayContainer}
           onPress={profilePressHander}
         >
@@ -85,11 +84,11 @@ export default function DrawerMenu({ navigation, children }) {
             </Text>
             <Text>{userDetail.user.role}</Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
       );
     } else {
       return (
-        <Pressable onPress={profilePressHander} style={{ gap: 10 }}>
+        <TouchableOpacity onPress={profilePressHander} style={{ gap: 10 }}>
           <View style={styles.profileDisplayContainer}>
             <View style={styles.displayImageContainer}>
               <Image
@@ -117,7 +116,7 @@ export default function DrawerMenu({ navigation, children }) {
               style={{ width: "100%", backgroundColor: "green", height: 6 }}
             ></View>
           </View>
-        </Pressable>
+        </TouchableOpacity>
       );
     }
   };
@@ -132,29 +131,29 @@ export default function DrawerMenu({ navigation, children }) {
           <View style={[styles.menus, { paddingTop: insets.top + 20 }]}>
             <View style={styles.menuHeader}>
               <Text style={styles.logo}>ZideQuest</Text>
-              <Pressable
+              <TouchableOpacity
                 onPress={() => {
                   setDrawerOpen(false);
                 }}
               >
                 <Image source={close_icon} style={{ width: 15, height: 15 }} />
-              </Pressable>
+              </TouchableOpacity>
             </View>
             {userDetail?.token ? (
               <ProfileDisplay userDetail={userDetail} />
             ) : (
-              <Pressable
+              <TouchableOpacity
                 style={styles.loginButton}
                 onPress={() => loginHandler()}
               >
                 <Text style={styles.buttonText}>Login</Text>
-              </Pressable>
+              </TouchableOpacity>
             )}
 
             <UpComingQuest onPress={() => setDrawerOpen(false)} />
 
             <View style={styles.bigMenuContainer}>
-              <Pressable
+              <TouchableOpacity
                 onPress={checkinButtonHandler}
                 style={styles.bigMenuItem}
               >
@@ -162,9 +161,9 @@ export default function DrawerMenu({ navigation, children }) {
                   <Image style={styles.menuItem} source={qr_scanner_icon} />
                 </View>
                 <Text style={styles.bigButtonText}>เช็คอิน</Text>
-              </Pressable>
+              </TouchableOpacity>
               {userDetail?.isAdmin && (
-                <Pressable
+                <TouchableOpacity
                   onPress={addButtonHandler}
                   style={styles.bigMenuItem}
                 >
@@ -172,24 +171,24 @@ export default function DrawerMenu({ navigation, children }) {
                     <Image style={styles.menuItem} source={plus_icon} />
                   </View>
                   <Text style={styles.bigButtonText}>เพิ่มสถานที่</Text>
-                </Pressable>
+                </TouchableOpacity>
               )}
             </View>
 
             <View style={styles.smallMenuContainer}>
-              <Pressable>
+              <TouchableOpacity>
                 <Text style={styles.smallMenuItem}>Settings</Text>
-              </Pressable>
-              <Pressable>
+              </TouchableOpacity>
+              <TouchableOpacity>
                 <Text style={styles.smallMenuItem}>About</Text>
-              </Pressable>
-              <Pressable>
+              </TouchableOpacity>
+              <TouchableOpacity>
                 <Text style={styles.smallMenuItem}>Contact Us</Text>
-              </Pressable>
-              <Pressable>
+              </TouchableOpacity>
+              <TouchableOpacity>
                 <Text style={styles.smallMenuItem}>Privacy</Text>
-              </Pressable>
-              <Pressable
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
                 onPress={logoutHandler}
               >
@@ -197,7 +196,7 @@ export default function DrawerMenu({ navigation, children }) {
                   Logout
                 </Text>
                 <Image source={leave_icon} />
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         );

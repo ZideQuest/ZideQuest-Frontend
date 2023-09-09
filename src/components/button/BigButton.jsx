@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function BigButton({ text, bg , onPress}) {
   return (
-    <Pressable style={[styles.bigButton, { backgroundColor: bg }]} onPress={onPress}>
+    <TouchableOpacity style={[styles.bigButton, { backgroundColor: bg }]} onPress={onPress}>
       <Text style={styles.bigButtonText}>{text}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 

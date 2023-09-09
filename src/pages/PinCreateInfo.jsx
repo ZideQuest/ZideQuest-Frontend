@@ -33,7 +33,7 @@ export default function PinCreateInfo() {
 
   const [state, setState] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  const [place, setPlace] = useState(newMarker.name);
+  const [place, setPlace] = useState(newMarker?.name);
   const [detail, setDetail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
