@@ -19,6 +19,7 @@ export const AppProvider = ({ children }) => {
   const [mapSearchedLocation, setMapSearchedLocation] = useState(null);
   const [focusedPin, setFocusedPin] = useState(null);
   const [snapBack, setSnapBack] = useState(null);
+  const [getNavigator, setGetNavigator] = useState(null);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -120,6 +121,8 @@ export const AppProvider = ({ children }) => {
         setFocusedPin,
         snapBack,
         setSnapBack,
+        getNavigator,
+        setGetNavigator,
       }}
     >
       {children}

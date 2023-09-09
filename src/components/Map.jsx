@@ -2,12 +2,16 @@ import React from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 
 import { useAppContext } from "../data/AppContext";
 import { mapCustomStyle } from "../data/map-style";
 import { fetchLocations } from "../data/locations";
 import * as TabNavigation from "../data/TabNavigation";
 import NavBar from "./NavBar";
+import { primaryColor } from "../data/color";
+
+const KEY = "AIzaSyCHMNIRhJ8_BGSHHNRZHDOL39NKOCITqwA";
 
 const initialRegion = {
   latitude: 13.848236064906674,
@@ -35,11 +39,15 @@ export default function Map() {
     focusedPin,
     setFocusedPin,
     setSnapBack,
+    setGetNavigator,
   } = useAppContext();
   const [locations, setLocations] = useState([]);
 
   const mapRef = useRef(null);
   const [region, setRegion] = useState(initialRegion);
+  const [userLocation, setUserLocation] = useState(null);
+  const [destination, setDestination] = useState(null);
+  const [showNavigator, setShowNavigator] = useState(false);
 
   const mapPressHandler = async (coordinate) => {
     if (TabNavigation.currentScreen() != "CreatePin") {
@@ -115,6 +123,36 @@ export default function Map() {
     }
   };
 
+  const getNavigator = (status, location = null) => {
+    //
+    const userLocation = { latitude: 13.856247, longitude: 100.565117 };
+    //
+
+    if (status) {
+      const destination = {
+        latitude: location?.latitude,
+        longitude: location?.longitude,
+      };
+
+      const centerX = (userLocation.latitude + destination.latitude) / 2;
+      const centerY = (userLocation.longitude + destination.longitude) / 2;
+      const deltaX =
+        Math.abs(userLocation.latitude - destination.latitude) + 0.005;
+      const deltaY =
+        Math.abs(userLocation.longitude - destination.longitude) + 0.005;
+
+      animateToRegion(centerX, centerY, deltaX, deltaY);
+
+      setUserLocation(userLocation);
+      setDestination(destination);
+      setShowNavigator(true);
+    } else {
+      setUserLocation(null);
+      setDestination(null);
+      setShowNavigator(false);
+    }
+  };
+
   useEffect(() => {
     mapRef.current.setMapBoundaries(
       { latitude: 13.856247, longitude: 100.565117 },
@@ -126,6 +164,7 @@ export default function Map() {
     setMapMoveTo(() => animateToRegion);
     setMapSearchedLocation(() => mapSearchedLocation);
     setMapRefetch(() => mapRefetch);
+    setGetNavigator(() => getNavigator);
     setSnapBack(
       () => () =>
         animateToRegion(
@@ -166,7 +205,7 @@ export default function Map() {
         customMapStyle={mapCustomStyle}
         onTouchStart={() => bottomModalRef.current?.collapse()}
         loadingEnabled
-        mapPadding={{bottom: "60%"}}
+        mapPadding={{ bottom: "60%" }}
       >
         {locations.map((pin) => (
           <Marker
@@ -177,6 +216,16 @@ export default function Map() {
           />
         ))}
         {newMarker && <Marker coordinate={newMarker} />}
+        {showNavigator && (
+          <MapViewDirections
+            origin={userLocation}
+            destination={destination}
+            apikey={KEY}
+            strokeWidth={7}
+            strokeColor={primaryColor}
+            mode="WALKING"
+          />
+        )}
       </MapView>
     </View>
   );

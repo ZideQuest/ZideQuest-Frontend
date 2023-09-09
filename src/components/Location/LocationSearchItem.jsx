@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import * as TabNavigation from "../../data/TabNavigation";
 import { storeHistory } from "../../data/async_storage";
@@ -7,21 +7,29 @@ import { useAppContext } from "../../data/AppContext";
 import pin_icon from "../../../assets/images/pin_icon.png";
 
 export default function LocationSearchItem({ locations }) {
-  const { mapMoveTo, setFocusedPin } = useAppContext();
+  const { mapMoveTo, setFocusedPin, getNavigator, bottomModalRef } = useAppContext();
 
-  const queryPressHandler = () => {
+  const queryPressHandler = (location) => {
     storeHistory(location.locationName);
     mapMoveTo(location.latitude, location.longitude);
     setFocusedPin(location._id);
     TabNavigation.navigate("PinDetail", { pinId: location._id });
   };
 
+  const navigatorHandler = (location) => {
+    getNavigator(true, location)
+    bottomModalRef.current?.snapToIndex(0)
+  }
+
   if (locations?.length > 0) {
     return (
       <View style={styles.searchResultCategory}>
         <Text style={styles.categoryText}>สถานที่</Text>
         {locations.map((location) => (
-          <Pressable style={styles.container} onPress={queryPressHandler}>
+          <TouchableOpacity
+            style={styles.container}
+            onPress={() => queryPressHandler(location)}
+          >
             <View style={styles.imageContainer}>
               <Image
                 source={
@@ -36,8 +44,11 @@ export default function LocationSearchItem({ locations }) {
               <View>
                 <Text>{location.locationName}</Text>
               </View>
+              <TouchableOpacity onPress={() => navigatorHandler(location)}>
+                <Text>Get direction</Text>
+              </TouchableOpacity>
             </View>
-          </Pressable>
+          </TouchableOpacity>
         ))}
       </View>
     );
