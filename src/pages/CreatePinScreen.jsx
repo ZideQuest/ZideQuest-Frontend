@@ -8,10 +8,14 @@ import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
 import { primaryColor } from "../data/color";
 
 export default function CreatePinScreen() {
-  const { setNewMarker } = useAppContext();
+  const { setNewMarker, newMarker } = useAppContext();
 
   const confirmHandler = () => {
-    TabNavigation.navigate("PinCreateInfo");
+    if (newMarker) {
+      TabNavigation.navigate("PinCreateInfo");
+    } else {
+      alert("เลือกตำแหน่งก่อนครับ");
+    }
   };
 
   const cancelHandler = () => {

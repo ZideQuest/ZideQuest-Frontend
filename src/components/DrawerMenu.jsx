@@ -24,7 +24,7 @@ export default function DrawerMenu({ navigation, children }) {
 
   const addButtonHandler = () => {
     TabNavigation.navigate("CreatePin");
-    setFocusedPin(null)
+    setFocusedPin("new pin")
     setDrawerOpen(false);
   };
 

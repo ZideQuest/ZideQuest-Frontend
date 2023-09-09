@@ -108,7 +108,7 @@ export default function PinCreateInfo() {
     console.log(results);
   };
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <Bottomsheet snapPoints={["60%"]} index={0}>
           <Spinner />
