@@ -5,8 +5,8 @@ import {
   StyleSheet,
   Image,
   Text,
-  TextInput,
 } from "react-native";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import * as ImagePicker from "expo-image-picker";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import photo_icon from "../../assets/images/photo.png";
@@ -108,7 +108,7 @@ export default function PinCreateInfo() {
     console.log(results);
   };
 
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <Bottomsheet snapPoints={["60%"]} index={0}>
           <Spinner />
@@ -130,7 +130,7 @@ export default function PinCreateInfo() {
         <View style={styles.input}>
           <View>
             <Text>ชื่อสถานที่*</Text>
-            <TextInput
+            <BottomSheetTextInput
               style={styles.txtin}
               value={place}
               onChangeText={setPlace}
@@ -138,7 +138,7 @@ export default function PinCreateInfo() {
           </View>
           <View>
             <Text>รายละเอียด*</Text>
-            <TextInput
+            <BottomSheetTextInput
               style={styles.txtin}
               value={detail}
               onChangeText={setDetail}

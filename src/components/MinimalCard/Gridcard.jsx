@@ -13,8 +13,6 @@ const GridCard = () => {
       setQuestData(data);
     } catch (error) {
       console.error("Error fetching recommended quests:", error);
-    } finally {
-      setIsRefreshing(false);
     }
   };
 

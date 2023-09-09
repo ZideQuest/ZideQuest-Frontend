@@ -1,14 +1,12 @@
 import {
     Image,
     Pressable,
-    ScrollView,
     StyleSheet,
     Text,
-    TextInput,
     View,
     Platform,
 } from "react-native";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { BottomSheetScrollView, BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import AddPhoto from "../components/AddPhoto";
 import SelectDropdown from "react-native-select-dropdown";
@@ -133,7 +131,7 @@ function CreateQuest() {
                         <View style={styles.detailBox}>
                             <View style={styles.box}>
                                 <Text style={styles.textMd}>ชื่อเควส</Text>
-                                <TextInput
+                                <BottomSheetTextInput
                                     style={styles.textIn}
                                     value={questName}
                                     onChangeText={setQuestName}
@@ -141,7 +139,7 @@ function CreateQuest() {
                             </View>
                             <View style={styles.box}>
                                 <Text style={styles.textMd}>รายละเอียด</Text>
-                                <TextInput
+                                <BottomSheetTextInput
                                     style={styles.textIn}
                                     value={description}
                                     onChangeText={setDescription}
@@ -204,7 +202,7 @@ function CreateQuest() {
                                 </View>
                                 <View style={{ ...styles.box, flex: 0.32 }}>
                                     <Text style={styles.textMd}>จำนวนคน</Text>
-                                    <TextInput
+                                    <BottomSheetTextInput
                                         style={styles.textIn}
                                         value={maxParticipant}
                                         onChangeText={setMaxParticipant}
@@ -270,7 +268,7 @@ function CreateQuest() {
                                 </View>
                                 <View style={styles.box}>
                                     <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
-                                    <TextInput
+                                    <BottomSheetTextInput
                                         style={styles.textIn}
                                         value={activityHour}
                                         onChangeText={setActivityHour}
