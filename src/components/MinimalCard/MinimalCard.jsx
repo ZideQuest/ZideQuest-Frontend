@@ -107,7 +107,7 @@ const MinimalCard = ({ quest }) => {
               </Text>
               <View style={styles.participant}>
                 <Text style={styles.par_font}>
-                  จำนวนผู้เข้าร่วม: {countParticipant} / {maxParticipant}
+                  จำนวนผู้เข้าร่วม: {countParticipant} {maxParticipant ? `/ ${maxParticipant}` : ""}
                 </Text>
               </View>
             </View>
@@ -135,12 +135,13 @@ const styles = StyleSheet.create({
   CardContainer: {
     backgroundColor: "white",
     paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingBottom: 15,
+    paddingTop: 7,
     marginBottom: 7,
   },
   quest_name: {
-    color: buttonOrange,
-    fontSize: 27,
+    color: textColor,
+    fontSize: 24,
     fontFamily: "Kanit400",
   },
   row: {

@@ -9,6 +9,13 @@ import { fetchLocations } from "../data/locations";
 import * as TabNavigation from "../data/TabNavigation";
 import NavBar from "./NavBar";
 
+const initialRegion = {
+  latitude: 13.848236064906674,
+  longitude: 100.57200964540243,
+  latitudeDelta: 0.015,
+  longitudeDelta: 0.013,
+};
+
 function getDetailFromData(coordinate) {
   const lat = coordinate.nativeEvent.coordinate.latitude;
   const lng = coordinate.nativeEvent.coordinate.longitude;
@@ -27,16 +34,12 @@ export default function Map() {
     setMapSearchedLocation,
     focusedPin,
     setFocusedPin,
+    setSnapBack,
   } = useAppContext();
   const [locations, setLocations] = useState([]);
 
   const mapRef = useRef(null);
-  const [region, setRegion] = useState({
-    latitude: 13.848236064906674,
-    longitude: 100.57200964540243,
-    latitudeDelta: 0.015,
-    longitudeDelta: 0.013,
-  });
+  const [region, setRegion] = useState(initialRegion);
 
   const mapPressHandler = async (coordinate) => {
     if (TabNavigation.currentScreen() != "CreatePin") {
@@ -73,13 +76,18 @@ export default function Map() {
     setFocusedPin(pinId);
   };
 
-  const animateToRegion = (lat, lng) => {
+  const animateToRegion = (
+    latitude,
+    longitude,
+    latitudeDelta = 0.0025,
+    longitudeDelta = 0.0025
+  ) => {
     if (mapRef.current) {
       const region = {
-        latitude: lat - 0.001,
-        longitude: lng,
-        latitudeDelta: 0.0025,
-        longitudeDelta: 0.0025,
+        latitude: latitude - 0.001,
+        longitude,
+        latitudeDelta,
+        longitudeDelta,
       };
 
       mapRef.current.animateToRegion(region, 450);
@@ -118,6 +126,15 @@ export default function Map() {
     setMapMoveTo(() => animateToRegion);
     setMapSearchedLocation(() => mapSearchedLocation);
     setMapRefetch(() => mapRefetch);
+    setSnapBack(
+      () => () =>
+        animateToRegion(
+          initialRegion.latitude,
+          initialRegion.longitude,
+          initialRegion.latitudeDelta,
+          initialRegion.longitudeDelta
+        )
+    );
   }, []);
 
   useEffect(() => {
@@ -149,6 +166,7 @@ export default function Map() {
         customMapStyle={mapCustomStyle}
         onTouchStart={() => bottomModalRef.current?.collapse()}
         loadingEnabled
+        mapPadding={{bottom: "60%"}}
       >
         {locations.map((pin) => (
           <Marker

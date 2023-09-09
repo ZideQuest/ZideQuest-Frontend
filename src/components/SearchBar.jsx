@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { debounce } from "lodash";
 
 import {
@@ -11,41 +11,49 @@ import {
   Image,
   Keyboard,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppContext } from "../data/AppContext";
-import { primaryColor } from "../data/color";
+import { primaryColor, textColor } from "../data/color";
 import { searchQuest } from "../data/Quest";
 import SearchItem from "./Quest/SearchItem";
 import RecentSearch from "./RecentSearch";
 import * as TabNavigation from "../data/TabNavigation";
 import LocationSearchItem from "./Location/LocationSearchItem";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
 import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
 
-export default function SearchBar({ navigation }) {
-  const { bottomModalRef, userDetail, mapSearchedLocation } = useAppContext();
-  const insets = useSafeAreaInsets();
+export default function SearchBar() {
+  const {
+    bottomModalRef,
+    userDetail,
+    mapSearchedLocation,
+    snapBack,
+    mapRefetch,
+  } = useAppContext();
   const [searching, setSearching] = useState(false);
   const [search, setSearch] = useState(null);
   const [focusing, setFocusing] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const searchFetching = async (query) => {
     const data = await searchQuest(query);
     setSearchResult(data);
+    setLoading(false);
   };
 
-  const debouncedFetch = useCallback(debounce(searchFetching, 1000), []);
+  const debouncedFetch = useCallback(debounce(searchFetching, 500), []);
 
   const handleTextChange = (q) => {
+    setLoading(true);
     setSearch(q);
     setSearchResult([]);
     debouncedFetch(q);
   };
 
   const onFocusHandler = () => {
-    bottomModalRef.current?.snapToPosition("95%");
+    bottomModalRef.current?.snapToIndex(3);
     setSearching(true);
     setFocusing(true);
   };
@@ -60,7 +68,8 @@ export default function SearchBar({ navigation }) {
     setFocusing(false);
     storeHistory(search);
     bottomModalRef.current?.snapToIndex(1);
-    mapSearchedLocation(searchResult.locations)
+    mapSearchedLocation(searchResult.locations);
+    snapBack();
   };
 
   const onCancelHander = () => {
@@ -70,6 +79,8 @@ export default function SearchBar({ navigation }) {
     setSearching(false);
     Keyboard.dismiss();
     bottomModalRef.current?.snapToIndex(1);
+    mapRefetch();
+    snapBack();
   };
 
   const profilePressHandler = () => {
@@ -111,7 +122,7 @@ export default function SearchBar({ navigation }) {
           <View style={styles.iconContainer}>
             <Image source={search_icon} style={styles.iconImage} />
           </View>
-          <TextInput
+          <BottomSheetTextInput
             style={styles.searchText}
             placeholder="ค้นหาเควส"
             onFocus={onFocusHandler}
@@ -127,23 +138,50 @@ export default function SearchBar({ navigation }) {
           <ProfileImage />
         )}
       </View>
+      <View style={styles.greyBackground}>
+        {searching && search && (
+          <View style={styles.searchResultContainer}>
+            {!loading &&
+              !searchResult.quests?.length &&
+              !searchResult.locations?.length && (
+                <View style={styles.searchStatusText}>
+                  <Text
+                    style={{
+                      color: textColor,
+                      fontFamily: "Kanit300",
+                      fontSize: 16,
+                    }}
+                  >
+                    No Result Found
+                  </Text>
+                </View>
+              )}
 
-      {searchResult && searching && search && (
-        <View style={styles.searchResultContainer}>
-          {searchResult.quests?.map((quest) => (
-            <SearchItem quest={quest} key={quest._id} isAdmin={userDetail.isAdmin}/>
-          ))}
-          {searchResult.locations?.map((location) => (
-            <LocationSearchItem location={location} key={location._id} />
-          ))}
-        </View>
-      )}
+            <SearchItem
+              quests={searchResult.quests}
+              isAdmin={userDetail.isAdmin}
+            />
 
-      {searching && !search && (
-        <View>
-          <RecentSearch setSearch={setSearch} />
-        </View>
-      )}
+            <LocationSearchItem locations={searchResult.locations} />
+          </View>
+        )}
+
+        {loading && search && (
+          <View style={styles.searchStatusText}>
+            <Text
+              style={{ color: textColor, fontFamily: "Kanit300", fontSize: 16 }}
+            >
+              Search for <Text style={{ color: "black" }}>'{search}'</Text>
+            </Text>
+          </View>
+        )}
+
+        {searching && !search && (
+          <View>
+            <RecentSearch handleTextChange={handleTextChange} />
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -151,14 +189,14 @@ export default function SearchBar({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "white",
-    paddingBottom: 10,
   },
   topBarContainer: {
     paddingHorizontal: 10,
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
+    backgroundColor: "white",
+    paddingBottom: 10,
   },
 
   serchTextContainer: {
@@ -177,7 +215,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   searchText: {
-    margin: 10,
+    padding: 10,
     flex: 1,
   },
   searchButton: {
@@ -186,7 +224,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   searchResultContainer: {
-    marginTop: 10,
     borderTopWidth: 1,
     borderColor: "grey",
   },
@@ -210,4 +247,14 @@ const styles = StyleSheet.create({
     height: "100%",
     opacity: 0.55,
   },
+  searchStatusText: {
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingLeft: 20,
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+  greyBackground: { 
+    backgroundColor: "#F2F2F2",
+  }
 });

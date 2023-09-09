@@ -5,11 +5,13 @@ import * as TabNavigation from "../../data/TabNavigation";
 import { storeHistory } from "../../data/async_storage";
 import { timeConv } from "../../data/time/time";
 import { useAppContext } from "../../data/AppContext";
+import { textColor } from "../../data/color";
+import warning_icon from "../../../assets/images/warning_icon.png";
 
-export default function SearchItem({ quest, isAdmin }) {
+export default function SearchItem({ quests, isAdmin }) {
   const { mapMoveTo, setFocusedPin, userDetail } = useAppContext();
 
-  const queryPressHandler = () => {
+  const queryPressHandler = (quest) => {
     storeHistory(quest.questName);
     mapMoveTo(quest.locationId?.latitude, quest.locationId?.longitude);
     setFocusedPin(quest.locationId?._id);
@@ -24,27 +26,53 @@ export default function SearchItem({ quest, isAdmin }) {
     }
   };
 
-  return (
-    <Pressable style={styles.container} onPress={queryPressHandler}>
-      <View style={styles.imageContainer}>
-        <Image src={quest.picturePath} style={styles.image} />
+  if (quests?.length > 0) {
+    return (
+      <View style={styles.searchResultCategory}>
+        <Text style={styles.categoryText}>เควส</Text>
+        {quests.map((quest) => (
+          <Pressable
+            style={styles.container}
+            onPress={() => queryPressHandler(quest)}
+          >
+            <View style={styles.imageContainer}>
+              <Image
+                source={
+                  quest.picturePath ? { uri: quest.picturePath } : warning_icon
+                }
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.detail}>
+              <View>
+                <Text>{quest.questName}</Text>
+                <Text>{quest.description}</Text>
+              </View>
+              <Text>{timeConv(quest.timeStart)}</Text>
+            </View>
+          </Pressable>
+        ))}
       </View>
-      <View style={styles.detail}>
-        <View>
-          <Text>{quest.questName}</Text>
-          <Text>{quest.description}</Text>
-        </View>
-        <Text>{timeConv(quest.timeStart)}</Text>
-      </View>
-    </Pressable>
-  );
+    );
+  }
+
+  return;
 }
 
 const styles = StyleSheet.create({
+  searchResultCategory: {
+    marginBottom: 10,
+    paddingLeft: 20,
+    paddingVertical: 10,
+    backgroundColor: "white",
+  },
+  categoryText: {
+    fontFamily: "Kanit400",
+    fontSize: 16,
+  },
   container: {
     flexDirection: "row",
     marginTop: 10,
-    paddingLeft: 10,
     alignItems: "center",
   },
   imageContainer: {
