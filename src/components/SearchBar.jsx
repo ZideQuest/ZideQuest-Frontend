@@ -12,7 +12,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useAppContext } from "../data/AppContext";
-import { primaryColor } from "../data/color";
+import { primaryColor, textColor } from "../data/color";
 import { searchQuest } from "../data/Quest";
 import SearchItem from "./Quest/SearchItem";
 import RecentSearch from "./RecentSearch";
@@ -24,7 +24,13 @@ import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
 
 export default function SearchBar({ navigation }) {
-  const { bottomModalRef, userDetail, mapSearchedLocation } = useAppContext();
+  const {
+    bottomModalRef,
+    userDetail,
+    mapSearchedLocation,
+    snapBack,
+    mapRefetch,
+  } = useAppContext();
   const [searching, setSearching] = useState(false);
   const [search, setSearch] = useState(null);
   const [focusing, setFocusing] = useState(false);
@@ -63,6 +69,7 @@ export default function SearchBar({ navigation }) {
     storeHistory(search);
     bottomModalRef.current?.snapToIndex(1);
     mapSearchedLocation(searchResult.locations);
+    snapBack();
   };
 
   const onCancelHander = () => {
@@ -72,6 +79,7 @@ export default function SearchBar({ navigation }) {
     setSearching(false);
     Keyboard.dismiss();
     bottomModalRef.current?.snapToIndex(1);
+    mapRefetch();
   };
 
   const profilePressHandler = () => {
@@ -130,32 +138,46 @@ export default function SearchBar({ navigation }) {
         )}
       </View>
 
-      {loading && search && <Text>Loading...</Text>}
-
       {searching && search && (
         <View style={styles.searchResultContainer}>
           {!loading &&
             !searchResult.quests?.length &&
-            !searchResult.locations?.length && <Text>No Result</Text>}
+            !searchResult.locations?.length && (
+              <View style={styles.searchStatusText}>
+                <Text
+                  style={{
+                    color: textColor,
+                    fontFamily: "Kanit300",
+                    fontSize: 16,
+                  }}
+                >
+                  No Result Found
+                </Text>
+              </View>
+            )}
 
-          {searchResult.quests?.map((quest) => (
-            <SearchItem
-              quest={quest}
-              key={quest._id}
-              isAdmin={userDetail.isAdmin}
-            />
-          ))}
-          {searchResult.locations?.map((location) => (
-            <LocationSearchItem location={location} key={location._id} />
-          ))}
+          <SearchItem
+            quests={searchResult.quests}
+            isAdmin={userDetail.isAdmin}
+          />
+
+          <LocationSearchItem locations={searchResult.locations} />
+        </View>
+      )}
+
+      {loading && search && (
+        <View style={styles.searchStatusText}>
+          <Text
+            style={{ color: textColor, fontFamily: "Kanit300", fontSize: 16 }}
+          >
+            Search for <Text style={{ color: "black" }}>'{search}'</Text>
+          </Text>
         </View>
       )}
 
       {searching && !search && (
         <View>
-          <RecentSearch
-            handleTextChange={handleTextChange}
-          />
+          <RecentSearch handleTextChange={handleTextChange} />
         </View>
       )}
     </View>
@@ -165,14 +187,14 @@ export default function SearchBar({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "white",
-    paddingBottom: 10,
   },
   topBarContainer: {
     paddingHorizontal: 10,
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
+    backgroundColor: "white",
+    paddingBottom: 10,
   },
 
   serchTextContainer: {
@@ -200,7 +222,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   searchResultContainer: {
-    marginTop: 10,
     borderTopWidth: 1,
     borderColor: "grey",
   },
@@ -223,5 +244,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     opacity: 0.55,
+  },
+  searchStatusText: {
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingLeft: 20,
+    alignItems: "center",
+    backgroundColor: "white"
   },
 });

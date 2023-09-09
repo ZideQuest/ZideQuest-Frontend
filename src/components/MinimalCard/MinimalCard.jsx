@@ -107,7 +107,7 @@ const MinimalCard = ({ quest }) => {
               </Text>
               <View style={styles.participant}>
                 <Text style={styles.par_font}>
-                  จำนวนผู้เข้าร่วม: {countParticipant} / {maxParticipant}
+                  จำนวนผู้เข้าร่วม: {countParticipant} {maxParticipant ? `/ ${maxParticipant}` : ""}
                 </Text>
               </View>
             </View>

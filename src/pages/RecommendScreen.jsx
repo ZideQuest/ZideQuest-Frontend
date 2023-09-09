@@ -5,6 +5,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import SearchBar from "../components/SearchBar";
 import GridCard from "../components/MinimalCard/Gridcard";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
+import { buttonLightGrey } from "../data/color";
 
 const Recommend = () => {
   return (
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   Container: {
     width: "100%",
     flex: 1,
-    backgroundColor: "lightgrey",
+    backgroundColor: "#F2F2F2",
   },
   Rec_text: {
     marginTop: 30,

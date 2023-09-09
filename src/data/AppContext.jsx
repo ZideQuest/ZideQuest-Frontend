@@ -18,6 +18,7 @@ export const AppProvider = ({ children }) => {
   const [mapRefetch, setMapRefetch] = useState(null);
   const [mapSearchedLocation, setMapSearchedLocation] = useState(null);
   const [focusedPin, setFocusedPin] = useState(null);
+  const [snapBack, setSnapBack] = useState(null);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -117,6 +118,8 @@ export const AppProvider = ({ children }) => {
         setMapSearchedLocation,
         focusedPin,
         setFocusedPin,
+        snapBack,
+        setSnapBack,
       }}
     >
       {children}

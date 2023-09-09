@@ -56,7 +56,7 @@ export default function RecentSearch({ handleTextChange }) {
 const styles = StyleSheet.create({
   recentContainer: {
     paddingHorizontal: 15,
-    marginTop: 10,
+    backgroundColor: "white"
   },
   recentHeaderContainer: {
     flexDirection: "row",
