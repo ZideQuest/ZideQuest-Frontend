@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { debounce } from "lodash";
 
 import {
@@ -23,7 +23,7 @@ import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
 
-export default function SearchBar({ navigation }) {
+export default function SearchBar() {
   const {
     bottomModalRef,
     userDetail,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   searchText: {
-    margin: 10,
+    padding: 10,
     flex: 1,
   },
   searchButton: {
