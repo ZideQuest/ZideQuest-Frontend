@@ -1,11 +1,30 @@
-import React from 'react';
-import LottieView from 'lottie-react-native';
-import { View } from 'react-native';
+import React, { useRef, useEffect } from "react";
+import LottieView from "lottie-react-native";
+import { View, Text, Button } from "react-native";
 
 export default function Spinner() {
+  const animation = useRef(null);
+
   return (
-    <View style={{width: "100%", height: 200, padding: 20}}>
-      <LottieView style={{width: "100%", height: "100%"}} source={require('../../../assets/animations/spinner.json')} autoPlay loop />
+    <View style={{}}>
+      <LottieView
+        autoPlay
+        ref={animation}
+        style={{
+          width: 200,
+          height: 200,
+          backgroundColor: '#eee',
+        }}
+        source={require('./spinner.json')}
+      />
+      <Text>Loading</Text>
+      <Button
+          title="Restart Animation"
+          onPress={() => {
+            animation.current?.reset();
+            animation.current?.play();
+          }}
+        />
     </View>
   );
 }
