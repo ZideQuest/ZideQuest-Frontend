@@ -5,7 +5,7 @@ const BASE_URL =
 
 export async function getCreatorData(id) {
   try {
-    const { data } = await axios.get(`${BASE_URL}/creator/${id}`);
+    const { data } = await axios.get(`${BASE_URL}/creators/${id}`);
     return data;
   } catch (e) {
     console.log(e);

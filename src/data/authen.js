@@ -24,7 +24,7 @@ export async function fetchUserData() {
       return {};
     }
 
-    const { data } = await axios.get(`${BASE_URL}/user/info`, 
+    const { data } = await axios.get(`${BASE_URL}/users/info`, 
     {
       headers: {
         Authorization: "Bearer " + user.token,

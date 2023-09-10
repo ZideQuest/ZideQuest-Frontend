@@ -4,7 +4,7 @@ import { BASE_URL } from "./backend_url";
 
 export async function fetchLocations() {
   try {
-    const { data } = await axios.get(`${BASE_URL}/location`);
+    const { data } = await axios.get(`${BASE_URL}/locations`);
     return data;
   } catch (e) {
     return {
@@ -16,7 +16,7 @@ export async function fetchLocations() {
 
 export async function getLocationData(id) {
   try {
-    const { data } = await axios.get(`${BASE_URL}/location/${id}`);
+    const { data } = await axios.get(`${BASE_URL}/locations/${id}`);
     const location = data.location;
     const quests = data.quests;
 
@@ -34,7 +34,7 @@ export const createLocation = async (data) => {
   try {
     const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
     const { token } = userdetail;
-    const res = await axios.post(`${BASE_URL}/location`, data, {
+    const res = await axios.post(`${BASE_URL}/locations`, data, {
       headers: {
         Authorization: "Bearer " + token,
         Accept: "application/json",
