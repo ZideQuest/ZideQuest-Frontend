@@ -6,7 +6,7 @@ import { useAppContext } from "../data/AppContext";
 import { getQuestData } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BackButton from "../components/button/BackButton";
-import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
+import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
 import { buttonBlue, buttonBrightGreen } from "../data/color";
 import Participants from "../components/Participants/Participants";
@@ -38,7 +38,11 @@ export default function QuestManagement({ route }) {
   }, []);
 
   return (
-    <Buttomsheet snapPoints={["20%", "60%", "90%"]} index={2} hideBar={true}>
+    <BottomsheetDynamic
+      snapPoints={["20%"]}
+      index={0}
+      hideBar={true}
+    >
       <View style={styles.container}>
         <View style={styles.bannerContainer}>
           <Image src={questData?.picturePath} style={styles.bannerImage} />
@@ -72,7 +76,7 @@ export default function QuestManagement({ route }) {
           </View>
         </View>
       </View>
-    </Buttomsheet>
+    </BottomsheetDynamic>
   );
 }
 
