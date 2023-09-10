@@ -13,13 +13,15 @@ export default function SearchItem({ quests, isAdmin }) {
 
   const queryPressHandler = (quest) => {
     storeHistory(quest.questName);
-    mapMoveTo(quest.locationId?.latitude, quest.locationId?.longitude);
-    setFocusedPin(quest.locationId?._id);
 
     if (isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
+      mapMoveTo(quest.locationId?.latitude, quest.locationId?.longitude);
+      setFocusedPin(quest.locationId?._id);
     } else if (userDetail?.token != null) {
       TabNavigation.navigate("QuestDetail", { questId: quest._id });
+      mapMoveTo(quest.locationId?.latitude, quest.locationId?.longitude);
+      setFocusedPin(quest.locationId?._id);
     } else {
       alert("กรุณา login");
       return;
@@ -34,6 +36,7 @@ export default function SearchItem({ quests, isAdmin }) {
           <Pressable
             style={styles.container}
             onPress={() => queryPressHandler(quest)}
+            key={`search-${quest._id}`}
           >
             <View style={styles.imageContainer}>
               <Image

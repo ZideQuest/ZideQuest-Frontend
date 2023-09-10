@@ -34,15 +34,16 @@ export default function DrawerMenu({ navigation, children }) {
   };
 
   const loginHandler = () => {
+    TabNavigation.navigate("Recommend");
     setDrawerOpen(false);
     navigation.navigate("Login");
   };
 
   const logoutHandler = async () => {
     if (await Alert("Logout", "Are you sure you want to log out?")) {
+      TabNavigation.navigate("Recommend");
       logout();
       setDrawerOpen(false);
-      TabNavigation.navigate("Recommend");
     }
   };
 
