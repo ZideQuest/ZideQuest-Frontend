@@ -40,7 +40,7 @@ export default function QuestManagement({ route }) {
   return (
     <BottomsheetDynamic
       snapPoints={["20%"]}
-      index={0}
+      index={1}
       hideBar={true}
     >
       <View style={styles.container}>

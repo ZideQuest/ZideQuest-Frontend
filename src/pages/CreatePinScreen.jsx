@@ -8,7 +8,7 @@ import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
 import { primaryColor } from "../data/color";
 
 export default function CreatePinScreen() {
-  const { setNewMarker, newMarker } = useAppContext();
+  const { setNewMarker, newMarker, setFocusedPin } = useAppContext();
 
   const confirmHandler = () => {
     if (newMarker) {
@@ -20,6 +20,7 @@ export default function CreatePinScreen() {
 
   const cancelHandler = () => {
     setNewMarker(null);
+    setFocusedPin(null);
     TabNavigation.navigate("Recommend");
   };
 
