@@ -20,20 +20,20 @@ import * as TabNavigation from "../data/TabNavigation";
 import LocationSearchItem from "./Location/LocationSearchItem";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
+import { getCenterFromPins } from "../data/locations";
 import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
 
-export default function SearchBar() {
+export default function SearchBar({ searching, setSearching }) {
   const {
     bottomModalRef,
     userDetail,
     mapSearchedLocation,
     snapBack,
     mapRefetch,
+    mapMoveTo,
   } = useAppContext();
-  const [searching, setSearching] = useState(false);
   const [search, setSearch] = useState(null);
-  const [focusing, setFocusing] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -55,7 +55,6 @@ export default function SearchBar() {
   const onFocusHandler = () => {
     bottomModalRef.current?.snapToIndex(3);
     setSearching(true);
-    setFocusing(true);
   };
 
   const onBlurHandler = () => {
@@ -65,22 +64,27 @@ export default function SearchBar() {
   };
 
   const onSubmitHandler = () => {
-    setFocusing(false);
     storeHistory(search);
     bottomModalRef.current?.snapToIndex(1);
     mapSearchedLocation(searchResult.locations);
-    snapBack();
+    const target = getCenterFromPins(searchResult.locations);
+    if (target) {
+      mapMoveTo(
+        target.latitude,
+        target.longitude,
+        target.latitudeDelta,
+        target.longitudeDelta
+      );
+    }
   };
 
   const onCancelHander = () => {
     setSearch(null);
-    setFocusing(false);
     setSearchResult([]);
     setSearching(false);
     Keyboard.dismiss();
     bottomModalRef.current?.snapToIndex(1);
     mapRefetch();
-    snapBack();
   };
 
   const profilePressHandler = () => {
@@ -138,6 +142,7 @@ export default function SearchBar() {
           <ProfileImage />
         )}
       </View>
+
       <View style={styles.greyBackground}>
         {searching && search && (
           <View style={styles.searchResultContainer}>
@@ -161,7 +166,6 @@ export default function SearchBar() {
               quests={searchResult.quests}
               isAdmin={userDetail.isAdmin}
             />
-
             <LocationSearchItem locations={searchResult.locations} />
           </View>
         )}
@@ -254,7 +258,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
   },
-  greyBackground: { 
+  greyBackground: {
     backgroundColor: "#F2F2F2",
-  }
+  },
 });

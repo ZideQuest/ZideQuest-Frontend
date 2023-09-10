@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
@@ -6,15 +7,17 @@ import GridCard from "../components/MinimalCard/Gridcard";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 const Recommend = () => {
+  const [searching, setSearching] = useState(false);
+
   return (
     <Bottomsheet snapPoints={["10%", "20%", "50%", "90%"]} index={1}>
       <BottomSheetScrollView
         style={styles.Container}
         keyboardShouldPersistTaps="handled"
-        keyboardDismissMode='on-drag'
+        keyboardDismissMode="on-drag"
       >
-        <SearchBar />
-        <GridCard />
+        <SearchBar searching={searching} setSearching={setSearching}/>
+        {!searching && <GridCard />}
       </BottomSheetScrollView>
     </Bottomsheet>
   );

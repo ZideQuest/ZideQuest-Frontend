@@ -11,6 +11,7 @@ const Bottomsheet = ({
   index = 0,
   detached = false,
   hideBar = false,
+  onChange
 }) => {
   const bottomSheetModalRef = useRef(null);
   const { setBottomModalRef } = useAppContext();
@@ -42,6 +43,7 @@ const Bottomsheet = ({
       bottomInset={detached ? 30 : 0}
       enableOverDrag={!detached}
       keyboardBehavior="extend"
+      onChange={onChange}
     >
       <View style={styles.contentContainer}>{children}</View>
     </BottomSheetModal>
