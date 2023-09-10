@@ -7,7 +7,7 @@ export async function createQuest(questDetail, locationId) {
     const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
     console.log(token);
     const { data } = await axios.post(
-      `${BASE_URL}/quest/location/${locationId}`,
+      `${BASE_URL}/quest/locations/${locationId}`,
       questDetail,
       {
         headers: {
@@ -28,7 +28,7 @@ export async function getQuestData(id) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
   try {
-    const { data } = await axios.get(`${BASE_URL}/quest/find/${id}`, {
+    const { data } = await axios.get(`${BASE_URL}/quests/${id}/find`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -63,11 +63,14 @@ export async function fetchParticipants(questId) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
   try {
-    const { data } = await axios.get(`${BASE_URL}/quest/participants/${questId}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
+    const { data } = await axios.get(
+      `${BASE_URL}/quests/${questId}/participants`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
     return data.participant;
   } catch (e) {
     console.error(e);
@@ -82,18 +85,14 @@ export async function usersQuest() {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
   try {
-    const {data} = await axios.get(
-      `${BASE_URL}/user/quest`,
-      {
-        headers: {
-          Authorization: 'Bearer ' + token,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
+    const { data } = await axios.get(`${BASE_URL}/users/quest`, {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    );
+    });
     return data;
-    
   } catch (error) {
     console.error(error);
     return false;
