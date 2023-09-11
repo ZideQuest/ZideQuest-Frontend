@@ -46,7 +46,7 @@ export async function getQuestData(id) {
 export async function searchQuest(name) {
   try {
     const { data } = await axios.get(`${BASE_URL}/search`, {
-      params: { questName: name },
+      params: { Name: name },
     });
 
     return data;
@@ -96,5 +96,29 @@ export async function usersQuest() {
   } catch (error) {
     console.error(error);
     return false;
+  }
+}
+
+export async function sendQuestComplete(id) {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  try {
+    const { data } = await axios.patch(
+      `${BASE_URL}/quests/${id}/complete`,
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return data;
+  } catch (e) {
+    console.error(e);
+    console.log(id);
+    return {
+      message: "failed to load send quest completed",
+      status: 400,
+    };
   }
 }

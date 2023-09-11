@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Alert, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
-import { getQuestData } from "../data/Quest";
+import { getQuestData, sendQuestComplete } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BackButton from "../components/button/BackButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
 import { buttonBlue, buttonBrightGreen } from "../data/color";
 import Participants from "../components/Participants/Participants";
+import Alert from "../components/misc/Alert";
 
 const showConfirmDialog = (title, description) => {
   return Alert.alert(title, description, [
@@ -37,12 +38,19 @@ export default function QuestManagement({ route }) {
     fetchQuestData();
   }, []);
 
+  const questCompleteHandler = async () => {
+    if (
+      await Alert(
+        "Confirm Quest completed",
+        "Are you sure you want to end this quest?"
+      )
+    ) {
+      sendQuestComplete(route.params.questId);
+    }
+  };
+
   return (
-    <BottomsheetDynamic
-      snapPoints={["20%"]}
-      index={1}
-      hideBar={true}
-    >
+    <BottomsheetDynamic snapPoints={["20%"]} index={1} hideBar={true}>
       <View style={styles.container}>
         <View style={styles.bannerContainer}>
           <Image src={questData?.picturePath} style={styles.bannerImage} />
@@ -54,12 +62,7 @@ export default function QuestManagement({ route }) {
             <BigButton
               text="ยืนยัน Quest Completed"
               bg={buttonBrightGreen}
-              onPress={() =>
-                showConfirmDialog(
-                  "Confirm Quest completed",
-                  "Are you sure you want to end this quest?"
-                )
-              }
+              onPress={questCompleteHandler}
             />
           </View>
           <View style={styles.buttonContainer}>
