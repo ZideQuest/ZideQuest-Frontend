@@ -1,8 +1,9 @@
 import { StyleSheet, Text, Button, View, Linking } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, navigation } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { LinearGradient } from "expo-linear-gradient";
 import { buttonBlue, primaryColor } from "../data/color";
+import * as TabNavigation from "../data/TabNavigation";
 
 export default function CheckinScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -17,6 +18,11 @@ export default function CheckinScreen({ navigation }) {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
+    alert(
+      `Barcode with type ${type} and data ${Linking.openURL(
+        data
+      )} has been scanned`
+    );
   };
 
   if (hasPermission === null) {
