@@ -1,20 +1,36 @@
-import { StyleSheet, Text, Button, View } from "react-native";
-import React from "react";
+import { StyleSheet, Text, Button, View, Linking } from "react-native";
+import React, { useEffect, useState } from "react";
+import { BarCodeScanner } from "expo-barcode-scanner";
 import { LinearGradient } from "expo-linear-gradient";
 import { buttonBlue, primaryColor } from "../data/color";
 
 export default function CheckinScreen({ navigation }) {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+  };
+
+  if (hasPermission === null) {
+    return <Text>Requesting for Cammera Permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No Access to Camera</Text>;
+  }
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={["purple", "white"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.linearGradient}
-      >
-        <Button onPress={() => navigation.navigate("App")} title="กลับ" />
-        <Text>ควรจะเปิดกล้องครับ</Text>
-      </LinearGradient>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
     </View>
   );
 }
@@ -32,4 +48,5 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
+  absoluteFillObject: {},
 });
