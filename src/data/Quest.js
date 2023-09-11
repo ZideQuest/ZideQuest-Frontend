@@ -85,7 +85,7 @@ export async function usersQuest() {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
   try {
-    const { data } = await axios.get(`${BASE_URL}/users/quest`, {
+    const { data } = await axios.get(`${BASE_URL}/users/quests`, {
       headers: {
         Authorization: "Bearer " + token,
         Accept: "application/json",
