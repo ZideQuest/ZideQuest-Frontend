@@ -55,3 +55,41 @@ export const createLocation = async (data) => {
     return error;
   }
 };
+
+export const getCenterFromPins = (locations) => {
+  if (locations.length == 0) {
+    return;
+  } else if (locations.length == 1) {
+    return locations[0];
+  }
+
+  let minX;
+  let minY;
+  let maxX;
+  let maxY;
+
+  locations.forEach((location) => {
+    if (!minX || minX > location.latitude) {
+      minX = location.latitude;
+    }
+
+    if (!maxX || maxX < location.latitude) {
+      maxX = location.latitude;
+    }
+
+    if (!minY || minY > location.longitude) {
+      minY = location.longitude;
+    }
+
+    if (!maxY || maxY < location.longitude) {
+      maxY = location.longitude;
+    }
+  });
+
+  const latitude = (maxX + minX) / 2;
+  const longitude = (maxY + minY) / 2;
+  const latitudeDelta = (maxX - minX) / 2 + 0.005;
+  const longitudeDelta = (maxY - minY) / 2 + 0.005;
+
+  return { latitude, longitude, latitudeDelta, longitudeDelta };
+};

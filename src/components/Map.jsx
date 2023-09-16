@@ -166,7 +166,7 @@ export default function Map() {
         customMapStyle={mapCustomStyle}
         onTouchStart={() => bottomModalRef.current?.collapse()}
         loadingEnabled
-        mapPadding={{bottom: "60%"}}
+        mapPadding={{ bottom: "60%" }}
       >
         {locations.map((pin) => (
           <Marker

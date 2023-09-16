@@ -7,9 +7,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { AppProvider } from "./src/data/AppContext";
 import HomeScreen from "./src/pages/HomeScreen";
-import LoginScreen from "./src/pages/LoginScreen";
+import LoginScreen from "./src/screens/LoginScreen";
 import DrawerMenu from "./src/components/DrawerMenu";
-import CheckinScreen from "./src/pages/CheckinScreen";
+import CheckinScreen from "./src/screens/CheckinScreen";
 
 const STYLES = ["default", "dark-content", "light-content"];
 const TRANSITIONS = ["fade", "slide", "none"];

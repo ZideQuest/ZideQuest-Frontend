@@ -10,11 +10,11 @@ export const storeHistory = async (value) => {
     }
 
     let new_history;
+
     if (!history.includes(value)) {
-      new_history = JSON.stringify([value, ...history]);
+      new_history = JSON.stringify([value, ...history.slice(0, 10)]);
     } else {
       const temp = history.filter((h) => h != value);
-
       new_history = JSON.stringify([value, ...temp]);
     }
     await AsyncStorage.setItem("search-history", new_history);
@@ -22,6 +22,7 @@ export const storeHistory = async (value) => {
     console.error("error storing history", e);
   }
 };
+
 export const loadHistory = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem("search-history");
