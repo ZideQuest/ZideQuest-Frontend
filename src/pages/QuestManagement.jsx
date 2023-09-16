@@ -7,7 +7,7 @@ import { getQuestData, sendQuestComplete } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
-import { buttonBlue, buttonBrightGreen } from "../data/color";
+import { buttonBlue, buttonBrightGreen, buttonGrey } from "../data/color";
 import Participants from "../components/Participants/Participants";
 import Alert from "../components/misc/Alert";
 
@@ -22,7 +22,7 @@ const showConfirmDialog = (title, description) => {
   ]);
 };
 
-export default function QuestManagement({ route, navigation }) {
+export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
 
   useEffect(() => {
@@ -38,13 +38,18 @@ export default function QuestManagement({ route, navigation }) {
   }, []);
 
   const questCompleteHandler = async () => {
-    if (
+    if (questData.status) {
+      alert("Quest already completed");
+    }
+
+    else if (
       await Alert(
         "Confirm Quest completed",
         "Are you sure you want to end this quest?"
       )
     ) {
-      sendQuestComplete(route.params.questId);
+      const data = await sendQuestComplete(route.params.questId);
+      setQuestData(data)
     }
   };
 
@@ -67,7 +72,8 @@ export default function QuestManagement({ route, navigation }) {
           <View style={styles.buttonContainer}>
             <BigButton
               text="ยืนยัน Quest Completed"
-              bg={buttonBrightGreen}
+              bg={questData?.status ? buttonGrey : buttonBrightGreen}
+              color={questData?.status ? "grey" : "white"}
               onPress={questCompleteHandler}
             />
           </View>
