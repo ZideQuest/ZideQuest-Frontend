@@ -39,9 +39,10 @@ const GridCard = () => {
       }
     >
       <View style={styles.GridContainer}>
-        {questData.map((item) => (
+        {questData?.map((item) => (
           <MinimalCard key={item._id} quest={item} />
-        ))}
+        ))
+        }
       </View>
     </ScrollView>
   );

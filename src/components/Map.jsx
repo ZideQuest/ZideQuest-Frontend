@@ -90,6 +90,7 @@ export default function Map() {
     try {
       const data = await fetchLocations();
       setLocations(data);
+      console.log(data);
     } catch (error) {
       console.error("Error fetching locations", error);
     }
