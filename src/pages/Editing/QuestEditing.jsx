@@ -254,7 +254,7 @@ export default function QuestEditing({ route }) {
                 <Text style={styles.textMd}>จำนวนคน</Text>
                 <BottomSheetTextInput
                   style={styles.textIn}
-                  value={maxParticipant}
+                  value={maxParticipant?.toString()}
                   onChangeText={setMaxParticipant}
                 />
               </View>
@@ -320,7 +320,7 @@ export default function QuestEditing({ route }) {
                 <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
                 <BottomSheetTextInput
                   style={styles.textIn}
-                  value={activityHour}
+                  value={activityHour?.toString()}
                   onChangeText={setActivityHour}
                 />
               </View>
