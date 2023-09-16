@@ -4,36 +4,64 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import * as TabNavigation from "../../data/TabNavigation";
 import { storeHistory } from "../../data/async_storage";
 import { useAppContext } from "../../data/AppContext";
+import pin_icon from "../../../assets/images/pin_icon.png";
 
-export default function LocationSearchItem({ location }) {
+export default function LocationSearchItem({ locations }) {
   const { mapMoveTo, setFocusedPin } = useAppContext();
 
-  const queryPressHandler = () => {
+  const queryPressHandler = (location) => {
     storeHistory(location.locationName);
-    mapMoveTo(location.latitude, location.longitude)
-    setFocusedPin(location._id)
+    mapMoveTo(location.latitude, location.longitude);
+    setFocusedPin(location._id);
     TabNavigation.navigate("PinDetail", { pinId: location._id });
   };
 
-  return (
-    <Pressable style={styles.container} onPress={queryPressHandler}>
-      <View style={styles.imageContainer}>
-        <Image src={location.picturePath} style={styles.image} />
+  if (locations?.length > 0) {
+    return (
+      <View style={styles.searchResultCategory}>
+        <Text style={styles.categoryText}>สถานที่</Text>
+        {locations.map((location) => (
+          <Pressable
+            style={styles.container}
+            onPress={() => queryPressHandler(location)}
+            key={`search-${location._id}`}
+          >
+            <View style={styles.imageContainer}>
+              <Image
+                source={
+                  location.picturePath
+                    ? { uri: location.picturePath }
+                    : pin_icon
+                }
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.detail}>
+              <View>
+                <Text>{location.locationName}</Text>
+              </View>
+            </View>
+          </Pressable>
+        ))}
       </View>
-      <View style={styles.detail}>
-        <View>
-          <Text>{location.locationName}</Text>
-        </View>
-      </View>
-    </Pressable>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
+  searchResultCategory: {
+    marginBottom: 10,
+    paddingLeft: 20,
+    paddingVertical: 10,
+    backgroundColor: "white",
+  },
+  categoryText: {
+    fontFamily: "Kanit400",
+    fontSize: 16,
+  },
   container: {
     flexDirection: "row",
     marginTop: 10,
-    paddingLeft: 10,
     alignItems: "center",
   },
   imageContainer: {

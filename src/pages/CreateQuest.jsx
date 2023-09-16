@@ -1,14 +1,15 @@
 import {
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
   Platform,
 } from "react-native";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetScrollView,
+  BottomSheetTextInput,
+} from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import AddPhoto from "../components/AddPhoto";
 import SelectDropdown from "react-native-select-dropdown";
@@ -31,11 +32,11 @@ const activityCategories = [
   "3 กิจกรรมเพื่อสังคม",
 ];
 
-import Spinner from "../components/Animations/Spinner"
+import Spinner from "../components/Animations/Spinner";
 import BigButton from "../components/button/BigButton.jsx";
-import BackButton from "../components/button/BackButton"
+import BackButton from "../components/button/BackButton";
 import { buttonOrange, textColor } from "../data/color";
-import * as TabNavigation from "../data/TabNavigation"
+import * as TabNavigation from "../data/TabNavigation";
 
 function CreateQuest() {
   const [startDate, setStartDate] = useState(new Date());
@@ -54,12 +55,11 @@ function CreateQuest() {
   const [isLoading, setIsLoading] = useState(false);
 
   const buttonHandler = async (e) => {
-    setIsLoading(true)
-
+    setIsLoading(true);
     try {
       const questDetail = new FormData();
-      questDetail.append("timeStart", startDate.toDateString());
-      questDetail.append("timeEnd", endDate.toDateString());
+      questDetail.append("timeStart", startDate.toISOString());
+      questDetail.append("timeEnd", endDate.toISOString());
       questDetail.append("questName", questName);
       questDetail.append("description", description);
       questDetail.append("maxParticipant", maxParticipant);
@@ -88,12 +88,12 @@ function CreateQuest() {
         const handleTag = [tagId];
         questDetail.append("tagId", handleTag);
       }
+      console.log(questDetail);
       const newQuest = await createQuest(questDetail, locationId);
-      setIsLoading(false)
-      TabNavigation.navigate("QuestManage", {questId: newQuest._id})
+      setIsLoading(false);
+      TabNavigation.navigate("QuestManage", { questId: newQuest._id });
     } catch (error) {
-
-      setIsLoading(false)
+      setIsLoading(false);
       alert("failed to create quest", error);
     }
   };
@@ -121,185 +121,198 @@ function CreateQuest() {
       index={1}
     >
       <BottomSheetScrollView style={{ backgroundColor: "white" }}>
-        {isLoading ? <Spinner/>: 
-        
-
-        <View style={styles.innerContainer}>
-            <View style={{flexDirection: "row", alignItems:"center", justifyContent:"space-between"}}>
-                <Text style={styles.textXl}>เพิ่มเควสใหม่</Text>
-                <BackButton/>
-            </View>
-
-          <View style={styles.detailBox}>
-            <View style={styles.box}>
-              <Text style={styles.textMd}>ชื่อเควส</Text>
-              <TextInput
-                style={styles.textIn}
-                value={questName}
-                onChangeText={setQuestName}
-                />
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.textMd}>รายละเอียด</Text>
-              <TextInput
-                style={styles.textIn}
-                value={description}
-                onChangeText={setDescription}
-                />
-            </View>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <View style={styles.innerContainer}>
             <View
               style={{
                 flexDirection: "row",
-                gap: 20,
-                flex: 1,
+                alignItems: "center",
                 justifyContent: "space-between",
               }}
-              >
-              <View style={{ ...styles.box, flex: 1 }}>
-                <Text style={styles.textMd}>แท็ก</Text>
-                <SelectDropdown
-                  search={true}
-                  defaultValueByIndex={0}
-                  data={tagArray}
-                  onSelect={(selectedItem, index) => {
-                    if (index === 0) {
-                      setTagId("");
-                    } else {
-                      setTagId(tags[index]._id);
-                    }
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    // text represented after item is selected
-                    // if data array is an array of objects then return selectedItem.property to render after item is selected
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    // text represented for each item in dropdown
-                    // if data array is an array of objects then return item.property to represent item in dropdown
-                    return item;
-                  }}
-                  // search={true}
-                  buttonTextStyle={{
-                    fontSize: 16,
-                  }}
-                  dropdownStyle={{
-                    borderRadius: 20,
-                    backgroundColor: "#fbfbfb",
-                  }}
-                  rowTextStyle={{
-                    fontSize: 16,
-                    textAlign: "left",
-                  }}
-                  buttonStyle={{
-                    height: 30,
-                    borderColor: "#CDCDCD",
-                    borderWidth: 1,
-                    width: "100%",
-                    
-                    backgroundColor: "#fbfbfb",
-                    borderRadius: 10,
-                    fontSize: 16,
-                  }}
-                  />
-              </View>
-              <View style={styles.box}>
-                <Text style={styles.textMd}>จำนวนคน</Text>
-                <TextInput
-                  style={styles.textIn}
-                  value={maxParticipant}
-                  onChangeText={setMaxParticipant}
-                  />
-              </View>
+            >
+              <Text style={styles.textXl}>เพิ่มเควสใหม่</Text>
+              <BackButton />
             </View>
-            <View style={styles.box}>
-              {/* <Text style={styles.textMd}>ช่วงเวลาจัดกิจกรรม</Text> */}
-              <TimePicker
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
+
+            <View style={styles.detailBox}>
+              <View style={styles.box}>
+                <Text style={styles.textMd}>ชื่อเควส</Text>
+                <BottomSheetTextInput
+                  style={styles.textIn}
+                  value={questName}
+                  onChangeText={setQuestName}
                 />
-            </View>
-
-            <View style={{ flexDirection: "row", gap: 40, flex: 1 }}>
-              <View style={styles.box}>
-                <Text style={styles.textMd}>ชั่วโมงกิจกรรม</Text>
-                <SelectDropdown
-                  defaultValueByIndex={0}
-                  data={activityCategories}
-                  onSelect={(selectedItem, index) => {
-                    if (index === 0) {
-                      setActivity("");
-                    }
-                    const activityType = selectedItem.split(" ")[0];
-                    setActivity(activityType);
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    return item;
-                  }}
-                  buttonTextStyle={{
-                    fontSize: 16,
-                  }}
-                  dropdownStyle={{
-                    borderRadius: 20,
-                    backgroundColor: "#fbfbfb",
-                  }}
-                  rowTextStyle={{
-                    fontSize: 16,
-                    textAlign: "left",
-                  }}
-                  buttonStyle={{
-                    height: 30,
-                    borderColor: "#CDCDCD",
-                    borderWidth: 1,
-                    
-                    backgroundColor: "#fbfbfb",
-                    borderRadius: 10,
-                    fontSize: 16,
-                  }}
-                  />
               </View>
               <View style={styles.box}>
-                <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
-                <TextInput
+                <Text style={styles.textMd}>รายละเอียด</Text>
+                <BottomSheetTextInput
                   style={styles.textIn}
-                  value={activityHour}
-                  onChangeText={setActivityHour}
+                  value={description}
+                  onChangeText={setDescription}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 20,
+                  flex: 1,
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ ...styles.box, flex: 1 }}>
+                  <Text style={styles.textMd}>แท็ก</Text>
+                  <SelectDropdown
+                    search={true}
+                    defaultValueByIndex={0}
+                    data={tagArray}
+                    onSelect={(selectedItem, index) => {
+                      if (index === 0) {
+                        setTagId("");
+                      } else {
+                        setTagId(tags[index]._id);
+                      }
+                    }}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                      // text represented after item is selected
+                      // if data array is an array of objects then return selectedItem.property to render after item is selected
+                      return selectedItem;
+                    }}
+                    rowTextForSelection={(item, index) => {
+                      // text represented for each item in dropdown
+                      // if data array is an array of objects then return item.property to represent item in dropdown
+                      return item;
+                    }}
+                    // search={true}
+                    buttonTextStyle={{
+                      fontSize: 16,
+                    }}
+                    dropdownStyle={{
+                      borderRadius: 20,
+                      backgroundColor: "#fbfbfb",
+                    }}
+                    rowTextStyle={{
+                      fontSize: 16,
+                      textAlign: "left",
+                    }}
+                    buttonStyle={{
+                      height: 30,
+                      borderColor: "#CDCDCD",
+                      borderWidth: 1,
+                      width: "100%",
+
+                      backgroundColor: "#fbfbfb",
+                      borderRadius: 10,
+                      fontSize: 16,
+                    }}
                   />
+                </View>
+                <View style={{ ...styles.box, flex: 0.32 }}>
+                  <Text style={styles.textMd}>จำนวนคน</Text>
+                  <BottomSheetTextInput
+                    style={styles.textIn}
+                    value={maxParticipant?.toString()}
+                    onChangeText={setMaxParticipant}
+                  />
+                </View>
+              </View>
+              <View style={styles.box}>
+                {/* <Text style={styles.textMd}>ช่วงเวลาจัดกิจกรรม</Text> */}
+                <TimePicker
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                />
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 20,
+                  flex: 1,
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ ...styles.box, flex: 1 }}>
+                  <Text style={styles.textMd}>ชั่วโมงกิจกรรม</Text>
+                  <SelectDropdown
+                    defaultValueByIndex={0}
+                    data={activityCategories}
+                    onSelect={(selectedItem, index) => {
+                      if (index === 0) {
+                        setActivity("");
+                      }
+                      const activityType = selectedItem.split(" ")[0];
+                      setActivity(activityType);
+                    }}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                      return selectedItem;
+                    }}
+                    rowTextForSelection={(item, index) => {
+                      return item;
+                    }}
+                    buttonTextStyle={{
+                      fontSize: 16,
+                    }}
+                    dropdownStyle={{
+                      borderRadius: 20,
+                      backgroundColor: "#fbfbfb",
+                    }}
+                    rowTextStyle={{
+                      fontSize: 16,
+                      textAlign: "left",
+                    }}
+                    buttonStyle={{
+                      height: 30,
+                      borderColor: "#CDCDCD",
+                      borderWidth: 1,
+                      width: "100%",
+                      backgroundColor: "#fbfbfb",
+                      borderRadius: 10,
+                      fontSize: 16,
+                    }}
+                  />
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
+                  <BottomSheetTextInput
+                    style={styles.textIn}
+                    value={activityHour?.toString()}
+                    onChangeText={setActivityHour}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.box}>
+                <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
+                <AddPhoto image={image} setImage={setImage} />
+                {image && (
+                  <View style={styles.image}>
+                    <Pressable
+                      style={styles.xBtn}
+                      onPress={() => {
+                        setImage(null);
+                      }}
+                    >
+                      <Text style={styles.xtextbtn}>X</Text>
+                    </Pressable>
+                    <Image
+                      source={{ uri: image.uri }}
+                      style={{ height: 150, flex: 1 }}
+                    />
+                  </View>
+                )}
               </View>
             </View>
-
-            <View style={styles.box}>
-              <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
-              <AddPhoto image={image} setImage={setImage} />
-              {image && (
-                <View style={styles.image}>
-                  <Pressable
-                    style={styles.xBtn}
-                    onPress={() => {
-                      setImage(null);
-                    }}
-                    >
-                    <Text style={styles.xtextbtn}>X</Text>
-                  </Pressable>
-                  <Image
-                    source={{ uri: image.uri }}
-                    style={{ height: 150, flex: 1 }}
-                    />
-                </View>
-              )}
-            </View>
-          </View>
-          <BigButton
-            bg={buttonOrange}
-            text="สร้างกิจกรรม"
-            onPress={buttonHandler}
+            <BigButton
+              bg={buttonOrange}
+              text="สร้างกิจกรรม"
+              onPress={buttonHandler}
             />
-        </View>
-        }
+          </View>
+        )}
       </BottomSheetScrollView>
     </Bottomsheet>
   );
@@ -359,7 +372,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   image: {
-    backgroundColor:"transparent",
+    backgroundColor: "transparent",
     borderRadius: 10,
     overflow: "hidden",
     shadowColor: "#171717",

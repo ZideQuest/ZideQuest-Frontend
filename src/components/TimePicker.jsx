@@ -21,32 +21,31 @@ export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => 
     const [bsTime, bsetsTime] = useState('');
     const [beTime, bseteTime] = useState('');
     // const [isLoading,setIsLoading] = useState(true);
-    
+    console.log(startDate)
     useEffect(() => {
-        if(beDate != '' && beTime != ''){
+        if (beDate != '' && beTime != '') {
             const endDateString = beDate + 'T' + beTime;
             const endDatep = new Date(endDateString);
-            console.log(endDate);
             setEndDate(endDatep);
-          
-        }    
-    }, [beDate,beTime]);
+
+        }
+    }, [beDate, beTime]);
 
     useEffect(() => {
-        if(bsDate != '' && bsTime != ''){
+        if (bsDate != '' && bsTime != '') {
             const startDateString = bsDate + 'T' + bsTime;
             const startDatep = new Date(startDateString);
             setStartDate(startDatep);
-            
-        }  
-    }, [bsDate,bsTime]);
+
+        }
+    }, [bsDate, bsTime]);
 
     useEffect(() => {
-        console.log(startDate); 
+        console.log(startDate);
     }, [startDate]);
 
     useEffect(() => {
-        console.log(endDate); 
+        console.log(endDate);
     }, [endDate]);
 
     const showMode = (currentMode, is_start, is_time) => {
@@ -57,35 +56,34 @@ export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => 
     }
 
     const onChangeStartDate = async (event, selectedDate) => {
-        setShow(false);  
+        setShow(false);
         console.log('start');
         const currentDate = selectedDate
         let tempDate = new Date(currentDate);
         // console.log(tempDate) 
-        if(isTime){
+        if (isTime) {
             setsTime(tempDate.getHours() + ':' + tempDate.getMinutes());
             bsetsTime(tempDate.getHours().toString().padStart(2, '0') + ':' + tempDate.getMinutes().toString().padStart(2, '0') + ':' + "00" + '.' + "000Z");
         } else {
             setsDate(tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear());
             bsetsDate(tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1).toString().padStart(2, '0') + '-' + tempDate.getDate().toString().padStart(2, '0'));
-        } 
+        }
 
-        
+
     };
     const onChangeEndDate = async (event, selectedDate) => {
         setShow(false);
-        console.log('end');
         const currentDate = selectedDate
         let tempDate = new Date(currentDate);
         // console.log(tempDate)
-        if(isTime){
+        if (isTime) {
             seteTime(tempDate.getHours() + ':' + tempDate.getMinutes());
             bseteTime(tempDate.getHours().toString().padStart(2, '0') + ':' + tempDate.getMinutes().toString().padStart(2, '0') + ':' + "00" + '.' + "000Z");
         } else {
             seteDate(tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear());
             bseteDate(tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1).toString().padStart(2, '0') + '-' + tempDate.getDate().toString().padStart(2, '0'));
-        } 
-         
+        }
+
     };
 
     if (Platform.OS === 'android') {
@@ -94,22 +92,22 @@ export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => 
                 <View style={styles.view}>
                     <View style={styles.innerView}>
                         <View style={styles.datePicker}>
-                            <Button title="start date" color={button_color} onPress={()=> showMode('date', true, false)} />
+                            <Button title="start date" color={button_color} onPress={() => showMode('date', true, false)} />
                         </View>
                     </View>
                     <View style={styles.innerView}>
                         <View style={styles.datePicker}>
-                            <Button title="start time" color={button_color} onPress={()=> showMode('time', true, true)} />
+                            <Button title="start time" color={button_color} onPress={() => showMode('time', true, true)} />
                         </View>
                     </View>
                     <View style={styles.innerView}>
                         <View style={styles.datePicker}>
-                            <Button title="end date" color={button_color} onPress={()=> showMode('date', false, false)} />
+                            <Button title="end date" color={button_color} onPress={() => showMode('date', false, false)} />
                         </View>
                     </View>
                     <View style={styles.innerView}>
                         <View style={styles.datePicker}>
-                            <Button title="end time" color={button_color} onPress={()=> showMode('time', false, true)} />
+                            <Button title="end time" color={button_color} onPress={() => showMode('time', false, true)} />
                         </View>
                     </View>
                     {show && isStart && (
@@ -134,7 +132,7 @@ export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => 
                     )}
                 </View>
                 <View style={styles.view}>
-                    <Text>{"Start: "+sDate + " at " + sTime + '\n' + "End: "+eDate + " at " + eTime }</Text>
+                    <Text>{"Start: " + sDate + " at " + sTime + '\n' + "End: " + eDate + " at " + eTime}</Text>
                 </View>
             </View>
         )

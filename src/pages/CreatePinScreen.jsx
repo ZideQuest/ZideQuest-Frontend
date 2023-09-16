@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
@@ -8,14 +8,19 @@ import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
 import { primaryColor } from "../data/color";
 
 export default function CreatePinScreen() {
-  const { setNewMarker } = useAppContext();
+  const { setNewMarker, newMarker, setFocusedPin } = useAppContext();
 
   const confirmHandler = () => {
-    TabNavigation.navigate("PinCreateInfo");
+    if (newMarker) {
+      TabNavigation.navigate("PinCreateInfo");
+    } else {
+      alert("เลือกตำแหน่งก่อนครับ");
+    }
   };
 
   const cancelHandler = () => {
     setNewMarker(null);
+    setFocusedPin(null);
     TabNavigation.navigate("Recommend");
   };
 

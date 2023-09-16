@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Text,
-  TextInput,
-} from "react-native";
+import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import * as ImagePicker from "expo-image-picker";
-import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
+import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import photo_icon from "../../assets/images/photo.png";
 import picture_icon from "../../assets/images/picture.png";
 import BackButton from "../components/button/BackButton";
@@ -21,16 +15,20 @@ import ImagePreviewModal from "../components/misc/ImagePreviewModal";
 import Spinner from "../components/Animations/Spinner";
 
 export default function PinCreateInfo() {
-  const { newMarker, setNewMarker } = useAppContext();
+  const { newMarker, setNewMarker, mapRefetch, setFocusedPin } =
+    useAppContext();
 
   const closeHandler = (pinId) => {
     alert("สร้างสถานที่สำเร็จ");
     TabNavigation.navigate("PinDetail", { pinId });
+    mapRefetch();
+    setNewMarker(null);
+    setFocusedPin(pinId);
   };
 
   const [state, setState] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  const [place, setPlace] = useState(newMarker.name);
+  const [place, setPlace] = useState(newMarker?.name);
   const [detail, setDetail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -107,14 +105,14 @@ export default function PinCreateInfo() {
 
   if (isLoading) {
     return (
-      <Bottomsheet snapPoints={["60%"]} index={0}>
-          <Spinner />
-      </Bottomsheet>
+      <BottomsheetDynamic snapPoints={[]} index={0}>
+        <Spinner />
+      </BottomsheetDynamic>
     );
   }
 
   return (
-    <Bottomsheet snapPoints={["60%", "90%"]} index={0}>
+    <BottomsheetDynamic snapPoints={["20%"]} index={1}>
       <ImagePreviewModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -127,7 +125,7 @@ export default function PinCreateInfo() {
         <View style={styles.input}>
           <View>
             <Text>ชื่อสถานที่*</Text>
-            <TextInput
+            <BottomSheetTextInput
               style={styles.txtin}
               value={place}
               onChangeText={setPlace}
@@ -135,7 +133,7 @@ export default function PinCreateInfo() {
           </View>
           <View>
             <Text>รายละเอียด*</Text>
-            <TextInput
+            <BottomSheetTextInput
               style={styles.txtin}
               value={detail}
               onChangeText={setDetail}
@@ -175,7 +173,7 @@ export default function PinCreateInfo() {
           />
         </View>
       </View>
-    </Bottomsheet>
+    </BottomsheetDynamic>
   );
 }
 
