@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
 import { getQuestData, sendQuestComplete } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
-import BackButton from "../components/button/BackButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
 import { buttonBlue, buttonBrightGreen } from "../data/color";
@@ -23,7 +22,7 @@ const showConfirmDialog = (title, description) => {
   ]);
 };
 
-export default function QuestManagement({ route }) {
+export default function QuestManagement({ route, navigation }) {
   const [questData, setQuestData] = useState(null);
 
   useEffect(() => {
@@ -49,6 +48,10 @@ export default function QuestManagement({ route }) {
     }
   };
 
+  const editQuestButtoHandler = async () => {
+    TabNavigation.navigate("EditQuest", { questId: route.params.questId });
+  };
+
   return (
     <BottomsheetDynamic snapPoints={["20%"]} index={1} hideBar={true}>
       <View style={styles.container}>
@@ -57,6 +60,9 @@ export default function QuestManagement({ route }) {
         </View>
         <View style={styles.infoContainer}>
           <ActivityName quest={questData} />
+          <TouchableOpacity onPress={editQuestButtoHandler}>
+            <Text>แก้ไขข้อมูล</Text>
+          </TouchableOpacity>
           <Participants questId={route.params.questId} />
           <View style={styles.buttonContainer}>
             <BigButton

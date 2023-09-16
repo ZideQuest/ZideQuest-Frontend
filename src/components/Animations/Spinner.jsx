@@ -3,28 +3,16 @@ import LottieView from "lottie-react-native";
 import { View, Text, Button } from "react-native";
 
 export default function Spinner() {
-  const animation = useRef(null);
-
   return (
-    <View style={{}}>
+    <View style={{width:"100%", justifyContent:"center", alignItems:"center", height: 200}}>
       <LottieView
         autoPlay
-        ref={animation}
         style={{
-          width: 200,
+          width: "100%",
           height: 200,
-          backgroundColor: '#eee',
         }}
-        source={require('./spinner.json')}
+        source={require("./spinner.json")}
       />
-      <Text>Loading</Text>
-      <Button
-          title="Restart Animation"
-          onPress={() => {
-            animation.current?.reset();
-            animation.current?.play();
-          }}
-        />
     </View>
   );
 }

@@ -7,7 +7,7 @@ export async function createQuest(questDetail, locationId) {
     const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
     console.log(token);
     const { data } = await axios.post(
-      `${BASE_URL}/quest/locations/${locationId}`,
+      `${BASE_URL}/quests/locations/${locationId}`,
       questDetail,
       {
         headers: {
@@ -115,10 +115,50 @@ export async function sendQuestComplete(id) {
     return data;
   } catch (e) {
     console.error(e);
-    console.log(id);
     return {
       message: "failed to load send quest completed",
       status: 400,
     };
+  }
+}
+
+export async function editQuest(questDetail, questId) {
+  try {
+    const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { data } = await axios.post(
+      `${BASE_URL}/quests/${questId}/edit`,
+      questDetail,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function deleteQuest(questId) {
+  try {
+    const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { data } = await axios.delete(
+      `${BASE_URL}/quests/${questId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }

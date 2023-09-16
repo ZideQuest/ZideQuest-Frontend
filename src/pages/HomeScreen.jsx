@@ -14,6 +14,7 @@ import PinCreateInfo from "./PinCreateInfo";
 import QuestManagement from "./QuestManagement";
 import ActivityDetail from "./ActivityDetail";
 import CreateQuest from "./CreateQuest";
+import QuestEditing from "./Editing/QuestEditing";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,11 @@ export default function HomeScreen() {
   return (
     <View style={styles.mapContainer}>
       <Map />
-      <NavigationContainer ref={navigationRef} independent={true}>
+      <NavigationContainer
+        ref={navigationRef}
+        independent={true}
+        // onStateChange={(e) => console.log(e)}
+      >
         <Stack.Navigator
           initialRouteName="Recommend"
           backBehavior="none"
@@ -39,6 +44,7 @@ export default function HomeScreen() {
           <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
           <Stack.Screen name="QuestManage" component={QuestManagement} />
           <Stack.Screen name="Profile" component={ProfileModal} />
+          <Stack.Screen name="EditQuest" component={QuestEditing} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
