@@ -16,6 +16,7 @@ import ActivityDetail from "./ActivityDetail";
 import CreateQuest from "./CreateQuest";
 import QuestEditing from "./Editing/QuestEditing";
 import LocationEditing from "./Editing/LocationEditing";
+import UserQuestComplete from "./UserQuestComplete"
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,7 @@ export default function HomeScreen() {
           <Stack.Screen name="Profile" component={ProfileModal} />
           <Stack.Screen name="EditQuest" component={QuestEditing} />
           <Stack.Screen name="EditLocation" component={LocationEditing} />
+          <Stack.Screen name="UserQuestComplete" component={UserQuestComplete} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
