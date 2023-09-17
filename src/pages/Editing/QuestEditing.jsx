@@ -383,8 +383,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textXl: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 25,
+    fontFamily: "Kanit400",
   },
   textMd: {
     fontSize: 16,
