@@ -4,7 +4,7 @@ import { Button, Platform, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
-button_color = "#E86A33";
+button_color = "#FE9F60";
 
 export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => {
 
@@ -92,22 +92,22 @@ export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => 
                 <View style={styles.view}>
                     <View style={styles.innerView}>
                         <View style={styles.datePicker}>
-                            <Button title="start date" color={button_color} onPress={() => showMode('date', true, false)} />
+                            <Button title={sDate} color={button_color} onPress={() => showMode('date', true, false)} />
                         </View>
                     </View>
                     <View style={styles.innerView}>
                         <View style={styles.datePicker}>
-                            <Button title="start time" color={button_color} onPress={() => showMode('time', true, true)} />
+                            <Button title={sTime} color={button_color} onPress={() => showMode('time', true, true)} />
                         </View>
                     </View>
                     <View style={styles.innerView}>
                         <View style={styles.datePicker}>
-                            <Button title="end date" color={button_color} onPress={() => showMode('date', false, false)} />
+                            <Button title={eDate} color={button_color} onPress={() => showMode('date', false, false)} />
                         </View>
                     </View>
                     <View style={styles.innerView}>
                         <View style={styles.datePicker}>
-                            <Button title="end time" color={button_color} onPress={() => showMode('time', false, true)} />
+                            <Button title={eTime} color={button_color} onPress={() => showMode('time', false, true)} />
                         </View>
                     </View>
                     {show && isStart && (
@@ -132,7 +132,7 @@ export const TimePicker = ({ startDate, setStartDate, endDate, setEndDate }) => 
                     )}
                 </View>
                 <View style={styles.view}>
-                    <Text>{"Start: " + sDate + " at " + sTime + '\n' + "End: " + eDate + " at " + eTime}</Text>
+                    <Text>{"Start: " + sDate + " at " + sTime + ' | ' + "End: " + eDate + " at " + eTime}</Text>
                 </View>
             </View>
         )
@@ -180,8 +180,9 @@ const styles = StyleSheet.create({
         // borderWidth: 1
     },
     innerView: {
-        flex: 1,
+        // flex: 1,
         height: "100%",
+        width: "24%",
         gap: 10,
         flexDirection: "column",
         justifyContent: "flex-start",
@@ -193,5 +194,8 @@ const styles = StyleSheet.create({
         // backgroundColor: "white"
         // padding: 0,
         // borderWidth: 1
+    },
+    buttonCon: {
+
     }
 });
