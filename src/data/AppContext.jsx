@@ -45,7 +45,6 @@ export const AppProvider = ({ children }) => {
   const logout = async () => {
     setIsLoading(true);
     setNewMarker(null);
-    setIsProfileOpen(false);
 
     await SecureStore.deleteItemAsync("userDetail");
     setUserDetails({});
