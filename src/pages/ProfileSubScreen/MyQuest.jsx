@@ -1,5 +1,12 @@
 import react, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+  ScrollView,
+} from "react-native";
 import back_icon from "../../../assets/images/leave_icon.png";
 import QuestListItem from "../../components/QuestListItem";
 import { usersQuest } from "../../data/Quest";
@@ -8,9 +15,12 @@ import { useAppContext } from "../../data/AppContext";
 export default function MyQuests({ navigation }) {
   const [UserQuest, setUserQuest] = useState({});
   const { userDetail } = useAppContext();
-  const [index, setIndex] = useState(4);
-  const [press, setPress] = useState(false);
-  const newIndex = UserQuest.currentQuest?.length - 1;
+  const [indexCurrent, setindexCurrent] = useState(4);
+  const [indexSuccess, setindexSuccess] = useState(4);
+  const [pressCurrent, setpressCurrent] = useState(false);
+  const [pressSuccess, setpressSuccess] = useState(false);
+  const newindexCurrent = UserQuest.currentQuest?.length;
+  const newindexSuccess = UserQuest.successQuest?.length;
 
   useEffect(() => {
     const fetchUserQuestData = async () => {
@@ -24,9 +34,14 @@ export default function MyQuests({ navigation }) {
     fetchUserQuestData();
   }, []);
 
-  const seeMore = () => {
-    setPress(!press);
-    press ? setIndex(4) : setIndex(newIndex);
+  const seeMoreCurrent = () => {
+    setpressCurrent(!pressCurrent);
+    pressCurrent ? setindexCurrent(4) : setindexCurrent(newindexCurrent);
+  };
+
+  const seeMoreSuccess = () => {
+    setpressSuccess(!pressSuccess);
+    pressSuccess ? setindexSuccess(4) : setindexSuccess(newindexSuccess);
   };
 
   return (
@@ -41,47 +56,81 @@ export default function MyQuests({ navigation }) {
         <Text style={styles.header}>เควสของฉัน</Text>
       </View>
 
-      <View style={styles.questList}>
-        <Text style={styles.questHeader}>เควสที่กำลังเข้าร่วม</Text>
-        {UserQuest.currentQuest?.length > 4 ? (
-          <View style={styles.questListContainer}>
-            {UserQuest.currentQuest?.slice(0, index).map((quest) => (
-              <QuestListItem
-                quest={quest.quest}
-                key={`myquest-${quest.quest._id}`}
-                isAdmin={userDetail?.isAdmin}
-                panMap={true}
-              />
-            ))}
-            <View style={styles.seeMoreContainer}>
-              <Pressable style={styles.seeMoreButton} onPress={seeMore}>
-                <Text style={styles.seeMoreText}>
-                  {press ? "see less" : "see more"}
-                </Text>
-              </Pressable>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.questList}>
+          <Text style={styles.questHeader}>เควสที่กำลังเข้าร่วม</Text>
+          {/* {UserQuest.currentQuest?.map((quest)=>console.log(quest.quest.questName))}
+          {console.log(UserQuest.currentQuest?.length)} */}
+          {UserQuest.currentQuest?.length > 4 ? (
+            <View style={styles.questListContainer}>
+              {UserQuest.currentQuest?.slice(0, indexCurrent).map((quest) => (
+                <QuestListItem
+                  quest={quest.quest}
+                  key={`myquest-${quest.quest._id}`}
+                  isAdmin={userDetail?.isAdmin}
+                  panMap={true}
+                />
+              ))}
+              <View style={styles.seeMoreContainer}>
+                <Pressable
+                  style={styles.seeMoreButton}
+                  onPress={seeMoreCurrent}
+                >
+                  <Text style={styles.seeMoreText}>
+                    {pressCurrent ? "see less" : "see more"}
+                  </Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        ) : (
-          <View style={styles.questListContainer}>
-            {UserQuest.currentQuest?.map((quest) => (
-              <QuestListItem
-                quest={quest.quest}
-                key={quest._id}
-                isAdmin={userDetail?.isAdmin}
-              />
-            ))}
-          </View>
-        )}
-      </View>
-
-      <View style={styles.questList}>
-        <Text style={styles.questHeader}>เควสที่เข้าร่วมสำเร็จ</Text>
-        <View style={styles.questListContainer}>
-          {/* {UserQuest.successQuest?.map((quest) => (
-            <QuestListItem quest={quest} key={quest._id} isAdmin={userDetail?.isAdmin} />
-          ))} */}
+          ) : (
+            <View style={styles.questListContainer}>
+              {UserQuest.currentQuest?.map((quest) => (
+                <QuestListItem
+                  quest={quest.quest}
+                  key={quest._id}
+                  isAdmin={userDetail?.isAdmin}
+                />
+              ))}
+            </View>
+          )}
         </View>
-      </View>
+
+        <View style={styles.questList}>
+          <Text style={styles.questHeader}>เควสที่เข้าร่วมสำเร็จ</Text>
+          {UserQuest.successQuest?.length > 4 ? (
+            <View style={styles.questListContainer}>
+              {UserQuest.successQuest?.slice(0, indexSuccess).map((quest) => (
+                <QuestListItem
+                  quest={quest.quest}
+                  key={`myquest-${quest.quest._id}`}
+                  isAdmin={userDetail?.isAdmin}
+                  panMap={true}
+                />
+              ))}
+              <View style={styles.seeMoreContainer}>
+                <Pressable
+                  style={styles.seeMoreButton}
+                  onPress={seeMoreSuccess}
+                >
+                  <Text style={styles.seeMoreText}>
+                    {pressSuccess ? "see less" : "see more"}
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.questListContainer}>
+              {UserQuest.successQuest?.map((quest) => (
+                <QuestListItem
+                  quest={quest.quest}
+                  key={quest._id}
+                  isAdmin={userDetail?.isAdmin}
+                />
+              ))}
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -99,6 +148,7 @@ const styles = StyleSheet.create({
   questHeader: {
     borderBottomWidth: 2,
     borderColor: "#E1E1E1",
+    fontWeight: "bold",
   },
   header: {
     textAlign: "center",
@@ -107,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    backgroundColor: "yellow",
+    // backgroundColor: "yellow",
     flexDirection: "row",
     alignItems: "center",
   },
@@ -118,7 +168,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: "absolute",
     marginLeft: 15,
-    top: 13,
+    top: 12,
     width: 17,
     height: 17,
     zIndex: 20,
@@ -137,5 +187,10 @@ const styles = StyleSheet.create({
   },
   seeMoreText: {
     textAlign: "center",
+  },
+  scrollView: {
+    backgroundColor: "pink",
+    height:150
+    // margin:3
   },
 });
