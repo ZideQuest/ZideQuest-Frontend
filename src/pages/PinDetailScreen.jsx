@@ -1,7 +1,5 @@
-import react, { useState, useEffect } from "react";
-import { createShimmerPlaceHolder } from "expo-shimmer-placeholder";
-import { LinearGradient } from "expo-linear-gradient";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { useState, useEffect } from "react";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
 import {
@@ -9,22 +7,39 @@ import {
   Text,
   StyleSheet,
   Image,
-  Pressable,
+  TouchableOpacity,
   ScrollView,
 } from "react-native";
 
 import QuestListItem from "../components/QuestListItem";
 import BackButton from "../components/button/BackButton.jsx";
 import * as TabNavigation from "../data/TabNavigation.jsx";
+import edit_icon from "../../assets/images/edit.png";
 
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
 import { buttonNormalGreen } from "../data/color";
 
-export default function PinDetailScreen({ route, navigation }) {
+function NoQuestComponent() {
+  return (
+    <View
+      style={{
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 100,
+      }}
+    >
+      <Text style={{ fontFamily: "Kanit400", color: "grey", fontSize: 25 }}>
+        ยังไม่มีเควสในบริเวณนี้...
+      </Text>
+    </View>
+  );
+}
+
+export default function PinDetailScreen({ route }) {
   const { userDetail } = useAppContext();
   const [locationData, setLocationData] = useState({});
-  const [loading, setLoading] = useState(true);
   const [quests, setQuests] = useState([]);
 
   useEffect(() => {
@@ -39,6 +54,10 @@ export default function PinDetailScreen({ route, navigation }) {
     };
     fetchLocationData();
   }, []);
+
+  const editLocationHandler = () => {
+    TabNavigation.navigate("EditLocation", { pinId: route.params.pinId });
+  };
 
   return (
     <View>
@@ -55,16 +74,38 @@ export default function PinDetailScreen({ route, navigation }) {
                 alignItems: "center",
               }}
             >
-              <Text style={styles.header}>{locationData.locationName}</Text>
+              <View style={{ flexDirection: "row", gap: 10 }}>
+                <Text style={styles.header}>{locationData.locationName}</Text>
+                {userDetail.isAdmin && (
+                  <TouchableOpacity
+                    style={styles.editIcon}
+                    onPress={editLocationHandler}
+                  >
+                    <Image
+                      source={edit_icon}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
               <BackButton />
             </View>
-            <Text style={styles.detail}>
-              Choose two branches to see what’s changed or to start a new pull
-              request.
-            </Text>
+            {locationData.description && (
+              <Text style={styles.detail}>{locationData.description}</Text>
+            )}
           </View>
 
-          <ScrollView style={styles.imageScrollContainer} horizontal>
+          {locationData.picturePath ? (
+            <View style={styles.imageScrollContainer}>
+              <Image
+                style={styles.bannerImage}
+                src={locationData.picturePath}
+              />
+            </View>
+          ) : (
+            ""
+          )}
+          {/* <ScrollView style={styles.imageScrollContainer} horizontal>
             <View style={styles.bannerContainer}>
               <Image
                 style={styles.bannerImage}
@@ -77,11 +118,12 @@ export default function PinDetailScreen({ route, navigation }) {
                 src={locationData.picturePath}
               />
             </View>
-          </ScrollView>
+          </ScrollView> */}
+
           <View style={styles.quests}>
             <View style={styles.subHeader}>
               <Text style={styles.subHeaderText}>Quests</Text>
-              <Pressable
+              <TouchableOpacity
                 onPress={() => {
                   TabNavigation.navigate("CreateQuest", {
                     locationId: locationData._id,
@@ -90,9 +132,10 @@ export default function PinDetailScreen({ route, navigation }) {
                 style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
               >
                 <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <View style={styles.questListContainer}>
+              {quests.length == 0 && <NoQuestComponent />}
               {quests.map((quest) => (
                 <QuestListItem
                   quest={quest}
@@ -139,11 +182,11 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 25,
-    fontFamily: 'Kanit400'
+    fontFamily: "Kanit400",
   },
   detail: {
     fontSize: 16,
-    fontFamily: "Kanit300"
+    fontFamily: "Kanit300",
   },
   subHeader: {
     flexDirection: "row",
@@ -168,5 +211,10 @@ const styles = StyleSheet.create({
     gap: 6,
     overflow: "scroll",
     paddingLeft: 10,
+  },
+  editIcon: {
+    width: 25,
+    height: 25,
+    top: 5,
   },
 });
