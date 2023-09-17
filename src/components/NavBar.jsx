@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Pressable,
-  StyleSheet,
-  Image,
-} from "react-native";
+import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppContext } from "../data/AppContext";
 import zidequest_icon from "../../assets/images/zidequest_icon.png";
 import { primaryColor } from "../data/color";
-
 
 export default function NavBar() {
   const insets = useSafeAreaInsets();
@@ -22,9 +16,13 @@ export default function NavBar() {
   return (
     <View style={[styles.container, { paddingTop: insets.top + 15 }]}>
       <View>
-        <Pressable style={styles.hamburgerContainer} onPress={DrawerToggle}>
+        <TouchableOpacity
+          style={styles.hamburgerContainer}
+          onPress={DrawerToggle}
+          activeOpacity={0.7}
+        >
           <Image source={zidequest_icon} style={styles.hamburgerIcon} />
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   );

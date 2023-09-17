@@ -55,3 +55,62 @@ export const createLocation = async (data) => {
     return error;
   }
 };
+
+export const getCenterFromPins = (locations) => {
+  if (locations.length == 0) {
+    return;
+  } else if (locations.length == 1) {
+    return locations[0];
+  }
+
+  let minX;
+  let minY;
+  let maxX;
+  let maxY;
+
+  locations.forEach((location) => {
+    if (!minX || minX > location.latitude) {
+      minX = location.latitude;
+    }
+
+    if (!maxX || maxX < location.latitude) {
+      maxX = location.latitude;
+    }
+
+    if (!minY || minY > location.longitude) {
+      minY = location.longitude;
+    }
+
+    if (!maxY || maxY < location.longitude) {
+      maxY = location.longitude;
+    }
+  });
+
+  const latitude = (maxX + minX) / 2;
+  const longitude = (maxY + minY) / 2;
+  const latitudeDelta = (maxX - minX) / 2 + 0.005;
+  const longitudeDelta = (maxY - minY) / 2 + 0.005;
+
+  return { latitude, longitude, latitudeDelta, longitudeDelta };
+};
+
+export const editLocation = async (data, id) => {
+  try {
+    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { token } = userdetail;
+
+    console.log(data._parts[2]);
+
+    const res = await axios.put(`${BASE_URL}/locations/${id}`, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

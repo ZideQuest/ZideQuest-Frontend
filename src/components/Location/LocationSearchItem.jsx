@@ -9,7 +9,7 @@ import pin_icon from "../../../assets/images/pin_icon.png";
 export default function LocationSearchItem({ locations }) {
   const { mapMoveTo, setFocusedPin } = useAppContext();
 
-  const queryPressHandler = () => {
+  const queryPressHandler = (location) => {
     storeHistory(location.locationName);
     mapMoveTo(location.latitude, location.longitude);
     setFocusedPin(location._id);
@@ -21,7 +21,11 @@ export default function LocationSearchItem({ locations }) {
       <View style={styles.searchResultCategory}>
         <Text style={styles.categoryText}>สถานที่</Text>
         {locations.map((location) => (
-          <Pressable style={styles.container} onPress={queryPressHandler}>
+          <Pressable
+            style={styles.container}
+            onPress={() => queryPressHandler(location)}
+            key={`search-${location._id}`}
+          >
             <View style={styles.imageContainer}>
               <Image
                 source={

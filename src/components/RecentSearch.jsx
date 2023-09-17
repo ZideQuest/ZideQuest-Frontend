@@ -23,7 +23,6 @@ export default function RecentSearch({ handleTextChange }) {
   };
 
   const recentPressHandler = (h) => {
-    console.log(h);
     handleTextChange(h);
   };
 

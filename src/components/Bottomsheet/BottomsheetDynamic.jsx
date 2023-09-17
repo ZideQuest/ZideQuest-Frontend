@@ -1,20 +1,35 @@
-import { StyleSheet, Text, View, } from "react-native";
-import React, { useEffect, useRef } from "react";
+import { StyleSheet } from "react-native";
+import React, { useEffect, useRef, useMemo } from "react";
 import {
   BottomSheetModal,
+  useBottomSheetDynamicSnapPoints,
+  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const Bottomsheet = ({
+export default function BottomsheetDynamic({
   children,
   snapPoints,
   index = 0,
   detached = false,
   hideBar = false,
-  onChange
-}) => {
+  onChange,
+}) {
+  const insets = useSafeAreaInsets();
   const bottomSheetModalRef = useRef(null);
   const { setBottomModalRef } = useAppContext();
+  const initialSnapPoints = useMemo(
+    () => [...snapPoints, "CONTENT_HEIGHT"],
+    []
+  );
+
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
   useEffect(() => {
     bottomSheetModalRef.current?.present();
@@ -30,7 +45,9 @@ const Bottomsheet = ({
       handleStyle={{ padding: hideBar ? 0 : 5 }}
       ref={bottomSheetModalRef}
       index={index}
-      snapPoints={snapPoints}
+      snapPoints={animatedSnapPoints}
+      handleHeight={animatedHandleHeight}
+      contentHeight={animatedContentHeight}
       enablePanDownToClose={false}
       backgroundStyle={styles.backgroundStyle}
       style={[
@@ -45,10 +62,15 @@ const Bottomsheet = ({
       keyboardBehavior="extend"
       onChange={onChange}
     >
-      <View style={styles.contentContainer}>{children}</View>
+      <BottomSheetView
+        onLayout={handleContentLayout}
+        style={[styles.contentContainer, { paddingBottom: insets.bottom }]}
+      >
+        {children}
+      </BottomSheetView>
     </BottomSheetModal>
   );
-};
+}
 
 const styles = StyleSheet.create({
   bottomSheetContainer: {
@@ -81,5 +103,3 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
 });
-
-export default Bottomsheet;

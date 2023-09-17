@@ -5,7 +5,7 @@ import UserTag from "./UserTag";
 import { fetchParticipants } from "../../data/Quest";
 
 export default function Participants({ questId }) {
-  const [participants, setParticipants] = useState();
+  const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
