@@ -13,6 +13,7 @@ import Spinner from "../../components/Animations/Spinner";
 import BackButton from "../../components/button/BackButton";
 import AddPhoto from "../../components/AddPhoto";
 
+import bin_icon from "../../../assets/images/bin.png";
 import { getLocationData, editLocation } from "../../data/locations";
 import { primaryColor } from "../../data/color";
 
@@ -83,6 +84,8 @@ export default function PinCreateInfo({ route }) {
     setIsLoading(false);
   };
 
+  const locationDeleteHandler = async () => {};
+
   if (isLoading) {
     return (
       <BottomsheetDynamic snapPoints={["20%"]} index={1}>
@@ -103,11 +106,22 @@ export default function PinCreateInfo({ route }) {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          <Text style={styles.txt}>เพิ่มสถานที่ใหม่</Text>
+          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <Text style={styles.textXl}>แก้ไขข้อมูล</Text>
+            <TouchableOpacity
+              style={styles.binIcon}
+              onPress={locationDeleteHandler}
+            >
+              <Image
+                source={bin_icon}
+                style={{ width: "100%", height: "100%" }}
+              />
+            </TouchableOpacity>
+          </View>
           <BackButton onPress={() => setNewMarker(null)} />
         </View>
         <View style={styles.input}>
@@ -167,7 +181,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   txt: {
-    fontSize: 24,
+    fontSize: 28,
     fontFamily: "Kanit300",
   },
   input: {
@@ -229,5 +243,13 @@ const styles = StyleSheet.create({
     padding: 3,
     width: 20,
     height: 20,
+  },
+  binIcon: {
+    width: 25,
+    height: 25,
+  },
+  textXl: {
+    fontSize: 25,
+    fontFamily: "Kanit400",
   },
 });
