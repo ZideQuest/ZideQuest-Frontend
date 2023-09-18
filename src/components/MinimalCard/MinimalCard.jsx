@@ -82,12 +82,13 @@ const MinimalCard = ({ quest }) => {
       : defaultCreatorImage;
 
   const questPressHandler = () => {
-    mapMoveTo(locationId.latitude, locationId.longitude);
-    setFocusedPin(locationId._id)
-
     if (userDetail.isAdmin) {
+      mapMoveTo(locationId.latitude, locationId.longitude);
+      setFocusedPin(locationId._id);
       TabNavigation.navigate("QuestManage", { questId: quest._id });
     } else if (userDetail.token != null) {
+      mapMoveTo(locationId.latitude, locationId.longitude);
+      setFocusedPin(locationId._id);
       TabNavigation.navigate("QuestDetail", { questId: quest._id });
     } else {
       alert("กรุณา login");
@@ -107,7 +108,8 @@ const MinimalCard = ({ quest }) => {
               </Text>
               <View style={styles.participant}>
                 <Text style={styles.par_font}>
-                  จำนวนผู้เข้าร่วม: {countParticipant} {maxParticipant ? `/ ${maxParticipant}` : ""}
+                  จำนวนผู้เข้าร่วม: {countParticipant}{" "}
+                  {maxParticipant ? `/ ${maxParticipant}` : ""}
                 </Text>
               </View>
             </View>

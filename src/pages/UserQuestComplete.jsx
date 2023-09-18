@@ -6,7 +6,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { getQuestData } from "../data/Quest";
 import ActivityName from "../components/Quest/ActivityName";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
-import { BGcolor } from "../data/color";
+import { BGcolor, buttonBrightGreen, buttonLightGrey } from "../data/color";
 import Spinner from "../components/Animations/Spinner";
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
@@ -57,27 +57,27 @@ export default function ActivityDetail() {
         style={styles.container}
         snapPoints={["20%"]}
         index={1}
+        hideBar={true}
       >
-        <BottomSheetScrollView>
-          <View style={styles.ScrollView}>
-            <View style={{ width: "100%", paddingHorizontal: 15 }}>
-              <ActivityName quest={QuestDetail} />
+        <View style={styles.ScrollView}>
+          {QuestDetail.picturePath && (
+            <View style={styles.picCon}>
+              <Image style={styles.pic} src={QuestDetail.picturePath} />
             </View>
-            {QuestDetail.picturePath == "" ? (
-              <View></View>
-            ) : (
-              <View style={styles.picCon}>
-                <Image style={styles.pic} src={QuestDetail.picturePath} />
-              </View>
-            )}
+          )}
+          <View style={styles.animationContainer}>
             <View style={styles.lottieCon}>
               <AnimatedLottieView
                 source={require("../../assets/lottie/complete2.json")}
                 progress={animationProgress.current}
               />
             </View>
+            <Text style={styles.animationText}>✨Quest Completed✨</Text>
           </View>
-        </BottomSheetScrollView>
+          <View style={{ width: "100%", paddingHorizontal: 15 }}>
+            <ActivityName quest={QuestDetail} />
+          </View>
+        </View>
       </BottomsheetDynamic>
     );
   }
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   picCon: {
     width: "100%",
     height: 200,
-    marginTop: 10,
   },
   pic: {
     width: "100%",
@@ -107,6 +106,18 @@ const styles = StyleSheet.create({
   lottieCon: {
     width: "100%",
     height: 250,
+    position: "absolute",
+    top: -60
   },
-  ScrollView: {},
+  animationContainer: {
+    height: 180,
+    // backgroundColor: "grey",
+    justifyContent: "flex-end",
+    alignItems: "center"
+  },
+  animationText: {
+    fontFamily: "Kanit600",
+    fontSize: 30,
+    color: buttonBrightGreen
+  }
 });

@@ -54,6 +54,14 @@ function CreateQuest() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    console.log("start:", startDate);
+  }, [startDate]);
+
+  useEffect(() => {
+    console.log("end:", endDate);
+  }, [endDate]);
+
   const buttonHandler = async (e) => {
     setIsLoading(true);
     try {
