@@ -5,7 +5,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { getQuestData } from "../data/Quest";
 import Tag from "../components/Quest/Tag";
 import ActivityName from "../components/Quest/ActivityName";
-import Spinner from "../components/Animations/Spinner"
+import Spinner from "../components/Animations/Spinner";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import BigButton from "../components/button/BigButton";
 import { join_leave } from "../data/join-leave";
@@ -104,9 +104,11 @@ export default function ActivityDetail() {
             <View style={{ width: "100%", paddingHorizontal: 15 }}>
               <ActivityName quest={QuestDetail} />
             </View>
-            <View style={styles.picCon}>
-              <Image style={styles.pic} src={QuestDetail.picturePath} />
-            </View>
+            {QuestDetail.picturePath && (
+              <View style={styles.picCon}>
+                <Image style={styles.pic} src={QuestDetail.picturePath} />
+              </View>
+            )}
 
             <Tag tags={QuestDetail?.tag} />
             <View style={styles.DescripCon}>
