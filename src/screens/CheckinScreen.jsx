@@ -4,6 +4,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { LinearGradient } from "expo-linear-gradient";
 import { buttonBlue, primaryColor } from "../data/color";
 import * as TabNavigation from "../data/TabNavigation";
+import { buttonOrange, textColor } from "../data/color";
 
 export default function CheckinScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -24,18 +25,30 @@ export default function CheckinScreen({ navigation }) {
       )} has been scanned`
     );
   };
+  const requestCameraPermissionAgain = async () => {
+    const { status } = await BarCodeScanner.requestPermissionsAsync();
+    setHasPermission(status === "granted");
+  };
 
   if (hasPermission === null) {
-    return <Text>Requesting for Cammera Permission</Text>;
+    return <View />;
   }
   if (hasPermission === false) {
-    return <Text>No Access to Camera</Text>;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.Access_text}>No Access to Camera</Text>
+        <Button
+          title="Request permission again"
+          onPress={requestCameraPermissionAgain}
+          color={buttonOrange}
+        />
+      </View>
+    );
   }
   return (
     <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
       />
     </View>
   );
@@ -54,5 +67,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  absoluteFillObject: {},
+  Access_text: {
+    fontSize: 20,
+    fontFamily: "Kanit400",
+  },
 });
