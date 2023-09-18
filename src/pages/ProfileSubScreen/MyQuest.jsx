@@ -1,22 +1,16 @@
 import react, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import back_icon from "../../../assets/images/leave_icon.png";
 import QuestListItem from "../../components/QuestListItem";
 import { usersQuest } from "../../data/Quest";
 import { useAppContext } from "../../data/AppContext";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 export default function MyQuests({ navigation }) {
   const [UserQuest, setUserQuest] = useState({});
   const { userDetail } = useAppContext();
-  const [indexCurrent, setindexCurrent] = useState(4);
-  const [indexSuccess, setindexSuccess] = useState(4);
+  const [indexCurrent, setindexCurrent] = useState(5);
+  const [indexSuccess, setindexSuccess] = useState(5);
   const [pressCurrent, setpressCurrent] = useState(false);
   const [pressSuccess, setpressSuccess] = useState(false);
   const newindexCurrent = UserQuest.currentQuest?.length;
@@ -36,12 +30,12 @@ export default function MyQuests({ navigation }) {
 
   const seeMoreCurrent = () => {
     setpressCurrent(!pressCurrent);
-    pressCurrent ? setindexCurrent(4) : setindexCurrent(newindexCurrent);
+    pressCurrent ? setindexCurrent(5) : setindexCurrent(newindexCurrent);
   };
 
   const seeMoreSuccess = () => {
     setpressSuccess(!pressSuccess);
-    pressSuccess ? setindexSuccess(4) : setindexSuccess(newindexSuccess);
+    pressSuccess ? setindexSuccess(5) : setindexSuccess(newindexSuccess);
   };
 
   return (
@@ -56,81 +50,81 @@ export default function MyQuests({ navigation }) {
         <Text style={styles.header}>เควสของฉัน</Text>
       </View>
 
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.questList}>
-          <Text style={styles.questHeader}>เควสที่กำลังเข้าร่วม</Text>
-          {/* {UserQuest.currentQuest?.map((quest)=>console.log(quest.quest.questName))}
+      <View style={styles.BottomSheetScrollView}>
+          <View style={styles.questList}>
+            <Text style={styles.questHeader}>เควสที่กำลังเข้าร่วม</Text>
+            {/* {UserQuest.currentQuest?.map((quest)=>console.log(quest.quest.questName))}
           {console.log(UserQuest.currentQuest?.length)} */}
-          {UserQuest.currentQuest?.length > 4 ? (
-            <View style={styles.questListContainer}>
-              {UserQuest.currentQuest?.slice(0, indexCurrent).map((quest) => (
-                <QuestListItem
-                  quest={quest.quest}
-                  key={`myquest-${quest.quest._id}`}
-                  isAdmin={userDetail?.isAdmin}
-                  panMap={true}
-                />
-              ))}
-              <View style={styles.seeMoreContainer}>
-                <Pressable
-                  style={styles.seeMoreButton}
-                  onPress={seeMoreCurrent}
-                >
-                  <Text style={styles.seeMoreText}>
-                    {pressCurrent ? "see less" : "see more"}
-                  </Text>
-                </Pressable>
+            {UserQuest.currentQuest?.length > 5 ? (
+              <View style={styles.questListContainer}>
+                {UserQuest.currentQuest?.slice(0, indexCurrent).map((quest) => (
+                  <QuestListItem
+                    quest={quest.quest}
+                    key={`myquest-${quest.quest._id}`}
+                    isAdmin={userDetail?.isAdmin}
+                    panMap={true}
+                  />
+                ))}
+                <View style={styles.seeMoreContainer}>
+                  <Pressable
+                    style={styles.seeMoreButton}
+                    onPress={seeMoreCurrent}
+                  >
+                    <Text style={styles.seeMoreText}>
+                      {pressCurrent ? "see less" : "see more"}
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
-            </View>
-          ) : (
-            <View style={styles.questListContainer}>
-              {UserQuest.currentQuest?.map((quest) => (
-                <QuestListItem
-                  quest={quest.quest}
-                  key={quest._id}
-                  isAdmin={userDetail?.isAdmin}
-                />
-              ))}
-            </View>
-          )}
-        </View>
+            ) : (
+              <View style={styles.questListContainer}>
+                {UserQuest.currentQuest?.map((quest) => (
+                  <QuestListItem
+                    quest={quest.quest}
+                    key={quest._id}
+                    isAdmin={userDetail?.isAdmin}
+                  />
+                ))}
+              </View>
+            )}
+          </View>
 
-        <View style={styles.questList}>
-          <Text style={styles.questHeader}>เควสที่เข้าร่วมสำเร็จ</Text>
-          {UserQuest.successQuest?.length > 4 ? (
-            <View style={styles.questListContainer}>
-              {UserQuest.successQuest?.slice(0, indexSuccess).map((quest) => (
-                <QuestListItem
-                  quest={quest.quest}
-                  key={`myquest-${quest.quest._id}`}
-                  isAdmin={userDetail?.isAdmin}
-                  panMap={true}
-                />
-              ))}
-              <View style={styles.seeMoreContainer}>
-                <Pressable
-                  style={styles.seeMoreButton}
-                  onPress={seeMoreSuccess}
-                >
-                  <Text style={styles.seeMoreText}>
-                    {pressSuccess ? "see less" : "see more"}
-                  </Text>
-                </Pressable>
+          <View style={styles.questList}>
+            <Text style={styles.questHeader}>เควสที่เข้าร่วมสำเร็จ</Text>
+            {UserQuest.successQuest?.length > 5 ? (
+              <View style={styles.questListContainer}>
+                {UserQuest.successQuest?.slice(0, indexSuccess).map((quest) => (
+                  <QuestListItem
+                    quest={quest.quest}
+                    key={`myquest-${quest.quest._id}`}
+                    isAdmin={userDetail?.isAdmin}
+                    panMap={true}
+                  />
+                ))}
+                <View style={styles.seeMoreContainer}>
+                  <Pressable
+                    style={styles.seeMoreButton}
+                    onPress={seeMoreSuccess}
+                  >
+                    <Text style={styles.seeMoreText}>
+                      {pressSuccess ? "see less" : "see more"}
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
-            </View>
-          ) : (
-            <View style={styles.questListContainer}>
-              {UserQuest.successQuest?.map((quest) => (
-                <QuestListItem
-                  quest={quest.quest}
-                  key={quest._id}
-                  isAdmin={userDetail?.isAdmin}
-                />
-              ))}
-            </View>
-          )}
+            ) : (
+              <View style={styles.questListContainer}>
+                {UserQuest.successQuest?.map((quest) => (
+                  <QuestListItem
+                    quest={quest.quest}
+                    key={quest._id}
+                    isAdmin={userDetail?.isAdmin}
+                  />
+                ))}
+              </View>
+            )}
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -144,11 +138,14 @@ const styles = StyleSheet.create({
   },
   questList: {
     gap: 7,
+    // backgroundColor: "green",
+    flex:1
   },
   questHeader: {
     borderBottomWidth: 2,
     borderColor: "#E1E1E1",
     fontWeight: "bold",
+    fontSize: 15,
   },
   header: {
     textAlign: "center",
@@ -175,6 +172,7 @@ const styles = StyleSheet.create({
   },
   questListContainer: {
     gap: 9,
+    // backgroundColor: "red"
   },
   seeMoreButton: {
     borderRadius: 10,
@@ -187,10 +185,17 @@ const styles = StyleSheet.create({
   },
   seeMoreText: {
     textAlign: "center",
+    fontFamily: "Kanit300",
   },
-  scrollView: {
-    backgroundColor: "pink",
-    height:150
-    // margin:3
+  BottomSheetScrollView: {
+    // backgroundColor: "pink",
+    // height: "100%",
+    flex:1
   },
+  allQuestListContainer:{
+    
+    backgroundColor:"yellow",
+    // gap:15
+    // height: "100%",
+  }
 });
