@@ -15,10 +15,10 @@ export const TimePicker = ({
   const [show, setShow] = useState(false);
   const [isStart, setIsStart] = useState();
   const [isTime, setIsTime] = useState(false);
-  const [sDate, setsDate] = useState("");
-  const [eDate, seteDate] = useState("");
-  const [sTime, setsTime] = useState("");
-  const [eTime, seteTime] = useState("");
+  const [sDate, setsDate] = useState("_/_/__");
+  const [eDate, seteDate] = useState("_/_/__");
+  const [sTime, setsTime] = useState("__:__");
+  const [eTime, seteTime] = useState("__:__");
   const [bsDate, bsetsDate] = useState("");
   const [beDate, bseteDate] = useState("");
   const [bsTime, bsetsTime] = useState("");
@@ -63,7 +63,7 @@ export const TimePicker = ({
     let tempDate = new Date(currentDate);
     // console.log(tempDate)
     if (isTime) {
-      setsTime(tempDate.getHours() + ":" + tempDate.getMinutes());
+      setsTime(tempDate.getHours().toString().padStart(2, "0") + ":" + tempDate.getMinutes().toString().padStart(2, "0"));
       bsetsTime(
         tempDate.getHours().toString().padStart(2, "0") +
           ":" +
@@ -96,7 +96,7 @@ export const TimePicker = ({
     let tempDate = new Date(currentDate);
     // console.log(tempDate)
     if (isTime) {
-      seteTime(tempDate.getHours() + ":" + tempDate.getMinutes());
+      seteTime(tempDate.getHours().toString().padStart(2, "0") + ":" + tempDate.getMinutes().toString().padStart(2, "0"));
       bseteTime(
         tempDate.getHours().toString().padStart(2, "0") +
           ":" +
@@ -139,6 +139,14 @@ export const TimePicker = ({
   if (Platform.OS === "android") {
     return (
       <View style={styles.mainview}>
+        <View style={styles.view}>
+          <View style={styles.innerViewText}>
+            <Text style={{ fontSize: 16 }}>เริ่มจัดกิจกรรม</Text>
+          </View>
+          <View style={styles.innerViewText}>
+            <Text style={{ fontSize: 16 }}>เวลาจบ</Text>
+          </View>
+        </View>
         <View style={styles.view}>
           <View style={styles.innerView}>
             <View style={styles.datePicker}>
@@ -197,19 +205,6 @@ export const TimePicker = ({
             />
           )}
         </View>
-        <View style={styles.view}>
-          <Text>
-            {"Start: " +
-              sDate +
-              " at " +
-              sTime +
-              " | " +
-              "End: " +
-              eDate +
-              " at " +
-              eTime}
-          </Text>
-        </View>
       </View>
     );
   } else {
@@ -256,6 +251,16 @@ const styles = StyleSheet.create({
     // borderWidth: 1
   },
   innerView: {
+    flex: 1,
+    height: "100%",
+    width: "24%",
+    gap: 10,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    // alignItems: "flex-start",
+    // borderWidth: 1
+  },
+  innerViewText: {
     flex: 1,
     height: "100%",
     width: "24%",
