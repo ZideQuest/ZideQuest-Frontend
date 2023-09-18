@@ -17,20 +17,30 @@ import close_icon from "../../assets/images/close_icon.png";
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
 export default function DrawerMenu({ navigation, children }) {
-  const { userDetail, drawerOpen, setDrawerOpen, logout, fetchUser, setFocusedPin } =
-    useAppContext();
+  const {
+    userDetail,
+    drawerOpen,
+    setDrawerOpen,
+    logout,
+    fetchUser,
+    setFocusedPin,
+  } = useAppContext();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(false);
 
   const addButtonHandler = () => {
     TabNavigation.navigate("CreatePin");
-    setFocusedPin("new pin")
+    setFocusedPin("new pin");
     setDrawerOpen(false);
   };
 
   const checkinButtonHandler = () => {
-    navigation.navigate("Checkin");
-    setDrawerOpen(false);
+    if (userDetail.isAdmin || userDetail.token != null) {
+      navigation.navigate("Checkin");
+      setDrawerOpen(false);
+    } else {
+      alert("กรุณา login");
+    }
   };
 
   const loginHandler = () => {
