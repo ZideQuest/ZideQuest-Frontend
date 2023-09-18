@@ -11,7 +11,6 @@ export default function BackButton({onPress}) {
 
   const closeHandler = () => {
     TabNavigation.navigate("Recommend");
-    bottomModalRef.current?.snapToIndex(1);
     
     if (onPress) {
       onPress()

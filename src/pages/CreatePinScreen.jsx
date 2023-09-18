@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
 import BigButton from "../components/button/BigButton";
-import Buttomsheet from "../components/Bottomsheet/Bottomsheet";
+import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import { primaryColor } from "../data/color";
 
 export default function CreatePinScreen() {
@@ -25,7 +25,7 @@ export default function CreatePinScreen() {
   };
 
   return (
-    <Buttomsheet snapPoints={["14%"]} detached={true} hideBar={true}>
+    <Bottomsheet snapPoints={["14%"]} detached={true} hideBar={true}>
       <View style={styles.container}>
         <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
         <View style={styles.buttonContainer}>
@@ -37,7 +37,7 @@ export default function CreatePinScreen() {
           />
         </View>
       </View>
-    </Buttomsheet>
+    </Bottomsheet>
   );
 }
 
