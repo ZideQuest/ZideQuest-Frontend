@@ -114,3 +114,22 @@ export const editLocation = async (data, id) => {
     console.error(error);
   }
 };
+
+export const deleteLocation = async (id) => {
+  try {
+    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { token } = userdetail;
+
+    const res = await axios.delete(`${BASE_URL}/locations/${id}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
