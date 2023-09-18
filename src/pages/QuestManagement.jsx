@@ -7,12 +7,17 @@ import { getQuestData, sendQuestComplete } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
-import { buttonBlue, buttonBrightGreen, buttonGrey } from "../data/color";
+import {
+  buttonBlue,
+  buttonBrightGreen,
+  buttonDarkRed,
+  buttonGrey,
+} from "../data/color";
 import Participants from "../components/Participants/Participants";
 import Alert from "../components/misc/Alert";
 
 const showConfirmDialog = (title, description) => {
-  return Alert.alert(title, description, [
+  return Alert(title, description, [
     {
       text: "Cancel",
       onPress: () => console.log("Cancel Pressed"),
@@ -38,22 +43,29 @@ export default function QuestManagement({ route }) {
   }, []);
 
   const questCompleteHandler = async () => {
-    if (questData.status) {
-      alert("Quest already completed");
-    }
-
-    else if (
+    if (
+      questData.status &&
+      (await Alert(
+        "Cancel Quest completed",
+        "Are you sure you want to continue this quest?"
+      ))
+    ) {
+      const data = await sendQuestComplete(route.params.questId);
+      alert("ยกเลิกสำเร็จ");
+      setQuestData((prev) => ({ ...prev, status: false }));
+    } else if (
       await Alert(
         "Confirm Quest completed",
         "Are you sure you want to end this quest?"
       )
     ) {
       const data = await sendQuestComplete(route.params.questId);
-      setQuestData(data)
+      alert("ยืนยันสำเร็จ");
+      setQuestData((prev) => ({ ...prev, status: true }));
     }
   };
 
-  const editQuestButtoHandler = async () => {
+  const editQuestButtonHandler = async () => {
     TabNavigation.navigate("EditQuest", { questId: route.params.questId });
   };
 
@@ -65,22 +77,27 @@ export default function QuestManagement({ route }) {
         </View>
         <View style={styles.infoContainer}>
           <ActivityName quest={questData} />
-          <TouchableOpacity onPress={editQuestButtoHandler}>
-            <Text>แก้ไขข้อมูล</Text>
+          <TouchableOpacity onPress={editQuestButtonHandler}>
+            <Text>แก้ไขข้อมูลเควส</Text>
           </TouchableOpacity>
           <Participants questId={route.params.questId} />
           <View style={styles.buttonContainer}>
             <BigButton
-              text="ยืนยัน Quest Completed"
-              bg={questData?.status ? buttonGrey : buttonBrightGreen}
-              color={questData?.status ? "grey" : "white"}
+              text={
+                questData?.status
+                  ? "ยกเลิก Quest Completed"
+                  : "ยืนยัน Quest Completed"
+              }
+              bg={questData?.status ? buttonDarkRed : buttonBrightGreen}
+              color={"white"}
               onPress={questCompleteHandler}
             />
           </View>
           <View style={styles.buttonContainer}>
             <BigButton
               text="สร้าง Check-in QR Code"
-              bg={buttonBlue}
+              bg={questData?.status ? buttonGrey : buttonBlue}
+              color={questData?.status ? "grey" : "white"}
               onPress={() =>
                 showConfirmDialog(
                   "Confirm Quest completed",

@@ -1,15 +1,13 @@
-import react, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import LottieView from "lottie-react-native";
-import { View, Text, StyleSheet, Image, Alert, Animated, Easing } from "react-native";
+import { View, Text, StyleSheet, Image, Animated, Easing } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { getQuestData } from "../data/Quest";
-import Tag from "../components/Quest/Tag";
 import ActivityName from "../components/Quest/ActivityName";
-import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
-import BigButton from "../components/button/BigButton";
-import { join_leave } from "../data/join-leave";
-import { textColor, BGcolor, primaryColor } from "../data/color";
+import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
+import { BGcolor } from "../data/color";
+import Spinner from "../components/Animations/Spinner";
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
@@ -45,17 +43,19 @@ export default function ActivityDetail() {
 
   if (isLoading) {
     return (
-      <Bottomsheet
+      <BottomsheetDynamic
         style={styles.container}
-        snapPoints={["20%", "60%", "90%"]}
+        snapPoints={["20%"]}
         index={1}
-      ></Bottomsheet>
+      >
+        <Spinner />
+      </BottomsheetDynamic>
     );
   } else {
     return (
-      <Bottomsheet
+      <BottomsheetDynamic
         style={styles.container}
-        snapPoints={["20%", "60%", "90%"]}
+        snapPoints={["20%"]}
         index={1}
       >
         <BottomSheetScrollView>
@@ -72,13 +72,13 @@ export default function ActivityDetail() {
             )}
             <View style={styles.lottieCon}>
               <AnimatedLottieView
-              source={require("../../assets/lottie/complete2.json")}
-              progress={animationProgress.current}
+                source={require("../../assets/lottie/complete2.json")}
+                progress={animationProgress.current}
               />
             </View>
           </View>
         </BottomSheetScrollView>
-      </Bottomsheet>
+      </BottomsheetDynamic>
     );
   }
 }

@@ -6,7 +6,7 @@ import person_icon from "../../assets/images/participant.png";
 import { buttonGrey } from "../data/color";
 import { useAppContext } from "../data/AppContext";
 
-import {statusIcon} from "../components/misc/Status"
+import { statusIcon } from "../components/misc/Status";
 
 export default function QuestListItem({
   quest,
@@ -15,9 +15,25 @@ export default function QuestListItem({
   panMap = false,
 }) {
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
+  
+  const checkQuestCompleted = () => {
+    if (!quest.status) {
+      return false;
+    }
+    let status = false;
+    quest.participant.forEach((p) => {
+      if (p.userId == userDetail.user._id) {
+        status = true;
+      }
+    });
+    return status;
+  };
+
   const questPressHandler = () => {
     if (isAdmin) {
       TabNavigation.navigate("QuestManage", { questId: quest._id });
+    } else if (checkQuestCompleted()) {
+      TabNavigation.navigate("UserQuestComplete", { questId: quest._id });
     } else if (userDetail?.token != null) {
       TabNavigation.navigate("QuestDetail", { questId: quest._id });
     } else {

@@ -12,9 +12,14 @@ import ImagePreviewModal from "../../components/misc/ImagePreviewModal";
 import Spinner from "../../components/Animations/Spinner";
 import BackButton from "../../components/button/BackButton";
 import AddPhoto from "../../components/AddPhoto";
+import Alert from "../../components/misc/Alert";
 
 import bin_icon from "../../../assets/images/bin.png";
-import { getLocationData, editLocation } from "../../data/locations";
+import {
+  getLocationData,
+  editLocation,
+  deleteLocation,
+} from "../../data/locations";
 import { primaryColor } from "../../data/color";
 
 export default function PinCreateInfo({ route }) {
@@ -84,7 +89,19 @@ export default function PinCreateInfo({ route }) {
     setIsLoading(false);
   };
 
-  const locationDeleteHandler = async () => {};
+  const locationDeleteHandler = async () => {
+    if (
+      await Alert(
+        "Delete this Location",
+        "Are you sure you want to delete this location pin?"
+      )
+    ) {
+      const res = await deleteLocation(route.params?.pinId);
+      TabNavigation.navigate("Recommend");
+      mapRefetch();
+      alert("ลบสถานที่สำเร็จ");
+    }
+  };
 
   if (isLoading) {
     return (
