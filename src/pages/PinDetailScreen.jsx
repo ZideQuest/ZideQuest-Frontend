@@ -16,6 +16,8 @@ import BackButton from "../components/button/BackButton.jsx";
 import * as TabNavigation from "../data/TabNavigation.jsx";
 import edit_icon from "../../assets/images/edit.png";
 
+import DetailedQuestListItem from "../components/Quest/DetailedQuestListItem"; // 
+
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
 import { buttonNormalGreen } from "../data/color";
@@ -137,7 +139,8 @@ export default function PinDetailScreen({ route }) {
             <View style={styles.questListContainer}>
               {quests.length == 0 && <NoQuestComponent />}
               {quests.map((quest) => (
-                <QuestListItem
+                // <QuestListItem
+                <DetailedQuestListItem
                   quest={quest}
                   key={quest._id}
                   isAdmin={userDetail?.isAdmin}

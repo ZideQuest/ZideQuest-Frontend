@@ -35,7 +35,7 @@ export default function Participants({ questId }) {
               ผู้เข้าร่วม
             </Text>
             <TouchableOpacity onPress={editParticipantHandler}>
-              <Text style={{ fontFamily: "Kanit300", fontSize: 16 }}>
+              <Text style={{ fontFamily: "Kanit300", fontSize: 15, color: "teal" }}>
                 จัดการผู้เข้าร่วม
               </Text>
             </TouchableOpacity>
