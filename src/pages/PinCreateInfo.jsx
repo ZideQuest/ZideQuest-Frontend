@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
-import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import React, { useState , useRef, useCallback} from "react";
+import { View, TouchableOpacity, StyleSheet, Image, Text, TextInput } from "react-native";
+import { BottomSheetTextInput ,BottomSheetModal} from "@gorhom/bottom-sheet";
 import * as ImagePicker from "expo-image-picker";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import photo_icon from "../../assets/images/photo.png";
@@ -15,7 +15,9 @@ import ImagePreviewModal from "../components/misc/ImagePreviewModal";
 import Spinner from "../components/Animations/Spinner";
 
 export default function PinCreateInfo() {
-  const { newMarker, setNewMarker, mapRefetch, setFocusedPin } =
+  const ref=useRef();
+
+  const { newMarker, setNewMarker, mapRefetch, setFocusedPin,bottomModalRef } =
     useAppContext();
 
   const closeHandler = (pinId) => {
@@ -33,24 +35,24 @@ export default function PinCreateInfo() {
   const [isLoading, setIsLoading] = useState(false);
 
   const submitHandler = async () => {
-    if (!place && !detail) {
-      alert("กรุณากรอกชื่อสถานที่และรายละเอียด");
-      return;
-    }
+    // if (!place && !detail) {
+    //   alert("กรุณากรอกชื่อสถานที่และรายละเอียด");
+    //   return;
+    // }
     if (!place) {
       alert("กรุณากรอกชื่อสถานที่");
       return;
     }
-    if (!detail) {
-      alert("กรุณากรอกรายละเอียด");
-      return;
-    }
+    // if (!detail) {
+    //   alert("กรุณากรอกรายละเอียด");
+    //   return;
+    // }
     setIsLoading(true);
 
     let bodyFormData = new FormData();
 
     bodyFormData.append("locationName", place);
-    bodyFormData.append("description", detail);
+    // bodyFormData.append("description", detail);
     bodyFormData.append("latitude", newMarker.latitude);
     bodyFormData.append("longitude", newMarker.longitude);
     bodyFormData.append("img", {
@@ -59,6 +61,7 @@ export default function PinCreateInfo() {
       type: state.image?.assets?.[0]?.type,
     });
     const response = await createLocation(bodyFormData);
+    console.log(response)
     if (response.status === 200) {
       const { data } = response;
       closeHandler(data._id);
@@ -83,6 +86,18 @@ export default function PinCreateInfo() {
       }
     }
   };
+
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const toggleModal = (isOpen)=> {
+    if (isOpen) bottomSheetModalRef.current?.present()
+    else bottomSheetModalRef.current?.dismiss()
+  }
+
+  const handleSheetChanges = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+    bottomModalRef.current?.snapToIndex(-1);
+    console.log(bottomModalRef.current);
+  }, []);
 
   const galleryRequest = async () => {
     const results = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -112,7 +127,7 @@ export default function PinCreateInfo() {
   }
 
   return (
-    <BottomsheetDynamic snapPoints={["20%"]} index={1}>
+    <BottomsheetDynamic onChange={handleSheetChanges} snapPoints={ ['50%']} index={1}>
       <ImagePreviewModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -125,20 +140,20 @@ export default function PinCreateInfo() {
         <View style={styles.input}>
           <View>
             <Text>ชื่อสถานที่*</Text>
-            <BottomSheetTextInput
+            <TextInput
               style={styles.txtin}
-              value={place}
               onChangeText={setPlace}
+              multiline
             />
           </View>
-          <View>
+          {/* <View>
             <Text>รายละเอียด*</Text>
             <BottomSheetTextInput
               style={styles.txtin}
               value={detail}
               onChangeText={setDetail}
             />
-          </View>
+          </View> */}
         </View>
         <Text>เพิ่มรูปภาพ</Text>
         <View style={styles.icon}>
@@ -149,6 +164,7 @@ export default function PinCreateInfo() {
             <Image source={picture_icon} />
           </TouchableOpacity>
         </View>
+        <View style={{height: 35 , justifyContent: "center",marginVertical: 5}}>
         {state.image && (
           <TouchableOpacity
             style={styles.img}
@@ -165,12 +181,15 @@ export default function PinCreateInfo() {
             </Text>
           </TouchableOpacity>
         )}
-        <View style={{ height: 45 }}>
+        </View>
+         <View style={{height: 45,marginTop: 40,width: "100%",alignSelf: "center"}}>
+          <View style={{position: "absolute",width: "100%"}}>
           <BigButton
             bg={primaryColor}
             onPress={submitHandler}
             text="สร้างสถานที่"
           />
+          </View>
         </View>
       </View>
     </BottomsheetDynamic>
@@ -198,12 +217,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#FBFBFB",
     borderColor: "#CDCDCD",
+    marginTop: 5,
     padding: 5,
   },
   img: {
     marginTop: 10,
     flexDirection: "row",
     alignItems: "center",
+    // position: "absolute",
     gap: 10,
     height: 35,
   },
@@ -214,16 +235,16 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   btn: {
-    // position: "absolute",
-    // bottom: 20,
-    // flex: 1,
-    backgroundColor: primaryColor,
+    position: "absolute",
+    bottom: 0,
+    flex: 1,
+    // backgroundColor: primaryColor,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    height: 40,
+    // height: 45,
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 0,
   },
 });
