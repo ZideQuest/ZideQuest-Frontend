@@ -93,3 +93,43 @@ export const getCenterFromPins = (locations) => {
 
   return { latitude, longitude, latitudeDelta, longitudeDelta };
 };
+
+export const editLocation = async (data, id) => {
+  try {
+    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { token } = userdetail;
+
+    console.log(data._parts[2]);
+
+    const res = await axios.put(`${BASE_URL}/locations/${id}`, data, {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteLocation = async (id) => {
+  try {
+    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { token } = userdetail;
+
+    const res = await axios.delete(`${BASE_URL}/locations/${id}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

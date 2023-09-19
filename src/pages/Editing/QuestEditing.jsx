@@ -64,7 +64,7 @@ export default function QuestEditing({ route }) {
         setDescription(data.description);
         setTagId(data.tag[0]);
         setMaxParticipant(data.maxParticipant);
-        setImage({ uri: data.picturePath });
+        setImage(data.picturePath ? { uri: data.picturePath } : null);
         setIsLoading(false);
       } catch (error) {
         TabNavigation.navigate("QuestManage", {
@@ -383,8 +383,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textXl: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 25,
+    fontFamily: "Kanit400",
   },
   textMd: {
     fontSize: 16,

@@ -1,11 +1,12 @@
-import react, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { getQuestData } from "../data/Quest";
 import Tag from "../components/Quest/Tag";
 import ActivityName from "../components/Quest/ActivityName";
-import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
+import Spinner from "../components/Animations/Spinner";
+import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import BigButton from "../components/button/BigButton";
 import { join_leave } from "../data/join-leave";
 
@@ -83,17 +84,19 @@ export default function ActivityDetail() {
 
   if (isLoading) {
     return (
-      <Bottomsheet
+      <BottomsheetDynamic
         style={styles.container}
-        snapPoints={["20%", "60%", "90%"]}
+        snapPoints={["20%"]}
         index={1}
-      ></Bottomsheet>
+      >
+        <Spinner />
+      </BottomsheetDynamic>
     );
   } else {
     return (
-      <Bottomsheet
+      <BottomsheetDynamic
         style={styles.container}
-        snapPoints={["20%", "60%", "90%"]}
+        snapPoints={["20%"]}
         index={1}
       >
         <BottomSheetScrollView>
@@ -101,9 +104,11 @@ export default function ActivityDetail() {
             <View style={{ width: "100%", paddingHorizontal: 15 }}>
               <ActivityName quest={QuestDetail} />
             </View>
-            <View style={styles.picCon}>
-              <Image style={styles.pic} src={QuestDetail.picturePath} />
-            </View>
+            {QuestDetail.picturePath && (
+              <View style={styles.picCon}>
+                <Image style={styles.pic} src={QuestDetail.picturePath} />
+              </View>
+            )}
 
             <Tag tags={QuestDetail?.tag} />
             <View style={styles.DescripCon}>
@@ -128,7 +133,7 @@ export default function ActivityDetail() {
             </View>
           </View>
         </BottomSheetScrollView>
-      </Bottomsheet>
+      </BottomsheetDynamic>
     );
   }
 }

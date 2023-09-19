@@ -53,7 +53,7 @@ export default function SearchBar({ searching, setSearching }) {
   };
 
   const onFocusHandler = () => {
-    bottomModalRef.current?.snapToIndex(3);
+    bottomModalRef.current?.snapToIndex(2);
     setSearching(true);
   };
 

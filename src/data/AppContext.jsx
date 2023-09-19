@@ -45,11 +45,11 @@ export const AppProvider = ({ children }) => {
   const logout = async () => {
     setIsLoading(true);
     setNewMarker(null);
-    setIsProfileOpen(false);
-
+    snapBack();
     await SecureStore.deleteItemAsync("userDetail");
     setUserDetails({});
-
+    
+    setFocusedPin(null);
     setIsLoading(false);
   };
 
