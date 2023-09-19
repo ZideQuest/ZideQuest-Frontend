@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useCallback } from "react";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
@@ -38,9 +38,18 @@ function NoQuestComponent() {
 }
 
 export default function PinDetailScreen({ route }) {
-  const { userDetail } = useAppContext();
+  const { userDetail ,newMarker, setNewMarker, mapRefetch, setFocusedPin,bottomModalRef} = useAppContext();
   const [locationData, setLocationData] = useState({});
   const [quests, setQuests] = useState([]);
+
+  const handleSheetChanges = useCallback((index) => {
+    console.log(index)
+    if(index==0){
+      TabNavigation.navigate("Recommend");
+      setNewMarker(null)
+      setFocusedPin(null);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -61,7 +70,7 @@ export default function PinDetailScreen({ route }) {
 
   return (
     <View>
-      <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
+      <Bottomsheet onChange={handleSheetChanges} snapPoints={["20%", "60%", "90%"]} index={1}>
         <BottomSheetScrollView
           stickyHeaderIndices={[0]}
           style={{ backgroundColor: "white" }}

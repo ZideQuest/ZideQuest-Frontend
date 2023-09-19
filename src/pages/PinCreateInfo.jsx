@@ -87,16 +87,14 @@ export default function PinCreateInfo() {
     }
   };
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
-  const toggleModal = (isOpen)=> {
-    if (isOpen) bottomSheetModalRef.current?.present()
-    else bottomSheetModalRef.current?.dismiss()
-  }
 
   const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-    bottomModalRef.current?.snapToIndex(-1);
-    console.log(bottomModalRef.current);
+    console.log(index)
+    if(index==0){
+      TabNavigation.navigate("Recommend");
+      setNewMarker(null)
+      setFocusedPin(null);
+    }
   }, []);
 
   const galleryRequest = async () => {

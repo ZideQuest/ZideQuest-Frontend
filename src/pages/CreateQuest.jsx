@@ -13,12 +13,16 @@ import {
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import AddPhoto from "../components/AddPhoto";
 import SelectDropdown from "react-native-select-dropdown";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import { TimePicker } from "../components/TimePicker";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import { createQuest } from "../data/Quest";
+import { useAppContext } from "../data/AppContext";
+import ImagePreviewModal from "../components/misc/ImagePreviewModal";
+
+
 const BASE_URL =
   "https://3ae4-2001-fb1-1c-c64-fe34-97ff-fea7-ade2.ngrok-free.app/api";
 // const activityCategories = ["ไม่มีชั่วโมงกิจกรรม", "1 กิจกรรมมหาวิทยาลัย", "2.1 กิจกรรมเพื่อเสริมสร้างสมรรถนะ ด้านพัฒนาคุณธรรม จริยธรรม", "2.2 กิจกรรมเพื่อเสริมสร้างสมรรถนะ ด้านการคิดและการเรียนรู้", "2.3 กิจกรรมเพื่อเสริมสร้างสมรรถนะ ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล", "2.4 กิจกรรมเพื่อเสริมสร้างสมรรถนะ ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล", "3 กิจกรรมเพื่อสังคม"]
@@ -37,6 +41,7 @@ import BigButton from "../components/button/BigButton.jsx";
 import BackButton from "../components/button/BackButton";
 import { buttonOrange, textColor } from "../data/color";
 import * as TabNavigation from "../data/TabNavigation";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function CreateQuest() {
   const [startDate, setStartDate] = useState(new Date());
@@ -54,6 +59,9 @@ function CreateQuest() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const { newMarker, setNewMarker, mapRefetch, setFocusedPin,bottomModalRef } =
+    useAppContext();
+
   useEffect(() => {
     console.log("start:", startDate);
   }, [startDate]);
@@ -62,7 +70,21 @@ function CreateQuest() {
     console.log("end:", endDate);
   }, [endDate]);
 
+  const handleSheetChanges = useCallback((index) => {
+    console.log(index)
+    if(index==0){
+      TabNavigation.navigate("Recommend");
+      setNewMarker(null)
+      setFocusedPin(null);
+    }
+  }, []);
+
   const buttonHandler = async (e) => {
+    if (!questName) {
+      alert("กรุณากรอกชื่อเควส");
+      return;
+    }
+
     setIsLoading(true);
     try {
       const questDetail = new FormData();
@@ -122,13 +144,20 @@ function CreateQuest() {
   }, []);
 
   const tagArray = ["ไม่มีแท็ก", ...tags.map((item) => item.tagName)];
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <Bottomsheet
       style={styles.container}
       snapPoints={["31%", "65%", "90%"]}
       index={1}
+      onChange={handleSheetChanges}
     >
       <BottomSheetScrollView style={{ backgroundColor: "white" }}>
+        <ImagePreviewModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        imageUri={image?.uri }
+      />
         {isLoading ? (
           <Spinner />
         ) : (
@@ -146,7 +175,7 @@ function CreateQuest() {
 
             <View style={styles.detailBox}>
               <View style={styles.box}>
-                <Text style={styles.textMd}>ชื่อเควส</Text>
+                <Text style={styles.textMd}>ชื่อเควส*</Text>
                 <BottomSheetTextInput
                   style={styles.textIn}
                   value={questName}
@@ -219,6 +248,7 @@ function CreateQuest() {
                 <View style={{ ...styles.box, flex: 0.32 }}>
                   <Text style={styles.textMd}>จำนวนคน</Text>
                   <BottomSheetTextInput
+                    keyboardType="number-pad"
                     style={styles.textIn}
                     value={maxParticipant?.toString()}
                     onChangeText={setMaxParticipant}
@@ -286,6 +316,7 @@ function CreateQuest() {
                 <View style={styles.box}>
                   <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
                   <BottomSheetTextInput
+                    keyboardType="number-pad"
                     style={styles.textIn}
                     value={activityHour?.toString()}
                     onChangeText={setActivityHour}
@@ -296,6 +327,7 @@ function CreateQuest() {
               <View style={styles.box}>
                 <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
                 <AddPhoto image={image} setImage={setImage} />
+
                 {image && (
                   <View style={styles.image}>
                     <Pressable
@@ -306,10 +338,19 @@ function CreateQuest() {
                     >
                       <Text style={styles.xtextbtn}>X</Text>
                     </Pressable>
+                    <TouchableOpacity                    
+                    onPress={() => {
+                      
+                      setModalVisible(true);
+                     }}>
                     <Image
                       source={{ uri: image.uri }}
                       style={{ height: 150, flex: 1 }}
                     />
+                    <Text style={{textAlign: "center"}}>
+                     {image.fileName}
+                    </Text>
+                    </TouchableOpacity>
                   </View>
                 )}
               </View>
