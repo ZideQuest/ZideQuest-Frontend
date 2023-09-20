@@ -1,6 +1,6 @@
-import React, { useState , useRef, useCallback} from "react";
-import { View, TouchableOpacity, StyleSheet, Image, Text, TextInput } from "react-native";
-import { BottomSheetTextInput ,BottomSheetModal} from "@gorhom/bottom-sheet";
+import React, { useState, useRef, useCallback } from "react";
+import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import * as ImagePicker from "expo-image-picker";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import photo_icon from "../../assets/images/photo.png";
@@ -15,9 +15,7 @@ import ImagePreviewModal from "../components/misc/ImagePreviewModal";
 import Spinner from "../components/Animations/Spinner";
 
 export default function PinCreateInfo() {
-  const ref=useRef();
-
-  const { newMarker, setNewMarker, mapRefetch, setFocusedPin,bottomModalRef } =
+  const { newMarker, setNewMarker, mapRefetch, setFocusedPin } =
     useAppContext();
 
   const closeHandler = (pinId) => {
@@ -31,14 +29,10 @@ export default function PinCreateInfo() {
   const [state, setState] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [place, setPlace] = useState(newMarker?.name);
-  const [detail, setDetail] = useState("");
+  const [detail, setDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const submitHandler = async () => {
-    // if (!place && !detail) {
-    //   alert("กรุณากรอกชื่อสถานที่และรายละเอียด");
-    //   return;
-    // }
     if (!place) {
       alert("กรุณากรอกชื่อสถานที่");
       return;
@@ -52,7 +46,7 @@ export default function PinCreateInfo() {
     let bodyFormData = new FormData();
 
     bodyFormData.append("locationName", place);
-    // bodyFormData.append("description", detail);
+    bodyFormData.append("description", detail);
     bodyFormData.append("latitude", newMarker.latitude);
     bodyFormData.append("longitude", newMarker.longitude);
     bodyFormData.append("img", {
@@ -61,7 +55,7 @@ export default function PinCreateInfo() {
       type: state.image?.assets?.[0]?.type,
     });
     const response = await createLocation(bodyFormData);
-    console.log(response)
+    console.log(response);
     if (response.status === 200) {
       const { data } = response;
       closeHandler(data._id);
@@ -88,15 +82,6 @@ export default function PinCreateInfo() {
   };
 
 
-  const handleSheetChanges = useCallback((index) => {
-    console.log(index)
-    if(index==0){
-      TabNavigation.navigate("Recommend");
-      setNewMarker(null)
-      setFocusedPin(null);
-    }
-  }, []);
-
   const galleryRequest = async () => {
     const results = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (results.granted) {
@@ -106,7 +91,6 @@ export default function PinCreateInfo() {
         aspect: [4, 3],
         quality: 0.3,
       });
-      // console.log(result.assets);
       if (!result.canceled) {
         setState({
           image: result,
@@ -125,7 +109,11 @@ export default function PinCreateInfo() {
   }
 
   return (
-    <BottomsheetDynamic onChange={handleSheetChanges} snapPoints={ ['50%']} index={1}>
+    <BottomsheetDynamic
+      snapPoints={[]}
+      index={0}
+      enablePanDownToClose={true}
+    >
       <ImagePreviewModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -138,20 +126,20 @@ export default function PinCreateInfo() {
         <View style={styles.input}>
           <View>
             <Text>ชื่อสถานที่*</Text>
-            <TextInput
+            <BottomSheetTextInput
               style={styles.txtin}
               onChangeText={setPlace}
-              multiline
+              value={place}
             />
           </View>
-          {/* <View>
-            <Text>รายละเอียด*</Text>
+          <View>
+            <Text>รายละเอียด</Text>
             <BottomSheetTextInput
               style={styles.txtin}
               value={detail}
               onChangeText={setDetail}
             />
-          </View> */}
+          </View>
         </View>
         <Text>เพิ่มรูปภาพ</Text>
         <View style={styles.icon}>
@@ -162,31 +150,40 @@ export default function PinCreateInfo() {
             <Image source={picture_icon} />
           </TouchableOpacity>
         </View>
-        <View style={{height: 35 , justifyContent: "center",marginVertical: 5}}>
-        {state.image && (
-          <TouchableOpacity
-            style={styles.img}
-            onPress={() => {
-              setModalVisible(true);
-            }}
-          >
-            <Image
-              source={{ uri: state?.image.assets?.[0]?.uri }}
-              style={{ height: 35, width: 35 }}
-            />
-            <Text style={styles.txt_img}>
-              {state?.image?.assets?.[0]?.fileName}
-            </Text>
-          </TouchableOpacity>
-        )}
+        <View
+          style={{ height: 35, justifyContent: "center", marginVertical: 5 }}
+        >
+          {state.image && (
+            <TouchableOpacity
+              style={styles.img}
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
+              <Image
+                source={{ uri: state?.image.assets?.[0]?.uri }}
+                style={{ height: 35, width: 35 }}
+              />
+              <Text style={styles.txt_img}>
+                {state?.image?.assets?.[0]?.fileName}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
-         <View style={{height: 45,marginTop: 40,width: "100%",alignSelf: "center"}}>
-          <View style={{position: "absolute",width: "100%"}}>
-          <BigButton
-            bg={primaryColor}
-            onPress={submitHandler}
-            text="สร้างสถานที่"
-          />
+        <View
+          style={{
+            height: 45,
+            marginTop: 40,
+            width: "100%",
+            alignSelf: "center",
+          }}
+        >
+          <View style={{ position: "absolute", width: "100%" }}>
+            <BigButton
+              bg={primaryColor}
+              onPress={submitHandler}
+              text="สร้างสถานที่"
+            />
           </View>
         </View>
       </View>

@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View, } from "react-native";
-import React, { useEffect, useRef } from "react";
-import {
-  BottomSheetModal,
-} from "@gorhom/bottom-sheet";
+import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef, useCallback } from "react";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
+import * as TabNavigation from "../../data/TabNavigation";
 
 const Bottomsheet = ({
   children,
@@ -11,14 +10,22 @@ const Bottomsheet = ({
   index = 0,
   detached = false,
   hideBar = false,
-  onChange
+  enablePanDownToClose = false,
 }) => {
   const bottomSheetModalRef = useRef(null);
-  const { setBottomModalRef } = useAppContext();
+  const { setBottomModalRef, setNewMarker, setFocusedPin } = useAppContext();
 
   useEffect(() => {
     bottomSheetModalRef.current?.present();
     setBottomModalRef(bottomSheetModalRef);
+  }, []);
+
+  const handleSheetClose = useCallback((index) => {
+    if (index == -1) {
+      TabNavigation.navigate("Recommend");
+      setNewMarker(null);
+      setFocusedPin(null);
+    }
   }, []);
 
   return (
@@ -31,7 +38,6 @@ const Bottomsheet = ({
       ref={bottomSheetModalRef}
       index={index}
       snapPoints={snapPoints}
-      enablePanDownToClose={false}
       backgroundStyle={styles.backgroundStyle}
       style={[
         styles.pullBar,
@@ -43,7 +49,8 @@ const Bottomsheet = ({
       bottomInset={detached ? 30 : 0}
       enableOverDrag={!detached}
       keyboardBehavior="extend"
-      onChange={onChange}
+      enablePanDownToClose={enablePanDownToClose}
+      onChange={enablePanDownToClose && handleSheetClose}
     >
       <View style={styles.contentContainer}>{children}</View>
     </BottomSheetModal>

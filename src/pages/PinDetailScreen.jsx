@@ -1,4 +1,4 @@
-import { useState, useEffect,useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
@@ -38,18 +38,9 @@ function NoQuestComponent() {
 }
 
 export default function PinDetailScreen({ route }) {
-  const { userDetail ,newMarker, setNewMarker, mapRefetch, setFocusedPin,bottomModalRef} = useAppContext();
+  const { userDetail } = useAppContext();
   const [locationData, setLocationData] = useState({});
   const [quests, setQuests] = useState([]);
-
-  const handleSheetChanges = useCallback((index) => {
-    console.log(index)
-    if(index==0){
-      TabNavigation.navigate("Recommend");
-      setNewMarker(null)
-      setFocusedPin(null);
-    }
-  }, []);
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -69,52 +60,52 @@ export default function PinDetailScreen({ route }) {
   };
 
   return (
-    <View>
-      <Bottomsheet onChange={handleSheetChanges} snapPoints={["20%", "60%", "90%"]} index={1}>
-        <BottomSheetScrollView
-          stickyHeaderIndices={[0]}
-          style={{ backgroundColor: "white" }}
-        >
-          <View style={styles.headerContainer}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <View style={{ flexDirection: "row", gap: 10 }}>
-                <Text style={styles.header}>{locationData.locationName}</Text>
-                {userDetail.isAdmin && (
-                  <TouchableOpacity
-                    style={styles.editIcon}
-                    onPress={editLocationHandler}
-                  >
-                    <Image
-                      source={edit_icon}
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
-              <BackButton />
+    <Bottomsheet
+      enablePanDownToClose={true}
+      snapPoints={["20%", "60%", "90%"]}
+      index={1}
+    >
+      <BottomSheetScrollView
+        stickyHeaderIndices={[0]}
+        style={{ backgroundColor: "white" }}
+      >
+        <View style={styles.headerContainer}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <Text style={styles.header}>{locationData.locationName}</Text>
+              {userDetail.isAdmin && (
+                <TouchableOpacity
+                  style={styles.editIcon}
+                  onPress={editLocationHandler}
+                >
+                  <Image
+                    source={edit_icon}
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
-            {locationData.description && (
-              <Text style={styles.detail}>{locationData.description}</Text>
-            )}
+            <BackButton />
           </View>
-
-          {locationData.picturePath ? (
-            <View style={styles.imageScrollContainer}>
-              <Image
-                style={styles.bannerImage}
-                src={locationData.picturePath}
-              />
-            </View>
-          ) : (
-            ""
+          {locationData.description && (
+            <Text style={styles.detail}>{locationData.description}</Text>
           )}
-          {/* <ScrollView style={styles.imageScrollContainer} horizontal>
+        </View>
+
+        {locationData.picturePath ? (
+          <View style={styles.imageScrollContainer}>
+            <Image style={styles.bannerImage} src={locationData.picturePath} />
+          </View>
+        ) : (
+          ""
+        )}
+        {/* <ScrollView style={styles.imageScrollContainer} horizontal>
             <View style={styles.bannerContainer}>
               <Image
                 style={styles.bannerImage}
@@ -129,34 +120,33 @@ export default function PinDetailScreen({ route }) {
             </View>
           </ScrollView> */}
 
-          <View style={styles.quests}>
-            <View style={styles.subHeader}>
-              <Text style={styles.subHeaderText}>Quests</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  TabNavigation.navigate("CreateQuest", {
-                    locationId: locationData._id,
-                  });
-                }}
-                style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
-              >
-                <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.questListContainer}>
-              {quests.length == 0 && <NoQuestComponent />}
-              {quests.map((quest) => (
-                <QuestListItem
-                  quest={quest}
-                  key={quest._id}
-                  isAdmin={userDetail?.isAdmin}
-                />
-              ))}
-            </View>
+        <View style={styles.quests}>
+          <View style={styles.subHeader}>
+            <Text style={styles.subHeaderText}>Quests</Text>
+            <TouchableOpacity
+              onPress={() => {
+                TabNavigation.navigate("CreateQuest", {
+                  locationId: locationData._id,
+                });
+              }}
+              style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
+            >
+              <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
+            </TouchableOpacity>
           </View>
-        </BottomSheetScrollView>
-      </Bottomsheet>
-    </View>
+          <View style={styles.questListContainer}>
+            {quests.length == 0 && <NoQuestComponent />}
+            {quests.map((quest) => (
+              <QuestListItem
+                quest={quest}
+                key={quest._id}
+                isAdmin={userDetail?.isAdmin}
+              />
+            ))}
+          </View>
+        </View>
+      </BottomSheetScrollView>
+    </Bottomsheet>
   );
 }
 

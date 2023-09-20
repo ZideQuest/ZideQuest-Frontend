@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useCallback } from "react";
 import {
   BottomSheetModal,
   useBottomSheetDynamicSnapPoints,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
+import * as TabNavigation from "../../data/TabNavigation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function BottomsheetDynamic({
@@ -14,11 +15,11 @@ export default function BottomsheetDynamic({
   index = 0,
   detached = false,
   hideBar = false,
-  onChange,
+  enablePanDownToClose = false,
 }) {
   const insets = useSafeAreaInsets();
   const bottomSheetModalRef = useRef(null);
-  const { setBottomModalRef } = useAppContext();
+  const { setBottomModalRef, setNewMarker, setFocusedPin } = useAppContext();
   const initialSnapPoints = useMemo(
     () => [...snapPoints, "CONTENT_HEIGHT"],
     []
@@ -36,6 +37,14 @@ export default function BottomsheetDynamic({
     setBottomModalRef(bottomSheetModalRef);
   }, []);
 
+  const handleSheetClose = useCallback((index) => {
+    if (index == -1) {
+      TabNavigation.navigate("Recommend");
+      setNewMarker(null);
+      setFocusedPin(null);
+    }
+  }, []);
+
   return (
     <BottomSheetModal
       handleIndicatorStyle={[
@@ -48,7 +57,7 @@ export default function BottomsheetDynamic({
       snapPoints={animatedSnapPoints}
       handleHeight={animatedHandleHeight}
       contentHeight={animatedContentHeight}
-      enablePanDownToClose={false}
+      enablePanDownToClose={enablePanDownToClose}
       backgroundStyle={styles.backgroundStyle}
       style={[
         styles.pullBar,
@@ -60,7 +69,7 @@ export default function BottomsheetDynamic({
       bottomInset={detached ? 30 : 0}
       enableOverDrag={!detached}
       keyboardBehavior="extend"
-      onChange={onChange}
+      onChange={enablePanDownToClose && handleSheetClose}
     >
       <BottomSheetView
         onLayout={handleContentLayout}
