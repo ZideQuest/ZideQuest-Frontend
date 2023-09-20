@@ -146,19 +146,27 @@ export async function editQuest(questDetail, questId) {
 export async function deleteQuest(questId) {
   try {
     const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-    const { data } = await axios.delete(
-      `${BASE_URL}/quests/${questId}`,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const { data } = await axios.delete(`${BASE_URL}/quests/${questId}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     return data;
   } catch (error) {
     console.error(error);
     throw error;
   }
+}
+
+export async function getActiveQuests() {
+  const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { data } = await axios.get(`${BASE_URL}/quests`, {
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data.slice(0, 10);
 }
