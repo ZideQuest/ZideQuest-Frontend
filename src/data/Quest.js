@@ -162,11 +162,11 @@ export async function deleteQuest(questId) {
 
 export async function getActiveQuests() {
   const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-  const { data } = await axios.get(`${BASE_URL}/quests`, {
+  const { data } = await axios.get(`${BASE_URL}/quests/creator-uncomplete`, {
     headers: {
       Authorization: "Bearer " + token,
       "Content-Type": "multipart/form-data",
     },
   });
-  return data.slice(0, 10);
+  return data;
 }

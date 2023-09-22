@@ -74,11 +74,12 @@ export default function DetailedQuestListItem({
       <View style={styles.header}>
         <Text style={styles.headerText}>{quest.questName}</Text>
         <View style={styles.timePlaceContainer}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row"}}>
             <View
               style={{
-                marginHorizontal: 8,
-                flex: 1,
+                width: 10,
+                height: 10,
+                marginRight: 5,
                 aspectRatio: "1/1",
                 backgroundColor: statusIcon(
                   quest.countParticipant,
