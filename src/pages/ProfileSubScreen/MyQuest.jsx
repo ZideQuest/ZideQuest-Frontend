@@ -65,7 +65,7 @@ export default function MyQuests({ navigation }) {
               {UserQuest.currentQuest?.map((quest) => (
                 <QuestListItem
                   quest={quest.quest}
-                  key={quest._id}
+                  key={`my-active-quests-${quest.quest._id}`}
                   isAdmin={userDetail?.isAdmin}
                 />
               ))}
@@ -80,7 +80,7 @@ export default function MyQuests({ navigation }) {
               {UserQuest.successQuest?.map((quest) => (
                 <QuestListItem
                   quest={quest.quest}
-                  key={quest._id}
+                  key={`my-done-quests-${quest.quest._id}`}
                   isAdmin={userDetail?.isAdmin}
                 />
               ))}
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     gap: 7,
     // backgroundColor: "green",
     flex: 1,
-    marginBottom:10
+    marginBottom: 10,
   },
   questHeader: {
     borderBottomWidth: 2,
@@ -111,18 +111,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 15,
     // marginTop:10,
+    fontFamily: "Kanit400",
+    fontSize: 16,
   },
   header: {
     textAlign: "center",
-    fontSize: 25,
+    fontSize: 26,
     fontWeight: "bold",
-    flex: 1,
+    fontFamily: "Kanit400",
   },
-  headerContainer: {
-    // backgroundColor: "yellow",
-    flexDirection: "row",
-    alignItems: "center",
-  },
+  headerContainer: {},
   background: {
     backgroundColor: "blue",
     borderBottomWidth: 2,
@@ -155,12 +153,12 @@ const styles = StyleSheet.create({
   },
   questContainer: {
     flex: 1,
-    gap:20,
-    bottom:20,
+    gap: 20,
+    bottom: 20,
     // backgroundColor:"gray"
   },
   questListItemContainer: {
-    gap: 9,
+    gap: 6,
     // backgroundColor:"red",
   },
 });
