@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import ProgressBar from "react-native-progress/Bar";
 
 import UpComingQuest from "../components/Quest/UpComingQuest";
 
@@ -17,14 +18,20 @@ import close_icon from "../../assets/images/close_icon.png";
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
 export default function DrawerMenu({ navigation, children }) {
-  const { userDetail, drawerOpen, setDrawerOpen, logout, fetchUser, setFocusedPin } =
-    useAppContext();
+  const {
+    userDetail,
+    drawerOpen,
+    setDrawerOpen,
+    logout,
+    fetchUser,
+    setFocusedPin,
+  } = useAppContext();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(false);
 
   const addButtonHandler = () => {
     TabNavigation.navigate("CreatePin");
-    setFocusedPin("new pin")
+    setFocusedPin("new pin");
     setDrawerOpen(false);
   };
 
@@ -114,8 +121,21 @@ export default function DrawerMenu({ navigation, children }) {
           <View style={{ gap: 3, alignItems: "flex-end" }}>
             <Text>EXP : {userDetail.user?.exp}</Text>
             <View
-              style={{ width: "100%", backgroundColor: "green", height: 6 }}
-            ></View>
+              style={{
+                width: "100%",
+                backgroundColor: "lightgreen",
+                height: 6,
+              }}
+            >
+              <ProgressBar
+                width={null}
+                height="100%"
+                borderRadius={0}
+                borderWidth={0}
+                color="green"
+                progress={userDetail.user?.exp / 15000}
+              />
+            </View>
           </View>
         </TouchableOpacity>
       );
