@@ -16,8 +16,7 @@ export default function Tag({ tags }) {
             style={[styles.singleTag, { backgroundColor: randomColor() }]}
             key={index}
           >
-            <Text style={styles.tagText}>{tag}</Text>
-            {/* <Text style={styles.tagText}>{tag.tagName}</Text> */}
+            <Text style={styles.tagText}>{tag.tagName}</Text>
           </View>
         ))}
     </View>

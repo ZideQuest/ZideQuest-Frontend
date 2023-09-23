@@ -3,15 +3,8 @@ import * as SecureStore from "expo-secure-store";
 import { BASE_URL } from "./backend_url";
 
 export async function fetchLocations() {
-  try {
-    const { data } = await axios.get(`${BASE_URL}/locations`);
-    return data;
-  } catch (e) {
-    return {
-      message: "failed to load locations",
-      status: 401,
-    };
-  }
+  const { data } = await axios.get(`${BASE_URL}/locations`);
+  return data;
 }
 
 export async function getLocationData(id) {
