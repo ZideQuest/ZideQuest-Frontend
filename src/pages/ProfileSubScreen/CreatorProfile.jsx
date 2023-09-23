@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import * as TabNavigation from "../../data/TabNavigation";
 import BackButton from "../../components/button/BackButton";
 import AdminQuestListItem from "../../components/Quest/AdminQuestListItem";
@@ -60,7 +53,15 @@ export default function Profile({ navigation }) {
         </View>
 
         <View style={styles.active}>
-          <Text style={styles.activeText}>Active Quests</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <Text style={styles.activeText}>Active Quests</Text>
+            <TouchableOpacity
+              style={styles.allQuests}
+              onPress={() => TabNavigation.navigate("CreatorQuests")}
+            >
+              <Text style={styles.allQuestText}>All Quests</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         {isLoading ? (
           <View
@@ -161,6 +162,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   searchPlaceholder: {
+    fontFamily: "Kanit300",
+  },
+  allQuests: {
+    backgroundColor: buttonGrey,
+    borderRadius: 5,
+    borderWidth: 0.5,
+    paddingHorizontal: 3,
+  },
+  allQuestText: {
     fontFamily: "Kanit300",
   },
 });

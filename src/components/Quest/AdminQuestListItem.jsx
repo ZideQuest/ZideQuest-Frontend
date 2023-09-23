@@ -22,7 +22,7 @@ export default function DetailedQuestListItem({
   quest,
   isAdmin = true,
   onPress,
-  panMap = false,
+  panMap = true,
 }) {
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
 
@@ -92,7 +92,7 @@ export default function DetailedQuestListItem({
             <Text style={styles.detailText}>{getStartTime()}</Text>
           </View>
           <Text style={styles.detailText}>
-            ที่ {quest.locationId.slice(0, 10)}
+            ที่ {quest.locationId.locationName}
           </Text>
         </View>
         <View style={styles.qrContainer}>

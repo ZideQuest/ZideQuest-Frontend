@@ -170,3 +170,15 @@ export async function getActiveQuests() {
   });
   return data;
 }
+
+export async function getCratorQuests() {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  const { data } = await axios.get(`${BASE_URL}/quests/creator-uncomplete `, {
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+  });
+  return data;
+}
