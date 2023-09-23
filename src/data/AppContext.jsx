@@ -63,9 +63,10 @@ export const AppProvider = ({ children }) => {
           user: response,
         };
       });
-      setSoonQuest(response.joinedQuest.filter(q => !q.status));
+      setSoonQuest(response.joinedQuest?.filter(q => !q.status));
     } catch (error) {
       // await SecureStore.deleteItemAsync("userDetail");
+      console.log(error);
       alert("Please Login again");
     }
   };

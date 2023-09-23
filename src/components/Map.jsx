@@ -128,7 +128,7 @@ export default function Map() {
   };
 
   useEffect(() => {
-    const myQuestLocations = userDetail.user?.joinedQuest.map(
+    const myQuestLocations = userDetail.user?.joinedQuest?.map(
       (q) => q.locationId?._id
     ) || [];
     setMyLocations(myQuestLocations);
