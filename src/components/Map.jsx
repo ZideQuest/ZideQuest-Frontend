@@ -35,9 +35,11 @@ export default function Map() {
     focusedPin,
     setFocusedPin,
     setSnapBack,
+    onlyPinWithMyQuest,
+    userDetail,
   } = useAppContext();
   const [locations, setLocations] = useState([]);
-
+  const [myLocations, setMyLocations] = useState([]);
   const mapRef = useRef(null);
   const [region, setRegion] = useState(initialRegion);
 
@@ -115,6 +117,23 @@ export default function Map() {
     }
   };
 
+  const pinFilter = (p) => {
+    if (!onlyPinWithMyQuest) {
+      return true;
+    } else if (p._id) {
+      return myLocations.includes(p._id);
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const myQuestLocations = userDetail.user?.joinedQuest.map(
+      (q) => q.locationId?._id
+    ) || [];
+    setMyLocations(myQuestLocations);
+  }, [onlyPinWithMyQuest]);
+
   useEffect(() => {
     mapRef.current.setMapBoundaries(
       { latitude: 13.856247, longitude: 100.565117 },
@@ -168,7 +187,7 @@ export default function Map() {
         loadingEnabled
         mapPadding={{ bottom: "60%" }}
       >
-        {locations.map((pin) => (
+        {locations?.filter(pinFilter).map((pin) => (
           <Marker
             coordinate={pin}
             key={pin._id}

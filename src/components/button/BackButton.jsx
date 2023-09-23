@@ -9,7 +9,7 @@ import close_icon from "../../../assets/images/close_icon.png";
 export default function BackButton({onPress}) {
   const { bottomModalRef, mapRefetch, setFocusedPin } = useAppContext();
 
-  const closeHandler = () => {
+  const closeHandler = async () => {
     TabNavigation.navigate("Recommend");
     
     if (onPress) {
