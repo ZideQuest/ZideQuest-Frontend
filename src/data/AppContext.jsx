@@ -19,6 +19,7 @@ export const AppProvider = ({ children }) => {
   const [mapSearchedLocation, setMapSearchedLocation] = useState(null);
   const [focusedPin, setFocusedPin] = useState(null);
   const [snapBack, setSnapBack] = useState(null);
+  const [onlyPinWithMyQuest, setOnlyPinWithMyQuest] = useState(false);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -48,7 +49,7 @@ export const AppProvider = ({ children }) => {
     snapBack();
     await SecureStore.deleteItemAsync("userDetail");
     setUserDetails({});
-    
+
     setFocusedPin(null);
     setIsLoading(false);
   };
@@ -62,9 +63,9 @@ export const AppProvider = ({ children }) => {
           user: response,
         };
       });
-      setSoonQuest(response.joinedQuest);
+      setSoonQuest(response.joinedQuest.filter(q => !q.status));
     } catch (error) {
-      await SecureStore.deleteItemAsync("userDetail");
+      // await SecureStore.deleteItemAsync("userDetail");
       alert("Please Login again");
     }
   };
@@ -83,6 +84,7 @@ export const AppProvider = ({ children }) => {
           setUserDetails(user);
         } else {
           setUserDetails({});
+          console.log("no auth");
         }
       } catch (error) {
         console.error("Error fetching token:", error);
@@ -120,6 +122,8 @@ export const AppProvider = ({ children }) => {
         setFocusedPin,
         snapBack,
         setSnapBack,
+        onlyPinWithMyQuest,
+        setOnlyPinWithMyQuest,
       }}
     >
       {children}

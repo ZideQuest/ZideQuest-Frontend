@@ -109,10 +109,17 @@ export default function ActivityDetail() {
                 <Image style={styles.pic} src={QuestDetail.picturePath} />
               </View>
             )}
-
-            <Tag tags={QuestDetail?.tag} />
+            <View
+              style={{
+                alignItems: "flex-start",
+                paddingHorizontal: 15,
+                paddingVertical: 7,
+              }}
+            >
+              <Tag tags={QuestDetail?.tag} />
+            </View>
             <View style={styles.DescripCon}>
-              <Text style={{ color: textColor, fontSize: 16 }}>
+              <Text style={{ color: textColor, fontSize: 16, fontFamily: "Kanit300" }}>
                 {QuestDetail.description}
               </Text>
             </View>
