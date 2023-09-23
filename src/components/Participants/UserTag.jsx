@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { buttonGrey, buttonLightGrey } from "../../data/color";
 import user_icon from "../../../assets/images/user_icon.png";
-import Checkbox from 'expo-checkbox';
+import Checkbox from "expo-checkbox";
 
-export default function UserTag({ user }) {
+export default function UserTag({ user, checkable = false }) {
+  const [isChecked, setIsChecked] = useState(user.status);
+
+  const checkboxHandler = (v) => {
+    if (checkable) {
+      setIsChecked(v)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -23,9 +30,7 @@ export default function UserTag({ user }) {
           {user?.user?.firstName} {user?.user?.lastName}
         </Text>
       </View>
-      <Checkbox
-        value={user?.status}
-      />
+      <Checkbox value={isChecked} onValueChange={checkboxHandler} />
     </View>
   );
 }
