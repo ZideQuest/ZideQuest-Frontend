@@ -30,7 +30,11 @@ export default function ParticipantsEditing({ route }) {
       <BottomSheetScrollView>
         <View style={styles.participantsContainer}>
           {participants?.map((user) => (
-            <UserTag user={user} key={`participant-${user?.user?._id}`} />
+            <UserTag
+              user={user}
+              key={`participant-${user?.user?._id}`}
+              checkable
+            />
           ))}
         </View>
       </BottomSheetScrollView>
