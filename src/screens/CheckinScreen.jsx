@@ -21,7 +21,12 @@ export default function CheckinScreen({ navigation }) {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     if (data.startsWith("http://") || data.startsWith("https://")) {
-      alert(`Please scan only Zidequest QR CODE`);
+      alert(
+        `Barcode with type ${type} and data ${Linking.openURL(
+          data
+        )} has been scanned`
+      );
+      ///alert(`Please scan only Zidequest QR CODE`);
     } else {
       const fixedDomain = BASE_URL;
       const fullURL = fixedDomain + data;
