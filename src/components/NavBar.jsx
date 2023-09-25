@@ -15,6 +15,7 @@ export default function NavBar() {
     onlyPinWithMyQuest,
     setOnlyPinWithMyQuest,
     userDetail,
+    fetchUser,
   } = useAppContext();
 
   const DrawerToggle = () => {
@@ -22,6 +23,7 @@ export default function NavBar() {
   };
 
   const pinToggle = () => {
+    fetchUser();
     setOnlyPinWithMyQuest((prev) => !prev);
   };
 

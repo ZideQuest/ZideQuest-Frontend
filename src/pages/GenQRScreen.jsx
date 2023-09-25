@@ -8,7 +8,7 @@ import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
 import { primaryColor } from "../data/color";
 import Alert from "../components/misc/Alert";
-import Spinner from "../components/Animations/Spinner";
+import blur_qr from "../../assets/images/blur_qr.jpg";
 
 const showConfirmDialog = (title, description) => {
   return Alert(title, description, [
@@ -55,7 +55,6 @@ export default function QuestManagement({ route }) {
             <Image
               source={{ uri: QRData.picturePath.url }}
               style={{ width: "100%", height: "100%" }}
-              // loadingIndicatorSource={{uri:}}
             />
           )}
         </View>
