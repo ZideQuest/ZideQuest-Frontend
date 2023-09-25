@@ -17,8 +17,8 @@ import CreateQuest from "./CreateQuest";
 import QuestEditing from "./Editing/QuestEditing";
 import LocationEditing from "./Editing/LocationEditing";
 import ParticipantsEditing from "./Editing/ParticipantsEditing";
-import UserQuestComplete from "./UserQuestComplete"
-import GenQRScreen from "./GenQRScreen"
+import UserQuestComplete from "./UserQuestComplete";
+import GenQRScreen from "./GenQRScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,11 +26,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.mapContainer}>
       <Map />
-      <NavigationContainer
-        ref={navigationRef}
-        independent={true}
-        // onStateChange={(e) => console.log(e)}
-      >
+      <NavigationContainer ref={navigationRef} independent={true}>
         <Stack.Navigator
           initialRouteName="Recommend"
           backBehavior="none"
@@ -50,10 +46,15 @@ export default function HomeScreen() {
           <Stack.Screen name="Profile" component={ProfileModal} />
           <Stack.Screen name="EditQuest" component={QuestEditing} />
           <Stack.Screen name="EditLocation" component={LocationEditing} />
-          <Stack.Screen name="EditParticipants" component={ParticipantsEditing} />
-          <Stack.Screen name="UserQuestComplete" component={UserQuestComplete} />
+          <Stack.Screen
+            name="EditParticipants"
+            component={ParticipantsEditing}
+          />
+          <Stack.Screen
+            name="UserQuestComplete"
+            component={UserQuestComplete}
+          />
           <Stack.Screen name="GenQRScreen" component={GenQRScreen} />
-
         </Stack.Navigator>
       </NavigationContainer>
     </View>

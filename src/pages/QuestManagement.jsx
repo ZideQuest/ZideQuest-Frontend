@@ -16,17 +16,6 @@ import {
 import Participants from "../components/Participants/Participants";
 import Alert from "../components/misc/Alert";
 
-const showConfirmDialog = (title, description) => {
-  return Alert(title, description, [
-    {
-      text: "Cancel",
-      onPress: () => console.log("Cancel Pressed"),
-      style: "cancel",
-    },
-    { text: "OK", onPress: () => console.log("OK Pressed") },
-  ]);
-};
-
 export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
 

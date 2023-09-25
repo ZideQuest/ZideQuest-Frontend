@@ -92,8 +92,6 @@ export const editLocation = async (data, id) => {
     const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
     const { token } = userdetail;
 
-    console.log(data._parts[2]);
-
     const res = await axios.put(`${BASE_URL}/locations/${id}`, data, {
       headers: {
         Authorization: "Bearer " + token,

@@ -23,8 +23,7 @@ export const TimePicker = ({
   const [beDate, bseteDate] = useState("");
   const [bsTime, bsetsTime] = useState("");
   const [beTime, bseteTime] = useState("");
-  // const [isLoading,setIsLoading] = useState(true);
-//   console.log(startDate);
+  
   useEffect(() => {
     if (beDate != "" && beTime != "") {
       const endDateString = beDate + "T" + beTime;
@@ -41,14 +40,6 @@ export const TimePicker = ({
     }
   }, [bsDate, bsTime]);
 
-//   useEffect(() => {
-//     console.log(startDate);
-//   }, [startDate]);
-
-//   useEffect(() => {
-//     console.log(endDate);
-//   }, [endDate]);
-
   const showMode = (currentMode, is_start, is_time) => {
     setShow(true);
     setMode(currentMode);
@@ -58,10 +49,10 @@ export const TimePicker = ({
 
   const onChangeStartDate = async (event, selectedDate) => {
     setShow(false);
-    // console.log("start");
+
     const currentDate = selectedDate;
     let tempDate = new Date(currentDate);
-    // console.log(tempDate)
+
     if (isTime) {
       setsTime(tempDate.getHours().toString().padStart(2, "0") + ":" + tempDate.getMinutes().toString().padStart(2, "0"));
       bsetsTime(
@@ -94,7 +85,7 @@ export const TimePicker = ({
     setShow(false);
     const currentDate = selectedDate;
     let tempDate = new Date(currentDate);
-    // console.log(tempDate)
+
     if (isTime) {
       seteTime(tempDate.getHours().toString().padStart(2, "0") + ":" + tempDate.getMinutes().toString().padStart(2, "0"));
       bseteTime(

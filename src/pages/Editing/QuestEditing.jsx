@@ -126,7 +126,7 @@ export default function QuestEditing({ route }) {
         const handleTag = [tagId];
         questDetail.append("tagId", handleTag);
       }
-      console.log(questDetail);
+      
       const newQuest = await editQuest(questDetail, route.params?.questId);
       setIsLoading(false);
       TabNavigation.navigate("QuestManage", { questId: newQuest._id });

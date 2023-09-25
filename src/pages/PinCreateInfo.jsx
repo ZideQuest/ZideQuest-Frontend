@@ -75,7 +75,6 @@ export default function PinCreateInfo() {
         aspect: [4, 3],
         quality: 0.3,
       });
-      console.log(result);
       if (!result.canceled) {
         setState({
           image: result,
@@ -93,14 +92,12 @@ export default function PinCreateInfo() {
         aspect: [4, 3],
         quality: 0.3,
       });
-      // console.log(result.assets);
       if (!result.canceled) {
         setState({
           image: result,
         });
       }
     }
-    console.log(results);
   };
 
   if (isLoading) {

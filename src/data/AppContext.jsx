@@ -66,7 +66,7 @@ export const AppProvider = ({ children }) => {
       setSoonQuest(response.joinedQuest?.filter(q => !q.status));
     } catch (error) {
       // await SecureStore.deleteItemAsync("userDetail");
-      console.log(error);
+      console.error(error);
       alert("Please Login again");
     }
   };
