@@ -36,8 +36,12 @@ export default function DrawerMenu({ navigation, children }) {
   };
 
   const checkinButtonHandler = () => {
-    navigation.navigate("Checkin");
-    setDrawerOpen(false);
+    if (userDetail.isAdmin || userDetail.token != null) {
+      navigation.navigate("Checkin");
+      setDrawerOpen(false);
+    } else {
+      alert("กรุณา login");
+    }
   };
 
   const loginHandler = () => {
