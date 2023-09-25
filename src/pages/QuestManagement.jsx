@@ -57,6 +57,17 @@ export default function QuestManagement({ route }) {
     }
   };
 
+  const GenQRHandler = async () => {
+    if (
+      await Alert(
+        "สร้าง QR code",
+        "ต้องการแสดง QR Code สำหรับ Check-in หรือไม่"
+      )
+    ) {
+      TabNavigation.navigate("GenQRScreen", { questId: route.params?.questId });
+    }
+  };
+
   const editQuestButtonHandler = async () => {
     TabNavigation.navigate("EditQuest", { questId: route.params.questId });
   };
@@ -88,12 +99,7 @@ export default function QuestManagement({ route }) {
               text="สร้าง Check-in QR Code"
               bg={questData?.status ? buttonGrey : buttonBlue}
               color={questData?.status ? "grey" : "white"}
-              onPress={() =>
-                showConfirmDialog(
-                  "Confirm Quest completed",
-                  "Are you sure you want to end this quest?"
-                )
-              }
+              onPress={GenQRHandler}
             />
           </View>
         </View>
