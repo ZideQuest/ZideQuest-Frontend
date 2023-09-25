@@ -9,28 +9,43 @@ export default function UserTag({ user, checkable = false }) {
 
   const checkboxHandler = (v) => {
     if (checkable) {
-      setIsChecked(v)
+      setIsChecked(v);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-        <View style={styles.profilePicContainer}>
-          <Image
-            style={{ width: "100%", height: "100%" }}
-            source={
-              user?.user?.picturePath
-                ? { uri: user?.user?.picturePath }
-                : user_icon
-            }
-          />
+        <View>
+          <View style={styles.profilePicContainer}>
+            <Image
+              style={{ width: "100%", height: "100%" }}
+              source={
+                user?.user?.picturePath
+                  ? { uri: user?.user?.picturePath }
+                  : user_icon
+              }
+            />
+          </View>
+          <View
+            style={{
+              width: 12,
+              height: 12,
+              backgroundColor: isChecked ? "lime" : "red",
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              borderRadius: 6,
+            }}
+          ></View>
         </View>
         <Text style={styles.textInfo}>
           {user?.user?.firstName} {user?.user?.lastName}
         </Text>
       </View>
-      <Checkbox value={isChecked} onValueChange={checkboxHandler} />
+      {(isChecked || checkable) && (
+        <Checkbox value={isChecked} onValueChange={checkboxHandler} />
+      )}
     </View>
   );
 }

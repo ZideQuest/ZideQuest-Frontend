@@ -10,7 +10,7 @@ import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import BigButton from "../components/button/BigButton";
 import { join_leave } from "../data/join-leave";
 
-import { textColor, BGcolor, primaryColor } from "../data/color";
+import { textColor, BGcolor, primaryColor, buttonGrey } from "../data/color";
 
 export default function ActivityDetail() {
   const [QuestDetail, setQuestDetail] = useState(null);
@@ -119,12 +119,25 @@ export default function ActivityDetail() {
               <Tag tags={QuestDetail?.tag} />
             </View>
             <View style={styles.DescripCon}>
-              <Text style={{ color: textColor, fontSize: 16, fontFamily: "Kanit300" }}>
+              <Text
+                style={{
+                  color: textColor,
+                  fontSize: 16,
+                  fontFamily: "Kanit300",
+                }}
+              >
                 {QuestDetail.description}
               </Text>
             </View>
             <View style={styles.ButtonCon}>
-              {isJoined ? (
+              {QuestDetail.status ? (
+                <BigButton
+                  text="ยกเลิกการเข้าร่วม"
+                  bg={buttonGrey}
+                  color="grey"
+                  onPress={() => alert("เควสจบไปแล้ว")}
+                />
+              ) : isJoined ? (
                 <BigButton
                   text="ยกเลิกการเข้าร่วม"
                   bg="#8C1C15"

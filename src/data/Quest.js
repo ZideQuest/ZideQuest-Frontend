@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { BASE_URL } from "./backend_url";
+import { Image } from "react-native";
 
 export async function createQuest(questDetail, locationId) {
   try {
@@ -180,5 +181,18 @@ export async function getCratorQuests() {
       "Content-Type": "application/json",
     },
   });
+  return data;
+}
+
+export async function getQRCode(questId) {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  const { data } = await axios.get(`${BASE_URL}/quests/${questId}/qr`, {
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+  });
+
   return data;
 }

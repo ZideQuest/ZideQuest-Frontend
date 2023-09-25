@@ -168,7 +168,10 @@ export default function DrawerMenu({ navigation, children }) {
               </TouchableOpacity>
             </View>
             {userDetail?.token ? (
-              <ProfileDisplay userDetail={userDetail} />
+              <>
+                <ProfileDisplay userDetail={userDetail} />
+                {!userDetail?.isAdmin && <UpComingQuest onPress={() => setDrawerOpen(false)} />}
+              </>
             ) : (
               <TouchableOpacity
                 style={styles.loginButton}
@@ -177,8 +180,6 @@ export default function DrawerMenu({ navigation, children }) {
                 <Text style={styles.buttonText}>Login</Text>
               </TouchableOpacity>
             )}
-
-            <UpComingQuest onPress={() => setDrawerOpen(false)} />
 
             <View style={styles.bigMenuContainer}>
               <TouchableOpacity

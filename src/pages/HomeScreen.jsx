@@ -18,6 +18,7 @@ import QuestEditing from "./Editing/QuestEditing";
 import LocationEditing from "./Editing/LocationEditing";
 import ParticipantsEditing from "./Editing/ParticipantsEditing";
 import UserQuestComplete from "./UserQuestComplete"
+import GenQRScreen from "./GenQRScreen"
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,8 @@ export default function HomeScreen() {
           <Stack.Screen name="EditLocation" component={LocationEditing} />
           <Stack.Screen name="EditParticipants" component={ParticipantsEditing} />
           <Stack.Screen name="UserQuestComplete" component={UserQuestComplete} />
+          <Stack.Screen name="GenQRScreen" component={GenQRScreen} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </View>
