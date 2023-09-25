@@ -8,7 +8,7 @@ import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
 import { primaryColor } from "../data/color";
 import Alert from "../components/misc/Alert";
-import blur_qr from "../../assets/images/blur_qr.jpg";
+import Spinner from "../components/Animations/Spinner";
 
 const showConfirmDialog = (title, description) => {
   return Alert(title, description, [
@@ -24,12 +24,11 @@ const showConfirmDialog = (title, description) => {
 export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
   const [QRData, setQRData] = useState(null);
+  const [imgLoading, setImgLoading] = useState(true);
 
   useEffect(() => {
     const fetchQuestData = async () => {
       try {
-        // const data = await getQuestData(route.params?.questId);
-        // const qr = await getQRCode(route.params?.questId);
         setQuestData(await getQuestData(route.params?.questId));
         setQRData(await getQRCode(route.params?.questId));
       } catch (error) {
@@ -51,10 +50,22 @@ export default function QuestManagement({ route }) {
         <ActivityName quest={questData} />
         <View style={styles.qrContainer}>
           <Text style={styles.qrText}>Check-in QR Code</Text>
+          {imgLoading && (
+            <View
+              style={{
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <Spinner />
+            </View>
+          )}
           {QRData && (
             <Image
               source={{ uri: QRData.picturePath.url }}
               style={{ width: "100%", height: "100%" }}
+              onLoad={() => setImgLoading(false)}
             />
           )}
         </View>
