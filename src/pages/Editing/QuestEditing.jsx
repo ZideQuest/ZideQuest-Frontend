@@ -64,7 +64,7 @@ export default function QuestEditing({ route }) {
         setDescription(data.description);
         setTagId(data.tag[0]);
         setMaxParticipant(data.maxParticipant);
-        setImage({ uri: data.picturePath });
+        setImage(data.picturePath ? { uri: data.picturePath } : null);
         setIsLoading(false);
       } catch (error) {
         TabNavigation.navigate("QuestManage", {

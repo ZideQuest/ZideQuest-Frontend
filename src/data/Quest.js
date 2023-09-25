@@ -146,19 +146,39 @@ export async function editQuest(questDetail, questId) {
 export async function deleteQuest(questId) {
   try {
     const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-    const { data } = await axios.delete(
-      `${BASE_URL}/quests/${questId}`,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const { data } = await axios.delete(`${BASE_URL}/quests/${questId}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     return data;
   } catch (error) {
     console.error(error);
     throw error;
   }
+}
+
+export async function getActiveQuests() {
+  const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { data } = await axios.get(`${BASE_URL}/quests/creator-uncomplete`, {
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+}
+
+export async function getCratorQuests() {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  const { data } = await axios.get(`${BASE_URL}/quests/creator-uncomplete `, {
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+  });
+  return data;
 }

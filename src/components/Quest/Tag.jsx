@@ -1,46 +1,49 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { BGcolor, textColor } from "../../data/color";
 
+const pallet = ["teal", "yellow", "red", "green", "blue", "lime", "cyan"];
+const randomColor = () => {
+  const n = Math.floor(Math.random() * pallet.length);
+  return pallet[n];
+};
+
 export default function Tag({ tags }) {
   return (
     <View style={styles.DataCon}>
-      <View style={styles.tagCon}>
-        {tags && tags.map((tag, index) => (
-          <View style={styles.singleTag} key={index}>
+      {tags &&
+        tags.map((tag, index) => (
+          <View
+            style={[styles.singleTag, { backgroundColor: randomColor() }]}
+            key={index}
+          >
             <Text style={styles.tagText}>{tag.tagName}</Text>
           </View>
         ))}
-      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   tagText: {
-    color: textColor,
-    padding: 5,
+    color: "white",
+    paddingHorizontal: 7,
+    fontFamily: "Kanit400",
   },
   tagCon: {
-    backgroundColor: BGcolor,
-    width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
     rowGap: 10,
     columnGap: 10,
   },
   singleTag: {
-    backgroundColor: "#FDEBD0",
-    alignSelf: "flex-start",
-    borderRadius: 40,
+    borderRadius: 15,
   },
   DataCon: {
-    backgroundColor: BGcolor,
-    width: "100%",
-    padding: 10,
     flexDirection: "row",
     flexWrap: "wrap",
     rowGap: 10,
     columnGap: 10,
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    flex: 1,
   },
 });

@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import ProgressBar from "react-native-progress/Bar";
 
 import UpComingQuest from "../components/Quest/UpComingQuest";
 
@@ -113,19 +114,35 @@ export default function DrawerMenu({ navigation, children }) {
             </View>
             <View>
               <Text style={styles.username}>{userDetail?.user?.firstName}</Text>
-              <Text>
+              <Text
+                style={{ fontFamily: "Kanit400", fontSize: 15, lineHeight: 17 }}
+              >
                 Level{" "}
-                <Text style={{ color: "teal", fontWeight: 600 }}>
-                  {userDetail?.user?.level}
-                </Text>
+                <Text style={{ color: "teal" }}>{userDetail?.user?.level}</Text>
               </Text>
             </View>
           </View>
           <View style={{ gap: 3, alignItems: "flex-end" }}>
-            <Text>EXP : {userDetail.user?.exp}</Text>
+            <Text style={{ fontFamily: "Kanit300" }}>
+              EXP : {userDetail.user?.exp}
+            </Text>
             <View
-              style={{ width: "100%", backgroundColor: "green", height: 6 }}
-            ></View>
+              style={{
+                width: "100%",
+                backgroundColor: "lightgreen",
+                height: 6,
+              }}
+            >
+              <ProgressBar
+                width={null}
+                height={6}
+                borderRadius={0}
+                borderWidth={0}
+                color="green"
+                progress={userDetail.user?.exp / 15000}
+                style={{ justifyContent: "flex-start" }}
+              />
+            </View>
           </View>
         </TouchableOpacity>
       );
@@ -238,19 +255,19 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    // lineHeight: 10,
-    fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
     padding: 10,
+    fontFamily: "Kanit400",
   },
   logo: {
     color: primaryColor,
-    fontWeight: "bold",
     fontSize: 30,
+    fontFamily: "Kanit600",
   },
   profileDisplayContainer: {
     flexDirection: "row",
+    alignItems: "center",
     width: "100%",
     marginTop: 20,
     gap: 20,
@@ -270,8 +287,9 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   smallMenuItem: {
-    fontSize: 16,
-    fontWeight: 600,
+    fontSize: 17,
+    fontFamily: "Kanit500",
+    lineHeight: 20,
   },
   bigMenuContainer: {
     flexDirection: "row",
@@ -294,10 +312,12 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 25,
-    fontWeight: "600",
+    fontFamily: "Kanit500",
+    lineHeight: 30,
   },
   bigButtonText: {
-    fontWeight: 500,
     marginTop: 8,
+    fontFamily: "Kanit400",
+    fontSize: 14,
   },
 });

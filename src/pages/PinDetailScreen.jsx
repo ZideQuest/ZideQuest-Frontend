@@ -16,32 +16,56 @@ import BackButton from "../components/button/BackButton.jsx";
 import * as TabNavigation from "../data/TabNavigation.jsx";
 import edit_icon from "../../assets/images/edit.png";
 
+import DetailedQuestListItem from "../components/Quest/DetailedQuestListItem"; //
+
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
 import { buttonNormalGreen } from "../data/color";
 
-function NoQuestComponent() {
-  return (
-    <View
-      style={{
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        height: 100,
-      }}
-    >
-      <Text style={{ fontFamily: "Kanit400", color: "grey", fontSize: 25 }}>
-        ยังไม่มีเควสในบริเวณนี้...
-      </Text>
-    </View>
-  );
-}
-
 export default function PinDetailScreen({ route }) {
-  const { userDetail } = useAppContext();
+  const { userDetail, onlyPinWithMyQuest, setOnlyPinWithMyQuest } =
+    useAppContext();
   const [locationData, setLocationData] = useState({});
   const [quests, setQuests] = useState([]);
 
+  function NoQuestComponent() {
+    return (
+      <View
+        style={{
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 100,
+        }}
+      >
+        <Text style={{ fontFamily: "Kanit400", color: "grey", fontSize: 25 }}>
+          ยังไม่มีเควสในบริเวณนี้...
+        </Text>
+      </View>
+    );
+  }
+
+  function NoMyQuestComponent() {
+    return (
+      <View
+        style={{
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 100,
+        }}
+      >
+        <Text style={{ fontFamily: "Kanit400", color: "grey", fontSize: 25 }}>
+          ไม่มีเควสของคุณในบริเวณนี้...
+        </Text>
+        <TouchableOpacity onPress={() => setOnlyPinWithMyQuest(false)}>
+          <Text style={{ fontFamily: "Kanit300", color: "teal", fontSize: 16 }}>
+            ดูเควสทั้งหมด
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   useEffect(() => {
     const fetchLocationData = async () => {
       try {
@@ -57,6 +81,40 @@ export default function PinDetailScreen({ route }) {
 
   const editLocationHandler = () => {
     TabNavigation.navigate("EditLocation", { pinId: route.params.pinId });
+  };
+
+  const QuestsComponent = () => {
+    if (quests.length == 0) {
+      return <NoQuestComponent />;
+    }
+
+    if (!onlyPinWithMyQuest) {
+      return quests.map((quest) => (
+        <DetailedQuestListItem
+          quest={quest}
+          key={quest._id}
+          isAdmin={userDetail?.isAdmin}
+        />
+      ));
+    }
+
+    const myQuests = userDetail.user?.joinedQuest.map((q) => q._id);
+
+    const filteredQuests = quests
+      .filter((q) => myQuests.includes(q._id))
+      .map((quest) => (
+        <DetailedQuestListItem
+          quest={quest}
+          key={quest._id}
+          isAdmin={userDetail?.isAdmin}
+        />
+      ));
+
+    if (filteredQuests.length == 0) {
+      return <NoMyQuestComponent />;
+    }
+
+    return filteredQuests;
   };
 
   return (
@@ -95,15 +153,13 @@ export default function PinDetailScreen({ route }) {
             )}
           </View>
 
-          {locationData.picturePath ? (
+          {locationData.picturePath && (
             <View style={styles.imageScrollContainer}>
               <Image
                 style={styles.bannerImage}
                 src={locationData.picturePath}
               />
             </View>
-          ) : (
-            ""
           )}
           {/* <ScrollView style={styles.imageScrollContainer} horizontal>
             <View style={styles.bannerContainer}>
@@ -135,14 +191,7 @@ export default function PinDetailScreen({ route }) {
               </TouchableOpacity>
             </View>
             <View style={styles.questListContainer}>
-              {quests.length == 0 && <NoQuestComponent />}
-              {quests.map((quest) => (
-                <QuestListItem
-                  quest={quest}
-                  key={quest._id}
-                  isAdmin={userDetail?.isAdmin}
-                />
-              ))}
+              <QuestsComponent />
             </View>
           </View>
         </BottomSheetScrollView>

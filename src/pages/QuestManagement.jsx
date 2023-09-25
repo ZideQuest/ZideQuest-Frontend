@@ -43,16 +43,8 @@ export default function QuestManagement({ route }) {
   }, []);
 
   const questCompleteHandler = async () => {
-    if (
-      questData.status &&
-      (await Alert(
-        "Cancel Quest completed",
-        "Are you sure you want to continue this quest?"
-      ))
-    ) {
-      const data = await sendQuestComplete(route.params.questId);
-      alert("ยกเลิกสำเร็จ");
-      setQuestData((prev) => ({ ...prev, status: false }));
+    if (questData.status) {
+      return;
     } else if (
       await Alert(
         "Confirm Quest completed",
@@ -72,9 +64,11 @@ export default function QuestManagement({ route }) {
   return (
     <BottomsheetDynamic snapPoints={["20%"]} index={1} hideBar={true}>
       <View style={styles.container}>
-        <View style={styles.bannerContainer}>
-          <Image src={questData?.picturePath} style={styles.bannerImage} />
-        </View>
+        {questData?.picturePath && (
+          <View style={styles.bannerContainer}>
+            <Image src={questData?.picturePath} style={styles.bannerImage} />
+          </View>
+        )}
         <View style={styles.infoContainer}>
           <ActivityName quest={questData} />
           <TouchableOpacity onPress={editQuestButtonHandler}>
@@ -83,13 +77,9 @@ export default function QuestManagement({ route }) {
           <Participants questId={route.params.questId} />
           <View style={styles.buttonContainer}>
             <BigButton
-              text={
-                questData?.status
-                  ? "ยกเลิก Quest Completed"
-                  : "ยืนยัน Quest Completed"
-              }
-              bg={questData?.status ? buttonDarkRed : buttonBrightGreen}
-              color={"white"}
+              text="ยืนยัน Quest Completed"
+              bg={questData?.status ? buttonGrey : buttonBrightGreen}
+              color={questData?.status ? "grey" : "white"}
               onPress={questCompleteHandler}
             />
           </View>
