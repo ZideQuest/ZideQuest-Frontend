@@ -58,7 +58,9 @@ export default function QuestManagement({ route }) {
   };
 
   const GenQRHandler = async () => {
-    if (
+    if (questData.status) {
+      return;
+    } else if (
       await Alert(
         "สร้าง QR code",
         "ต้องการแสดง QR Code สำหรับ Check-in หรือไม่"

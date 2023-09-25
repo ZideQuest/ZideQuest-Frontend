@@ -2,20 +2,13 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
-import { useAppContext } from "../data/AppContext";
 import { getQuestData, getQRCode } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
-import {
-  buttonBlue,
-  buttonBrightGreen,
-  buttonDarkRed,
-  buttonGrey,
-  primaryColor,
-} from "../data/color";
-import Participants from "../components/Participants/Participants";
+import { primaryColor } from "../data/color";
 import Alert from "../components/misc/Alert";
+import Spinner from "../components/Animations/Spinner";
 
 const showConfirmDialog = (title, description) => {
   return Alert(title, description, [
@@ -35,10 +28,10 @@ export default function QuestManagement({ route }) {
   useEffect(() => {
     const fetchQuestData = async () => {
       try {
-        const data = await getQuestData(route.params?.questId);
-        const qr = await getQRCode(route.params?.questId);
-        setQuestData(data);
-        setQRData(qr);
+        // const data = await getQuestData(route.params?.questId);
+        // const qr = await getQRCode(route.params?.questId);
+        setQuestData(await getQuestData(route.params?.questId));
+        setQRData(await getQRCode(route.params?.questId));
       } catch (error) {
         console.error("Error fetching quest", error);
       }
@@ -53,18 +46,19 @@ export default function QuestManagement({ route }) {
   };
 
   return (
-    <BottomsheetDynamic snapPoints={[]} index={0} hideBar={true}>
+    <BottomsheetDynamic snapPoints={["20%"]} index={1} hideBar={false}>
       <View style={styles.container}>
         <ActivityName quest={questData} />
-        {QRData && (
-          <View style={styles.qrContainer}>
-            <Text style={styles.qrText}>Check-in QR Code</Text>
+        <View style={styles.qrContainer}>
+          <Text style={styles.qrText}>Check-in QR Code</Text>
+          {QRData && (
             <Image
               source={{ uri: QRData.picturePath.url }}
               style={{ width: "100%", height: "100%" }}
+              // loadingIndicatorSource={{uri:}}
             />
-          </View>
-        )}
+          )}
+        </View>
         <Text style={styles.detailText}>
           *หากใช้การ Check-in ผู้เข้าร่วมที่สแกน QR Code นี้ เท่านั้นจะรับสถานะ
           “Quest Complete” หลังจบกิจกรรมได้
