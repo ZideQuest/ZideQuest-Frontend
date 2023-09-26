@@ -22,8 +22,10 @@ export default function NavBar() {
     setDrawerOpen((prev) => !prev);
   };
 
-  const pinToggle = () => {
-    fetchUser();
+  const pinToggle = async () => {
+    if (!onlyPinWithMyQuest) {
+      await fetchUser();
+    }
     setOnlyPinWithMyQuest((prev) => !prev);
   };
 

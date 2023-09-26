@@ -8,19 +8,11 @@ export async function fetchLocations() {
 }
 
 export async function getLocationData(id) {
-  try {
-    const { data } = await axios.get(`${BASE_URL}/locations/${id}`);
-    const location = data.location;
-    const quests = data.quests;
+  const { data } = await axios.get(`${BASE_URL}/locations/${id}`);
+  const location = data.location;
+  const quests = data.quests;
 
-    return { location, quests };
-  } catch (e) {
-    console.error(e);
-    return {
-      message: "failed to load this location",
-      status: 400,
-    };
-  }
+  return { location, quests };
 }
 
 export const createLocation = async (data) => {

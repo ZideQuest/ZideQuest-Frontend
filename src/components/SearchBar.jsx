@@ -1,10 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { debounce } from "lodash";
 
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   Pressable,
   Button,
@@ -19,10 +18,12 @@ import RecentSearch from "./RecentSearch";
 import * as TabNavigation from "../data/TabNavigation";
 import LocationSearchItem from "./Location/LocationSearchItem";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import SearchableDropdown from "react-native-searchable-dropdown";
 
 import { getCenterFromPins } from "../data/locations";
 import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
+import { getTags } from "../data/tag";
 
 export default function SearchBar({ searching, setSearching }) {
   const {
@@ -34,11 +35,27 @@ export default function SearchBar({ searching, setSearching }) {
     mapMoveTo,
   } = useAppContext();
   const [search, setSearch] = useState(null);
-  const [searchResult, setSearchResult] = useState(null);
+  const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const searchFetching = async (query) => {
-    const data = await searchQuest(query);
+  const [tags, setTags] = useState([]);
+  const [selectedTag, setSelectedTag] = useState([]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const data = await getTags();
+        setTags(data.map((t) => ({ name: t.tagName, id: t._id })));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchTags();
+  }, []);
+
+  const searchFetching = async (query, tags) => {
+    const data = await searchQuest(query, tags);
+    console.log(data);
     setSearchResult(data);
     setLoading(false);
   };
@@ -49,7 +66,7 @@ export default function SearchBar({ searching, setSearching }) {
     setLoading(true);
     setSearch(q);
     setSearchResult([]);
-    debouncedFetch(q);
+    debouncedFetch(q, selectedTag);
   };
 
   const onFocusHandler = () => {
@@ -58,9 +75,9 @@ export default function SearchBar({ searching, setSearching }) {
   };
 
   const onBlurHandler = () => {
-    if (!search) {
-      setSearching(false);
-    }
+    // if (!search) {
+    //   setSearching(false);
+    // }
   };
 
   const onSubmitHandler = () => {
@@ -81,6 +98,7 @@ export default function SearchBar({ searching, setSearching }) {
   const onCancelHander = () => {
     setSearch(null);
     setSearchResult([]);
+    setSelectedTag([])
     setSearching(false);
     Keyboard.dismiss();
     bottomModalRef.current?.snapToIndex(1);
@@ -143,8 +161,48 @@ export default function SearchBar({ searching, setSearching }) {
         )}
       </View>
 
+      {searching && (
+        <View>
+          <SearchableDropdown
+            multi={true}
+            selectedItems={selectedTag}
+            onItemSelect={(item) => {
+              const items = [item, ...selectedTag];
+              setSelectedTag(items);
+            }}
+            containerStyle={{ padding: 5 }}
+            onRemoveItem={(item, index) => {
+              const items = selectedTag.filter((sitem) => sitem.id !== item.id);
+              setSelectedTag(items);
+            }}
+            itemStyle={{
+              padding: 10,
+              marginTop: 2,
+              backgroundColor: "#ddd",
+              borderColor: "#bbb",
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            itemTextStyle={{ color: "#222" }}
+            itemsContainerStyle={{ maxHeight: 140 }}
+            items={tags}
+            defaultIndex={2}
+            chip={true}
+            resetValue={false}
+            textInputProps={{
+              placeholder: "เลือกแท็กสำหรับเควสนี้",
+              underlineColorAndroid: "transparent",
+              style: styles.textIn,
+            }}
+            listProps={{
+              nestedScrollEnabled: true,
+            }}
+          />
+        </View>
+      )}
+
       <View style={styles.greyBackground}>
-        {searching && search && (
+        {searching && (search || selectedTag.length > 0) && (
           <View style={styles.searchResultContainer}>
             {!loading &&
               !searchResult.quests?.length &&

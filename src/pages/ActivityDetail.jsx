@@ -55,6 +55,7 @@ export default function ActivityDetail() {
             setLoading(true);
             try {
               const newData = await join_leave(questId);
+              console.log(newData);
               setIsJoined(false);
               setQuestDetail({
                 ...QuestDetail,
@@ -62,6 +63,7 @@ export default function ActivityDetail() {
               });
               Alert.alert("ยกเลิกสำเร็จ!");
             } catch (error) {
+              console.error(error);
               Alert.alert("ยกเลิกไม่สำเร็จ");
             }
             setLoading(false);
@@ -142,24 +144,19 @@ export default function ActivityDetail() {
                   ยังไม่ได้เช็คอิน
                 </Text>
               ))}
+
             <View style={styles.ButtonCon}>
-              {QuestDetail.status ? (
+              {isJoined ? (
                 <BigButton
                   text="ยกเลิกการเข้าร่วม"
-                  bg={buttonGrey}
-                  color="grey"
-                  onPress={() => alert("เควสจบไปแล้ว")}
-                />
-              ) : isJoined ? (
-                <BigButton
-                  text="ยกเลิกการเข้าร่วม"
-                  bg="#8C1C15"
+                  bg={QuestDetail.status ? buttonGrey : "#8C1C15"}
                   onPress={() => leaveAlert(questId)}
                 />
               ) : (
                 <BigButton
                   text="เข้าร่วมกิจกรรม"
-                  bg={primaryColor}
+                  bg={QuestDetail.status ? buttonGrey : primaryColor}
+                  color={QuestDetail.status ? "grey" : "white"}
                   onPress={() => joinAlert(questId)}
                 />
               )}
