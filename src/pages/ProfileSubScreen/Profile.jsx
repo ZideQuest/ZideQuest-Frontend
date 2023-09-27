@@ -3,17 +3,20 @@ import * as TabNavigation from "../../data/TabNavigation";
 import ProfilePic from "../../../assets/images/Jitat.jpg";
 import goBackPic from "../../../assets/images/back-button.png";
 import ProgressBar from 'react-native-progress/Bar';
+import { BGcolor } from "../../data/color";
 
 export default function Profile({ navigation }) {
   return (
-    <ScrollView style={styles.profile}>
+    <View>
+      {/* Exit Button */} 
       <Pressable
         onPress={() => TabNavigation.navigate("Recommend")}
         style={styles.exit}
       >
         <Image style={{width: 30, height: 30, borderRadius:5}} source={goBackPic} />
       </Pressable>
-
+      
+      {/* Profile Picture + Name */} 
       <View style={{width:"100%",display:"flex", justifyContent:"center",alignItems:"center"}}>
         <Image style={{
             width: 200, 
@@ -25,7 +28,6 @@ export default function Profile({ navigation }) {
           }}
           source={ProfilePic}
         />
-
         <Text style={{fontSize:30, fontWeight:"bold",marginTop: 20}}>จิตร์ทัศน์ ฝักเจริญผล</Text>
         <Pressable
           onPress={() => navigation.navigate("Quests")}
@@ -35,8 +37,10 @@ export default function Profile({ navigation }) {
         </Pressable>
       </View>
 
-      <View style={{justifyContent:"flex-start",alignItems:"flex-start"}}>
-        <Text style={{fontSize:20, fontWeight:"bold",marginLeft:30,marginTop: 20,marginBottom:5}}>
+
+      {/* Badges */}
+      <View style={{justifyContent:"flex-start",alignItems:"flex-start",backgroundColor:BGcolor,padding:10}}>
+        <Text style={{fontSize:20, fontWeight:"bold",marginLeft:30,marginTop: 10,marginBottom:5}}>
           Badges
         </Text>
         <View style={styles.badges_container}>
@@ -46,8 +50,10 @@ export default function Profile({ navigation }) {
         </View>
       </View>
 
-      <View style={{width:"100%",display:"flex", justifyContent:"center",alignItems:"center"}}>
+      {/* Progress Bar */}
+      <View style={{display:"flex", justifyContent:"center",alignItems:"center"}}>
         <ScrollView styles={styles.progress_container}>
+  
           <View style={{justifyContent:"flex-start"}}>
             <Text style={{fontSize:20, fontWeight:"bold",marginTop: 20}}>
               My Quests
@@ -56,39 +62,84 @@ export default function Profile({ navigation }) {
               I am a student at Kasetsart University. I am currently studying Computer Engineering.
             </Text>
           </View>
-          <View style={{gap:10}}>
-          <ProgressBar progress={0.6} width={200} height={20} />
-          <ProgressBar progress={0.1} width={200} height={20} />
-          <ProgressBar progress={0.5} width={200} height={20} />
+          <View style={{paddingLeft:10,backgroundColor:BGcolor}}>
+            <Text style={styles.progress_header}>
+              1. กิจกรรมมหาลัย
+            </Text>
+            <ProgressBar progress={0.6} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              2.1 ด้านพัฒนาคุณธรรม จริยธรรม
+            </Text>
+            <ProgressBar progress={0.1} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              2.2 ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคลและการสื่อสาร (1/2)
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              2.3 ด้านพัฒนาสุขภาพ
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              3. กิจกรรมเพื่อสังคม
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              4.1 ประธานองค์กรกิจกรรมนิสิต
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              4.2 กรรมการบริหารองค์กรกิจกรรมนิสิต
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              5.1 นิสิตดีเด่นด้านความประพฤฤติ
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              5.2 นิสิตดีเด่นด้านความคิดสร้างสรรค์และนวัตกรรม
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              5.3 นิสิตดีเด่นด้านกิจกรรมนอกหลักสูตร
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
+            <Text style={styles.progress_header}>
+              5.4 นิสิตดีเด่นด้านกีฬา
+            </Text>
+            <ProgressBar progress={0.5} width={200} height={20} />
           </View>
-          <Text></Text>
-          <Text>Ayo 2</Text>
+
         </ScrollView>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  exit: {
+    margin: 10,
+  },
+  progress_header: {
+    fontSize:15, marginTop: 2, justifyContent:"flex-start"
+  },
   progress_container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
     boarderRadius: 5,
-    backgroundColor: "lightgrey",
+    backgroundColor: BGcolor,
   },
   badges_container: {
-    flexDirection: 'row', // Horizontal layout
-    justifyContent: 'space-between', // Space evenly between images
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
     marginLeft:30,
 
   },
   badge: {
-    width: 50, // Set your desired width
-    height: 50, // Set your desired height
-    resizeMode: 'cover', // You can adjust the resizeMode as needed
-    borderRadius: 50, // Set your desired border radius
+    width: 50,
+    height: 50,
+    resizeMode: 'cover', 
+    borderRadius: 50, 
     marginRight: 10,
   },
   quest_button: {
