@@ -62,9 +62,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   subjectContainer: {
+    borderColor: "#CDCDCD",
     borderWidth: 1,
-    borderRadius: 5,
-    padding: 3
+    padding: 4,
+    backgroundColor: "#fbfbfb",
+    borderRadius: 10,
+    fontSize: 16,
   },
   subjectText: {
     fontFamily: "Kanit400",

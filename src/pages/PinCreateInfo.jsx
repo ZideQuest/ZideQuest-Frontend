@@ -9,10 +9,12 @@ import BackButton from "../components/button/BackButton";
 import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
 import { createLocation } from "../data/locations";
-import { primaryColor } from "../data/color";
+import { primaryColor, textColor } from "../data/color";
 import BigButton from "../components/button/BigButton";
 import ImagePreviewModal from "../components/misc/ImagePreviewModal";
 import Spinner from "../components/Animations/Spinner";
+import AddPhoto from "../components/AddPhoto";
+import close_icon from "../../assets/images/close_icon.png";
 
 export default function PinCreateInfo() {
   const { newMarker, setNewMarker, mapRefetch, setFocusedPin } =
@@ -26,23 +28,19 @@ export default function PinCreateInfo() {
     setFocusedPin(pinId);
   };
 
-  const [state, setState] = useState({});
+  const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [place, setPlace] = useState(newMarker?.name);
   const [detail, setDetail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const submitHandler = async () => {
-    if (!place && !detail) {
-      alert("กรุณากรอกชื่อสถานที่และรายละเอียด");
-      return;
-    }
-    if (!place) {
-      alert("กรุณากรอกชื่อสถานที่");
-      return;
-    }
-    if (!detail) {
-      alert("กรุณากรอกรายละเอียด");
+    setIsSubmitted(true);
+
+    if (!place || !detail) {
+      alert("กรุณากรอกรายละเอียดให้ครบถ้วน");
       return;
     }
     setIsLoading(true);
@@ -53,51 +51,22 @@ export default function PinCreateInfo() {
     bodyFormData.append("description", detail);
     bodyFormData.append("latitude", newMarker.latitude);
     bodyFormData.append("longitude", newMarker.longitude);
-    bodyFormData.append("img", {
-      uri: state.image?.assets?.[0]?.uri,
-      name: state.image?.assets?.[0]?.fileName,
-      type: state.image?.assets?.[0]?.type,
-    });
+
+    if (image != null) {
+      bodyFormData.append("img", {
+        name: image.fileName,
+        type: image.type,
+        uri:
+          Platform.OS === "ios" ? image.uri.replace("file://", "") : image.uri,
+      });
+    }
+
     const response = await createLocation(bodyFormData);
     if (response.status === 200) {
       const { data } = response;
       closeHandler(data._id);
     }
     setIsLoading(false);
-  };
-
-  const cameraRequest = async () => {
-    const results = await ImagePicker.requestCameraPermissionsAsync();
-    if (results.granted) {
-      let result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.3,
-      });
-      if (!result.canceled) {
-        setState({
-          image: result,
-        });
-      }
-    }
-  };
-
-  const galleryRequest = async () => {
-    const results = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (results.granted) {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.3,
-      });
-      if (!result.canceled) {
-        setState({
-          image: result,
-        });
-      }
-    }
   };
 
   if (isLoading) {
@@ -113,55 +82,76 @@ export default function PinCreateInfo() {
       <ImagePreviewModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        imageUri={state.image?.assets?.[0]?.uri}
+        imageUri={image?.uri}
       />
 
       <View style={styles.container}>
-        <BackButton onPress={() => setNewMarker(null)} />
-        <Text style={styles.txt}>เพิ่มสถานที่ใหม่</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.txt}>เพิ่มสถานที่ใหม่</Text>
+          <BackButton onPress={() => setNewMarker(null)} />
+        </View>
         <View style={styles.input}>
-          <View>
-            <Text>ชื่อสถานที่*</Text>
+          <View style={styles.inputField}>
+            <Text
+              style={[
+                styles.inputDeail,
+                { color: isSubmitted && !place ? "red" : textColor },
+              ]}
+            >
+              ชื่อสถานที่*
+            </Text>
             <BottomSheetTextInput
-              style={styles.txtin}
+              style={[
+                styles.txtin,
+                { borderColor: isSubmitted && !place ? "red" : "#CDCDCD" },
+              ]}
               value={place}
               onChangeText={setPlace}
             />
           </View>
-          <View>
-            <Text>รายละเอียด*</Text>
+          <View style={styles.inputField}>
+            <Text
+              style={[
+                styles.inputDeail,
+                { color: isSubmitted && !detail ? "red" : textColor },
+              ]}
+            >
+              รายละเอียด*
+            </Text>
             <BottomSheetTextInput
-              style={styles.txtin}
+              style={[
+                styles.txtin,
+                { borderColor: isSubmitted && !detail ? "red" : "#CDCDCD" },
+              ]}
               value={detail}
               onChangeText={setDetail}
             />
           </View>
         </View>
-        <Text>เพิ่มรูปภาพ</Text>
-        <View style={styles.icon}>
-          <TouchableOpacity onPress={cameraRequest}>
-            <Image source={photo_icon} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={galleryRequest}>
-            <Image source={picture_icon} />
-          </TouchableOpacity>
+
+        <View style={styles.box}>
+          <Text style={styles.inputDeail}>เพิ่มรูปภาพ</Text>
+          <AddPhoto image={image} setImage={setImage} />
+          {image && (
+            <View style={styles.image}>
+              <TouchableOpacity
+                onPress={() => {
+                  setImage(null);
+                }}
+                style={styles.xBtn}
+              >
+                <Image source={close_icon} style={styles.x} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <Image
+                  source={{ uri: image.uri }}
+                  style={{ height: 150, flex: 1 }}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
-        {state.image && (
-          <TouchableOpacity
-            style={styles.img}
-            onPress={() => {
-              setModalVisible(true);
-            }}
-          >
-            <Image
-              source={{ uri: state?.image.assets?.[0]?.uri }}
-              style={{ height: 35, width: 35 }}
-            />
-            <Text style={styles.txt_img}>
-              {state?.image?.assets?.[0]?.fileName}
-            </Text>
-          </TouchableOpacity>
-        )}
+
         <View style={{ height: 45 }}>
           <BigButton
             bg={primaryColor}
@@ -176,26 +166,29 @@ export default function PinCreateInfo() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
+    paddingHorizontal: 15,
+    paddingTop: 7,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   txt: {
-    textAlign: "center",
     fontSize: 30,
-    marginTop: 20,
+    fontFamily: "Kanit400",
   },
   input: {
-    marginTop: 30,
     gap: 10,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   txtin: {
     borderWidth: 1,
-    minHeight: 27.25,
     borderRadius: 5,
     backgroundColor: "#FBFBFB",
     borderColor: "#CDCDCD",
     padding: 5,
+    fontFamily: "Kanit300",
   },
   img: {
     marginTop: 10,
@@ -204,23 +197,42 @@ const styles = StyleSheet.create({
     gap: 10,
     height: 35,
   },
-  icon: {
-    marginTop: 10,
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 10,
-  },
-  btn: {
-    // position: "absolute",
-    // bottom: 20,
-    // flex: 1,
-    backgroundColor: primaryColor,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-    height: 40,
+
+  xBtn: {
+    position: "absolute",
+    top: 5,
+    right: 5,
+    zIndex: 10,
+    backgroundColor: "white",
+    width: 20,
+    height: 20,
     borderRadius: 10,
-    marginBottom: 20,
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 4,
+  },
+  x: {
+    width: "100%",
+    height: "100%",
+  },
+  image: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    overflow: "hidden",
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    position: "relative",
+  },
+  inputDeail: {
+    fontFamily: "Kanit300",
+  },
+  inputField: {
+    gap: 3,
+  },
+  box: {
+    marginBottom: 8,
   },
 });
