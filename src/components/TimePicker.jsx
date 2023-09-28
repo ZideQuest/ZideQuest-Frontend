@@ -1,9 +1,41 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
-import React, { useEffect, useState } from "react";
-import { Button, Platform, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
+import {
+  Button,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
+
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import {
+  BottomSheetModal,
+  BottomSheetBackdrop,
+  BottomSheetView,
+  useBottomSheetDynamicSnapPoints,
+} from "@gorhom/bottom-sheet";
+import BigButton from "./button/BigButton";
+import { primaryColor, textColor } from "../data/color";
 
 button_color = "#FE9F60";
+const options = {
+  timeZone: "Asia/Bangkok",
+  weekday: "short",
+  hour: "2-digit",
+  minute: "2-digit",
+  day: "2-digit",
+  month: "2-digit",
+  year: "2-digit",
+};
 
 export const TimePicker = ({
   startDate,
@@ -23,7 +55,19 @@ export const TimePicker = ({
   const [beDate, bseteDate] = useState("");
   const [bsTime, bsetsTime] = useState("");
   const [beTime, bseteTime] = useState("");
-  
+
+  const [changingTime, setChangingTime] = useState(new Date());
+  const [selectingMode, setSelectingMode] = useState(null);
+  const insets = useSafeAreaInsets();
+  const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], []);
+
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
+
   useEffect(() => {
     if (beDate != "" && beTime != "") {
       const endDateString = beDate + "T" + beTime;
@@ -54,7 +98,11 @@ export const TimePicker = ({
     let tempDate = new Date(currentDate);
 
     if (isTime) {
-      setsTime(tempDate.getHours().toString().padStart(2, "0") + ":" + tempDate.getMinutes().toString().padStart(2, "0"));
+      setsTime(
+        tempDate.getHours().toString().padStart(2, "0") +
+          ":" +
+          tempDate.getMinutes().toString().padStart(2, "0")
+      );
       bsetsTime(
         tempDate.getHours().toString().padStart(2, "0") +
           ":" +
@@ -87,7 +135,11 @@ export const TimePicker = ({
     let tempDate = new Date(currentDate);
 
     if (isTime) {
-      seteTime(tempDate.getHours().toString().padStart(2, "0") + ":" + tempDate.getMinutes().toString().padStart(2, "0"));
+      seteTime(
+        tempDate.getHours().toString().padStart(2, "0") +
+          ":" +
+          tempDate.getMinutes().toString().padStart(2, "0")
+      );
       bseteTime(
         tempDate.getHours().toString().padStart(2, "0") +
           ":" +
@@ -115,17 +167,29 @@ export const TimePicker = ({
     }
   };
 
-  const onChangeStartIOS = (event, selectedTime) => {
-    setShow(false);
+  const timePickingHandler = (event, selectedTime) => {
     let time = new Date(selectedTime);
-    setStartDate(time);
+    setChangingTime(time);
   };
 
-  const onChangeEndIOS = (event, selectedTime) => {
-    setShow(false);
-    let time = new Date(selectedTime);
-    setEndDate(time);
+  const confirmHandler = () => {
+    bottomSheetModalRef.current?.dismiss();
+    if (selectingMode == "start") {
+      setStartDate(changingTime);
+    } else {
+      setEndDate(changingTime);
+    }
   };
+
+  const cancelHander = () => {
+    bottomSheetModalRef.current?.dismiss();
+  };
+
+  const bottomSheetModalRef = useRef(null);
+  const handlePresentModalPress = useCallback((modePressed) => {
+    setSelectingMode(modePressed);
+    bottomSheetModalRef.current?.present();
+  }, []);
 
   if (Platform.OS === "android") {
     return (
@@ -202,28 +266,76 @@ export const TimePicker = ({
     return (
       <View style={styles.view}>
         <View style={styles.innerView}>
-          <Text style={{ fontSize: 16 }}>เริ่มจัดกิจกรรม</Text>
+          <TouchableOpacity onPress={() => handlePresentModalPress("start")}>
+            <Text style={styles.dateText}>
+              เริ่มจัดกิจกรรม {startDate.toLocaleString("en-US", options)}  ▼
+            </Text>
+          </TouchableOpacity>
 
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={startDate}
-            mode={"datetime"}
-            is24Hour={true}
-            onChange={onChangeStartIOS}
-            style={styles.datePicker}
-          />
-        </View>
-        <View style={styles.innerView}>
-          <Text style={{ fontSize: 16 }}>เวลาจบ</Text>
-          <DateTimePicker
-            testID="dateTimePicker"
-            minimumDate={startDate}
-            value={endDate}
-            mode={"datetime"}
-            is24Hour={true}
-            onChange={onChangeEndIOS}
-            style={styles.datePicker}
-          />
+          <TouchableOpacity onPress={() => handlePresentModalPress("end")}>
+            <Text style={styles.dateText}>
+              สิ้นสุดกิจกรรม {endDate.toLocaleString("en-US", options)}  ▼
+            </Text>
+          </TouchableOpacity>
+
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            enableOverDrag={false}
+            enablePanDownToClose={false}
+            handleIndicatorStyle={{ height: 0 }}
+            handleStyle={{ height: 0, padding: 0 }}
+            stackBehavior="push"
+            snapPoints={animatedSnapPoints}
+            handleHeight={animatedHandleHeight}
+            contentHeight={animatedContentHeight}
+            backdropComponent={(props) => (
+              <BottomSheetBackdrop
+                {...props}
+                disappearsOnIndex={-1}
+                appearsOnIndex={0}
+              />
+            )}
+          >
+            <BottomSheetView
+              onLayout={handleContentLayout}
+              style={[
+                styles.contentContainer,
+                { paddingBottom: insets.bottom },
+              ]}
+            >
+              <Text style={{ fontFamily: "Kanit400", fontSize: 20 }}>
+                {selectingMode == "start"
+                  ? "เลือกเวลาเริ่มต้น"
+                  : "เลือกเวลาสิ้นสุด"}
+              </Text>
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={changingTime}
+                mode={"datetime"}
+                is24Hour={true}
+                display="spinner"
+                onChange={timePickingHandler}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 20,
+                  backgroundColor: "white",
+                }}
+              >
+                <BigButton
+                  text="ยืนยัน"
+                  bg={primaryColor}
+                  onPress={confirmHandler}
+                />
+                <BigButton
+                  text="ยกเลิก"
+                  bg="rgba(61, 61, 55, 0.28)"
+                  onPress={cancelHander}
+                />
+              </View>
+            </BottomSheetView>
+          </BottomSheetModal>
         </View>
       </View>
     );
@@ -268,4 +380,13 @@ const styles = StyleSheet.create({
     // borderWidth: 1
   },
   buttonCon: {},
+  contentContainer: {
+    padding: 20,
+  },
+  dateText: {
+    fontSize: 16,
+    fontFamily: "Kanit300",
+    lineHeight: 20,
+    color: textColor
+  },
 });
