@@ -8,3 +8,4 @@ export const buttonBrightGreen = "#72D250";
 export const buttonBlue = "#0075FF";
 export const buttonOrange = "#E86A33";
 export const buttonDarkRed = "#8C1C15";
+export const progressBarGreen = "rgba(18, 249, 71, 0.99)"
