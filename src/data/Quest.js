@@ -21,36 +21,24 @@ export async function createQuest(questDetail, locationId) {
 export async function getQuestData(id) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
-  try {
-    const { data } = await axios.get(`${BASE_URL}/quests/${id}/find`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
-    return data;
-  } catch (e) {
-    console.error(e);
-    return {
-      message: "failed to load this Quest",
-      status: 400,
-    };
-  }
+  const { data } = await axios.get(`${BASE_URL}/quests/${id}/find`, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+  return data;
 }
 
-export async function searchQuest(name) {
-  try {
-    const { data } = await axios.get(`${BASE_URL}/search`, {
-      params: { Name: name },
-    });
+export async function searchQuest(name, selectedTag) {
+  console.log({ Name: name, Tags: selectedTag.map((t) => t.id) });
+  
+  console.log(name, selectedTag);
 
-    return data;
-  } catch (e) {
-    console.error(e);
-    return {
-      message: "failed to search Quest",
-      status: 400,
-    };
-  }
+  const { data } = await axios.get(`${BASE_URL}/search`, {
+    params: { Name: name, Tag: selectedTag[0] },
+  });
+
+  return data;
 }
 
 export async function fetchParticipants(questId) {

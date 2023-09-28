@@ -1,46 +1,41 @@
 import { StyleSheet, Text, Button, View, Linking } from "react-native";
-import React, { useEffect, useState, navigation } from "react";
+import React, { useEffect, useState } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { LinearGradient } from "expo-linear-gradient";
-import { buttonBlue, primaryColor } from "../data/color";
 import * as TabNavigation from "../data/TabNavigation";
 import { buttonOrange, textColor } from "../data/color";
-import { BASE_URL } from "../data/backend_url";
+import { userCheckin } from "../data/authen";
 
 export default function CheckinScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    if (data.startsWith("http://") || data.startsWith("https://")) {
-      alert(
-        `Barcode with type ${type} and data ${Linking.openURL(
-          data
-        )} has been scanned`
-      );
-      ///alert(`Please scan only Zidequest QR CODE`);
-    } else {
-      const fixedDomain = BASE_URL;
-      const fullURL = fixedDomain + data;
-
-      alert(
-        `Barcode with type ${type} and data ${Linking.openURL(
-          fullURL
-        )} has been scanned`
-      );
-    }
-  };
-  const requestCameraPermissionAgain = async () => {
+  const requestCameraPermission = async () => {
     const { status } = await BarCodeScanner.requestPermissionsAsync();
     setHasPermission(status === "granted");
+  };
+
+  useEffect(() => {
+    requestCameraPermission();
+  }, []);
+
+  const handleBarCodeScanned = async ({ type, data }) => {
+    if (scanned) return;
+
+    setScanned(true);
+    const quest = data.split("/");
+    const questId = quest[2];
+    
+    navigation.navigate("App");
+    
+    try {
+      const res = await userCheckin(questId);
+      TabNavigation.navigate("QuestDetail", { questId });
+      alert(`เช็คอินกิจกรรม ${res.questName} สำเร็จ!`)
+      
+    } catch (error) {
+      console.log(error);
+    }
+
   };
 
   if (hasPermission === null) {
@@ -52,16 +47,18 @@ export default function CheckinScreen({ navigation }) {
         <Text style={styles.Access_text}>No Access to Camera</Text>
         <Button
           title="Request permission again"
-          onPress={requestCameraPermissionAgain}
+          onPress={requestCameraPermission}
           color={buttonOrange}
         />
       </View>
     );
   }
+
   return (
     <View style={styles.container}>
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarCodeScanned={handleBarCodeScanned}
+        style={{ width: "100%", height: "100%" }}
       />
     </View>
   );
@@ -70,18 +67,18 @@ export default function CheckinScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
     width: "100%",
   },
-  linearGradient: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    width: "100%",
-  },
-  Access_text: {
-    fontSize: 20,
-    fontFamily: "Kanit400",
-  },
+  // linearGradient: {
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   flex: 1,
+  //   width: "100%",
+  // },
+  // Access_text: {
+  //   fontSize: 20,
+  //   fontFamily: "Kanit400",
+  // },
 });
