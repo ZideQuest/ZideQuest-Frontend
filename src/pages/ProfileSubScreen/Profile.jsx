@@ -79,10 +79,9 @@ export default function Profile({ navigation }) {
       {/* Progress Bar */}
 
       {/* Header and Quest Button */}
-
       <View
         style={{
-          gap: 4,
+          gap: 5,
           backgroundColor: buttonLightGrey,
           borderRadius: 10,
           padding: 10,
@@ -95,7 +94,7 @@ export default function Profile({ navigation }) {
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "bold", marginRight: 100 }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginRight: 105 }}>
             PROGRESS
           </Text>
 
@@ -116,14 +115,14 @@ export default function Profile({ navigation }) {
           color={progressBarGreen}
         />
         <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
-        <Text>2.1 ด้านพัฒนาคุณธรรม จริยธรรม</Text>
+        <Text>ด้านพัฒนาคุณธรรม จริยธรรม</Text>
         <Progress.Bar
           progress={0.3}
           width={300}
           height={10}
           color={progressBarGreen}
         />
-        <Text>2.2 ด้านพัฒนาทักษะการคิดและการเรียนรู้</Text>
+        <Text>ด้านพัฒนาทักษะการคิดและการเรียนรู้</Text>
         <Progress.Bar
           progress={0.2}
           width={300}
@@ -131,14 +130,35 @@ export default function Profile({ navigation }) {
           color={progressBarGreen}
         />
         <Text>
-          2.3 ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคลและการสื่อสาร{" "}
+          ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคลและการสื่อสาร
         </Text>
+        <Text>ด้านพัฒนาสุขภาพ</Text>
+        <Progress.Bar
+          progress={0.3}
+          width={300}
+          height={10}
+          color={progressBarGreen}
+        />
+        <Text>3.กิจกรรมเพื่อสังคม</Text>
+        <Progress.Bar
+          progress={0.3}
+          width={300}
+          height={10}
+          color={progressBarGreen}
+        />
 
         <Divider></Divider>
 
         {/* Extra Progress */}
         <Text>4. เข้าาร่วมกิจกรรมในฐานะกรรมการองค์กรกิจกรรมนิสิต</Text>
-        <Text>4.1 กิจกรรมเพื่อสังคม</Text>
+        <Text>ประธานองค์กรกิจกรรมนิสิต</Text>
+        <Progress.Bar
+          progress={0.5}
+          width={300}
+          height={10}
+          color={progressBarGreen}
+        />
+        <Text>กิจกรรมการบริหารองค์กรกิจกรรมนิสิต</Text>
         <Progress.Bar
           progress={0.5}
           width={300}
@@ -146,28 +166,28 @@ export default function Profile({ navigation }) {
           color={progressBarGreen}
         />
         <Text>5.ได้รับเลือกให้เป็นนิสิตดีเด่น</Text>
-        <Text>5.1 ด้านความประพฤติ</Text>
+        <Text>ด้านความประพฤติ</Text>
         <Progress.Bar
           progress={0.5}
           width={300}
           height={10}
           color={progressBarGreen}
         />
-        <Text>5.2 ด้านความคิดสร้างสรรค์และนวัตกรรม</Text>
+        <Text>ด้านความคิดสร้างสรรค์และนวัตกรรม</Text>
         <Progress.Bar
           progress={0.5}
           width={300}
           height={10}
           color={progressBarGreen}
         />
-        <Text>5.3 ด้านกิจกรรมนอกหลักสูตร</Text>
+        <Text>ด้านกิจกรรมนอกหลักสูตร</Text>
         <Progress.Bar
           progress={0.5}
           width={300}
           height={10}
           color={progressBarGreen}
         />
-        <Text>5.4 ด้านกีฬา</Text>
+        <Text>ด้านกีฬา</Text>
         <Progress.Bar
           progress={0.5}
           width={300}
@@ -209,10 +229,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   quest_button: {
-    backgroundColor: buttonGrey,
-    borderRadius: 5,
-    padding: 10,
-    margin: 10,
+    backgroundColor: "#e8e7e6",
+    borderRadius: 20,
+    padding: 5,
     width: 100,
     textAlign: "center",
   },
