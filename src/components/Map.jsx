@@ -8,6 +8,7 @@ import { mapCustomStyle } from "../data/map-style";
 import { fetchLocations } from "../data/locations";
 import * as TabNavigation from "../data/TabNavigation";
 import NavBar from "./NavBar";
+import Alert from "./misc/Alert";
 
 const initialRegion = {
   latitude: 13.848236064906674,
@@ -68,6 +69,11 @@ export default function Map() {
     if (TabNavigation.currentScreen() == "CreatePin") {
       setNewMarker(null);
     }
+    
+    if (TabNavigation.currentScreen() == "PinCreateInfo") {
+      return
+    }
+    
 
     TabNavigation.navigate("PinDetail", { pinId });
     animateToRegion(lat, lng);
