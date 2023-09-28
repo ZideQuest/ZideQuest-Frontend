@@ -51,6 +51,7 @@ export default function Profile({ navigation }) {
           }}
           source={ProfilePic}
         />
+
         <Text style={{ fontSize: 30, fontWeight: "bold", marginTop: 20 }}>
           จิตร์ทัศน์ ฝักเจริญผล
         </Text>
@@ -84,7 +85,7 @@ export default function Profile({ navigation }) {
           gap: 5,
           backgroundColor: buttonLightGrey,
           borderRadius: 10,
-          padding: 10,
+          padding: 12,
         }}
       >
         <View
@@ -94,7 +95,7 @@ export default function Profile({ navigation }) {
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "bold", marginRight: 105 }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginRight: 116 }}>
             PROGRESS
           </Text>
 
@@ -107,7 +108,7 @@ export default function Profile({ navigation }) {
           </Pressable>
         </View>
         {/* Main Progress */}
-        <Text>1. กิจกรรมมหาลัย</Text>
+        <Text>1. กิจกรรมหาลัย</Text>
         <Progress.Bar
           progress={0.5}
           width={300}
@@ -132,6 +133,12 @@ export default function Profile({ navigation }) {
         <Text>
           ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคลและการสื่อสาร
         </Text>
+        <Progress.Bar
+          progress={0.2}
+          width={300}
+          height={10}
+          color={progressBarGreen}
+        />
         <Text>ด้านพัฒนาสุขภาพ</Text>
         <Progress.Bar
           progress={0.3}
@@ -201,8 +208,7 @@ export default function Profile({ navigation }) {
 
 const styles = StyleSheet.create({
   profileCard: {
-    margin: 10,
-    padding: 5,
+    padding: 10,
     backgroundColor: "white",
     borderRadius: 10,
   },
@@ -212,21 +218,22 @@ const styles = StyleSheet.create({
   progress_container: {
     margin: 10,
     padding: 5,
-    borderRadius: 5, // Corrected the typo here
+    borderRadius: 5,
     backgroundColor: buttonGrey,
   },
   badges_container: {
-    flexDirection: "row", // Horizontal layout
-    justifyContent: "space-between", // Space evenly between images
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 10,
     marginLeft: 30,
   },
   badge: {
-    width: 50, // Set your desired width
-    height: 50, // Set your desired height
-    resizeMode: "cover", // You can adjust the resizeMode as needed
-    borderRadius: 50, // Set your desired border radius
+    width: 50,
+    height: 50,
+    resizeMode: "cover",
+    borderRadius: 50,
     marginRight: 10,
+    marginBottom: 5,
   },
   quest_button: {
     backgroundColor: "#e8e7e6",
