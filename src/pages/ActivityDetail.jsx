@@ -25,12 +25,15 @@ export default function ActivityDetail() {
         text: "OK!",
         onPress: async () => {
           setLoading(true);
-          const detail = await join_leave(questId);
-          if (detail != null) {
-            setQuestDetail(detail);
+          try {
+            const newData = await join_leave(questId);
             setIsJoined(true);
+            setQuestDetail({
+              ...QuestDetail,
+              countParticipant: newData.countParticipant,
+            });
             Alert.alert("เข้าร่วมสำเร็จ!");
-          } else {
+          } catch (error) {
             Alert.alert("เข้าร่วมไม่สำเร็จ");
           }
           setLoading(false);
@@ -47,15 +50,20 @@ export default function ActivityDetail() {
       "ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES",
       [
         {
-          text: "YES",
+          text: "OK!",
           onPress: async () => {
             setLoading(true);
-            const detail = await join_leave(questId);
-            if (detail != null) {
-              setQuestDetail(detail);
+            try {
+              const newData = await join_leave(questId);
+              console.log(newData);
               setIsJoined(false);
+              setQuestDetail({
+                ...QuestDetail,
+                countParticipant: newData.countParticipant,
+              });
               Alert.alert("ยกเลิกสำเร็จ!");
-            } else {
+            } catch (error) {
+              console.error(error);
               Alert.alert("ยกเลิกไม่สำเร็จ");
             }
             setLoading(false);
@@ -82,23 +90,20 @@ export default function ActivityDetail() {
     fetchData(questId);
   }, []);
 
-  if (isLoading) {
-    return (
-      <BottomsheetDynamic
-        style={styles.container}
-        snapPoints={["20%"]}
-        index={1}
-      >
-        <Spinner />
-      </BottomsheetDynamic>
-    );
-  } else {
-    return (
-      <BottomsheetDynamic
-        style={styles.container}
-        snapPoints={["20%"]}
-        index={1}
-      >
+  return (
+    <BottomsheetDynamic style={styles.container} snapPoints={["20%"]} index={1}>
+      {isLoading ? (
+        <View
+          style={{
+            flex: 1,
+            height: 300,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Spinner />
+        </View>
+      ) : (
         <BottomSheetScrollView>
           <View style={styles.ScrollView}>
             <View style={{ width: "100%", paddingHorizontal: 15 }}>
@@ -129,33 +134,38 @@ export default function ActivityDetail() {
                 {QuestDetail.description}
               </Text>
             </View>
+            {isJoined &&
+              (QuestDetail.isCheckedIn ? (
+                <Text style={[styles.checkinStatus, { color: "green" }]}>
+                  เช็คอินแล้ว
+                </Text>
+              ) : (
+                <Text style={[styles.checkinStatus, { color: "red" }]}>
+                  ยังไม่ได้เช็คอิน
+                </Text>
+              ))}
+
             <View style={styles.ButtonCon}>
-              {QuestDetail.status ? (
+              {isJoined ? (
                 <BigButton
                   text="ยกเลิกการเข้าร่วม"
-                  bg={buttonGrey}
-                  color="grey"
-                  onPress={() => alert("เควสจบไปแล้ว")}
-                />
-              ) : isJoined ? (
-                <BigButton
-                  text="ยกเลิกการเข้าร่วม"
-                  bg="#8C1C15"
+                  bg={QuestDetail.status ? buttonGrey : "#8C1C15"}
                   onPress={() => leaveAlert(questId)}
                 />
               ) : (
                 <BigButton
                   text="เข้าร่วมกิจกรรม"
-                  bg={primaryColor}
+                  bg={QuestDetail.status ? buttonGrey : primaryColor}
+                  color={QuestDetail.status ? "grey" : "white"}
                   onPress={() => joinAlert(questId)}
                 />
               )}
             </View>
           </View>
         </BottomSheetScrollView>
-      </BottomsheetDynamic>
-    );
-  }
+      )}
+    </BottomsheetDynamic>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -181,7 +191,12 @@ const styles = StyleSheet.create({
   },
   ButtonCon: {
     width: "100%",
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 7,
   },
-  ScrollView: {},
+  checkinStatus: {
+    fontFamily: "Kanit300",
+    fontSize: 16,
+    marginHorizontal: 15,
+  },
 });

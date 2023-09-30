@@ -6,22 +6,17 @@ export async function join_leave(id) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
 
-  try {
-    const response = await axios.patch(
-      `${BASE_URL}/quests/${id}/join-leave`,
-      {},
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const questDetail = response.data.questDetail;
-    return questDetail;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  const response = await axios.patch(
+    `${BASE_URL}/quests/${id}/join-leave`,
+    {},
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const questDetail = response.data.questDetail;
+  return questDetail;
 }
