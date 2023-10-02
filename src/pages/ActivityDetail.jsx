@@ -157,7 +157,7 @@ export default function ActivityDetail() {
                   text="เข้าร่วมกิจกรรม"
                   bg={QuestDetail.status ? buttonGrey : primaryColor}
                   color={QuestDetail.status ? "grey" : "white"}
-                  onPress={() => joinAlert(questId)}
+                  onPress={QuestDetail.status ? () => alert("เข้าร่วมไม่ได้แร้ว") :() => joinAlert(questId)}
                 />
               )}
             </View>

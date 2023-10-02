@@ -88,7 +88,7 @@ function CreateQuest() {
       }
 
       if (selectedTag.length) {
-        selectedTag.forEach((tag) => questDetail.append("tagId", tag.id));
+        selectedTag.forEach((tag) => questDetail.append("tagId", tag._id));
       }
 
       const newQuest = await createQuest(questDetail, locationId);
