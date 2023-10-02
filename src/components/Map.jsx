@@ -8,6 +8,7 @@ import { mapCustomStyle } from "../data/map-style";
 import { fetchLocations } from "../data/locations";
 import * as TabNavigation from "../data/TabNavigation";
 import NavBar from "./NavBar";
+import Alert from "./misc/Alert";
 
 const initialRegion = {
   latitude: 13.848236064906674,
@@ -60,18 +61,19 @@ export default function Map() {
     animateToRegion(lat, lng);
   };
 
-  const markerPressHandler = (pinId, data) => {
+  const markerPressHandler = async (pinId, data) => {
     data.stopPropagation();
+
     const { lat, lng, name, placeId } = getDetailFromData(data);
 
     if (TabNavigation.currentScreen() == "CreatePin") {
-      setNewMarker({
-        latitude: lat,
-        longitude: lng,
-        name,
-        placeId,
-      });
+      setNewMarker(null);
     }
+    
+    if (TabNavigation.currentScreen() == "PinCreateInfo") {
+      return
+    }
+    
 
     TabNavigation.navigate("PinDetail", { pinId });
     animateToRegion(lat, lng);
@@ -128,9 +130,8 @@ export default function Map() {
   };
 
   useEffect(() => {
-    const myQuestLocations = userDetail.user?.joinedQuest?.map(
-      (q) => q.locationId?._id
-    ) || [];
+    const myQuestLocations =
+      userDetail.user?.joinedQuest?.map((q) => q.locationId?._id) || [];
     setMyLocations(myQuestLocations);
   }, [onlyPinWithMyQuest]);
 
@@ -184,8 +185,8 @@ export default function Map() {
         onPoiClick={(data) => mapPressHandler(data)}
         customMapStyle={mapCustomStyle}
         onTouchStart={() => bottomModalRef.current?.collapse()}
-        loadingEnabled
-        mapPadding={{ bottom: "60%" }}
+        // loadingEnabled
+        mapPadding={{ bottom: "100%" }}
       >
         {locations?.filter(pinFilter).map((pin) => (
           <Marker

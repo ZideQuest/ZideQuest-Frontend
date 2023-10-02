@@ -1,10 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { debounce } from "lodash";
 
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   Pressable,
   Button,
@@ -19,10 +18,14 @@ import RecentSearch from "./RecentSearch";
 import * as TabNavigation from "../data/TabNavigation";
 import LocationSearchItem from "./Location/LocationSearchItem";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import ItemSelectingModal from "../components/misc/ItemSelectingModal";
+import TagItem from "../components/Quest/TagItem";
 
 import { getCenterFromPins } from "../data/locations";
 import { storeHistory } from "../data/async_storage";
 import search_icon from "../../assets/images/search.png";
+import { getTags } from "../data/tag";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function SearchBar({ searching, setSearching }) {
   const {
@@ -34,11 +37,26 @@ export default function SearchBar({ searching, setSearching }) {
     mapMoveTo,
   } = useAppContext();
   const [search, setSearch] = useState(null);
-  const [searchResult, setSearchResult] = useState(null);
+  const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const searchFetching = async (query) => {
-    const data = await searchQuest(query);
+  const [tags, setTags] = useState([]);
+  const [selectedTag, setSelectedTag] = useState([]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const data = await getTags();
+        setTags(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchTags();
+  }, []);
+
+  const searchFetching = async (query, tags) => {
+    const data = await searchQuest(query, tags);
     setSearchResult(data);
     setLoading(false);
   };
@@ -49,7 +67,7 @@ export default function SearchBar({ searching, setSearching }) {
     setLoading(true);
     setSearch(q);
     setSearchResult([]);
-    debouncedFetch(q);
+    debouncedFetch(q, selectedTag);
   };
 
   const onFocusHandler = () => {
@@ -58,9 +76,9 @@ export default function SearchBar({ searching, setSearching }) {
   };
 
   const onBlurHandler = () => {
-    if (!search) {
-      setSearching(false);
-    }
+    // if (!search) {
+    //   setSearching(false);
+    // }
   };
 
   const onSubmitHandler = () => {
@@ -81,6 +99,7 @@ export default function SearchBar({ searching, setSearching }) {
   const onCancelHander = () => {
     setSearch(null);
     setSearchResult([]);
+    setSelectedTag([]);
     setSearching(false);
     Keyboard.dismiss();
     bottomModalRef.current?.snapToIndex(1);
@@ -89,6 +108,20 @@ export default function SearchBar({ searching, setSearching }) {
 
   const profilePressHandler = () => {
     TabNavigation.navigate("Profile");
+  };
+
+  const getSelectedTagIds = () => {
+    return selectedTag.map((t) => t._id);
+  };
+
+  const tagPressHandler = (tag) => {
+    const selectedTagIds = getSelectedTagIds();
+
+    if (selectedTagIds.includes(tag._id)) {
+      setSelectedTag((prev) => prev.filter((p) => p._id != tag._id));
+    } else {
+      setSelectedTag((prev) => [...prev, tag]);
+    }
   };
 
   const ProfileImage = () => {
@@ -143,8 +176,37 @@ export default function SearchBar({ searching, setSearching }) {
         )}
       </View>
 
+      {selectedTag.length > 0 && (
+        <View style={styles.tagContainer}>
+          {selectedTag.map((tag) => (
+            <TouchableOpacity onPress={() => tagPressHandler(tag)}>
+              <TagItem tag={tag} key={`selected-tag-${tag._id}`} />
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+
+      {searching && (
+        <View style={styles.optionContainer}>
+          <ItemSelectingModal subject="แท็ก">
+            <View style={styles.tagContainer}>
+              {tags
+                .filter((tag) => !getSelectedTagIds().includes(tag._id))
+                .map((tag) => (
+                  <TouchableOpacity onPress={() => tagPressHandler(tag)}>
+                    <TagItem tag={tag} key={`search-tag-${tag._id}`} />
+                  </TouchableOpacity>
+                ))}
+            </View>
+          </ItemSelectingModal>
+          <ItemSelectingModal subject="วันที่">
+            <Text>Ayo</Text>
+          </ItemSelectingModal>
+        </View>
+      )}
+
       <View style={styles.greyBackground}>
-        {searching && search && (
+        {searching && (search || selectedTag.length > 0) && (
           <View style={styles.searchResultContainer}>
             {!loading &&
               !searchResult.quests?.length &&
@@ -260,5 +322,17 @@ const styles = StyleSheet.create({
   },
   greyBackground: {
     backgroundColor: "#F2F2F2",
+  },
+  tagContainer: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    gap: 5,
+    padding: 10,
+  },
+  optionContainer: {
+    flexDirection: "row",
+    paddingHorizontal: 5,
+    marginBottom: 5,
+    gap: 10
   },
 });

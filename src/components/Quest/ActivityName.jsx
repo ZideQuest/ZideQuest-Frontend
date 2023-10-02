@@ -14,6 +14,7 @@ export default function ActivityName({ quest }) {
       <View style={[styles.questItem]}>
         <View style={[styles.questNameCon]}>
           <Text style={styles.questFont}>{quest?.questName}</Text>
+          {/* <BackButton targetRoute="PinDetail" params={{pinId: quest?.locationId}}/> */}
           <BackButton />
         </View>
       </View>
