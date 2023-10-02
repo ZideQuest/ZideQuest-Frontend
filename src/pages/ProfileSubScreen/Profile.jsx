@@ -96,93 +96,28 @@ export default function Profile({ navigation }) {
             {/* Main Progress */}
             <Text>1. กิจกรรมหาลัย</Text>
             <Progress.Bar
-              progress={0.5}
+              progress={
+                userDetail.user.activityTranscript.category.university.hour / 10
+              }
               width={300}
               height={10}
               color={progressBarGreen}
             />
             <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
-            <Text>ด้านพัฒนาคุณธรรม จริยธรรม</Text>
             <Progress.Bar
-              progress={0.3}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>ด้านพัฒนาทักษะการคิดและการเรียนรู้</Text>
-            <Progress.Bar
-              progress={0.2}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>
-              ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคลและการสื่อสาร
-            </Text>
-            <Progress.Bar
-              progress={0.2}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>ด้านพัฒนาสุขภาพ</Text>
-            <Progress.Bar
-              progress={0.3}
+              progress={
+                userDetail.user.activityTranscript.category.empowerment.hour /
+                10
+              }
               width={300}
               height={10}
               color={progressBarGreen}
             />
             <Text>3.กิจกรรมเพื่อสังคม</Text>
             <Progress.Bar
-              progress={0.3}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-
-            <Divider></Divider>
-
-            {/* Extra Progress */}
-            <Text>4. เข้าาร่วมกิจกรรมในฐานะกรรมการองค์กรกิจกรรมนิสิต</Text>
-            <Text>ประธานองค์กรกิจกรรมนิสิต</Text>
-            <Progress.Bar
-              progress={0.5}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>กิจกรรมการบริหารองค์กรกิจกรรมนิสิต</Text>
-            <Progress.Bar
-              progress={0.5}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>5.ได้รับเลือกให้เป็นนิสิตดีเด่น</Text>
-            <Text>ด้านความประพฤติ</Text>
-            <Progress.Bar
-              progress={0.5}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>ด้านความคิดสร้างสรรค์และนวัตกรรม</Text>
-            <Progress.Bar
-              progress={0.5}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>ด้านกิจกรรมนอกหลักสูตร</Text>
-            <Progress.Bar
-              progress={0.5}
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>ด้านกีฬา</Text>
-            <Progress.Bar
-              progress={0.5}
+              progress={
+                userDetail.user.activityTranscript.category.society.hour / 10
+              }
               width={300}
               height={10}
               color={progressBarGreen}
@@ -205,7 +140,8 @@ const styles = StyleSheet.create({
   },
   progress_container: {
     margin: 10,
-    padding: 5,
+    padding: 10,
+    paddingBottom: 30,
     borderRadius: 5,
     backgroundColor: buttonGrey,
   },
