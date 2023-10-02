@@ -5,6 +5,7 @@ import {
   Pressable,
   Image,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import * as TabNavigation from "../../data/TabNavigation";
 import ProfilePic from "../../../assets/images/Jitat.jpg";
