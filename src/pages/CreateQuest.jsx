@@ -65,7 +65,11 @@ function CreateQuest() {
       questDetail.append("timeEnd", endDate.toISOString());
       questDetail.append("questName", questName);
       questDetail.append("description", description);
-      questDetail.append("maxParticipant", maxParticipant);
+
+      if (maxParticipant) {
+        questDetail.append("maxParticipant", maxParticipant);
+      }
+      
       questDetail.append("autoComplete", isAuto);
 
       if (image != null) {
