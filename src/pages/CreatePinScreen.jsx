@@ -28,7 +28,9 @@ export default function CreatePinScreen() {
     <Bottomsheet snapPoints={["14%"]} detached={true} hideBar={true}>
       <View style={styles.container}>
         <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
-        <View style={styles.buttonContainer}>
+        <View
+          style={{ flexDirection: "row", gap: 20, backgroundColor: "white" }}
+        >
           <BigButton text="ยืนยัน" bg={primaryColor} onPress={confirmHandler} />
           <BigButton
             text="ยกเลิก"

@@ -68,12 +68,16 @@ export default function PinDetailScreen({ route }) {
   }
   useEffect(() => {
     const fetchLocationData = async () => {
+      if (!route.params?.pinId) {
+        alert("Location Id not found")
+        return TabNavigation.navigate("Recommend")
+      }
       try {
         const { location, quests } = await getLocationData(route.params?.pinId);
         setLocationData(location);
         setQuests(quests);
       } catch (error) {
-        console.error("Error fetching locations", error);
+        alert("Error fetching locations");
       }
     };
     fetchLocationData();

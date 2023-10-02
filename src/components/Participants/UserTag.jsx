@@ -43,7 +43,7 @@ export default function UserTag({ user, checkable = false }) {
           {user?.user?.firstName} {user?.user?.lastName}
         </Text>
       </View>
-      {(isChecked || checkable) && (
+      {checkable && (
         <Checkbox value={isChecked} onValueChange={checkboxHandler} />
       )}
     </View>
