@@ -113,6 +113,46 @@ export default function Profile({ navigation }) {
               height={10}
               color={progressBarGreen}
             />
+            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
+            <Progress.Bar
+              progress={
+                userDetail.user.activityTranscript.category.empowerment.category
+                  .morality.hour / 10
+              }
+              width={300}
+              height={10}
+              color={progressBarGreen}
+            />
+            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
+            <Progress.Bar
+              progress={
+                userDetail.user.activityTranscript.category.empowerment.category
+                  .thinking.hour / 10
+              }
+              width={300}
+              height={10}
+              color={progressBarGreen}
+            />
+            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
+            <Progress.Bar
+              progress={
+                userDetail.user.activityTranscript.category.empowerment.category
+                  .relation.hour / 10
+              }
+              width={300}
+              height={10}
+              color={progressBarGreen}
+            />
+            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
+            <Progress.Bar
+              progress={
+                userDetail.user.activityTranscript.category.empowerment.category
+                  .health.hour / 10
+              }
+              width={300}
+              height={10}
+              color={progressBarGreen}
+            />
             <Text>3.กิจกรรมเพื่อสังคม</Text>
             <Progress.Bar
               progress={
