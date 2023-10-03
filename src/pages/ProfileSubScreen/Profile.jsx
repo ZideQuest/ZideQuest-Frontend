@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+
 import * as TabNavigation from "../../data/TabNavigation";
 import ProfilePic from "../../../assets/images/Jitat.jpg";
 import goBackPic from "../../../assets/images/back-button.png";
@@ -7,6 +8,7 @@ import {
   buttonGrey,
   progressBarGreen,
   buttonLightGrey,
+  primaryColor,
 } from "../../data/color";
 import { Divider } from "@rneui/themed";
 import { useAppContext } from "../../data/AppContext";
@@ -15,7 +17,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 export default function Profile({ navigation }) {
   const { userDetail } = useAppContext();
-  console.log(userDetail.user.activityTranscript.category.empowerment.category);
+  // console.log(userDetail.user.activityTranscript.category.empowerment.category);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <Pressable
@@ -56,9 +58,42 @@ export default function Profile({ navigation }) {
               }
             />
 
-            <Text style={{ fontSize: 30, fontWeight: "bold", marginTop: 20 }}>
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                marginTop: 20,
+                marginBottom: 10,
+              }}
+            >
               {userDetail.user.firstName} {userDetail.user.lastName}
             </Text>
+          </View>
+          <View style={{ paddingLeft: 20, paddingRight: 18 }}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text>nisitID: {userDetail.user.nisitId}</Text>
+              <Text
+                style={{
+                  backgroundColor: primaryColor,
+                  paddingLeft: 5,
+                  paddingRight: 5,
+                  paddingTop: 2,
+                  paddingBottom: 2,
+                  borderRadius: 10,
+                }}
+              >
+                Level: {userDetail.user.level}
+              </Text>
+            </View>
+
+            <Text>Faculty: {userDetail.user.faculty}</Text>
           </View>
 
           {/* Progress Bar */}
@@ -66,6 +101,7 @@ export default function Profile({ navigation }) {
           {/* Header and Quest Button */}
           <View
             style={{
+              marginTop: 18,
               gap: 5,
               backgroundColor: buttonLightGrey,
               borderRadius: 10,
@@ -77,11 +113,15 @@ export default function Profile({ navigation }) {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
               <Text
-                style={{ fontSize: 20, fontWeight: "bold", }}
+                style={{
+                  fontFamily: "Kanit600",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
               >
                 PROGRESS
               </Text>
@@ -95,7 +135,10 @@ export default function Profile({ navigation }) {
               </Pressable>
             </View>
             {/* Main Progress */}
-            <Text>1. กิจกรรมหาลัย</Text>
+            <Text style={styles.text_small}>
+              1. กิจกรรมหาลัย (
+              {userDetail.user.activityTranscript.category.university.hour}/10)
+            </Text>
             <Progress.Bar
               progress={
                 userDetail.user.activityTranscript.category.university.hour / 10
@@ -104,8 +147,10 @@ export default function Profile({ navigation }) {
               height={10}
               color={progressBarGreen}
             />
-            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
-            <Progress.Bar
+            <Text style={styles.text_small}>
+              2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ
+            </Text>
+            {/* <Progress.Bar
               progress={
                 userDetail.user.activityTranscript.category.empowerment.hour /
                 10
@@ -113,48 +158,83 @@ export default function Profile({ navigation }) {
               width={300}
               height={10}
               color={progressBarGreen}
-            />
-            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
-            <Progress.Bar
-              progress={
-                userDetail.user.activityTranscript.category.empowerment.category
-                  .morality.hour / 10
-              }
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
-            <Progress.Bar
-              progress={
-                userDetail.user.activityTranscript.category.empowerment.category
-                  .thingking.hour / 10
-              }
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
-            <Progress.Bar
-              progress={
-                userDetail.user.activityTranscript.category.empowerment.category
-                  .relation.hour / 10
-              }
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ</Text>
-            <Progress.Bar
-              progress={
-                userDetail.user.activityTranscript.category.empowerment.category
-                  .health.hour / 10
-              }
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
-            <Text>3.กิจกรรมเพื่อสังคม</Text>
+            /> */}
+            <Divider></Divider>
+            <View style={{ marginLeft: 20 }}>
+              <Text style={styles.text_soSmall}>
+                2.1 ด้านพัฒนาคุณธรรมจริยธรรม (
+                {
+                  userDetail.user.activityTranscript.category.empowerment
+                    .category.morality.hour
+                }
+                /10)
+              </Text>
+              <Progress.Bar
+                progress={
+                  userDetail.user.activityTranscript.category.empowerment
+                    .category.morality.hour / 10
+                }
+                width={280}
+                height={10}
+                color={progressBarGreen}
+              />
+              <Text style={styles.text_soSmall}>
+                2.2 ด้านพัฒนาทักษะการคิดและการเรียนรู้ (
+                {
+                  userDetail.user.activityTranscript.category.empowerment
+                    .category.thingking.hour
+                }
+                /10)
+              </Text>
+              <Progress.Bar
+                progress={
+                  userDetail.user.activityTranscript.category.empowerment
+                    .category.thingking.hour / 10
+                }
+                width={280}
+                height={10}
+                color={progressBarGreen}
+              />
+              <Text style={styles.text_soSmall}>
+                2.3 ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล (
+                {
+                  userDetail.user.activityTranscript.category.empowerment
+                    .category.relation.hour
+                }
+                /10)
+              </Text>
+              <Progress.Bar
+                progress={
+                  userDetail.user.activityTranscript.category.empowerment
+                    .category.relation.hour / 10
+                }
+                width={280}
+                height={10}
+                color={progressBarGreen}
+              />
+              <Text style={styles.text_soSmall}>
+                2.4 ด้านพัฒนาสุขภาพ (
+                {
+                  userDetail.user.activityTranscript.category.empowerment
+                    .category.health.hour
+                }
+                /10)
+              </Text>
+              <Progress.Bar
+                progress={
+                  userDetail.user.activityTranscript.category.empowerment
+                    .category.health.hour / 10
+                }
+                width={280}
+                height={10}
+                color={progressBarGreen}
+              />
+            </View>
+            <Text style={styles.text_small}>
+              3.กิจกรรมเพื่อสังคม (
+              {userDetail.user.activityTranscript.category.society.hour}
+              /10)
+            </Text>
             <Progress.Bar
               progress={
                 userDetail.user.activityTranscript.category.society.hour / 10
@@ -171,6 +251,15 @@ export default function Profile({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  text_large: {
+    fontFamily: "Kanit600",
+  },
+  text_small: {
+    fontFamily: "Kanit400",
+  },
+  text_soSmall: {
+    fontFamily: "Kanit300",
+  },
   profileCard: {
     padding: 10,
     backgroundColor: "white",
@@ -180,7 +269,9 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   progress_container: {
-    margin: 10,
+    marginTop: 15,
+    marginLeft: 10,
+    marginRight: 10,
     padding: 10,
     paddingBottom: 30,
     borderRadius: 5,
