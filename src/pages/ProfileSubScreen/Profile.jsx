@@ -15,7 +15,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 export default function Profile({ navigation }) {
   const { userDetail } = useAppContext();
-  console.log(userDetail.user.activityTranscript);
+  console.log(userDetail.user.activityTranscript.category.empowerment.category);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <Pressable
@@ -127,7 +127,7 @@ export default function Profile({ navigation }) {
             <Progress.Bar
               progress={
                 userDetail.user.activityTranscript.category.empowerment.category
-                  .thinking.hour / 10
+                  .thingking.hour / 10
               }
               width={300}
               height={10}
