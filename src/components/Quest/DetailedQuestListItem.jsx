@@ -33,6 +33,7 @@ export default function DetailedQuestListItem({
   onPress,
   panMap = false,
 }) {
+  // console.log(quest)
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
 
   const checkQuestCompleted = () => {
@@ -81,7 +82,7 @@ export default function DetailedQuestListItem({
   return (
     <TouchableOpacity
       onPress={questPressHandler}
-      style={[styles.questContainer, { opacity: quest.status ? 0.5 : 1 }]}
+      style={[!quest.isJoin ? styles.questContainer : styles.questJoinedContainer, { opacity: quest.status ? 0.5 : 1 }]}
     >
       <View style={styles.nameAndParticipants}>
         <Text style={styles.questName}>{quest.questName}</Text>
@@ -138,6 +139,13 @@ export default function DetailedQuestListItem({
 const styles = StyleSheet.create({
   questContainer: {
     backgroundColor: buttonGrey,
+    padding: 7,
+    borderRadius: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  questJoinedContainer: {
+    backgroundColor: "#39FF14",
     padding: 7,
     borderRadius: 5,
     paddingLeft: 15,

@@ -8,10 +8,18 @@ export async function fetchLocations() {
 }
 
 export async function getLocationData(id) {
-  const { data } = await axios.get(`${BASE_URL}/locations/${id}`);
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  const { data } = await axios.get(`${BASE_URL}/locations/${id}` , {
+    headers: {
+      Authorization: "Bearer " + token,
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+  });
   const location = data.location;
   const quests = data.quests;
-
+  console.log(data)
   return { location, quests };
 }
 
