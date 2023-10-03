@@ -77,10 +77,11 @@ export default function Profile({ navigation }) {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                justifyContent: "space-between"
               }}
             >
               <Text
-                style={{ fontSize: 20, fontWeight: "bold", marginRight: 116 }}
+                style={{ fontSize: 20, fontWeight: "bold", }}
               >
                 PROGRESS
               </Text>
@@ -201,9 +202,12 @@ const styles = StyleSheet.create({
   },
   quest_button: {
     backgroundColor: "#e8e7e6",
-    borderRadius: 20,
-    padding: 5,
-    width: 100,
+    borderRadius: 13,
+    // padding: 5,
+    // width: 100,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    overflow: "hidden",
     textAlign: "center",
   },
 });
