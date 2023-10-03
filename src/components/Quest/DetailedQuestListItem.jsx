@@ -82,7 +82,7 @@ export default function DetailedQuestListItem({
   return (
     <TouchableOpacity
       onPress={questPressHandler}
-      style={[!quest.isJoin ? styles.questContainer : styles.questJoinedContainer, { opacity: quest.status ? 0.5 : 1 }]}
+      style={[quest.isJoin ? (quest.isCheckin || quest.status) ? styles.questcheckinContainer:styles.questJoinedContainer:styles.questContainer , { opacity: quest.status ? 0.5 : 1 }]}
     >
       <View style={styles.nameAndParticipants}>
         <Text style={styles.questName}>{quest.questName}</Text>
@@ -144,8 +144,15 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
   },
-  questJoinedContainer: {
+  questcheckinContainer: {
     backgroundColor: "#39FF14",
+    padding: 7,
+    borderRadius: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  questJoinedContainer: {
+    backgroundColor: "#FF5733",
     padding: 7,
     borderRadius: 5,
     paddingLeft: 15,

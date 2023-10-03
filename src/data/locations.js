@@ -19,6 +19,7 @@ export async function getLocationData(id) {
   });
   const location = data.location;
   const quests = data.quests;
+  console.log(quests)
   return { location, quests };
 }
 
