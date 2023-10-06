@@ -1,4 +1,4 @@
-export const BASE_URL = "https://b8a8-2001-fb1-1e-4b50-fe34-97ff-fea7-ade2.ngrok-free.app/api/v1";
+export const BASE_URL = "https://feline-precious-wildcat.ngrok-free.app/api/v1";
 
 // export const BASE_URL = "internet error";
 
