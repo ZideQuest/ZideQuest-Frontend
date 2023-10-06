@@ -90,11 +90,13 @@ export default function DrawerMenu({ navigation, children }) {
               style={styles.displayImage}
             />
           </View>
-          <View>
+          <View style={{ width: "70%" }}>
             <Text style={styles.username}>
               {userDetail?.user?.organizeName}
             </Text>
-            <Text>{userDetail.user.role}</Text>
+            <Text style={{ fontFamily: "Kanit400" }}>
+              {userDetail.user.role}
+            </Text>
           </View>
         </TouchableOpacity>
       );
@@ -170,7 +172,9 @@ export default function DrawerMenu({ navigation, children }) {
             {userDetail?.token ? (
               <>
                 <ProfileDisplay userDetail={userDetail} />
-                {!userDetail?.isAdmin && <UpComingQuest onPress={() => setDrawerOpen(false)} />}
+                {!userDetail?.isAdmin && (
+                  <UpComingQuest onPress={() => setDrawerOpen(false)} />
+                )}
               </>
             ) : (
               <TouchableOpacity
@@ -218,7 +222,12 @@ export default function DrawerMenu({ navigation, children }) {
                 <Text style={styles.smallMenuItem}>Privacy</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
+                style={{
+                  flexDirection: "row",
+                  gap: 10,
+                  alignItems: "center",
+                  display: userDetail.user ? "block" : "none",
+                }}
                 onPress={logoutHandler}
               >
                 <Text style={[styles.smallMenuItem, { color: primaryColor }]}>
@@ -255,10 +264,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 20,
     letterSpacing: 0.25,
     color: "white",
-    padding: 10,
+    padding: 7,
     fontFamily: "Kanit400",
   },
   logo: {
@@ -269,7 +278,6 @@ const styles = StyleSheet.create({
   profileDisplayContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: "100%",
     marginTop: 20,
     gap: 20,
   },
