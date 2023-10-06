@@ -40,9 +40,13 @@ export default function QuestManagement({ route }) {
         "Are you sure you want to end this quest?"
       )
     ) {
-      const data = await sendQuestComplete(route.params.questId);
-      alert("ยืนยันสำเร็จ");
-      setQuestData((prev) => ({ ...prev, status: true }));
+      try {
+        const data = await sendQuestComplete(route.params.questId);
+        alert("ยืนยันสำเร็จ");
+        setQuestData((prev) => ({ ...prev, status: true }));
+      } catch (error) {
+        alert("ยืนยันไม่สำเร็จ")
+      }
     }
   };
 

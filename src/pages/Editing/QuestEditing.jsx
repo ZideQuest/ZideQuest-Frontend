@@ -122,7 +122,7 @@ export default function QuestEditing({ route }) {
         questDetail.append("activityHour", activityDetail);
       }
 
-      if (tagId != "") {
+      if (tagId != '' && tagId != null) {
         const handleTag = [tagId];
         questDetail.append("tagId", handleTag);
       }

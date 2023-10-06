@@ -31,7 +31,7 @@ export async function getQuestData(id) {
 
 export async function searchQuest(name, selectedTag) {
   console.log({ Name: name, Tags: selectedTag.map((t) => t.id) });
-  
+
   console.log(name, selectedTag);
 
   const { data } = await axios.get(`${BASE_URL}/search`, {
@@ -84,31 +84,23 @@ export async function usersQuest() {
 export async function sendQuestComplete(id) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
-  try {
-    const { data } = await axios.patch(
-      `${BASE_URL}/quests/${id}/complete`,
-      {},
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    return data;
-  } catch (e) {
-    console.error(e);
-    return {
-      message: "failed to load send quest completed",
-      status: 400,
-    };
-  }
+  const { data } = await axios.put(
+    `${BASE_URL}/quests/${id}/complete`,
+    {},
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+  return data;
 }
 
 export async function editQuest(questDetail, questId) {
   try {
     const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-    const { data } = await axios.post(
-      `${BASE_URL}/quests/${questId}/edit`,
+    const { data } = await axios.put(
+      `${BASE_URL}/quests/${questId}`,
       questDetail,
       {
         headers: {
