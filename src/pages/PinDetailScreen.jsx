@@ -19,7 +19,7 @@ import edit_icon from "../../assets/images/edit.png";
 import DetailedQuestListItem from "../components/Quest/DetailedQuestListItem"; //
 
 import { useAppContext } from "../data/AppContext";
-import { getLocationData } from "../data/locations";
+import { getLocationData, getLocationDataUnauthen } from "../data/locations";
 import { buttonNormalGreen } from "../data/color";
 
 export default function PinDetailScreen({ route }) {
@@ -66,6 +66,7 @@ export default function PinDetailScreen({ route }) {
       </View>
     );
   }
+  console.log(userDetail)
   useEffect(() => {
     const fetchLocationData = async () => {
       if (!route.params?.pinId) {
@@ -73,9 +74,17 @@ export default function PinDetailScreen({ route }) {
         return TabNavigation.navigate("Recommend")
       }
       try {
-        const { location, quests } = await getLocationData(route.params?.pinId);
-        setLocationData(location);
-        setQuests(quests);
+        if(Object.keys(userDetail.user).length === 0){
+          const { location, quests } = await getLocationDataUnauthen(route.params?.pinId);
+          setLocationData(location);
+          setQuests(quests);
+        }
+        else{
+          const { location, quests } = await getLocationData(route.params?.pinId);
+          setLocationData(location);
+          setQuests(quests);
+        }
+        
       } catch (error) {
         alert("Error fetching locations");
       }

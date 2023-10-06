@@ -23,6 +23,15 @@ export async function getLocationData(id) {
   return { location, quests };
 }
 
+export async function getLocationDataUnauthen(id) {
+  const { data } = await axios.get(`${BASE_URL}/locations/${id}` , {
+  });
+  const location = data.location;
+  const quests = data.quests;
+  // console.log(quests)
+  return { location, quests };
+}
+
 export const createLocation = async (data) => {
   try {
     const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
