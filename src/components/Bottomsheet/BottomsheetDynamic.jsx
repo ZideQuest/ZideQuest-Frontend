@@ -59,7 +59,7 @@ export default function BottomsheetDynamic({
       detached={detached}
       bottomInset={detached ? 30 : 0}
       enableOverDrag={!detached}
-      keyboardBehavior="extend"
+      keyboardBehavior="interactive"
       onChange={onChange}
     >
       <BottomSheetView
