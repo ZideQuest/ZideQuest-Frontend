@@ -7,17 +7,13 @@ import { getQuestData, sendQuestComplete } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
-import {
-  buttonBlue,
-  buttonBrightGreen,
-  buttonDarkRed,
-  buttonGrey,
-} from "../data/color";
+import { buttonBlue, buttonBrightGreen, buttonGrey } from "../data/color";
 import Participants from "../components/Participants/Participants";
 import Alert from "../components/misc/Alert";
 
 export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
+  const { userDetail } = useAppContext();
 
   useEffect(() => {
     const fetchQuestData = async () => {
@@ -45,7 +41,7 @@ export default function QuestManagement({ route }) {
         alert("ยืนยันสำเร็จ");
         setQuestData((prev) => ({ ...prev, status: true }));
       } catch (error) {
-        alert("ยืนยันไม่สำเร็จ")
+        alert("ยืนยันไม่สำเร็จ");
       }
     }
   };
@@ -64,7 +60,19 @@ export default function QuestManagement({ route }) {
   };
 
   const editQuestButtonHandler = async () => {
-    TabNavigation.navigate("EditQuest", { questId: route.params.questId });
+    if (ownerChecker()) {
+      TabNavigation.navigate("EditQuest", { questId: route.params.questId });
+    } else {
+      alert("You are not allowed to edit this quests");
+    }
+  };
+
+  const ownerChecker = () => {
+    if (userDetail.isAdmin === "admin" || questData?.creatorId === userDetail.user._id) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -78,7 +86,15 @@ export default function QuestManagement({ route }) {
         <View style={styles.infoContainer}>
           <ActivityName quest={questData} />
           <TouchableOpacity onPress={editQuestButtonHandler}>
-            <Text>แก้ไขข้อมูลเควส</Text>
+            <Text
+              style={{
+                color: "teal",
+                fontFamily: "Kanit300",
+                opacity: ownerChecker() ? 1 : 0.3,
+              }}
+            >
+              แก้ไขข้อมูลเควส
+            </Text>
           </TouchableOpacity>
           <Participants questId={route.params.questId} />
           <View style={styles.buttonContainer}>

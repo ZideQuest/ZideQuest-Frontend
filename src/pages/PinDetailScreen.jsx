@@ -19,7 +19,7 @@ import edit_icon from "../../assets/images/edit.png";
 import DetailedQuestListItem from "../components/Quest/DetailedQuestListItem"; //
 
 import { useAppContext } from "../data/AppContext";
-import { getLocationData, getLocationDataUnauthen } from "../data/locations";
+import { getLocationData } from "../data/locations";
 import { buttonNormalGreen } from "../data/color";
 
 export default function PinDetailScreen({ route }) {
@@ -66,25 +66,16 @@ export default function PinDetailScreen({ route }) {
       </View>
     );
   }
-  console.log(userDetail)
   useEffect(() => {
     const fetchLocationData = async () => {
       if (!route.params?.pinId) {
-        alert("Location Id not found")
-        return TabNavigation.navigate("Recommend")
+        alert("Location Id not found");
+        return TabNavigation.navigate("Recommend");
       }
       try {
-        if(Object.keys(userDetail.user).length === 0){
-          const { location, quests } = await getLocationDataUnauthen(route.params?.pinId);
-          setLocationData(location);
-          setQuests(quests);
-        }
-        else{
-          const { location, quests } = await getLocationData(route.params?.pinId);
-          setLocationData(location);
-          setQuests(quests);
-        }
-        
+        const { location, quests } = await getLocationData(route.params?.pinId);
+        setLocationData(location);
+        setQuests(quests);
       } catch (error) {
         alert("Error fetching locations");
       }
@@ -93,7 +84,22 @@ export default function PinDetailScreen({ route }) {
   }, []);
 
   const editLocationHandler = () => {
-    TabNavigation.navigate("EditLocation", { pinId: route.params.pinId });
+    if (ownerChecker())
+      TabNavigation.navigate("EditLocation", { pinId: route.params.pinId });
+    else {
+      alert("You are not allowed to edit this location");
+    }
+  };
+
+  const ownerChecker = () => {
+    if (
+      userDetail.isAdmin === "admin" ||
+      userDetail.user._id === locationData.creatorId
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const QuestsComponent = () => {
@@ -145,21 +151,35 @@ export default function PinDetailScreen({ route }) {
                 alignItems: "center",
               }}
             >
-              <View style={{ flexDirection: "row", gap: 10 }}>
-                <Text style={styles.header}>{locationData.locationName}</Text>
-                {userDetail.isAdmin && (
-                  <TouchableOpacity
-                    style={styles.editIcon}
-                    onPress={editLocationHandler}
-                  >
-                    <Image
-                      source={edit_icon}
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  </TouchableOpacity>
-                )}
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.header}>
+                  {locationData.locationName?.replace(/\n/g, " ")}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 10,
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  {userDetail.isAdmin && (
+                    <TouchableOpacity
+                      style={[
+                        styles.editIcon,
+                        { opacity: ownerChecker() ? 1 : 0.3 },
+                      ]}
+                      onPress={editLocationHandler}
+                    >
+                      <Image
+                        source={edit_icon}
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  <BackButton />
+                </View>
               </View>
-              <BackButton />
             </View>
             {locationData.description && (
               <Text style={styles.detail}>{locationData.description}</Text>
@@ -245,6 +265,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 25,
     fontFamily: "Kanit400",
+    flex: 1,
   },
   detail: {
     fontSize: 16,
@@ -277,6 +298,5 @@ const styles = StyleSheet.create({
   editIcon: {
     width: 25,
     height: 25,
-    top: 5,
   },
 });
