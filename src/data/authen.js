@@ -18,17 +18,23 @@ export async function sendLoginData(username, password) {
 }
 
 export async function fetchUserData() {
-  const user = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-  if (!user || !user.token) {
+  const userDetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  if (!userDetail || !userDetail.token) {
     return {};
   }
 
   const { data } = await axios.get(`${BASE_URL}/users/info`, {
     headers: {
-      Authorization: "Bearer " + user.token,
+      Authorization: "Bearer " + userDetail.token,
     },
   });
-  return data;
+
+  const user = {
+    token: userDetail.token,
+    user: data,
+    isAdmin: data.role,
+  };
+  return user;
 }
 
 export async function userCheckin(questId) {

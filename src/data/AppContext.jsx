@@ -57,41 +57,19 @@ export const AppProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const response = await fetchUserData();
-      setUserDetails((prev) => {
-        return {
-          ...prev,
-          user: response,
-        };
-      });
-      setSoonQuest(response.joinedQuest?.filter(q => !q.status));
+      setUserDetails(response);
+
+      if (response.user) {
+        setSoonQuest(response.user.joinedQuest?.filter((q) => !q.status));
+      }
     } catch (error) {
-      // await SecureStore.deleteItemAsync("userDetail");
       console.error(error);
-      alert("Please Login again");
+      alert("Please Login again", error);
     }
   };
 
   useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const data = await SecureStore.getItemAsync("userDetail");
-        const user = JSON.parse(data);
-        console.log(
-          user?.user
-            ? `You are logged in as ${user?.user._id}`
-            : "You are not logged in"
-        );
-        if (user) {
-          setUserDetails(user);
-        } else {
-          setUserDetails({});
-          console.log("no auth");
-        }
-      } catch (error) {
-        console.error("Error fetching token:", error);
-      }
-    };
-    fetchToken();
+    fetchUser();
     return () => {};
   }, []);
 
