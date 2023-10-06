@@ -30,10 +30,6 @@ export async function getQuestData(id) {
 }
 
 export async function searchQuest(name, selectedTag) {
-  console.log({ Name: name, Tags: selectedTag.map((t) => t.id) });
-
-  console.log(name, selectedTag);
-
   const { data } = await axios.get(`${BASE_URL}/search`, {
     params: { Name: name, Tag: selectedTag[0] },
   });
@@ -97,24 +93,19 @@ export async function sendQuestComplete(id) {
 }
 
 export async function editQuest(questDetail, questId) {
-  try {
-    const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-    const { data } = await axios.put(
-      `${BASE_URL}/quests/${questId}`,
-      questDetail,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+  const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { data } = await axios.put(
+    `${BASE_URL}/quests/${questId}`,
+    questDetail,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  return data;
 }
 
 export async function deleteQuest(questId) {

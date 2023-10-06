@@ -61,10 +61,13 @@ export default function PinCreateInfo() {
       });
     }
 
-    const response = await createLocation(bodyFormData);
-    if (response.status === 200) {
+    try {
+      const response = await createLocation(bodyFormData);
       const { data } = response;
       closeHandler(data._id);
+    } catch (error) {
+      alert(error)
+      console.error(error);
     }
     setIsLoading(false);
   };

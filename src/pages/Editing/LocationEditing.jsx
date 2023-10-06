@@ -84,8 +84,13 @@ export default function PinCreateInfo({ route }) {
     //   });
     // }
 
-    const { data } = await editLocation(bodyFormData, route.params?.pinId);
-    closeHandler(data.location._id);
+    try {
+      const { data } = await editLocation(bodyFormData, route.params?.pinId);
+      closeHandler(data.location._id);
+    } catch (error) {
+      alert("error editing location");
+      console.error(error);
+    }
     setIsLoading(false);
   };
 

@@ -9,53 +9,39 @@ export async function fetchLocations() {
 
 export async function getLocationData(id) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+
+  let locationsData;
+  if (userdetail) {
+    const { data } = await axios.get(`${BASE_URL}/locations/${id}`, {
+      headers: {
+        Authorization: "Bearer " + userdetail.token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    locationsData = data;
+  } else {
+    const { data } = await axios.get(`${BASE_URL}/locations/${id}`);
+    locationsData = data;
+  }
+
+  const location = locationsData.location;
+  const quests = locationsData.quests;
+  return { location, quests };
+}
+
+export const createLocation = async (data) => {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
-  const { data } = await axios.get(`${BASE_URL}/locations/${id}` , {
+  const res = await axios.post(`${BASE_URL}/locations`, data, {
     headers: {
       Authorization: "Bearer " + token,
       Accept: "application/json",
       "Content-Type": "multipart/form-data",
     },
   });
-  const location = data.location;
-  const quests = data.quests;
-  // console.log(quests)
-  return { location, quests };
-}
 
-export async function getLocationDataUnauthen(id) {
-  const { data } = await axios.get(`${BASE_URL}/locations/${id}` , {
-  });
-  const location = data.location;
-  const quests = data.quests;
-  // console.log(quests)
-  return { location, quests };
-}
-
-export const createLocation = async (data) => {
-  try {
-    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-    const { token } = userdetail;
-    const res = await axios.post(`${BASE_URL}/locations`, data, {
-      headers: {
-        Authorization: "Bearer " + token,
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    return res;
-  } catch (error) {
-    if (error.response) {
-      console.error(
-        error?.response?.data,
-        error?.response?.status,
-        error?.response?.headers
-      );
-    } else if (error.request) {
-    }
-    return error;
-  }
+  return res;
 };
 
 export const getCenterFromPins = (locations) => {
@@ -97,22 +83,18 @@ export const getCenterFromPins = (locations) => {
 };
 
 export const editLocation = async (data, id) => {
-  try {
-    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-    const { token } = userdetail;
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
 
-    const res = await axios.put(`${BASE_URL}/locations/${id}`, data, {
-      headers: {
-        Authorization: "Bearer " + token,
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-    });
+  const res = await axios.put(`${BASE_URL}/locations/${id}`, data, {
+    headers: {
+      Authorization: "Bearer " + token,
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
-    return res;
-  } catch (error) {
-    console.error(error);
-  }
+  return res;
 };
 
 export const deleteLocation = async (id) => {
