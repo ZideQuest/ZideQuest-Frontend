@@ -226,26 +226,27 @@ const styles = StyleSheet.create({
     height: 220,
     flexDirection: "row",
     marginTop: 6,
-    marginBottom: 15,
+    marginBottom: 8,
 
     shadowColor: "#171717",
     shadowOffset: { width: -1, height: 5 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
   },
+  bannerImage: {
+    height: "100%",
+    width: "100%",
+  },
   bannerContainer: {
     height: "100%",
     width: 300,
     marginRight: 4,
   },
-  bannerImage: {
-    height: "100%",
-    width: "100%",
-  },
   quests: {
     paddingHorizontal: 17,
     gap: 5,
     paddingBottom: 40,
+    marginTop: 7,
   },
   header: {
     fontSize: 25,
