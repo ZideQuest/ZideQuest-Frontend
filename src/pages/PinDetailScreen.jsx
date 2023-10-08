@@ -20,7 +20,7 @@ import DetailedQuestListItem from "../components/Quest/DetailedQuestListItem"; /
 
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
-import { buttonNormalGreen } from "../data/color";
+import { buttonNormalGreen, textColor } from "../data/color";
 
 export default function PinDetailScreen({ route }) {
   const { userDetail, onlyPinWithMyQuest, setOnlyPinWithMyQuest } =
@@ -137,99 +137,79 @@ export default function PinDetailScreen({ route }) {
   };
 
   return (
-    <View>
-      <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
-        <BottomSheetScrollView
-          stickyHeaderIndices={[0]}
-          style={{ backgroundColor: "white" }}
-        >
-          <View style={styles.headerContainer}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.header}>
-                  {locationData.locationName?.replace(/\n/g, " ")}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginTop: 10,
-                    alignItems: "center",
-                    gap: 10,
-                  }}
-                >
-                  {userDetail.isAdmin && (
-                    <TouchableOpacity
-                      style={[
-                        styles.editIcon,
-                        { opacity: ownerChecker() ? 1 : 0.3 },
-                      ]}
-                      onPress={editLocationHandler}
-                    >
-                      <Image
-                        source={edit_icon}
-                        style={{ width: "100%", height: "100%" }}
-                      />
-                    </TouchableOpacity>
-                  )}
-                  <BackButton />
-                </View>
+    <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
+      <BottomSheetScrollView
+        stickyHeaderIndices={[0]}
+        style={{ backgroundColor: "white" }}
+      >
+        <View style={styles.headerContainer}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.header}>
+                {locationData.locationName?.replace(/\n/g, " ")}
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 10,
+                  gap: 10,
+                }}
+              >
+                {userDetail.isAdmin && (
+                  <TouchableOpacity
+                    style={[
+                      styles.editIcon,
+                      { opacity: ownerChecker() ? 1 : 0.3 },
+                    ]}
+                    onPress={editLocationHandler}
+                  >
+                    <Image
+                      source={edit_icon}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </TouchableOpacity>
+                )}
+                <BackButton />
               </View>
             </View>
-            {locationData.description && (
-              <Text style={styles.detail}>{locationData.description}</Text>
-            )}
           </View>
-
-          {locationData.picturePath && (
-            <View style={styles.imageScrollContainer}>
-              <Image
-                style={styles.bannerImage}
-                src={locationData.picturePath}
-              />
-            </View>
+          {locationData.description && (
+            <Text style={styles.detail}>{locationData.description}</Text>
           )}
-          {/* <ScrollView style={styles.imageScrollContainer} horizontal>
-            <View style={styles.bannerContainer}>
-              <Image
-                style={styles.bannerImage}
-                src={locationData.picturePath}
-              />
-            </View>
-            <View style={styles.bannerContainer}>
-              <Image
-                style={styles.bannerImage}
-                src={locationData.picturePath}
-              />
-            </View>
-          </ScrollView> */}
+        </View>
 
-          <View style={styles.quests}>
-            <View style={styles.subHeader}>
-              <Text style={styles.subHeaderText}>Quests</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  TabNavigation.navigate("CreateQuest", {
-                    locationId: locationData._id,
-                  });
-                }}
-                style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
-              >
-                <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.questListContainer}>
-              <QuestsComponent />
-            </View>
+        {locationData.picturePath && (
+          <View style={styles.imageScrollContainer}>
+            <Image style={styles.bannerImage} src={locationData.picturePath} />
           </View>
-        </BottomSheetScrollView>
-      </Bottomsheet>
-    </View>
+        )}
+
+        <View style={styles.quests}>
+          <View style={styles.subHeader}>
+            <Text style={styles.subHeaderText}>{quests.length} Quests</Text>
+            <TouchableOpacity
+              onPress={() => {
+                TabNavigation.navigate("CreateQuest", {
+                  locationId: locationData._id,
+                });
+              }}
+              style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
+            >
+              <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.questListContainer}>
+            <QuestsComponent />
+          </View>
+        </View>
+      </BottomSheetScrollView>
+    </Bottomsheet>
   );
 }
 
@@ -240,12 +220,18 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 15,
     backgroundColor: "white",
   },
   imageScrollContainer: {
     height: 220,
     flexDirection: "row",
+    marginTop: 6,
+    marginBottom: 15,
+
+    shadowColor: "#171717",
+    shadowOffset: { width: -1, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
   bannerContainer: {
     height: "100%",
@@ -257,8 +243,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   quests: {
-    paddingHorizontal: 23,
-    paddingTop: 15,
+    paddingHorizontal: 17,
     gap: 5,
     paddingBottom: 40,
   },
@@ -277,23 +262,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   subHeaderText: {
-    fontSize: 20,
+    fontSize: 16,
     fontFamily: "Kanit300",
+    // color: textColor,
   },
   addQuestButton: {
     backgroundColor: buttonNormalGreen,
     borderRadius: 10,
     overflow: "hidden",
-    paddingVertical: 5,
+    paddingVertical: 2,
     paddingHorizontal: 7,
     color: "white",
     fontSize: 15,
   },
   questListContainer: {
-    marginTop: 6,
+    // marginTop: 6,
     gap: 6,
     overflow: "scroll",
-    paddingLeft: 10,
   },
   editIcon: {
     width: 25,

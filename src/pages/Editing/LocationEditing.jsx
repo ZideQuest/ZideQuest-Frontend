@@ -36,7 +36,7 @@ export default function PinCreateInfo({ route }) {
     const fetchLocationData = async () => {
       try {
         const { location } = await getLocationData(route.params?.pinId);
-        setPlace(location.locationName);
+        setPlace(location.locationName.replace(/\n/g, " "));
         setDetail(location.description);
         setImage(location.picturePath ? { uri: location.picturePath } : null);
         setIsLoading(false);
@@ -144,7 +144,11 @@ export default function PinCreateInfo({ route }) {
               />
             </TouchableOpacity>
           </View>
-          <BackButton onPress={() => setNewMarker(null)} />
+          <BackButton
+            targetRoute="PinDetail"
+            params={{ pinId: route.params?.pinId }}
+            resetFocus={false}
+          />
         </View>
         <View style={styles.input}>
           <View>

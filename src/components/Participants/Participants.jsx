@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import UserTag from "./UserTag";
-import * as TabNavigation from "../../data/TabNavigation"
+import * as TabNavigation from "../../data/TabNavigation";
 
 import { fetchParticipants } from "../../data/Quest";
 
-export default function Participants({ questId }) {
+export default function Participants({ questId, ownerChecker }) {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,11 @@ export default function Participants({ questId }) {
   }, []);
 
   const editParticipantHandler = () => {
-    TabNavigation.navigate("EditParticipants", { questId });
+    if (ownerChecker()) {
+      TabNavigation.navigate("EditParticipants", { questId });
+    } else {
+      alert("You are not allowed to manage participants.");
+    }
   };
 
   return (
@@ -35,7 +39,14 @@ export default function Participants({ questId }) {
               ผู้เข้าร่วม
             </Text>
             <TouchableOpacity onPress={editParticipantHandler}>
-              <Text style={{ fontFamily: "Kanit300", fontSize: 15, color: "teal" }}>
+              <Text
+                style={{
+                  fontFamily: "Kanit300",
+                  fontSize: 15,
+                  color: "teal",
+                  opacity: ownerChecker() ? 1 : 0.4,
+                }}
+              >
                 จัดการผู้เข้าร่วม
               </Text>
             </TouchableOpacity>

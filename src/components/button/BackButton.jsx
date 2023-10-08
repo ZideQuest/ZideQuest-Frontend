@@ -6,7 +6,12 @@ import { useAppContext } from "../../data/AppContext";
 import { primaryColor } from "../../data/color";
 import close_icon from "../../../assets/images/close_icon.png";
 
-export default function BackButton({ onPress, targetRoute, params }) {
+export default function BackButton({
+  onPress,
+  targetRoute,
+  params,
+  resetFocus = true,
+}) {
   const { mapRefetch, setFocusedPin } = useAppContext();
 
   const closeHandler = async () => {
@@ -21,7 +26,9 @@ export default function BackButton({ onPress, targetRoute, params }) {
     }
 
     mapRefetch();
-    setFocusedPin(null);
+    if (resetFocus) {
+      setFocusedPin(null);
+    }
   };
 
   return (

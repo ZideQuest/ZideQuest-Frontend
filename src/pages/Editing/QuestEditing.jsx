@@ -122,11 +122,11 @@ export default function QuestEditing({ route }) {
         questDetail.append("activityHour", activityDetail);
       }
 
-      if (tagId != '' && tagId != null) {
+      if (tagId != "" && tagId != null) {
         const handleTag = [tagId];
         questDetail.append("tagId", handleTag);
       }
-      
+
       const newQuest = await editQuest(questDetail, route.params?.questId);
       setIsLoading(false);
       TabNavigation.navigate("QuestManage", { questId: newQuest._id });
@@ -180,7 +180,11 @@ export default function QuestEditing({ route }) {
                 />
               </TouchableOpacity>
             </View>
-            <BackButton />
+            <BackButton
+              targetRoute="QuestManage"
+              params={{ questId: route.params?.questId }}
+              resetFocus={false}
+            />
           </View>
 
           <View style={styles.detailBox}>

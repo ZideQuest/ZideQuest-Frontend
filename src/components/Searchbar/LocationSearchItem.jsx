@@ -5,6 +5,7 @@ import * as TabNavigation from "../../data/TabNavigation";
 import { storeHistory } from "../../data/async_storage";
 import { useAppContext } from "../../data/AppContext";
 import pin_icon from "../../../assets/images/pin_icon.png";
+import { textColor } from "../../data/color";
 
 export default function LocationSearchItem({ locations }) {
   const { mapMoveTo, setFocusedPin } = useAppContext();
@@ -38,7 +39,14 @@ export default function LocationSearchItem({ locations }) {
             </View>
             <View style={styles.detail}>
               <View>
-                <Text>{location.locationName}</Text>
+                <Text
+                  style={{
+                    fontFamily: "Kanit400",
+                    color: textColor,
+                  }}
+                >
+                  {location.locationName.replace(/\n/g, " ")}
+                </Text>
               </View>
             </View>
           </Pressable>

@@ -69,7 +69,7 @@ function CreateQuest() {
       if (maxParticipant) {
         questDetail.append("maxParticipant", maxParticipant);
       }
-      
+
       questDetail.append("autoComplete", isAuto);
 
       if (image != null) {
@@ -136,7 +136,11 @@ function CreateQuest() {
               }}
             >
               <Text style={styles.textXl}>เพิ่มเควสใหม่</Text>
-              <BackButton />
+              <BackButton
+                targetRoute="PinDetail"
+                params={{ pinId: locationId }}
+                resetFocus={false}
+              />
             </View>
 
             <View style={styles.detailBox}>

@@ -47,7 +47,7 @@ export default function PinCreateInfo() {
 
     let bodyFormData = new FormData();
 
-    bodyFormData.append("locationName", place);
+    bodyFormData.append("locationName", place.replace(/\n/g, " "));
     bodyFormData.append("description", detail);
     bodyFormData.append("latitude", newMarker.latitude);
     bodyFormData.append("longitude", newMarker.longitude);
@@ -66,7 +66,7 @@ export default function PinCreateInfo() {
       const { data } = response;
       closeHandler(data._id);
     } catch (error) {
-      alert(error)
+      alert(error);
       console.error(error);
     }
     setIsLoading(false);
