@@ -144,7 +144,11 @@ export default function PinCreateInfo({ route }) {
               />
             </TouchableOpacity>
           </View>
-          <BackButton onPress={() => setNewMarker(null)} />
+          <BackButton
+            targetRoute="PinDetail"
+            params={{ pinId: route.params?.pinId }}
+            resetFocus={false}
+          />
         </View>
         <View style={styles.input}>
           <View>

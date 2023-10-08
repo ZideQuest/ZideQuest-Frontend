@@ -158,7 +158,6 @@ export default function PinDetailScreen({ route }) {
                 style={{
                   flexDirection: "row",
                   marginTop: 10,
-                  alignItems: "center",
                   gap: 10,
                 }}
               >
@@ -271,7 +270,7 @@ const styles = StyleSheet.create({
     backgroundColor: buttonNormalGreen,
     borderRadius: 10,
     overflow: "hidden",
-    paddingVertical: 5,
+    paddingVertical: 2,
     paddingHorizontal: 7,
     color: "white",
     fontSize: 15,

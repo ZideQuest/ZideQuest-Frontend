@@ -31,6 +31,7 @@ import TagItem from "../Quest/TagItem";
 import { TimePicker } from "../TimePicker";
 
 import search_icon from "../../../assets/images/search.png";
+import user_icon from "../../../assets/images/user_icon.png";
 import BigButton from "../button/BigButton";
 
 export default function SearchBar({ searching, setSearching }) {
@@ -198,12 +199,9 @@ export default function SearchBar({ searching, setSearching }) {
     return (
       <Pressable
         onPress={() => alert("Login first")}
-        style={[styles.profileContainer, { padding: 6, borderWidth: 1 }]}
+        style={styles.profileContainer}
       >
-        <Image
-          src="https://img.icons8.com/material-outlined/24/cat--v1.png"
-          style={styles.profilePicture}
-        />
+        <Image source={user_icon} style={styles.profilePicture} />
       </Pressable>
     );
   };
@@ -431,12 +429,17 @@ const styles = StyleSheet.create({
   profileContainer: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    overflow: "hidden",
+
+    shadowColor: "#171717",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   profilePicture: {
     width: "100%",
     height: "100%",
+    borderRadius: 20,
+    overflow: "hidden",
   },
   iconContainer: {
     width: 20,

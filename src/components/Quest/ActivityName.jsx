@@ -16,7 +16,11 @@ export default function ActivityName({ quest }) {
       <View style={styles.questItem}>
         <View style={[styles.questNameCon]}>
           <Text style={styles.questFont}>{quest?.questName}</Text>
-          <BackButton />
+          <BackButton
+            targetRoute="PinDetail"
+            params={{ pinId: quest?.locationId }}
+            resetFocus={false}
+          />
         </View>
       </View>
       <View style={styles.infoText}>
@@ -76,7 +80,7 @@ export default function ActivityName({ quest }) {
           </View>
         </View>
       </View>
-      {quest.activityHour?.categoty && (
+      {quest?.activityHour.category && (
         <Text style={{ fontFamily: "Kanit400" }}>
           คุณจะได้รับ {activityCategories[quest.activityHour?.category]}{" "}
           {quest.activityHour?.hour} ชั่วโมง
