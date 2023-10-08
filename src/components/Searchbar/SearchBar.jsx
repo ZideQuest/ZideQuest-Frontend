@@ -31,6 +31,7 @@ import TagItem from "../Quest/TagItem";
 import { TimePicker } from "../TimePicker";
 
 import search_icon from "../../../assets/images/search.png";
+import BigButton from "../button/BigButton";
 
 export default function SearchBar({ searching, setSearching }) {
   const {
@@ -77,10 +78,6 @@ export default function SearchBar({ searching, setSearching }) {
     useEndDate,
     activityHour
   ) => {
-    if (!query && !queryTags.length && !useStartDate && !useEndDate && !activityHour) {
-      setLoading(false);
-      return;
-    }
     try {
       const data = await searchQuest(
         query,
@@ -110,7 +107,7 @@ export default function SearchBar({ searching, setSearching }) {
       useEndDate,
       activityHour
     );
-  }, [selectedTag, startDate, endDate, activityHour]);
+  }, [selectedTag, startDate, endDate, activityHour, useEndDate, useStartDate]);
 
   const handleTextChange = (q) => {
     setLoading(true);
@@ -133,7 +130,7 @@ export default function SearchBar({ searching, setSearching }) {
   const onSubmitHandler = () => {
     if (!searchResult?.locations) {
       bottomModalRef.current?.snapToIndex(1);
-      return;
+      // return;
     }
 
     storeHistory(search);
@@ -251,7 +248,8 @@ export default function SearchBar({ searching, setSearching }) {
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
+              // flex: 1,
+              // justifyContent: "space-between",
               gap: 10,
             }}
           >
@@ -259,6 +257,7 @@ export default function SearchBar({ searching, setSearching }) {
               subject={activityCategories[activityHour]}
               closeOnPress
               refresher={refresher}
+              isActive={activityHour != 0}
             >
               <View>
                 <Text
@@ -286,7 +285,10 @@ export default function SearchBar({ searching, setSearching }) {
                 ))}
               </View>
             </ItemSelectingModal>
-            <ItemSelectingModal subject="แท็ก">
+            <ItemSelectingModal
+              subject="แท็ก"
+              isActive={selectedTag.length != 0}
+            >
               <View style={{ padding: 5, paddingTop: 10, width: "100%" }}>
                 <TextInput
                   placeholder="ค้นหาแท็ก"
@@ -347,6 +349,13 @@ export default function SearchBar({ searching, setSearching }) {
               useEndDate={useEndDate}
             />
           )}
+
+          <BigButton
+            text="Apply"
+            bg={primaryColor}
+            onPress={onSubmitHandler}
+            pd={3}
+          />
         </View>
       )}
 

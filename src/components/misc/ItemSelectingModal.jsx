@@ -8,11 +8,15 @@ import {
   Pressable,
 } from "react-native";
 
+import { primaryColor_light } from "../../data/color";
+import Checkmark from "../../../assets/images/svgs/Checkmark";
+
 export default function ItemSelectingModal({
   subject,
   closeOnPress,
   children,
   refresher,
+  isActive,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -23,14 +27,32 @@ export default function ItemSelectingModal({
   }, [refresher]);
 
   return (
-    <View style={{ position: "relative", flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={() => setModalVisible((prev) => !prev)}
-        style={styles.subjectContainer}
+        style={[
+          styles.subjectContainer,
+          {
+            backgroundColor: isActive ? primaryColor_light : "#fbfbfb",
+            borderColor: isActive ? "transparent" : "#CDCDCD",
+          },
+        ]}
       >
-        <Text style={styles.subjectText} numberOfLines={1}>
-          {subject}
-        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            // paddingRight: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+            paddingHorizontal: 10,
+          }}
+        >
+          {isActive && <Checkmark width={15} height={15} />}
+          <Text style={styles.subjectText} numberOfLines={1}>
+            {subject}
+          </Text>
+        </View>
       </TouchableOpacity>
       <View>
         <Modal
@@ -86,15 +108,18 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   subjectContainer: {
-    borderColor: "#CDCDCD",
     borderWidth: 1,
     padding: 4,
-    backgroundColor: "#fbfbfb",
     borderRadius: 10,
     fontSize: 16,
+    flex: 1,
   },
   subjectText: {
     fontFamily: "Kanit400",
-    textAlign: "center",
+    // textAlign: "center",
+    // flexDirection: "row",
+    // alignItems: "center",
+    // justifyContent: "center",
+    // gap: 5,
   },
 });

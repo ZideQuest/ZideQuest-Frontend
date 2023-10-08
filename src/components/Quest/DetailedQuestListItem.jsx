@@ -82,7 +82,14 @@ export default function DetailedQuestListItem({
   return (
     <TouchableOpacity
       onPress={questPressHandler}
-      style={[quest.isJoin ? (quest.isCheckin || quest.status) ? styles.questcheckinContainer:styles.questJoinedContainer:styles.questContainer , { opacity: quest.status ? 0.5 : 1 }]}
+      style={[
+        quest.isJoin
+          ? quest.isCheckin || quest.status
+            ? styles.questcheckinContainer
+            : styles.questJoinedContainer
+          : styles.questContainer,
+        { opacity: quest.status ? 0.5 : 1 },
+      ]}
     >
       <View style={styles.nameAndParticipants}>
         <Text style={styles.questName}>{quest.questName}</Text>
@@ -116,7 +123,7 @@ export default function DetailedQuestListItem({
         <Text style={styles.requirementText}>
           ชั่วโมงกิจกรรม :
           <Text style={styles.boldDetail}>
-            {quest.activityHour
+            {quest.activityHour.category
               ? ` ${activityCategories[quest.activityHour.category]} ${
                   quest.activityHour.hour
                 } ชั่วโมง`

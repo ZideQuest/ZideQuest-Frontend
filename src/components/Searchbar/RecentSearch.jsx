@@ -3,8 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Pressable,
   TouchableOpacity,
+  TouchableHighlight,
   Image,
 } from "react-native";
 
@@ -53,16 +53,19 @@ export default function RecentSearch({ handleTextChange }) {
       </View>
       {history.length != 0 ? (
         history.map((h, i) => (
-          <Pressable
+          <TouchableHighlight
+            underlayColor="#DDDDDD"
             key={`history-${i}`}
             onPress={() => recentPressHandler(h)}
             style={styles.recentItem}
           >
-            <View style={styles.searchIconContainer}>
-              <Image source={search_icon} style={styles.searchIconImage} />
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <View style={styles.searchIconContainer}>
+                <Image source={search_icon} style={styles.searchIconImage} />
+              </View>
+              <Text style={styles.recentText}>{h}</Text>
             </View>
-            <Text style={styles.recentText}>{h}</Text>
-          </Pressable>
+          </TouchableHighlight>
         ))
       ) : (
         <Text style={styles.noRecent}>No recent search history...</Text>
@@ -73,6 +76,7 @@ export default function RecentSearch({ handleTextChange }) {
 
 const styles = StyleSheet.create({
   recentContainer: {
+    paddingTop: 5,
     paddingHorizontal: 15,
     backgroundColor: "white",
   },
@@ -85,8 +89,8 @@ const styles = StyleSheet.create({
     borderColor: "grey",
   },
   recentHeaderText: {
-    fontWeight: 700,
-    fontSize: 16,
+    fontFamily: "Kanit500",
+    fontSize: 17,
     color: textColor,
   },
   searchIconContainer: {
@@ -107,11 +111,13 @@ const styles = StyleSheet.create({
   },
   recentText: {
     fontSize: 15,
-    fontWeight: 500,
+    fontFamily: "Kanit300",
     color: textColor,
   },
   noRecent: {
     color: textColor,
     margin: 10,
+    fontSize: 15,
+    fontFamily: "Kanit300"
   },
 });
