@@ -76,9 +76,9 @@ export default function ActivityName({ quest }) {
           </View>
         </View>
       </View>
-      {quest.activityHour && (
-        <Text style={{ fontFamily: "Kanit300" }}>
-          {activityCategories[quest.activityHour?.category]}{" "}
+      {quest.activityHour?.categoty && (
+        <Text style={{ fontFamily: "Kanit400" }}>
+          คุณจะได้รับ {activityCategories[quest.activityHour?.category]}{" "}
           {quest.activityHour?.hour} ชั่วโมง
         </Text>
       )}
@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
   },
 
   DataCon: {
-    paddingTop: 5,
     backgroundColor: BGcolor,
     width: "100%",
   },

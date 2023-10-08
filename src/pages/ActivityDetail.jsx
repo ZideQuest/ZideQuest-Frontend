@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   picCon: {
     width: "100%",
-    height: 200,
+    height: 220,
     marginVertical: 10,
   },
   pic: {
