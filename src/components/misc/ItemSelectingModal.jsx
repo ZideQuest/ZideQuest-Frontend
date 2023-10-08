@@ -14,7 +14,7 @@ export default function ItemSelectingModal({ subject, children }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <View style={{ position: "relative" }}>
+    <View style={{ position: "relative", flex: 1 }}>
       <TouchableOpacity
         onPress={() => setModalVisible((prev) => !prev)}
         style={styles.subjectContainer}
@@ -81,5 +81,6 @@ const styles = StyleSheet.create({
   },
   subjectText: {
     fontFamily: "Kanit400",
+    textAlign: "center",
   },
 });
