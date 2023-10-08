@@ -64,6 +64,7 @@ export default function SearchItem({ quests, isAdmin }) {
 
 const styles = StyleSheet.create({
   searchResultCategory: {
+    // marginTop: 10,
     marginBottom: 10,
     paddingLeft: 20,
     paddingVertical: 10,

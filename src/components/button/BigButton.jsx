@@ -6,10 +6,11 @@ export default function BigButton({
   onPress,
   disable,
   color = "white",
+  pd = 12,
 }) {
   return (
     <TouchableOpacity
-      style={[styles.bigButton, { backgroundColor: bg }]}
+      style={[styles.bigButton, { backgroundColor: bg, padding: pd }]}
       onPress={onPress}
       disabled={disable}
     >
@@ -22,7 +23,6 @@ const styles = StyleSheet.create({
   bigButton: {
     flex: 1,
     alignItems: "center",
-    padding: 12,
     borderRadius: 15,
     overflow: "hidden",
     // height: 45,

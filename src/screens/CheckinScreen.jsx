@@ -33,7 +33,7 @@ export default function CheckinScreen({ navigation }) {
       alert(`เช็คอินกิจกรรม ${res.questName} สำเร็จ!`)
       
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
   };

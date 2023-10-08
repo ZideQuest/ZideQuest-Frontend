@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,20 +6,53 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
-  ScrollView,
-  TouchableWithoutFeedback,
 } from "react-native";
 
-export default function ItemSelectingModal({ subject, children }) {
+import { primaryColor_light } from "../../data/color";
+import Checkmark from "../../../assets/images/svgs/Checkmark";
+
+export default function ItemSelectingModal({
+  subject,
+  closeOnPress,
+  children,
+  refresher,
+  isActive,
+}) {
   const [modalVisible, setModalVisible] = useState(false);
 
+  useEffect(() => {
+    if (closeOnPress) {
+      setModalVisible(false);
+    }
+  }, [refresher]);
+
   return (
-    <View style={{ position: "relative" }}>
+    <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={() => setModalVisible((prev) => !prev)}
-        style={styles.subjectContainer}
+        style={[
+          styles.subjectContainer,
+          {
+            backgroundColor: isActive ? primaryColor_light : "#fbfbfb",
+            borderColor: isActive ? "transparent" : "#CDCDCD",
+          },
+        ]}
       >
-        <Text style={styles.subjectText}>{subject}</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            // paddingRight: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+            paddingHorizontal: 10,
+          }}
+        >
+          {isActive && <Checkmark width={15} height={15} />}
+          <Text style={styles.subjectText} numberOfLines={1}>
+            {subject}
+          </Text>
+        </View>
       </TouchableOpacity>
       <View>
         <Modal
@@ -37,9 +70,12 @@ export default function ItemSelectingModal({ subject, children }) {
               setModalVisible(false);
             }}
           >
-            <TouchableWithoutFeedback>
-              <View style={styles.modalContainer}>{children}</View>
-            </TouchableWithoutFeedback>
+            <Pressable
+              // onPress={childPressHandler}
+              style={styles.modalContainer}
+            >
+              {children}
+            </Pressable>
           </TouchableOpacity>
         </Modal>
       </View>
@@ -60,16 +96,30 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     maxHeight: "50%",
     marginHorizontal: 15,
+    width: "90%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    overflow: "hidden",
   },
   subjectContainer: {
-    borderColor: "#CDCDCD",
     borderWidth: 1,
     padding: 4,
-    backgroundColor: "#fbfbfb",
     borderRadius: 10,
     fontSize: 16,
+    flex: 1,
   },
   subjectText: {
     fontFamily: "Kanit400",
+    // textAlign: "center",
+    // flexDirection: "row",
+    // alignItems: "center",
+    // justifyContent: "center",
+    // gap: 5,
   },
 });

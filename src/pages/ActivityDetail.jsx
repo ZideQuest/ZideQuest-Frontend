@@ -55,7 +55,6 @@ export default function ActivityDetail() {
             setLoading(true);
             try {
               const newData = await join_leave(questId);
-              console.log(newData);
               setIsJoined(false);
               setQuestDetail({
                 ...QuestDetail,
