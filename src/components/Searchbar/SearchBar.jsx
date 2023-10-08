@@ -98,6 +98,7 @@ export default function SearchBar({ searching, setSearching }) {
   const debouncedFetch = useCallback(debounce(searchFetching, 500), []);
 
   useEffect(() => {
+    setLoading(true);
     searchFetching(
       search,
       selectedTag,
@@ -167,8 +168,6 @@ export default function SearchBar({ searching, setSearching }) {
   const selectedTagIds = selectedTag.map((t) => t._id);
 
   const tagPressHandler = (tag) => {
-    setLoading(true);
-
     if (selectedTagIds.includes(tag._id)) {
       setSelectedTag((prev) => prev.filter((p) => p._id != tag._id));
     } else {
@@ -374,7 +373,6 @@ export default function SearchBar({ searching, setSearching }) {
 
       <View style={styles.greyBackground}>
         {loading && <SearchLoading search={search} selectedTag={selectedTag} />}
-
         {searching &&
           !loading &&
           (search ||
@@ -476,7 +474,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
   },
 });

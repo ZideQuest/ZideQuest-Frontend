@@ -92,7 +92,7 @@ export default function DetailedQuestListItem({
             <Text style={styles.detailText}>{getStartTime()}</Text>
           </View>
           <Text style={styles.detailText}>
-            ที่ {quest.locationId.locationName}
+            ที่ {quest.locationId.locationName.replace(/\n/g, " ")}
           </Text>
         </View>
         <View style={styles.qrContainer}>

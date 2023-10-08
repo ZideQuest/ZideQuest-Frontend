@@ -4,7 +4,7 @@ import {
   Text,
   View,
   ActivityIndicator,
-  Pressable,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import defaultCreatorImage from "../../../assets/images/UserProfileTest.jpg";
@@ -96,15 +96,15 @@ const MinimalCard = ({ quest }) => {
   };
 
   return (
-    <Pressable onPress={questPressHandler}>
+    <TouchableOpacity onPress={questPressHandler} activeOpacity={0.6}>
       <View style={styles.CardContainer}>
         <Text style={styles.quest_name}>{questName}</Text>
         <View style={styles.row}>
           <View style={styles.row_inner}>
             <Image style={styles.userprofile} source={creatorImageSource} />
             <View style={styles.userdescription}>
-              <Text style={{ fontFamily: "Kanit400" }}>
-                สถานที่: {locationId.locationName}
+              <Text style={{ fontFamily: "Kanit400" }} numberOfLines={2}>
+                สถานที่: {locationId.locationName.replace(/\n/g, " ")}
               </Text>
               <View style={styles.participant}>
                 <Text style={styles.par_font}>
@@ -129,7 +129,7 @@ const MinimalCard = ({ quest }) => {
           <Image style={styles.quest_image} source={questImageSource} />
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
@@ -154,13 +154,14 @@ const styles = StyleSheet.create({
   row_inner: {
     flexDirection: "row",
     gap: 10,
-    justifyContent: "center",
+    flex: 1,
   },
   userdescription: {
     justifyContent: "center",
+    flex: 1,
   },
   time_and_date: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   time: {
     color: textColor,
