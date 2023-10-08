@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/Searchbar/SearchBar";
 import GridCard from "../components/MinimalCard/Gridcard";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 

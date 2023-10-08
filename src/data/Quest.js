@@ -31,9 +31,8 @@ export async function getQuestData(id) {
 
 export async function searchQuest(name, selectedTag) {
   const { data } = await axios.get(`${BASE_URL}/search`, {
-    params: { Name: name, Tag: selectedTag[0] },
+    params: { Name: name, tagId: selectedTag },
   });
-
   return data;
 }
 

@@ -42,6 +42,8 @@ export const TimePicker = ({
   setStartDate,
   endDate,
   setEndDate,
+  useStartDate=true,
+  useEndDate=true,
 }) => {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
@@ -243,7 +245,6 @@ export const TimePicker = ({
             <DateTimePicker
               value={startDate}
               mode={mode}
-              display={Platform.OS === "ios" ? "spinner" : "default"}
               is24Hour={true}
               onChange={onChangeStartDate}
               style={styles.datePicker}
@@ -253,7 +254,6 @@ export const TimePicker = ({
             <DateTimePicker
               value={endDate}
               mode={mode}
-              display={Platform.OS === "ios" ? "spinner" : "default"}
               is24Hour={true}
               onChange={onChangeEndDate}
               style={styles.datePicker}
@@ -266,17 +266,21 @@ export const TimePicker = ({
     return (
       <View style={styles.view}>
         <View style={styles.innerView}>
-          <TouchableOpacity onPress={() => handlePresentModalPress("start")}>
-            <Text style={styles.dateText}>
-              เริ่มจัดกิจกรรม {startDate.toLocaleString("en-US", options)}  ▼
-            </Text>
-          </TouchableOpacity>
+          {useStartDate && (
+            <TouchableOpacity onPress={() => handlePresentModalPress("start")}>
+              <Text style={styles.dateText}>
+                เริ่มจัดกิจกรรม {startDate.toLocaleString("en-US", options)} ▼
+              </Text>
+            </TouchableOpacity>
+          )}
 
-          <TouchableOpacity onPress={() => handlePresentModalPress("end")}>
-            <Text style={styles.dateText}>
-              สิ้นสุดกิจกรรม {endDate.toLocaleString("en-US", options)}  ▼
-            </Text>
-          </TouchableOpacity>
+          {useEndDate && (
+            <TouchableOpacity onPress={() => handlePresentModalPress("end")}>
+              <Text style={styles.dateText}>
+                สิ้นสุดกิจกรรม {endDate.toLocaleString("en-US", options)} ▼
+              </Text>
+            </TouchableOpacity>
+          )}
 
           <BottomSheetModal
             ref={bottomSheetModalRef}
@@ -360,8 +364,6 @@ const styles = StyleSheet.create({
     gap: 10,
     flexDirection: "column",
     justifyContent: "flex-start",
-    // alignItems: "flex-start",
-    // borderWidth: 1
   },
   innerViewText: {
     flex: 1,
@@ -370,14 +372,6 @@ const styles = StyleSheet.create({
     gap: 10,
     flexDirection: "column",
     justifyContent: "flex-start",
-    // alignItems: "flex-start",
-    // borderWidth: 1
-  },
-  datePicker: {
-    // borderColor: "#000",
-    // backgroundColor: "white"
-    // padding: 0,
-    // borderWidth: 1
   },
   buttonCon: {},
   contentContainer: {
@@ -387,6 +381,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Kanit300",
     lineHeight: 20,
-    color: textColor
+    color: textColor,
   },
 });

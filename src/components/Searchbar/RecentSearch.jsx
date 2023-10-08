@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, Button, Image } from "react-native";
 
-import { loadHistory, clearHistory } from "../data/async_storage";
-import { textColor } from "../data/color";
+import { loadHistory, clearHistory } from "../../data/async_storage";
+import { textColor } from "../../data/color";
 
-import search_icon from "../../assets/images/search.png";
+import search_icon from "../../../assets/images/search.png";
 
 export default function RecentSearch({ handleTextChange }) {
   const [history, setHistory] = useState([]);
@@ -55,7 +55,7 @@ export default function RecentSearch({ handleTextChange }) {
 const styles = StyleSheet.create({
   recentContainer: {
     paddingHorizontal: 15,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   recentHeaderContainer: {
     flexDirection: "row",

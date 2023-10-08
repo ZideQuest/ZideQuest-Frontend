@@ -60,6 +60,16 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     maxHeight: "50%",
     marginHorizontal: 15,
+    width: "90%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   subjectContainer: {
     borderColor: "#CDCDCD",
