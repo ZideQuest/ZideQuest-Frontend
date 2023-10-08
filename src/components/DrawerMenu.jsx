@@ -221,20 +221,21 @@ export default function DrawerMenu({ navigation, children }) {
               <TouchableOpacity>
                 <Text style={styles.smallMenuItem}>Privacy</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  gap: 10,
-                  alignItems: "center",
-                  display: userDetail.user ? "block" : "none",
-                }}
-                onPress={logoutHandler}
-              >
-                <Text style={[styles.smallMenuItem, { color: primaryColor }]}>
-                  Logout
-                </Text>
-                <Image source={leave_icon} />
-              </TouchableOpacity>
+              {userDetail.user && (
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                  onPress={logoutHandler}
+                >
+                  <Text style={[styles.smallMenuItem, { color: primaryColor }]}>
+                    Logout
+                  </Text>
+                  <Image source={leave_icon} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         );
