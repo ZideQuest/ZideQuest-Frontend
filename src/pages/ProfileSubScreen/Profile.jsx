@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 
 import * as TabNavigation from "../../data/TabNavigation";
-import ProfilePic from "../../../assets/images/Jitat.jpg";
+import ProfilePic from "../../../assets/images/user_icon.png";
 import goBackPic from "../../../assets/images/back-button.png";
 import * as Progress from "react-native-progress";
 import {
