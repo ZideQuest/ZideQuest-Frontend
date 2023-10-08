@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import SearchItem from "./SearchItem";
 import LocationSearchItem from "./LocationSearchItem";
 import { useAppContext } from "../../data/AppContext";
+import { textColor } from "../../data/color";
 
 export default function SearchResult({ searchResult }) {
   const { userDetail } = useAppContext();
@@ -12,12 +13,15 @@ export default function SearchResult({ searchResult }) {
         <View style={styles.searchStatusText}>
           <Text
             style={{
-              color: textColor,
-              fontFamily: "Kanit300",
-              fontSize: 16,
+              color: "lightgray",
+              fontFamily: "Kanit400",
+              fontSize: 25,
+              backgroundColor: "white",
+              paddingHorizontal: 25,
+              paddingTop: 10
             }}
           >
-            No Result Found
+            ไม่พบเควสที่ค้นหา...
           </Text>
         </View>
       )}
@@ -30,7 +34,7 @@ export default function SearchResult({ searchResult }) {
 
 const styles = StyleSheet.create({
   searchResultContainer: {
-    borderTopWidth: 1,
-    borderColor: "grey",
+    // backgroundColor: "red",
+    height: "100%",
   },
 });

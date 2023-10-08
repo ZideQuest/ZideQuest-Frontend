@@ -29,9 +29,25 @@ export async function getQuestData(id) {
   return data;
 }
 
-export async function searchQuest(name, selectedTag) {
+export async function searchQuest(
+  name,
+  selectedTag,
+  startDate,
+  endDate,
+  useStartDate,
+  useEndDate,
+  activityHour
+) {
+  const tags = selectedTag.map((tag) => tag._id);
+  console.log(tags);
   const { data } = await axios.get(`${BASE_URL}/search`, {
-    params: { Name: name, tagId: selectedTag },
+    params: {
+      Name: name,
+      tagId: tags,
+      timeStart: useStartDate ? startDate : "",
+      timeEnd: useEndDate ? endDate : "",
+      activityCat: activityHour && activityHour,
+    },
   });
   return data;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,21 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
-  ScrollView,
-  TouchableWithoutFeedback,
 } from "react-native";
 
-export default function ItemSelectingModal({ subject, children }) {
+export default function ItemSelectingModal({
+  subject,
+  closeOnPress,
+  children,
+  refresher,
+}) {
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (closeOnPress) {
+      setModalVisible(false);
+    }
+  }, [refresher]);
 
   return (
     <View style={{ position: "relative", flex: 1 }}>
@@ -19,7 +28,9 @@ export default function ItemSelectingModal({ subject, children }) {
         onPress={() => setModalVisible((prev) => !prev)}
         style={styles.subjectContainer}
       >
-        <Text style={styles.subjectText}>{subject}</Text>
+        <Text style={styles.subjectText} numberOfLines={1}>
+          {subject}
+        </Text>
       </TouchableOpacity>
       <View>
         <Modal
@@ -37,9 +48,12 @@ export default function ItemSelectingModal({ subject, children }) {
               setModalVisible(false);
             }}
           >
-            <TouchableWithoutFeedback>
-              <View style={styles.modalContainer}>{children}</View>
-            </TouchableWithoutFeedback>
+            <Pressable
+              // onPress={childPressHandler}
+              style={styles.modalContainer}
+            >
+              {children}
+            </Pressable>
           </TouchableOpacity>
         </Modal>
       </View>
@@ -68,8 +82,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
+    overflow: "hidden",
   },
   subjectContainer: {
     borderColor: "#CDCDCD",

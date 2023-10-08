@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Button, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 
 import { loadHistory, clearHistory } from "../../data/async_storage";
 import { textColor } from "../../data/color";
@@ -30,7 +37,19 @@ export default function RecentSearch({ handleTextChange }) {
     <View style={styles.recentContainer}>
       <View style={styles.recentHeaderContainer}>
         <Text style={styles.recentHeaderText}>Recents</Text>
-        {history.length != 0 && <Button title="clear" onPress={clearHandler} />}
+        {history.length != 0 && (
+          <TouchableOpacity onPress={clearHandler}>
+            <Text
+              style={{
+                fontFamily: "Kanit300",
+                fontSize: 18,
+                color: "rgb(0, 122, 255)",
+              }}
+            >
+              Clear
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       {history.length != 0 ? (
         history.map((h, i) => (

@@ -28,6 +28,8 @@ const styles = StyleSheet.create({
   Container: {
     width: "100%",
     flex: 1,
+    // borderWidth: 5,
+    // borderColor: "blue",
     // backgroundColor: "#F2F2F2",
     backgroundColor: "white",
   },

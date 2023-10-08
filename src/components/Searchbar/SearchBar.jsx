@@ -6,32 +6,31 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  Button,
   Image,
   Keyboard,
 } from "react-native";
-import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { BottomSheetTextInput, TouchableHighlight } from "@gorhom/bottom-sheet";
+import Checkbox from "expo-checkbox";
+
 import { useAppContext } from "../../data/AppContext";
 import { primaryColor, textColor } from "../../data/color";
 import { searchQuest } from "../../data/Quest";
 import * as TabNavigation from "../../data/TabNavigation";
+import { getCenterFromPins } from "../../data/locations";
+import { storeHistory } from "../../data/async_storage";
+import { getTags } from "../../data/tag";
+import { activityCategories } from "../../data/activityCategoty";
 
 import RecentSearch from "./RecentSearch";
-import SearchItem from "./SearchItem";
-import LocationSearchItem from "./LocationSearchItem";
+import SearchResult from "./SearchResult";
+import SearchLoading from "./SearchLoading";
 
 import ItemSelectingModal from "../misc/ItemSelectingModal";
 import TagItem from "../Quest/TagItem";
 import { TimePicker } from "../TimePicker";
 
-import { getCenterFromPins } from "../../data/locations";
-import { storeHistory } from "../../data/async_storage";
-import { getTags } from "../../data/tag";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-
 import search_icon from "../../../assets/images/search.png";
-import SearchResult from "./SearchResult";
-import SearchLoading from "./SearchLoading";
 
 export default function SearchBar({ searching, setSearching }) {
   const {
@@ -46,6 +45,8 @@ export default function SearchBar({ searching, setSearching }) {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [activityHour, setActivityHour] = useState(0);
+
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState([]);
   const [tagSearch, setTagSearch] = useState("");
@@ -54,6 +55,8 @@ export default function SearchBar({ searching, setSearching }) {
   const [startDate, setStartDate] = useState(new Date());
   const [useEndDate, setUseEndDate] = useState(false);
   const [endDate, setEndDate] = useState(new Date());
+
+  const [refresher, setRefresher] = useState(false);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -65,13 +68,29 @@ export default function SearchBar({ searching, setSearching }) {
     fetchTags();
   }, []);
 
-  const searchFetching = async (query, queryTags) => {
-    if (!query && !queryTags.length) {
+  const searchFetching = async (
+    query,
+    queryTags,
+    startDate,
+    endDate,
+    useStartDate,
+    useEndDate,
+    activityHour
+  ) => {
+    if (!query && !queryTags.length && !useStartDate && !useEndDate && !activityHour) {
       setLoading(false);
       return;
     }
     try {
-      const data = await searchQuest(query, queryTags);
+      const data = await searchQuest(
+        query,
+        queryTags,
+        startDate,
+        endDate,
+        useStartDate,
+        useEndDate,
+        activityHour
+      );
       setSearchResult(data);
     } catch (error) {
       console.error(error);
@@ -82,8 +101,16 @@ export default function SearchBar({ searching, setSearching }) {
   const debouncedFetch = useCallback(debounce(searchFetching, 500), []);
 
   useEffect(() => {
-    searchFetching(search, selectedTag);
-  }, [selectedTag]);
+    searchFetching(
+      search,
+      selectedTag,
+      startDate,
+      endDate,
+      useStartDate,
+      useEndDate,
+      activityHour
+    );
+  }, [selectedTag, startDate, endDate, activityHour]);
 
   const handleTextChange = (q) => {
     setLoading(true);
@@ -104,6 +131,11 @@ export default function SearchBar({ searching, setSearching }) {
   };
 
   const onSubmitHandler = () => {
+    if (!searchResult?.locations) {
+      bottomModalRef.current?.snapToIndex(1);
+      return;
+    }
+
     storeHistory(search);
     bottomModalRef.current?.snapToIndex(1);
     mapSearchedLocation(searchResult.locations);
@@ -118,13 +150,16 @@ export default function SearchBar({ searching, setSearching }) {
     }
   };
 
-  const onCancelHander = () => {
-    setSearch(null);
+  const onCancelHandler = () => {
+    setSearch("");
     setSearchResult([]);
     setSelectedTag([]);
+    setActivityHour(0);
+    setUseStartDate(false);
+    setUseEndDate(false);
     setSearching(false);
     Keyboard.dismiss();
-    bottomModalRef.current?.snapToIndex(1);
+    bottomModalRef.current?.collapse();
     mapRefetch();
   };
 
@@ -144,9 +179,10 @@ export default function SearchBar({ searching, setSearching }) {
     }
   };
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
+  const activityPressHandler = (act) => {
+    setActivityHour(act);
+    setRefresher((prev) => !prev);
+  };
 
   const ProfileImage = () => {
     if (userDetail.user?._id) {
@@ -194,12 +230,12 @@ export default function SearchBar({ searching, setSearching }) {
           />
         </View>
         {searching ? (
-          <TouchableOpacity onPress={onCancelHander}>
+          <TouchableOpacity onPress={onCancelHandler}>
             <Text
               style={{
                 fontFamily: "Kanit300",
                 fontSize: 18,
-                color: "rbg(166,200,251)",
+                color: "rgb(0, 122, 255)",
               }}
             >
               Cancel
@@ -212,50 +248,105 @@ export default function SearchBar({ searching, setSearching }) {
 
       {searching && (
         <View style={styles.optionContainer}>
-          <ItemSelectingModal subject="แท็ก">
-            <View style={{ padding: 5, paddingTop: 10, width: "100%" }}>
-              <TextInput
-                placeholder="ค้นหาแท็ก"
-                value={tagSearch}
-                onChangeText={setTagSearch}
-              />
-              <View style={styles.tagContainer}>
-                {tags
-                  .filter((tag) => tag.tagName.startsWith(tagSearch))
-                  .map((tag) => (
-                    <TouchableOpacity
-                      onPress={() => tagPressHandler(tag)}
-                      key={`search-tag-${tag._id}`}
-                      style={{
-                        borderColor: selectedTagIds.includes(tag._id)
-                          ? "black"
-                          : "white",
-                        borderWidth: 2,
-                        borderRadius: 12,
-                      }}
-                    >
-                      <TagItem tag={tag} />
-                    </TouchableOpacity>
-                  ))}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              gap: 10,
+            }}
+          >
+            <ItemSelectingModal
+              subject={activityCategories[activityHour]}
+              closeOnPress
+              refresher={refresher}
+            >
+              <View>
+                <Text
+                  style={{
+                    paddingHorizontal: 7,
+                    marginTop: 10,
+                    marginBottom: 6,
+                    fontFamily: "Kanit400",
+                    fontSize: 18,
+                  }}
+                >
+                  เลือกชั่วโมงกิจกรรม
+                </Text>
+                {Object.keys(activityCategories).map((act) => (
+                  <TouchableHighlight
+                    underlayColor="#DDDDDD"
+                    onPress={() => activityPressHandler(act)}
+                    key={`activity-hour-${act}`}
+                    style={{ width: "100%", padding: 7, paddingLeft: 13 }}
+                  >
+                    <Text style={{ fontFamily: "Kanit300", fontSize: 15 }}>
+                      {activityCategories[act]}
+                    </Text>
+                  </TouchableHighlight>
+                ))}
               </View>
-            </View>
-          </ItemSelectingModal>
-          <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity onPress={() => setUseStartDate((prev) => !prev)}>
-              <Text>วันกิจกรรม</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setUseEndDate((prev) => !prev)}>
-              <Text>วันสิ้นสุดกิจกรรม</Text>
-            </TouchableOpacity>
+            </ItemSelectingModal>
+            <ItemSelectingModal subject="แท็ก">
+              <View style={{ padding: 5, paddingTop: 10, width: "100%" }}>
+                <TextInput
+                  placeholder="ค้นหาแท็ก"
+                  value={tagSearch}
+                  onChangeText={setTagSearch}
+                />
+                <View style={styles.tagContainer}>
+                  {tags
+                    .filter((tag) => tag.tagName.startsWith(tagSearch))
+                    .map((tag) => (
+                      <TouchableOpacity
+                        onPress={() => tagPressHandler(tag)}
+                        key={`search-tag-${tag._id}`}
+                        style={{
+                          borderColor: selectedTagIds.includes(tag._id)
+                            ? "black"
+                            : "white",
+                          borderWidth: 2,
+                          borderRadius: 12,
+                        }}
+                      >
+                        <TagItem tag={tag} />
+                      </TouchableOpacity>
+                    ))}
+                </View>
+              </View>
+            </ItemSelectingModal>
           </View>
-          <TimePicker
-            startDate={startDate}
-            endDate={endDate}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-            useStartDate={useStartDate}
-            useEndDate={useEndDate}
-          />
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <View style={{ flexDirection: "row", gap: 4 }}>
+              <Checkbox
+                color={primaryColor}
+                onValueChange={setUseStartDate}
+                value={useStartDate}
+              />
+              <Text style={{ fontFamily: "Kanit300", fontSize: 15 }}>
+                เวลาเริ่มเควส
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", gap: 4 }}>
+              <Checkbox
+                color={primaryColor}
+                onValueChange={setUseEndDate}
+                value={useEndDate}
+              />
+              <Text style={{ fontFamily: "Kanit300", fontSize: 15 }}>
+                เวลาสิ้นสุดเควส
+              </Text>
+            </View>
+          </View>
+          {(useStartDate || useEndDate) && (
+            <TimePicker
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              useStartDate={useStartDate}
+              useEndDate={useEndDate}
+            />
+          )}
         </View>
       )}
 
@@ -273,17 +364,19 @@ export default function SearchBar({ searching, setSearching }) {
       )}
 
       <View style={styles.greyBackground}>
-        {!loading && searching && (search || selectedTag.length > 0) && (
-          <SearchResult searchResult={searchResult} />
-        )}
-
         {loading && <SearchLoading search={search} selectedTag={selectedTag} />}
 
-        {searching && !search && selectedTag.length == 0 && (
-          <View>
+        {searching &&
+          !loading &&
+          (search ||
+          selectedTag.length > 0 ||
+          useStartDate ||
+          useEndDate ||
+          activityHour != 0 ? (
+            <SearchResult searchResult={searchResult} />
+          ) : (
             <RecentSearch handleTextChange={handleTextChange} />
-          </View>
-        )}
+          ))}
       </View>
     </View>
   );
@@ -292,6 +385,7 @@ export default function SearchBar({ searching, setSearching }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    flex: 1,
   },
   topBarContainer: {
     paddingHorizontal: 10,
@@ -350,6 +444,7 @@ const styles = StyleSheet.create({
 
   greyBackground: {
     backgroundColor: "#F2F2F2",
+    flex: 1,
   },
   tagContainer: {
     flexWrap: "wrap",
@@ -358,9 +453,21 @@ const styles = StyleSheet.create({
     padding: 7,
   },
   optionContainer: {
-    // flexDirection: "row",
-    paddingHorizontal: 5,
+    marginHorizontal: 10,
+    padding: 7,
     marginBottom: 5,
     gap: 10,
+    backgroundColor: "#fefefe",
+    borderRadius: 15,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
   },
 });
