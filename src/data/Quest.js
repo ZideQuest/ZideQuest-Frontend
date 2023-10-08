@@ -39,20 +39,25 @@ export async function searchQuest(
   useEndDate,
   activityHour
 ) {
-  const tags = selectedTag.map((tag) => tag._id);
-  console.log(tags);
+  const params = {};
+  if (name) {
+    params.Name = name;
+  }
+  if (selectedTag) {
+    params.tagId = selectedTag.map((tag) => tag._id);
+  }
+  if (useStartDate) {
+    params.timeStart = startDate;
+  }
+  if (useEndDate) {
+    params.timeEnd = endDate;
+  }
+  if (activityHour != 0) {
+    params.activityCat = activityHour;
+  }
 
   const { data } = await axios.get(`${BASE_URL}/search`, {
-    params: {
-      Name: name,
-      tagId: tags,
-      timeStart: useStartDate ? startDate : "",
-      timeEnd: useEndDate ? endDate : "",
-      activityCat: activityHour && activityHour,
-    },
-    paramsSerializer: {
-      indexes: null, // no brackets at all
-    }
+    params,
   });
 
   return data;
