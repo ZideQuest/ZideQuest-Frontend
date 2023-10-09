@@ -9,7 +9,7 @@ import { textColor } from "../../data/color";
 import warning_icon from "../../../assets/images/warning_icon.png";
 import Tag from "../Quest/Tag";
 
-import { activityCategories } from "../../data/activityCategoty";
+import { activityCategories } from "../../data/activityCategory";
 
 export default function SearchItem({ quests, isAdmin }) {
   const { mapMoveTo, setFocusedPin, userDetail } = useAppContext();

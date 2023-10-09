@@ -13,7 +13,7 @@ import person_icon from "../../../assets/images/participant.png";
 import { buttonGrey } from "../../data/color";
 import { useAppContext } from "../../data/AppContext";
 import Tag from "./Tag";
-import { activityCategories } from "../../data/activityHour";
+import { activityCategories } from "../../data/activityCategory";
 
 import { statusIcon } from "../../components/misc/Status";
 

@@ -5,7 +5,7 @@ import person_icon from "../../../assets/images/participant.png";
 import BackButton from "../button/BackButton";
 import official_icon from "../../../assets/images/official_icon.png";
 
-import { activityCategories } from "../../data/activityCategoty";
+import { activityCategories } from "../../data/activityCategory";
 
 import { BGcolor, textColor } from "../../data/color";
 import { statusIcon } from "../misc/Status";

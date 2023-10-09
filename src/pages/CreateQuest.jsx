@@ -6,6 +6,8 @@ import {
   View,
   Platform,
   TouchableOpacity,
+  TouchableHighlight,
+  TextInput,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
@@ -17,21 +19,12 @@ import { useRoute } from "@react-navigation/native";
 import { createQuest } from "../data/Quest";
 import { getTags } from "../data/tag";
 import close_icon from "../../assets/images/close_icon.png";
-
-const activityCategories = [
-  "ไม่มีชั่วโมงกิจกรรม",
-  "1 กิจกรรมมหาวิทยาลัย",
-  "2.1  ด้านพัฒนาคุณธรรม จริยธรรม",
-  "2.2  ด้านการคิดและการเรียนรู้",
-  "2.3  ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล",
-  "2.4  ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล",
-  "3 กิจกรรมเพื่อสังคม",
-];
+import { activityCategories } from "../data/activityCategory";
 
 import Spinner from "../components/Animations/Spinner";
 import BigButton from "../components/button/BigButton.jsx";
 import BackButton from "../components/button/BackButton";
-import { buttonOrange, textColor } from "../data/color";
+import { buttonOrange, primaryColor, textColor } from "../data/color";
 import * as TabNavigation from "../data/TabNavigation";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ItemSelectingModal from "../components/misc/ItemSelectingModal";
@@ -43,19 +36,35 @@ function CreateQuest() {
   const [endDate, setEndDate] = useState(new Date());
   const [questName, setQuestName] = useState("");
   const [description, setDescription] = useState("");
-  const [maxParticipant, setMaxParticipant] = useState("");
-  const [activity, setActivity] = useState("");
+  const [activity, setActivity] = useState(0);
   const [activityHour, setActivityHour] = useState(1);
   const [tags, setTags] = useState([]);
   const route = useRoute();
   const { locationId } = route.params;
   const [image, setImage] = useState(null);
-
-  const [selectedTag, setSelectedTag] = useState([]);
   const [isAuto, setIsAuto] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [limitParticipants, setLimitParticipants] = useState(false);
+  const [maxParticipant, setMaxParticipant] = useState("");
+
+  const [selectedTag, setSelectedTag] = useState([]);
+  const [tagSearch, setTagSearch] = useState("");
+  const selectedTagIds = selectedTag.map((t) => t._id);
+  const tagPressHandler = (tag) => {
+    if (selectedTagIds.includes(tag._id)) {
+      setSelectedTag((prev) => prev.filter((p) => p._id != tag._id));
+    } else {
+      setSelectedTag((prev) => [...prev, tag]);
+    }
+  };
+
+  const [refresher, setRefresher] = useState(false);
+  const activityPressHandler = (act) => {
+    setActivity(act);
+    setRefresher((prev) => !prev);
+  };
 
   const buttonHandler = async (e) => {
     setIsLoading(true);
@@ -83,7 +92,7 @@ function CreateQuest() {
         });
       }
 
-      if (activity != "") {
+      if (activity != 0) {
         const activityDetail = {
           category: activity,
           hour: activityHour,
@@ -160,41 +169,47 @@ function CreateQuest() {
                   onChangeText={setDescription}
                 />
               </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 20,
-                  flex: 1,
-                  justifyContent: "space-between",
-                }}
-              >
-                <View style={{ ...styles.box, flex: 1 }}>
-                  <Text style={styles.textMd}>แท็ก</Text>
-                  <ItemSelectingModal subject="แท็ก">
+              <View style={{ ...styles.box, flex: 1 }}>
+                <Text style={styles.textMd}>แท็ก</Text>
+                <ItemSelectingModal
+                  subject={
+                    selectedTag.length != 0
+                      ? `${selectedTag.length} แท็ก`
+                      : "แท็ก"
+                  }
+                  isActive={selectedTag.length != 0}
+                >
+                  <View style={{ padding: 5, paddingTop: 10, width: "100%" }}>
+                    <TextInput
+                      placeholder="ค้นหาแท็ก"
+                      value={tagSearch}
+                      onChangeText={setTagSearch}
+                    />
                     <View style={styles.tagContainer}>
-                      {tags.map((tag) => (
-                        <TouchableOpacity
-                          key={`select-qeusts-tag-${tag._id}`}
-                          onPress={() =>
-                            setSelectedTag((prev) => [...prev, tag])
-                          }
-                        >
-                          <TagItem tag={tag} />
-                        </TouchableOpacity>
-                      ))}
+                      {tags
+                        .filter((tag) => tag.tagName.startsWith(tagSearch))
+                        .map((tag) => (
+                          <TouchableOpacity
+                            onPress={() => tagPressHandler(tag)}
+                            key={`search-tag-${tag._id}`}
+                            style={{
+                              borderColor: selectedTagIds.includes(tag._id)
+                                ? "black"
+                                : "white",
+                              borderWidth: 3,
+                              borderRadius: 15,
+                            }}
+                          >
+                            <TagItem tag={tag} />
+                          </TouchableOpacity>
+                        ))}
                     </View>
-                  </ItemSelectingModal>
-                </View>
-                <View style={{ ...styles.box, flex: 0.32 }}>
-                  <Text style={styles.textMd}>จำนวนคน</Text>
-                  <BottomSheetTextInput
-                    style={styles.textIn}
-                    value={maxParticipant?.toString()}
-                    onChangeText={setMaxParticipant}
-                  />
-                </View>
+                  </View>
+                </ItemSelectingModal>
               </View>
+            </View>
 
+            <View style={{ marginBottom: 10 }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -205,59 +220,64 @@ function CreateQuest() {
               >
                 <View style={{ ...styles.box, flex: 1 }}>
                   <Text style={styles.textMd}>ชั่วโมงกิจกรรม</Text>
-                  <SelectDropdown
-                    defaultValueByIndex={0}
-                    data={activityCategories}
-                    onSelect={(selectedItem, index) => {
-                      if (index === 0) {
-                        setActivity("");
-                      }
-                      const activityType = selectedItem.split(" ")[0];
-                      setActivity(activityType);
-                    }}
-                    buttonTextAfterSelection={(selectedItem, index) => {
-                      return selectedItem;
-                    }}
-                    rowTextForSelection={(item, index) => {
-                      return item;
-                    }}
-                    buttonTextStyle={{
-                      fontSize: 16,
-                    }}
-                    dropdownStyle={{
-                      borderRadius: 20,
-                      backgroundColor: "#fbfbfb",
-                    }}
-                    rowTextStyle={{
-                      fontSize: 16,
-                      textAlign: "left",
-                    }}
-                    buttonStyle={{
-                      height: 30,
-                      borderColor: "#CDCDCD",
-                      borderWidth: 1,
-                      width: "100%",
-                      backgroundColor: "#fbfbfb",
-                      borderRadius: 10,
-                      fontSize: 16,
-                    }}
-                  />
+                  <ItemSelectingModal
+                    subject={activityCategories[activity]}
+                    closeOnPress
+                    refresher={refresher}
+                    isActive={activity != 0}
+                  >
+                    <View>
+                      <Text
+                        style={{
+                          paddingHorizontal: 7,
+                          marginTop: 10,
+                          marginBottom: 6,
+                          fontFamily: "Kanit400",
+                          fontSize: 18,
+                        }}
+                      >
+                        เลือกชั่วโมงกิจกรรม
+                      </Text>
+                      {Object.keys(activityCategories).map((act) => (
+                        <TouchableHighlight
+                          underlayColor="#DDDDDD"
+                          onPress={() => activityPressHandler(act)}
+                          key={`activity-hour-${act}`}
+                          style={{ width: "100%", padding: 7, paddingLeft: 13 }}
+                        >
+                          <Text
+                            style={{ fontFamily: "Kanit300", fontSize: 15 }}
+                          >
+                            {activityCategories[act]}
+                          </Text>
+                        </TouchableHighlight>
+                      ))}
+                    </View>
+                  </ItemSelectingModal>
                 </View>
                 <View style={styles.box}>
-                  <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
+                  <Text
+                    style={[
+                      styles.textMd,
+                      { color: activity != 0 ? "black" : "grey" },
+                    ]}
+                  >
+                    จำนวนชั่วโมง
+                  </Text>
                   <BottomSheetTextInput
                     style={[
                       styles.textIn,
-                      { color: activity ? "black" : "grey" },
+                      { color: activity != 0 ? "black" : "grey" },
                     ]}
-                    value={activityHour?.toString()}
+                    value={activity != 0 ? activityHour?.toString() : ""}
                     onChangeText={setActivityHour}
-                    editable={activity == "" ? false : true}
+                    editable={activity != 0}
+                    inputMode="numeric"
                   />
                 </View>
               </View>
 
-              <View style={styles.box}>
+              <View style={{ marginTop: 20 }}>
                 <TimePicker
                   startDate={startDate}
                   setStartDate={setStartDate}
@@ -275,11 +295,59 @@ function CreateQuest() {
                 }}
                 onPress={() => setIsAuto((prev) => !prev)}
               >
-                <Checkbox value={isAuto} onValueChange={(v) => setIsAuto(v)} />
+                <Checkbox
+                  color={primaryColor}
+                  value={isAuto}
+                  onValueChange={(v) => setIsAuto(v)}
+                />
                 <Text style={styles.textMd}>
                   ให้เควสจบอัตโนมัติเมื่อถึงเวลา
                 </Text>
               </Pressable>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 5,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <Checkbox
+                    color={primaryColor}
+                    value={limitParticipants}
+                    onValueChange={setLimitParticipants}
+                  />
+                  <Text style={styles.textMd}>จำกัดจำนวนคน</Text>
+                </View>
+
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <BottomSheetTextInput
+                    style={[
+                      styles.textIn,
+                      { width: 100, marginHorizontal: 10 },
+                    ]}
+                    value={maxParticipant?.toString()}
+                    onChangeText={setMaxParticipant}
+                    editable={limitParticipants}
+                  />
+                  <Text
+                    style={[
+                      styles.textMd,
+                      {
+                        color: limitParticipants ? "black" : "gray",
+                      },
+                    ]}
+                  >
+                    คน
+                  </Text>
+                </View>
+              </View>
 
               <View style={styles.box}>
                 <Text style={styles.textMd}>เพิ่มรูปภาพ</Text>
@@ -337,7 +405,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 4,
     backgroundColor: "#fbfbfb",
-    borderRadius: 10,
+    borderRadius: 6,
     fontSize: 16,
   },
   textXl: {

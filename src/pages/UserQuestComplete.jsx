@@ -8,7 +8,7 @@ import ActivityName from "../components/Quest/ActivityName";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import { BGcolor, buttonBrightGreen, buttonLightGrey } from "../data/color";
 import Spinner from "../components/Animations/Spinner";
-import { activityCategories } from "../data/activityCategoty";
+import { activityCategories } from "../data/activityCategory";
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 

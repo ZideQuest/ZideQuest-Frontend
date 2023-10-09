@@ -20,7 +20,7 @@ import * as TabNavigation from "../../data/TabNavigation";
 import { getCenterFromPins } from "../../data/locations";
 import { storeHistory } from "../../data/async_storage";
 import { getTags } from "../../data/tag";
-import { activityCategories } from "../../data/activityCategoty";
+import { activityCategories } from "../../data/activityCategory";
 
 import RecentSearch from "./RecentSearch";
 import SearchResult from "./SearchResult";
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     borderRadius: 20,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   profilePicture: {
     width: "100%",
