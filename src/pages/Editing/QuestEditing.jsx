@@ -6,14 +6,13 @@ import {
   View,
   Platform,
   TouchableOpacity,
+  TouchableHighlight,
+  TextInput,
 } from "react-native";
-import {
-  BottomSheetScrollView,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
-import axios from "axios";
-import SelectDropdown from "react-native-select-dropdown";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+
 import React, { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
 
 import BottomsheetDynamic from "../../components/Bottomsheet/BottomsheetDynamic";
 import AddPhoto from "../../components/AddPhoto";
@@ -23,47 +22,130 @@ import BackButton from "../../components/button/BackButton";
 import { TimePicker } from "../../components/TimePicker";
 import Alert from "../../components/misc/Alert";
 
-import { buttonOrange, textColor } from "../../data/color";
+import { buttonOrange, primaryColor, textColor } from "../../data/color";
 import { editQuest } from "../../data/Quest";
-import { BASE_URL } from "../../data/backend_url";
 import * as TabNavigation from "../../data/TabNavigation";
 import { getQuestData, deleteQuest } from "../../data/Quest";
 
+import ImagePreviewModal from "../../components/misc/ImagePreviewModal";
+
 import bin_icon from "../../../assets/images/bin.png";
+import close_icon from "../../../assets/images/close_icon.png";
 
-const activityCategories = [
-  "ไม่มีชั่วโมงกิจกรรม",
-  "1 กิจกรรมมหาวิทยาลัย",
-  "2.1  ด้านพัฒนาคุณธรรม จริยธรรม",
-  "2.2  ด้านการคิดและการเรียนรู้",
-  "2.3  ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล",
-  "2.4  ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล",
-  "3 กิจกรรมเพื่อสังคม",
-];
+import ItemSelectingModal from "../../components/misc/ItemSelectingModal";
+import Checkbox from "expo-checkbox";
+import { getTags } from "../../data/tag";
+import TagItem from "../../components/Quest/TagItem";
+import { activityCategories } from "../../data/activityCategory";
 
-export default function QuestEditing({ route }) {
-  const [isLoading, setIsLoading] = useState(true);
+export default function QuestEditing() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [questName, setQuestName] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [maxParticipant, setMaxParticipant] = useState(null);
-  const [activity, setActivity] = useState(null);
-  const [activityHour, setActivityHour] = useState(0);
+  const [questName, setQuestName] = useState("");
+  const [description, setDescription] = useState("");
+  const [activity, setActivity] = useState(0);
+  const [activityHour, setActivityHour] = useState(1);
   const [tags, setTags] = useState([]);
-  const [tagId, setTagId] = useState(null);
+  const route = useRoute();
+  const { questId } = route.params;
   const [image, setImage] = useState(null);
+  const [isAuto, setIsAuto] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [locationId, setLocationId] = useState(null);
+
+  const [limitParticipants, setLimitParticipants] = useState(false);
+  const [maxParticipant, setMaxParticipant] = useState("");
+
+  const [selectedTag, setSelectedTag] = useState([]);
+  const [tagSearch, setTagSearch] = useState("");
+  const selectedTagIds = selectedTag.map((t) => t._id);
+  const tagPressHandler = (tag) => {
+    if (selectedTagIds.includes(tag._id)) {
+      setSelectedTag((prev) => prev.filter((p) => p._id != tag._id));
+    } else {
+      setSelectedTag((prev) => [...prev, tag]);
+    }
+  };
+
+  const [refresher, setRefresher] = useState(false);
+  const activityPressHandler = (act) => {
+    setActivity(act);
+    setRefresher((prev) => !prev);
+  };
+
+  const buttonHandler = async (e) => {
+    setIsLoading(true);
+    try {
+      const questDetail = new FormData();
+      questDetail.append("timeStart", startDate.toISOString());
+      questDetail.append("timeEnd", endDate.toISOString());
+      questDetail.append("questName", questName);
+      questDetail.append("description", description);
+
+      if (limitParticipants) {
+        questDetail.append("maxParticipant", maxParticipant);
+      }
+
+      questDetail.append("autoComplete", isAuto);
+
+      if (image != null && !image?.uri.startsWith("https://res.cloudinary.com")) {
+        questDetail.append("img", {
+          name: image.fileName,
+          type: image.type,
+          uri:
+            Platform.OS === "ios"
+              ? image.uri.replace("file://", "")
+              : image.uri,
+        });
+      }
+
+      if (activity != 0) {
+        questDetail.append("activityHour[category]", activity);
+        questDetail.append("activityHour[hour]", activityHour);
+      }
+
+      if (selectedTag.length) {
+        selectedTag.forEach((tag) => questDetail.append("tagId", tag._id));
+      }
+
+      const newQuest = await editQuest(questDetail, questId);
+      setIsLoading(false);
+      TabNavigation.navigate("QuestManage", { questId: newQuest._id });
+    } catch (error) {
+      setIsLoading(false);
+      alert("failed to edit quest", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const data = await getTags();
+        setTags(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchTags();
+  }, []);
 
   useEffect(() => {
     const getQuest = async () => {
       try {
-        const data = await getQuestData(route.params?.questId);
+        const data = await getQuestData(questId);
+        setLocationId(data.locationId);
         setQuestName(data.questName);
         setStartDate(new Date(data.timeStart));
         setEndDate(new Date(data.timeEnd));
         setDescription(data.description);
-        setTagId(data.tag[0]);
+        setSelectedTag(data.tag);
         setMaxParticipant(data.maxParticipant);
+        if (data.maxParticipant) {
+          setLimitParticipants(true);
+        }
+        setActivity(data.activityHour?.category || 0);
+        setActivityHour(data.activityHour?.hour || 1);
         setImage(data.picturePath ? { uri: data.picturePath } : null);
         setIsLoading(false);
       } catch (error) {
@@ -77,64 +159,52 @@ export default function QuestEditing({ route }) {
     getQuest();
   }, []);
 
-  useEffect(() => {
-    const getTags = async () => {
-      try {
-        const { data } = await axios.get(`${BASE_URL}/tag`);
-        setTags(data);
-      } catch (error) {
-        return {
-          message: "failed to load locations",
-          status: 401,
-        };
-      }
-    };
-    getTags();
-  }, []);
+  // const submitHandler = async (e) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const questDetail = new FormData();
+  //     questDetail.append("timeStart", startDate.toISOString());
+  //     questDetail.append("timeEnd", endDate.toISOString());
+  //     questDetail.append("questName", questName);
+  //     questDetail.append("description", description);
+  //     questDetail.append("autoComplete", isAuto);
 
-  const submitHandler = async (e) => {
-    setIsLoading(true);
-    try {
-      const questDetail = new FormData();
-      questDetail.append("timeStart", startDate.toISOString());
-      questDetail.append("timeEnd", endDate.toISOString());
-      questDetail.append("questName", questName);
-      questDetail.append("description", description);
-      questDetail.append("maxParticipant", maxParticipant);
-      questDetail.append("autoComplete", true);
+  //     if (limitParticipants) {
+  //       questDetail.append("maxParticipant", maxParticipant);
+  //     }
 
-      if (image != null) {
-        questDetail.append("img", {
-          name: image.fileName,
-          type: image.type,
-          uri:
-            Platform.OS === "ios"
-              ? image.uri.replace("file://", "")
-              : image.uri,
-        });
-      }
+  //     if (image != null) {
+  //       questDetail.append("img", {
+  //         name: image.fileName,
+  //         type: image.type,
+  //         uri:
+  //           Platform.OS === "ios"
+  //             ? image.uri.replace("file://", "")
+  //             : image.uri,
+  //       });
+  //     }
 
-      if (activity != "" || activityHour != 0) {
-        const activityDetail = {
-          category: activity,
-          hour: activityHour,
-        };
-        questDetail.append("activityHour", activityDetail);
-      }
+  //     if (activity != "" || activityHour != 0) {
+  //       const activityDetail = {
+  //         category: activity,
+  //         hour: activityHour,
+  //       };
+  //       questDetail.append("activityHour", activityDetail);
+  //     }
 
-      if (tagId != "" && tagId != null) {
-        const handleTag = [tagId];
-        questDetail.append("tagId", handleTag);
-      }
+  //     if (tagId != "" && tagId != null) {
+  //       const handleTag = [tagId];
+  //       questDetail.append("tagId", handleTag);
+  //     }
 
-      const newQuest = await editQuest(questDetail, route.params?.questId);
-      setIsLoading(false);
-      TabNavigation.navigate("QuestManage", { questId: newQuest._id });
-    } catch (error) {
-      setIsLoading(false);
-      alert("failed to edit quest", error);
-    }
-  };
+  //     const newQuest = await editQuest(questDetail, route.params?.questId);
+  //     setIsLoading(false);
+  //     TabNavigation.navigate("QuestManage", { questId: newQuest._id });
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     alert("failed to edit quest", error);
+  //   }
+  // };
 
   const questDeleteHandler = async () => {
     if (
@@ -149,215 +219,262 @@ export default function QuestEditing({ route }) {
     }
   };
 
-  const tagArray = ["ไม่มีแท็ก", ...tags.map((item) => item.tagName)];
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
   return (
-    <BottomsheetDynamic style={styles.container} snapPoints={["30%"]} index={1}>
-      <BottomSheetScrollView style={{ backgroundColor: "white" }}>
-        <View style={styles.innerContainer}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <View
-              style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
-            >
-              <Text style={styles.textXl}>แก้ไขข้อมูล</Text>
-              <TouchableOpacity
-                style={styles.binIcon}
-                onPress={questDeleteHandler}
-              >
-                <Image
-                  source={bin_icon}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </TouchableOpacity>
-            </View>
-            <BackButton
-              targetRoute="QuestManage"
-              params={{ questId: route.params?.questId }}
-              resetFocus={false}
-            />
-          </View>
-
-          <View style={styles.detailBox}>
-            <View style={styles.box}>
-              <Text style={styles.textMd}>ชื่อเควส</Text>
-              <BottomSheetTextInput
-                style={styles.textIn}
-                value={questName}
-                onChangeText={setQuestName}
-              />
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.textMd}>รายละเอียด</Text>
-              <BottomSheetTextInput
-                style={styles.textIn}
-                value={description}
-                onChangeText={setDescription}
-              />
-            </View>
+    <BottomsheetDynamic style={styles.container} snapPoints={["20%"]} index={1}>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <ImagePreviewModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            imageUri={image?.uri}
+          />
+          <View style={styles.innerContainer}>
             <View
               style={{
                 flexDirection: "row",
-                gap: 20,
-                flex: 1,
+                alignItems: "center",
                 justifyContent: "space-between",
               }}
             >
-              <View style={{ ...styles.box, flex: 1 }}>
-                <Text style={styles.textMd}>แท็ก</Text>
-                <SelectDropdown
-                  search={true}
-                  defaultValueByIndex={0}
-                  data={tagArray}
-                  onSelect={(selectedItem, index) => {
-                    if (index === 0) {
-                      setTagId("");
-                    } else {
-                      setTagId(tags[index]._id);
-                    }
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    return item;
-                  }}
-                  buttonTextStyle={{
-                    fontSize: 16,
-                  }}
-                  dropdownStyle={{
-                    borderRadius: 20,
-                    backgroundColor: "#fbfbfb",
-                  }}
-                  rowTextStyle={{
-                    fontSize: 16,
-                    textAlign: "left",
-                  }}
-                  buttonStyle={{
-                    height: 30,
-                    borderColor: "#CDCDCD",
-                    borderWidth: 1,
-                    width: "100%",
+              <Text style={styles.textXl}>แก้ไขเควส</Text>
+              <BackButton
+                targetRoute="PinDetail"
+                params={{ pinId: locationId }}
+                resetFocus={false}
+              />
+            </View>
 
-                    backgroundColor: "#fbfbfb",
-                    borderRadius: 10,
-                    fontSize: 16,
-                  }}
-                />
-              </View>
-              <View style={{ ...styles.box, flex: 0.32 }}>
-                <Text style={styles.textMd}>จำนวนคน</Text>
+            <View style={styles.detailBox}>
+              <View style={styles.box}>
+                <Text style={styles.textMd}>ชื่อเควส</Text>
                 <BottomSheetTextInput
                   style={styles.textIn}
-                  value={maxParticipant?.toString()}
-                  onChangeText={setMaxParticipant}
-                />
-              </View>
-            </View>
-            <View style={styles.box}>
-              <TimePicker
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
-              />
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                gap: 20,
-                flex: 1,
-                justifyContent: "space-between",
-              }}
-            >
-              <View style={{ ...styles.box, flex: 1 }}>
-                <Text style={styles.textMd}>ชั่วโมงกิจกรรม</Text>
-                <SelectDropdown
-                  defaultValueByIndex={0}
-                  data={activityCategories}
-                  onSelect={(selectedItem, index) => {
-                    if (index === 0) {
-                      setActivity("");
-                    }
-                    const activityType = selectedItem.split(" ")[0];
-                    setActivity(activityType);
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    return item;
-                  }}
-                  buttonTextStyle={{
-                    fontSize: 16,
-                  }}
-                  dropdownStyle={{
-                    borderRadius: 20,
-                    backgroundColor: "#fbfbfb",
-                  }}
-                  rowTextStyle={{
-                    fontSize: 16,
-                    textAlign: "left",
-                  }}
-                  buttonStyle={{
-                    height: 30,
-                    borderColor: "#CDCDCD",
-                    borderWidth: 1,
-                    width: "100%",
-                    backgroundColor: "#fbfbfb",
-                    borderRadius: 10,
-                    fontSize: 16,
-                  }}
+                  value={questName}
+                  onChangeText={setQuestName}
                 />
               </View>
               <View style={styles.box}>
-                <Text style={styles.textMd}>จำนวนชั่วโมง</Text>
+                <Text style={styles.textMd}>รายละเอียด</Text>
                 <BottomSheetTextInput
                   style={styles.textIn}
-                  value={activityHour?.toString()}
-                  onChangeText={setActivityHour}
+                  value={description}
+                  onChangeText={setDescription}
                 />
+              </View>
+              <View style={{ ...styles.box, flex: 1 }}>
+                <Text style={styles.textMd}>แท็ก</Text>
+                <ItemSelectingModal
+                  subject={
+                    selectedTag.length != 0
+                      ? `${selectedTag.length} แท็ก`
+                      : "แท็ก"
+                  }
+                  isActive={selectedTag.length != 0}
+                >
+                  <View style={{ padding: 5, paddingTop: 10, width: "100%" }}>
+                    <TextInput
+                      placeholder="ค้นหาแท็ก"
+                      value={tagSearch}
+                      onChangeText={setTagSearch}
+                    />
+                    <View style={styles.tagContainer}>
+                      {tags
+                        .filter((tag) => tag.tagName.startsWith(tagSearch))
+                        .map((tag) => (
+                          <TouchableOpacity
+                            onPress={() => tagPressHandler(tag)}
+                            key={`search-tag-${tag._id}`}
+                            style={{
+                              borderColor: selectedTagIds.includes(tag._id)
+                                ? "black"
+                                : "white",
+                              borderWidth: 3,
+                              borderRadius: 15,
+                            }}
+                          >
+                            <TagItem tag={tag} />
+                          </TouchableOpacity>
+                        ))}
+                    </View>
+                  </View>
+                </ItemSelectingModal>
               </View>
             </View>
 
-            <View style={styles.box}>
-              <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
-              <AddPhoto image={image} setImage={setImage} />
-              {image && (
-                <View style={styles.image}>
-                  <Pressable
-                    style={styles.xBtn}
-                    onPress={() => {
-                      setImage(null);
-                    }}
+            <View style={{ marginBottom: 10 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 20,
+                  flex: 1,
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ ...styles.box, flex: 1 }}>
+                  <Text style={styles.textMd}>ชั่วโมงกิจกรรม</Text>
+                  <ItemSelectingModal
+                    subject={activityCategories[activity]}
+                    closeOnPress
+                    refresher={refresher}
+                    isActive={activity != 0}
                   >
-                    <Text style={styles.xtextbtn}>X</Text>
-                  </Pressable>
-                  <Image
-                    source={{ uri: image.uri }}
-                    style={{ height: 150, flex: 1 }}
+                    <View>
+                      <Text
+                        style={{
+                          paddingHorizontal: 7,
+                          marginTop: 10,
+                          marginBottom: 6,
+                          fontFamily: "Kanit400",
+                          fontSize: 18,
+                        }}
+                      >
+                        เลือกชั่วโมงกิจกรรม
+                      </Text>
+                      {Object.keys(activityCategories).map((act) => (
+                        <TouchableHighlight
+                          underlayColor="#DDDDDD"
+                          onPress={() => activityPressHandler(act)}
+                          key={`activity-hour-${act}`}
+                          style={{ width: "100%", padding: 7, paddingLeft: 13 }}
+                        >
+                          <Text
+                            style={{ fontFamily: "Kanit300", fontSize: 15 }}
+                          >
+                            {activityCategories[act]}
+                          </Text>
+                        </TouchableHighlight>
+                      ))}
+                    </View>
+                  </ItemSelectingModal>
+                </View>
+                <View style={styles.box}>
+                  <Text
+                    style={[
+                      styles.textMd,
+                      { color: activity != 0 ? "black" : "grey" },
+                    ]}
+                  >
+                    จำนวนชั่วโมง
+                  </Text>
+                  <BottomSheetTextInput
+                    style={[
+                      styles.textIn,
+                      { color: activity != 0 ? "black" : "grey" },
+                    ]}
+                    value={activity != 0 ? activityHour?.toString() : ""}
+                    onChangeText={setActivityHour}
+                    editable={activity != 0}
+                    inputMode="numeric"
                   />
                 </View>
-              )}
+              </View>
+
+              <View style={{ marginTop: 20 }}>
+                <TimePicker
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                />
+              </View>
+
+              <Pressable
+                style={{
+                  flexDirection: "row",
+                  gap: 10,
+                  marginVertical: 4,
+                  alignItems: "center",
+                }}
+                onPress={() => setIsAuto((prev) => !prev)}
+              >
+                <Checkbox
+                  color={primaryColor}
+                  value={isAuto}
+                  onValueChange={(v) => setIsAuto(v)}
+                />
+                <Text style={styles.textMd}>
+                  ให้เควสจบอัตโนมัติเมื่อถึงเวลา
+                </Text>
+              </Pressable>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 5,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <Checkbox
+                    color={primaryColor}
+                    value={limitParticipants}
+                    onValueChange={setLimitParticipants}
+                  />
+                  <Text style={styles.textMd}>จำกัดจำนวนคน</Text>
+                </View>
+
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <BottomSheetTextInput
+                    style={[
+                      styles.textIn,
+                      { width: 100, marginHorizontal: 10 },
+                    ]}
+                    value={maxParticipant?.toString()}
+                    onChangeText={setMaxParticipant}
+                    editable={limitParticipants}
+                  />
+                  <Text
+                    style={[
+                      styles.textMd,
+                      {
+                        color: limitParticipants ? "black" : "gray",
+                      },
+                    ]}
+                  >
+                    คน
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.box}>
+                <Text style={styles.textMd}>เพิ่มรูปภาพ</Text>
+                <AddPhoto image={image} setImage={setImage} />
+                {image && (
+                  <View style={styles.image}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setImage(null);
+                      }}
+                      style={styles.xBtn}
+                    >
+                      <Image source={close_icon} style={styles.x} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                      <Image
+                        source={{ uri: image.uri }}
+                        style={{ height: 150, flex: 1 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
             </View>
+
+            <BigButton
+              bg={buttonOrange}
+              text="ยืนยันการแก้ไข"
+              onPress={buttonHandler}
+            />
           </View>
-          <BigButton
-            bg={buttonOrange}
-            text="ยืนยันการแก้ไข"
-            onPress={submitHandler}
-          />
-        </View>
-      </BottomSheetScrollView>
+        </>
+      )}
     </BottomsheetDynamic>
   );
 }
@@ -375,40 +492,31 @@ const styles = StyleSheet.create({
     overflow: "scroll",
   },
   innerContainer: {
-    paddingHorizontal: 25,
-    gap: 20,
+    paddingHorizontal: 15,
   },
   textIn: {
     borderColor: "#CDCDCD",
     borderWidth: 1,
     padding: 4,
     backgroundColor: "#fbfbfb",
-    borderRadius: 10,
+    borderRadius: 6,
     fontSize: 16,
   },
   textXl: {
-    fontSize: 25,
+    fontSize: 30,
     fontFamily: "Kanit400",
   },
   textMd: {
     fontSize: 16,
+    fontFamily: "Kanit300",
   },
   box: {
-    gap: 4,
+    gap: 2,
     // borderWidth: 1
   },
   detailBox: {
     gap: 10,
-  },
-  btn: {
-    backgroundColor: "#e86a33",
-    padding: 10,
-    width: "100%",
-    borderRadius: 10,
-    shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    marginBottom: 10,
   },
   textBtn: {
     textAlign: "center",
@@ -431,18 +539,22 @@ const styles = StyleSheet.create({
     right: 5,
     zIndex: 10,
     backgroundColor: "white",
-    borderRadius: 100,
-    padding: 3,
     width: 20,
     height: 20,
+    borderRadius: 10,
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 4,
   },
-  xtextbtn: {
-    color: textColor,
-    fontWeight: "bold",
-    textAlign: "center",
+  tagContainer: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    gap: 5,
+    padding: 10,
   },
-  binIcon: {
-    width: 25,
-    height: 25,
+  x: {
+    width: "100%",
+    height: "100%",
   },
 });
