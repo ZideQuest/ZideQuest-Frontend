@@ -8,10 +8,8 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 
-import QuestListItem from "../components/QuestListItem";
 import BackButton from "../components/button/BackButton.jsx";
 import * as TabNavigation from "../data/TabNavigation.jsx";
 import edit_icon from "../../assets/images/edit.png";
@@ -20,7 +18,7 @@ import DetailedQuestListItem from "../components/Quest/DetailedQuestListItem"; /
 
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
-import { buttonNormalGreen, textColor } from "../data/color";
+import { buttonNormalGreen } from "../data/color";
 
 export default function PinDetailScreen({ route }) {
   const { userDetail, onlyPinWithMyQuest, setOnlyPinWithMyQuest } =
@@ -28,7 +26,7 @@ export default function PinDetailScreen({ route }) {
   const [locationData, setLocationData] = useState({});
   const [quests, setQuests] = useState([]);
 
-  function NoQuestComponent() {
+  const NoQuestComponent = () => {
     return (
       <View
         style={{
@@ -43,9 +41,9 @@ export default function PinDetailScreen({ route }) {
         </Text>
       </View>
     );
-  }
+  };
 
-  function NoMyQuestComponent() {
+  const NoMyQuestComponent = () => {
     return (
       <View
         style={{
@@ -65,7 +63,7 @@ export default function PinDetailScreen({ route }) {
         </TouchableOpacity>
       </View>
     );
-  }
+  };
   useEffect(() => {
     const fetchLocationData = async () => {
       if (!route.params?.pinId) {
@@ -84,9 +82,9 @@ export default function PinDetailScreen({ route }) {
   }, []);
 
   const editLocationHandler = () => {
-    if (ownerChecker())
+    if (ownerChecker()) {
       TabNavigation.navigate("EditLocation", { pinId: route.params.pinId });
-    else {
+    } else {
       alert("You are not allowed to edit this location");
     }
   };
