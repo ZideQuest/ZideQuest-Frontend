@@ -47,11 +47,12 @@ export default function QuestEditing() {
   const [activityHour, setActivityHour] = useState(1);
   const [tags, setTags] = useState([]);
   const route = useRoute();
-  const { locationId } = route.params;
+  const { questId } = route.params;
   const [image, setImage] = useState(null);
   const [isAuto, setIsAuto] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [locationId, setLocationId] = useState(null);
 
   const [limitParticipants, setLimitParticipants] = useState(false);
   const [maxParticipant, setMaxParticipant] = useState("");
@@ -88,7 +89,7 @@ export default function QuestEditing() {
 
       questDetail.append("autoComplete", isAuto);
 
-      if (image != null) {
+      if (image != null && !image?.uri.startsWith("https://res.cloudinary.com")) {
         questDetail.append("img", {
           name: image.fileName,
           type: image.type,
@@ -100,23 +101,20 @@ export default function QuestEditing() {
       }
 
       if (activity != 0) {
-        const activityDetail = {
-          category: activity,
-          hour: activityHour,
-        };
-        questDetail.append("activityHour", activityDetail);
+        questDetail.append("activityHour[category]", activity);
+        questDetail.append("activityHour[hour]", activityHour);
       }
 
       if (selectedTag.length) {
         selectedTag.forEach((tag) => questDetail.append("tagId", tag._id));
       }
 
-      const newQuest = await createQuest(questDetail, locationId);
+      const newQuest = await editQuest(questDetail, questId);
       setIsLoading(false);
       TabNavigation.navigate("QuestManage", { questId: newQuest._id });
     } catch (error) {
       setIsLoading(false);
-      alert("failed to create quest", error);
+      alert("failed to edit quest", error);
     }
   };
 
@@ -135,20 +133,19 @@ export default function QuestEditing() {
   useEffect(() => {
     const getQuest = async () => {
       try {
-        const data = await getQuestData(route.params?.questId);        
+        const data = await getQuestData(questId);
+        setLocationId(data.locationId);
         setQuestName(data.questName);
         setStartDate(new Date(data.timeStart));
         setEndDate(new Date(data.timeEnd));
         setDescription(data.description);
         setSelectedTag(data.tag);
+        setMaxParticipant(data.maxParticipant);
         if (data.maxParticipant) {
-          setMaxParticipant(data.maxParticipant);
           setLimitParticipants(true);
         }
-
-        console.log(data);
-        setActivity(data.activityHour?.category);
-        setActivityHour(data.activityHour?.hour);
+        setActivity(data.activityHour?.category || 0);
+        setActivityHour(data.activityHour?.hour || 1);
         setImage(data.picturePath ? { uri: data.picturePath } : null);
         setIsLoading(false);
       } catch (error) {
@@ -472,7 +469,7 @@ export default function QuestEditing() {
 
             <BigButton
               bg={buttonOrange}
-              text="สร้างกิจกรรม"
+              text="ยืนยันการแก้ไข"
               onPress={buttonHandler}
             />
           </View>

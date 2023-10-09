@@ -93,13 +93,8 @@ function CreateQuest() {
       }
 
       if (activity != 0) {
-        const activityDetail = {
-          category: parseInt(activity),
-          hour: activityHour,
-        };
-
-        console.log(activityDetail);
-        questDetail.append("activityHour", activityDetail);
+        questDetail.append("activityHour[category]", activity);
+        questDetail.append("activityHour[hour]", activityHour);
       }
 
       if (selectedTag.length) {
