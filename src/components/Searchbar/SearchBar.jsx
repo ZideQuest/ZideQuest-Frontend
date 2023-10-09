@@ -434,6 +434,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    borderRadius: 20,
+    backgroundColor: "white"
   },
   profilePicture: {
     width: "100%",

@@ -2,13 +2,7 @@ import { useState, useEffect } from "react";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import BackButton from "../components/button/BackButton.jsx";
 import * as TabNavigation from "../data/TabNavigation.jsx";
@@ -18,7 +12,7 @@ import DetailedQuestListItem from "../components/Quest/DetailedQuestListItem"; /
 
 import { useAppContext } from "../data/AppContext";
 import { getLocationData } from "../data/locations";
-import { buttonNormalGreen } from "../data/color";
+import { BGcolor, buttonNormalGreen } from "../data/color";
 
 export default function PinDetailScreen({ route }) {
   const { userDetail, onlyPinWithMyQuest, setOnlyPinWithMyQuest } =
@@ -225,7 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 6,
     marginBottom: 8,
-
+    backgroundColor: "#EBEBE4",
     shadowColor: "#171717",
     shadowOffset: { width: -1, height: 5 },
     shadowOpacity: 0.3,
@@ -234,6 +228,7 @@ const styles = StyleSheet.create({
   bannerImage: {
     height: "100%",
     width: "100%",
+    
   },
   bannerContainer: {
     height: "100%",

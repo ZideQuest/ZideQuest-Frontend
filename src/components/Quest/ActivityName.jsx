@@ -45,7 +45,9 @@ export default function ActivityName({ quest }) {
                 backgroundColor: statusIcon(
                   quest?.countParticipant,
                   quest?.maxParticipant,
-                  quest?.status
+                  quest?.status,
+                  quest?.timeStart,
+                  quest?.timeEnd
                 ),
                 borderRadius: 25,
               }}
@@ -120,6 +122,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+
+    borderRadius: 30,
+    backgroundColor: "white",
   },
   picCreator: {
     width: "100%",

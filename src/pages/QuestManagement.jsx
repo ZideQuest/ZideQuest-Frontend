@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     paddingHorizontal: 20,
     gap: 8,
+    marginTop: 5,
   },
   buttonContainer: {
     flexDirection: "row",
