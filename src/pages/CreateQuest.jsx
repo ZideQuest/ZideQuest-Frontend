@@ -75,7 +75,7 @@ function CreateQuest() {
       questDetail.append("questName", questName);
       questDetail.append("description", description);
 
-      if (maxParticipant) {
+      if (limitParticipants) {
         questDetail.append("maxParticipant", maxParticipant);
       }
 
@@ -94,9 +94,11 @@ function CreateQuest() {
 
       if (activity != 0) {
         const activityDetail = {
-          category: activity,
+          category: parseInt(activity),
           hour: activityHour,
         };
+
+        console.log(activityDetail);
         questDetail.append("activityHour", activityDetail);
       }
 
