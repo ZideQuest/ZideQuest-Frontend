@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text, Button, Image } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 
@@ -194,7 +194,13 @@ export default function Map() {
             key={pin._id}
             onPress={(data) => markerPressHandler(pin._id, data)}
             style={markerOpacityHandler(pin._id)}
-          />
+          >
+            <Image 
+              source={pin.pinMode ? require('../../assets/images/pin_(unnormal).png')
+              : require('../../assets/images/pin_(normal).png')}
+              style={styles.markerImage}
+            />
+          </Marker>
         ))}
         {newMarker && <Marker coordinate={newMarker} />}
       </MapView>
@@ -207,5 +213,9 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "relative",
     width: "100%",
+  },
+  markerImage: {
+    width: 25,
+    height: 25,
   },
 });
