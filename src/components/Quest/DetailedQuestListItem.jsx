@@ -37,7 +37,7 @@ export default function DetailedQuestListItem({
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
 
   const checkQuestCompleted = () => {
-    if (!quest.status) {
+    if (!quest.status || !quest.isCheckin) {
       return false;
     }
     let status = false;
