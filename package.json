@@ -31,7 +31,7 @@
     "lodash": "^4.17.21",
     "lottie-react-native": "5.1.4",
     "react": "18.2.0",
-    "react-native": "0.71.8",
+    "react-native": "0.71.13",
     "react-native-alert-async": "^1.0.5",
     "react-native-drawer-layout": "^3.2.1",
     "react-native-dropdown-select-list": "^2.0.5",
