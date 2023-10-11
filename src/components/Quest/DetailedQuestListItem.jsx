@@ -82,9 +82,13 @@ export default function DetailedQuestListItem({
   const queststatus = () => {
     let qstatus
     quest.isJoin
-      ? quest.isCheckin || quest.status
-        ? qstatus = "สำเร็จเเล้ว"
-        : qstatus = "กำลังเข้าร่วมอยู่"
+      ? quest.isCheckin 
+        ? quest.status
+          ? qstatus = "เควสสำเร็จ"
+          : qstatus = "เช็คอินเเล้ว"
+        : quest.status
+          ? qstatus = "เควสไม่สำเร็จ"
+          : qstatus = "ยังไม่ได้เช็คอิน"
       : qstatus = "ไม่ได้เข้าร่วม"
     return qstatus
   }
@@ -94,10 +98,12 @@ export default function DetailedQuestListItem({
       onPress={questPressHandler}
       style={[
         quest.isJoin
-          ? quest.isCheckin || quest.status
-            ? styles.questcheckinContainer
+        ? quest.isCheckin 
+          ? styles.questcheckinContainer
+          : quest.status
+            ? styles.questFailed
             : styles.questJoinedContainer
-          : styles.questContainer,
+        : styles.questContainer,
         { opacity: quest.status ? 0.5 : 1 },
       ]}
     >
@@ -176,6 +182,15 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
   },
+  questFailed: {
+    backgroundColor: buttonGrey,
+    borderColor: "#F01E2C",
+    borderLeftWidth: 5,
+    padding: 7,
+    borderRadius: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
   nameAndParticipants: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -202,7 +217,7 @@ const styles = StyleSheet.create({
   requirement: {
     flexDirection: "row",
   },
-  requirementText: { flex: 0.5, fontFamily: "Kanit300", fontSize: 15 },
+  requirementText: { flex: 1, fontFamily: "Kanit300", fontSize: 15 },
   boldDetail: {
     fontFamily: "Kanit400",
   },
