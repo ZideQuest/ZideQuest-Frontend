@@ -79,6 +79,16 @@ export default function DetailedQuestListItem({
     return `${dayOfWeek[time.getDay()]} ${hh}:${mm}`;
   };
 
+  const queststatus = () => {
+    let qstatus
+    quest.isJoin
+      ? quest.isCheckin || quest.status
+        ? qstatus = "สำเร็จเเล้ว"
+        : qstatus = "กำลังเข้าร่วมอยู่"
+      : qstatus = "ไม่ได้เข้าร่วม"
+    return qstatus
+  }
+
   return (
     <TouchableOpacity
       onPress={questPressHandler}
@@ -132,10 +142,7 @@ export default function DetailedQuestListItem({
         </Text>
         <View style={styles.requirement}>
           <Text style={styles.requirementText}>
-            ชั้นปีที่มีสิทธิ์ : <Text style={styles.boldDetail}>-</Text>
-          </Text>
-          <Text style={styles.requirementText}>
-            ชั้นปีที่ไม่มีสิทธิ์ : <Text style={styles.boldDetail}>-</Text>
+            สถานะ : <Text style={styles.boldDetail}>{queststatus()}</Text>
           </Text>
         </View>
       </View>
@@ -152,14 +159,18 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
   questcheckinContainer: {
-    backgroundColor: "#39FF14",
+    backgroundColor: buttonGrey,
+    borderColor: "#39FF14",
+    borderLeftWidth: 5,
     padding: 7,
     borderRadius: 5,
     paddingLeft: 15,
     paddingRight: 15,
   },
   questJoinedContainer: {
-    backgroundColor: "#FF5733",
+    backgroundColor: buttonGrey,
+    borderColor: "#FFC78F",
+    borderLeftWidth: 5,
     padding: 7,
     borderRadius: 5,
     paddingLeft: 15,
