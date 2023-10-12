@@ -17,6 +17,7 @@ export default function ParticipantsEditing({ route }) {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isChecked, setIsChecked] = useState();
+  const [all,setAll]=useState(false)
 
   const getParticipants = async () => {
     setLoading(true);
@@ -27,7 +28,13 @@ export default function ParticipantsEditing({ route }) {
   };
 
   const handleCheckedAll = async (e) =>{
-    setIsChecked(e)
+    if ( all&&await Alert(
+        "ยืนยันยกเลิกการเลือกทั้งหมด"
+)
+    ) {
+      try {
+        setIsChecked(e)
+        setAll(false)
     const userList = []
     participants.map((user) =>{
       const userId = user?.user?._id
@@ -44,6 +51,56 @@ export default function ParticipantsEditing({ route }) {
      
     }
     await getParticipants()
+      } catch (error) {
+        alert("ยกเลิกการเลือกทั้งหมด");
+      }
+    }
+
+    if ( !all&&await Alert(
+        "ยืนยันการเลือกทั้งหมด"
+)
+    ) {
+      try {
+        setIsChecked(e)
+        setAll(true)
+    const userList = []
+    participants.map((user) =>{
+      const userId = user?.user?._id
+      userList.push(userId)
+    })
+
+    if(e === true){
+      const response = await checkUser(route.params?.questId, userList)
+      console.log(response)
+     
+    }else{
+      const response = await unCheckUser(route.params?.questId, userList)
+      console.log(response)
+     
+    }
+    await getParticipants()
+      } catch (error) {
+        alert("ยกเลิกการเลือกทั้งหมด");
+      }
+    }
+
+    // setIsChecked(e)
+    // const userList = []
+    // participants.map((user) =>{
+    //   const userId = user?.user?._id
+    //   userList.push(userId)
+    // })
+
+    // if(e === true){
+    //   const response = await checkUser(route.params?.questId, userList)
+    //   console.log(response)
+     
+    // }else{
+    //   const response = await unCheckUser(route.params?.questId, userList)
+    //   console.log(response)
+     
+    // }
+    // await getParticipants()
   }
 
   const handleChecked = async (checked, userId) =>{
