@@ -42,7 +42,7 @@ export default function DetailedQuestListItem({
     }
     let status = false;
     quest.participant.forEach((p) => {
-      if (p.userId == userDetail.user._id) {
+      if (p?.userId == userDetail?.user?._id) {
         status = true;
       }
     });
@@ -139,8 +139,8 @@ export default function DetailedQuestListItem({
         <Text style={styles.requirementText}>
           ชั่วโมงกิจกรรม :
           <Text style={styles.boldDetail}>
-            {quest.activityHour?.category
-              ? ` ${activityCategories[quest.activityHour.category]} ${
+            {quest?.activityHour?.category
+              ? ` ${activityCategories[quest?.activityHour?.category]} ${
                   quest.activityHour.hour
                 } ชั่วโมง`
               : " -"}

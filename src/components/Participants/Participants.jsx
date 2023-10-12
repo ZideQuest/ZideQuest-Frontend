@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import UserTag from "./UserTag";
 import * as TabNavigation from "../../data/TabNavigation";
 
@@ -51,9 +51,15 @@ export default function Participants({ questId, ownerChecker }) {
               </Text>
             </TouchableOpacity>
           </View>
-          {participants?.map((user) => (
-            <UserTag user={user} key={`participant-${user?.user?._id}`} />
-          ))}
+          <ScrollView>
+            {participants?.map((user) => (
+              <View key={`participant-${user?.user?._id}`} style={{marginBottom:5}}>
+                <UserTag user={user}  />
+              </View>
+              
+            ))}
+          </ScrollView>
+
         </View>
       ) : (
         <Text style={{ fontFamily: "Kanit400", fontSize: 17 }}>

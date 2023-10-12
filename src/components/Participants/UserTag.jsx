@@ -1,17 +1,23 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { buttonGrey, buttonLightGrey } from "../../data/color";
 import user_icon from "../../../assets/images/user_icon.png";
 import Checkbox from "expo-checkbox";
+import bin_icon from "../../../assets/images/bin.png";
 
-export default function UserTag({ user, checkable = false }) {
+export default function UserTag({ user, checkable = false, onChecked, onDelete, deleteable = false}) {
   const [isChecked, setIsChecked] = useState(user.status);
 
   const checkboxHandler = (v) => {
     if (checkable) {
       setIsChecked(v);
+      onChecked(v, user?.user?._id)
     }
   };
+
+  const handleDelete = async ()=>{
+    await onDelete(user?.user?._id)
+  }
 
   return (
     <View style={styles.container}>
@@ -43,9 +49,24 @@ export default function UserTag({ user, checkable = false }) {
           {user?.user?.firstName} {user?.user?.lastName}
         </Text>
       </View>
-      {checkable && (
-        <Checkbox value={isChecked} onValueChange={checkboxHandler} />
-      )}
+      <View style={{flexDirection:'row', justifyContent:'flex-end', gap:5}}>
+        {deleteable && (
+          <TouchableOpacity
+            style={styles.binIcon}
+            onPress={handleDelete}
+          >
+            <Image
+              source={bin_icon}
+              style={{ width: "100%", height: "100%" }}
+            />
+          </TouchableOpacity>
+        )}
+
+        {checkable && (
+          <Checkbox value={isChecked} onValueChange={checkboxHandler} />
+        )}
+      </View>
+      
     </View>
   );
 }
@@ -56,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: buttonGrey,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 10,
   },
@@ -70,5 +91,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     overflow: "hidden",
+  },
+  binIcon: {
+    width: 20,
+    height: 20,
   },
 });

@@ -106,7 +106,7 @@ export async function usersQuest() {
 export async function sendQuestComplete(id) {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
-  const { data } = await axios.put(
+  const { data } = await axios.patch(
     `${BASE_URL}/quests/${id}/complete`,
     {},
     {
@@ -183,6 +183,63 @@ export async function getQRCode(questId) {
       "Content-Type": "application/json",
     },
   });
+
+  return data;
+}
+
+export async function checkUser(questId, payload) {
+  const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const requestData = {
+    users: payload,
+  };
+  const { data } = await axios.patch(
+    `${BASE_URL}/quests/${questId}/check-user`,
+    requestData,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return data;
+}
+
+export async function unCheckUser(questId, payload) {
+  const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const requestData = {
+    users: payload,
+  };
+  const { data } = await axios.patch(
+    `${BASE_URL}/quests/${questId}/uncheck-user`,
+    requestData,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return data;
+}
+
+export async function removeUser(questId, payload) {
+  const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const requestData = {
+    users: payload,
+  };
+  const { data } = await axios.patch(
+    `${BASE_URL}/quests/${questId}/remove-user`,
+    requestData,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   return data;
 }
