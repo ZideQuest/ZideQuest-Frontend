@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   subjectContainer: {
     borderWidth: 1,
     padding: 4,
-    borderRadius: 10,
+    borderRadius: 6,
     fontSize: 16,
     flex: 1,
   },

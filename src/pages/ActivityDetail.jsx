@@ -63,7 +63,9 @@ export default function ActivityDetail() {
               Alert.alert("ยกเลิกสำเร็จ!");
             } catch (error) {
               console.error(error);
-              Alert.alert("ยกเลิกไม่สำเร็จ");
+              if (error.response.status === 430) {
+                Alert.alert("เควสที่เข้าร่วมไปแล้วไม่สามารถออกได้");
+              } else Alert.alert("ยกเลิกไม่สำเร็จ");
             }
             setLoading(false);
           },
@@ -78,6 +80,7 @@ export default function ActivityDetail() {
     const fetchData = async (questId) => {
       try {
         const response = await getQuestData(questId);
+        console.log(response);
         setQuestDetail(response);
         setLoading(false);
         setIsJoined(response.isJoin);
@@ -103,65 +106,67 @@ export default function ActivityDetail() {
           <Spinner />
         </View>
       ) : (
-        <BottomSheetScrollView>
-          <View style={styles.ScrollView}>
-            <View style={{ width: "100%", paddingHorizontal: 15 }}>
-              <ActivityName quest={QuestDetail} />
+        <View>
+          <View style={{ width: "100%", paddingHorizontal: 15 }}>
+            <ActivityName quest={QuestDetail} />
+          </View>
+          {QuestDetail.picturePath && (
+            <View style={styles.picCon}>
+              <Image style={styles.pic} src={QuestDetail.picturePath} />
             </View>
-            {QuestDetail.picturePath && (
-              <View style={styles.picCon}>
-                <Image style={styles.pic} src={QuestDetail.picturePath} />
-              </View>
-            )}
-            <View
+          )}
+          <View
+            style={{
+              alignItems: "flex-start",
+              paddingHorizontal: 15,
+            }}
+          >
+            <Tag tags={QuestDetail?.tag} />
+          </View>
+          <View style={styles.DescripCon}>
+            <Text
               style={{
-                alignItems: "flex-start",
-                paddingHorizontal: 15,
-                paddingVertical: 7,
+                color: textColor,
+                fontSize: 16,
+                fontFamily: "Kanit300",
               }}
             >
-              <Tag tags={QuestDetail?.tag} />
-            </View>
-            <View style={styles.DescripCon}>
-              <Text
-                style={{
-                  color: textColor,
-                  fontSize: 16,
-                  fontFamily: "Kanit300",
-                }}
-              >
-                {QuestDetail.description}
-              </Text>
-            </View>
-            {isJoined &&
-              (QuestDetail.isCheckedIn ? (
-                <Text style={[styles.checkinStatus, { color: "green" }]}>
-                  เช็คอินแล้ว
-                </Text>
-              ) : (
-                <Text style={[styles.checkinStatus, { color: "red" }]}>
-                  ยังไม่ได้เช็คอิน
-                </Text>
-              ))}
-
-            <View style={styles.ButtonCon}>
-              {isJoined ? (
-                <BigButton
-                  text="ยกเลิกการเข้าร่วม"
-                  bg={QuestDetail.status ? buttonGrey : "#8C1C15"}
-                  onPress={() => leaveAlert(questId)}
-                />
-              ) : (
-                <BigButton
-                  text="เข้าร่วมกิจกรรม"
-                  bg={QuestDetail.status ? buttonGrey : primaryColor}
-                  color={QuestDetail.status ? "grey" : "white"}
-                  onPress={QuestDetail.status ? () => alert("เข้าร่วมไม่ได้แร้ว") :() => joinAlert(questId)}
-                />
-              )}
-            </View>
+              {QuestDetail.description}
+            </Text>
           </View>
-        </BottomSheetScrollView>
+
+          {isJoined &&
+            (QuestDetail.isCheckedIn ? (
+              <Text style={[styles.checkinStatus, { color: "green" }]}>
+                เช็คอินแล้ว
+              </Text>
+            ) : (
+              <Text style={[styles.checkinStatus, { color: "red" }]}>
+                ยังไม่ได้เช็คอิน
+              </Text>
+            ))}
+
+          <View style={styles.ButtonCon}>
+            {isJoined ? (
+              <BigButton
+                text="ยกเลิกการเข้าร่วม"
+                bg={QuestDetail.status ? buttonGrey : "#8C1C15"}
+                onPress={() => leaveAlert(questId)}
+              />
+            ) : (
+              <BigButton
+                text="เข้าร่วมกิจกรรม"
+                bg={QuestDetail.status ? buttonGrey : primaryColor}
+                color={QuestDetail.status ? "grey" : "white"}
+                onPress={
+                  QuestDetail.status
+                    ? () => alert("เข้าร่วมไม่ได้แร้ว")
+                    : () => joinAlert(questId)
+                }
+              />
+            )}
+          </View>
+        </View>
       )}
     </BottomsheetDynamic>
   );
@@ -176,8 +181,8 @@ const styles = StyleSheet.create({
   },
   picCon: {
     width: "100%",
-    height: 200,
-    marginTop: 10,
+    height: 220,
+    marginVertical: 10,
   },
   pic: {
     width: "100%",

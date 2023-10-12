@@ -7,6 +7,9 @@ import { timeConv } from "../../data/time/time";
 import { useAppContext } from "../../data/AppContext";
 import { textColor } from "../../data/color";
 import warning_icon from "../../../assets/images/warning_icon.png";
+import Tag from "../Quest/Tag";
+
+import { activityCategories } from "../../data/activityCategory";
 
 export default function SearchItem({ quests, isAdmin }) {
   const { mapMoveTo, setFocusedPin, userDetail } = useAppContext();
@@ -47,11 +50,51 @@ export default function SearchItem({ quests, isAdmin }) {
               />
             </View>
             <View style={styles.detail}>
-              <View>
-                <Text>{quest.questName}</Text>
-                <Text>{quest.description}</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Kanit400",
+                    color: textColor,
+                    fontSize: 19,
+                  }}
+                >
+                  {quest.questName}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "Kanit300",
+                    color: textColor,
+                  }}
+                >
+                  {timeConv(quest.timeStart)}
+                </Text>
               </View>
-              <Text>{timeConv(quest.timeStart)}</Text>
+              {quest.activityHour?.category && (
+                <Text
+                  style={{
+                    fontFamily: "Kanit400",
+                    color: textColor,
+                  }}
+                >
+                  {activityCategories[quest.activityHour.category]}{" "}
+                  {quest.activityHour.hour} ชั่วโมง
+                </Text>
+              )}
+              <Text
+                style={{
+                  fontFamily: "Kanit300",
+                  color: textColor,
+                }}
+                numberOfLines={1}
+              >
+                ที่ {quest.locationId.locationName.replace(/\n/g, " ")}
+              </Text>
             </View>
           </Pressable>
         ))}
@@ -94,9 +137,8 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 1,
     borderColor: "grey",
-    height: "100%",
-    flexDirection: "row",
     justifyContent: "space-between",
     paddingRight: 10,
+    width: "100%",
   },
 });

@@ -20,7 +20,7 @@ import * as TabNavigation from "../../data/TabNavigation";
 import { getCenterFromPins } from "../../data/locations";
 import { storeHistory } from "../../data/async_storage";
 import { getTags } from "../../data/tag";
-import { activityCategories } from "../../data/activityCategoty";
+import { activityCategories } from "../../data/activityCategory";
 
 import RecentSearch from "./RecentSearch";
 import SearchResult from "./SearchResult";
@@ -31,6 +31,7 @@ import TagItem from "../Quest/TagItem";
 import { TimePicker } from "../TimePicker";
 
 import search_icon from "../../../assets/images/search.png";
+import user_icon from "../../../assets/images/user_icon.png";
 import BigButton from "../button/BigButton";
 
 export default function SearchBar({ searching, setSearching }) {
@@ -98,6 +99,7 @@ export default function SearchBar({ searching, setSearching }) {
   const debouncedFetch = useCallback(debounce(searchFetching, 500), []);
 
   useEffect(() => {
+    setLoading(true);
     searchFetching(
       search,
       selectedTag,
@@ -167,8 +169,6 @@ export default function SearchBar({ searching, setSearching }) {
   const selectedTagIds = selectedTag.map((t) => t._id);
 
   const tagPressHandler = (tag) => {
-    setLoading(true);
-
     if (selectedTagIds.includes(tag._id)) {
       setSelectedTag((prev) => prev.filter((p) => p._id != tag._id));
     } else {
@@ -199,12 +199,9 @@ export default function SearchBar({ searching, setSearching }) {
     return (
       <Pressable
         onPress={() => alert("Login first")}
-        style={[styles.profileContainer, { padding: 6, borderWidth: 1 }]}
+        style={styles.profileContainer}
       >
-        <Image
-          src="https://img.icons8.com/material-outlined/24/cat--v1.png"
-          style={styles.profilePicture}
-        />
+        <Image source={user_icon} style={styles.profilePicture} />
       </Pressable>
     );
   };
@@ -374,7 +371,6 @@ export default function SearchBar({ searching, setSearching }) {
 
       <View style={styles.greyBackground}>
         {loading && <SearchLoading search={search} selectedTag={selectedTag} />}
-
         {searching &&
           !loading &&
           (search ||
@@ -433,12 +429,19 @@ const styles = StyleSheet.create({
   profileContainer: {
     width: 40,
     height: 40,
+
+    shadowColor: "#171717",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     borderRadius: 20,
-    overflow: "hidden",
+    backgroundColor: "white",
   },
   profilePicture: {
     width: "100%",
     height: "100%",
+    borderRadius: 20,
+    overflow: "hidden",
   },
   iconContainer: {
     width: 20,
@@ -476,7 +479,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
   },
 });

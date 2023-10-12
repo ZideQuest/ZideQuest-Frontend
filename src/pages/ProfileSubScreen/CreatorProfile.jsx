@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   questContainer: {
-    gap: 7,
+    gap: 8,
     paddingHorizontal: 10,
   },
   activeText: {

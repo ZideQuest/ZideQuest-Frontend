@@ -3,7 +3,22 @@ import * as SecureStore from "expo-secure-store";
 import { BASE_URL } from "./backend_url";
 
 export async function fetchLocations() {
-  const { data } = await axios.get(`${BASE_URL}/locations`);
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  let data = {};
+  if(userdetail){
+    const response = await axios.get(`${BASE_URL}/locations`, {
+      headers: {
+        Authorization: "Bearer " + userdetail.token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    data = response.data
+  } else{
+  const response = await axios.get(`${BASE_URL}/locations`);
+  data = response.data
+  }
+  // console.log(data)
   return data;
 }
 

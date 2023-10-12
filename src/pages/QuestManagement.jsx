@@ -28,6 +28,10 @@ export default function QuestManagement({ route }) {
   }, []);
 
   const questCompleteHandler = async () => {
+    if (!ownerChecker()) {
+      return alert("You are not allowed to end this quest.");
+    }
+
     if (questData.status) {
       return;
     } else if (
@@ -48,6 +52,9 @@ export default function QuestManagement({ route }) {
   };
 
   const GenQRHandler = async () => {
+    if (!ownerChecker()) {
+      return alert("You are not allowed to view check-in QR code.");
+    }
     if (questData.status) {
       return;
     } else if (
@@ -64,12 +71,15 @@ export default function QuestManagement({ route }) {
     if (ownerChecker()) {
       TabNavigation.navigate("EditQuest", { questId: route.params.questId });
     } else {
-      alert("You are not allowed to edit this quests");
+      alert("You are not allowed to edit this quests.");
     }
   };
 
   const ownerChecker = () => {
-    if (userDetail.isAdmin === "admin" || questData?.creatorId === userDetail.user._id) {
+    if (
+      userDetail.isAdmin === "admin" ||
+      questData?.creatorId === userDetail.user._id
+    ) {
       return true;
     } else {
       return false;
@@ -97,22 +107,27 @@ export default function QuestManagement({ route }) {
               แก้ไขข้อมูลเควส
             </Text>
           </TouchableOpacity>
-          <Participants questId={route.params.questId} />
-          <View style={styles.buttonContainer}>
-            <BigButton
-              text="ยืนยัน Quest Completed"
-              bg={questData?.status ? buttonGrey : buttonBrightGreen}
-              color={questData?.status ? "grey" : "white"}
-              onPress={questCompleteHandler}
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <BigButton
-              text="สร้าง Check-in QR Code"
-              bg={questData?.status ? buttonGrey : buttonBlue}
-              color={questData?.status ? "grey" : "white"}
-              onPress={GenQRHandler}
-            />
+          <Participants
+            questId={route.params.questId}
+            ownerChecker={ownerChecker}
+          />
+          <View style={{ opacity: ownerChecker() ? 1 : 0.4, gap: 7 }}>
+            <View style={styles.buttonContainer}>
+              <BigButton
+                text="ยืนยัน Quest Completed"
+                bg={questData?.status ? buttonGrey : buttonBrightGreen}
+                color={questData?.status ? "grey" : "white"}
+                onPress={questCompleteHandler}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <BigButton
+                text="สร้าง Check-in QR Code"
+                bg={questData?.status ? buttonGrey : buttonBlue}
+                color={questData?.status ? "grey" : "white"}
+                onPress={GenQRHandler}
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -125,6 +140,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     paddingHorizontal: 20,
     gap: 8,
+    marginTop: 5,
   },
   buttonContainer: {
     flexDirection: "row",

@@ -5,24 +5,31 @@ import person_icon from "../../../assets/images/participant.png";
 import BackButton from "../button/BackButton";
 import official_icon from "../../../assets/images/official_icon.png";
 
+import { activityCategories } from "../../data/activityCategory";
+
 import { BGcolor, textColor } from "../../data/color";
 import { statusIcon } from "../misc/Status";
 
 export default function ActivityName({ quest }) {
   return (
     <View style={styles.DataCon}>
-      <View style={[styles.questItem]}>
+      <View style={styles.questItem}>
         <View style={[styles.questNameCon]}>
           <Text style={styles.questFont}>{quest?.questName}</Text>
-          {/* <BackButton targetRoute="PinDetail" params={{pinId: quest?.locationId}}/> */}
-          <BackButton />
+          <BackButton
+            targetRoute="PinDetail"
+            params={{ pinId: quest?.locationId }}
+            resetFocus={false}
+          />
         </View>
       </View>
       <View style={styles.infoText}>
         <View style={styles.timePlaceCon}>
           <Text style={styles.smallDetail}>{timeConv(quest?.timeStart)}</Text>
           <Text style={styles.smallDetail}>{timeConv(quest?.timeEnd)}</Text>
-          <Text style={styles.locationText}>ที่ {quest?.locationName}</Text>
+          <Text style={styles.locationText} numberOfLines={2}>
+            ที่ {quest?.locationName.replace(/\n/g, " ")}
+          </Text>
         </View>
         <View style={{ alignItems: "flex-end" }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
@@ -38,7 +45,9 @@ export default function ActivityName({ quest }) {
                 backgroundColor: statusIcon(
                   quest?.countParticipant,
                   quest?.maxParticipant,
-                  quest?.status
+                  quest?.status,
+                  quest?.timeStart,
+                  quest?.timeEnd
                 ),
                 borderRadius: 25,
               }}
@@ -58,7 +67,10 @@ export default function ActivityName({ quest }) {
                 <View style={styles.badgeIcon}>
                   <Image
                     source={official_icon}
-                    style={{ width: "100%", height: "100%" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
                   />
                 </View>
                 <Text style={styles.badgeText}>Official</Text>
@@ -70,6 +82,12 @@ export default function ActivityName({ quest }) {
           </View>
         </View>
       </View>
+      {quest?.activityHour.category && (
+        <Text style={{ fontFamily: "Kanit400" }}>
+          คุณจะได้รับ {activityCategories[quest.activityHour?.category]}{" "}
+          {quest.activityHour?.hour} ชั่วโมง
+        </Text>
+      )}
     </View>
   );
 }
@@ -79,12 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: "white",
-    width: "100%",
-    // alignItems: "flex-end",
-  },
-  picCreator: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
   },
   questFont: {
     fontSize: 28,
@@ -93,23 +106,33 @@ const styles = StyleSheet.create({
   timePlaceCon: {
     backgroundColor: BGcolor,
     justifyContent: "center",
+    flex: 1,
   },
   creatorCon: {
     backgroundColor: BGcolor,
     alignItems: "center",
     flexDirection: "row",
+    paddingBottom: 5,
     gap: 10,
   },
   creatorPicCon: {
-    backgroundColor: BGcolor,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    overflow: "hidden",
+    width: 40,
+    aspectRatio: "1/1",
+    shadowColor: "#171717",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+
+    borderRadius: 30,
+    backgroundColor: "white",
+  },
+  picCreator: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 30,
   },
 
   DataCon: {
-    paddingVertical: 5,
     backgroundColor: BGcolor,
     width: "100%",
   },
@@ -132,9 +155,10 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 5,
   },
   smallDetail: {
-    fontSize: 16,
+    // fontSize: 16,
     fontFamily: "Kanit300",
     lineHeight: 20,
   },
@@ -143,10 +167,12 @@ const styles = StyleSheet.create({
     fontFamily: "Kanit300",
     color: textColor,
     textAlign: "right",
+    lineHeight: 20,
   },
   locationText: {
     fontSize: 16,
     fontFamily: "Kanit400",
+    lineHeight: 21,
   },
   badgeIcon: {
     width: 13,

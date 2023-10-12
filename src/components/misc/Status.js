@@ -1,19 +1,16 @@
-export function statusIcon(currentP, maxP, status) {
-  const ratio = currentP / maxP;
-
+export function statusIcon(currentP, maxP, status, timeStart, timeEnd) {
   if (status) {
-    return "red"
+    return "grey";
   }
 
-  if (!maxP) {
-    return "green"
-  }
-
-  if (ratio >= 1) {
+  if (maxP && currentP >= maxP) {
     return "red";
+  } else {
+    const now = new Date();
+    if (now > timeStart) {
+      return "red";
+    } else {
+      return "lime";
+    }
   }
-  if (ratio > 0.8) {
-    return "yellow";
-  }
-  return "green";
 }
