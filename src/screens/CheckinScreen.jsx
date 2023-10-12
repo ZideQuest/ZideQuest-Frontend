@@ -1,9 +1,10 @@
-import { StyleSheet, Text, Button, View, Linking } from "react-native";
+import { StyleSheet, Text, Button, View, Linking, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import * as TabNavigation from "../data/TabNavigation";
 import { buttonOrange, textColor } from "../data/color";
 import { userCheckin } from "../data/authen";
+import { startsWith } from "lodash";
 
 export default function CheckinScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -20,22 +21,31 @@ export default function CheckinScreen({ navigation }) {
 
   const handleBarCodeScanned = async ({ type, data }) => {
     if (scanned) return;
-
     setScanned(true);
-    const quest = data.split("/");
-    const questId = quest[2];
-    
-    navigation.navigate("App");
-    
-    try {
-      const res = await userCheckin(questId);
-      TabNavigation.navigate("QuestDetail", { questId });
-      alert(`เช็คอินกิจกรรม ${res.questName} สำเร็จ!`)
-      
-    } catch (error) {
-      console.error(error);
-    }
+    if (data.startsWith(`https://`) || data.startsWith(`http://`)) {
+      alert(`กรุณาแสกน QR Code ของ Zidequest เท่านั้น`);
+      setScanned(false);
+    } else {
+      navigation.navigate("App");
+      const quest = data.split("/");
+      const questId = quest[2];
+      console.log(questId);
+      try {
+        const res = await userCheckin(questId);
+        TabNavigation.navigate("QuestDetail", { questId });
 
+        Alert.alert(`เช็คอินกิจกรรม ${res.questName} สำเร็จ!`);
+      } catch (error) {
+        console.log(error);
+        if (error.response.status === 444) {
+          Alert.alert(
+            "กิจกรรมที่คุณกำลังจะเข้าร่วมนั้นมีผู้เข้าร่วมเต็มจำนวนแล้ว"
+          );
+        } else if (error.response.status === 400) {
+          Alert.alert("ไม่มีกิจกรรมนี้ในระบบ");
+        }
+      }
+    }
   };
 
   if (hasPermission === null) {
@@ -58,7 +68,7 @@ export default function CheckinScreen({ navigation }) {
     <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={handleBarCodeScanned}
-        style={{ width: "100%", height: "100%" }}
+        style={styles.qrbox}
       />
     </View>
   );
@@ -70,6 +80,10 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // justifyContent: "center",
     width: "100%",
+  },
+  qrbox: {
+    width: "100%",
+    height: "100%",
   },
   // linearGradient: {
   //   alignItems: "center",

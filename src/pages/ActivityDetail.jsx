@@ -63,7 +63,9 @@ export default function ActivityDetail() {
               Alert.alert("ยกเลิกสำเร็จ!");
             } catch (error) {
               console.error(error);
-              Alert.alert("ยกเลิกไม่สำเร็จ");
+              if (error.response.status === 430) {
+                Alert.alert("เควสที่เข้าร่วมไปแล้วไม่สามารถออกได้");
+              } else Alert.alert("ยกเลิกไม่สำเร็จ");
             }
             setLoading(false);
           },
@@ -78,6 +80,7 @@ export default function ActivityDetail() {
     const fetchData = async (questId) => {
       try {
         const response = await getQuestData(questId);
+        console.log(response);
         setQuestDetail(response);
         setLoading(false);
         setIsJoined(response.isJoin);
@@ -131,6 +134,7 @@ export default function ActivityDetail() {
               {QuestDetail.description}
             </Text>
           </View>
+
           {isJoined &&
             (QuestDetail.isCheckedIn ? (
               <Text style={[styles.checkinStatus, { color: "green" }]}>
