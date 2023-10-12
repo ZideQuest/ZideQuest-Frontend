@@ -92,7 +92,7 @@ export default function DetailedQuestListItem({
       : qstatus = "ไม่ได้เข้าร่วม"
     return qstatus
   }
-
+  // console.log(quest)
   return (
     <TouchableOpacity
       onPress={questPressHandler}
@@ -139,7 +139,7 @@ export default function DetailedQuestListItem({
         <Text style={styles.requirementText}>
           ชั่วโมงกิจกรรม :
           <Text style={styles.boldDetail}>
-            {quest.activityHour.category
+            {quest.activityHour?.category
               ? ` ${activityCategories[quest.activityHour.category]} ${
                   quest.activityHour.hour
                 } ชั่วโมง`
