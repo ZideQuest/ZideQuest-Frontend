@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/Searchbar/SearchBar";
 import GridCard from "../components/MinimalCard/Gridcard";
 import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 
@@ -28,6 +28,8 @@ const styles = StyleSheet.create({
   Container: {
     width: "100%",
     flex: 1,
+    // borderWidth: 5,
+    // borderColor: "blue",
     // backgroundColor: "#F2F2F2",
     backgroundColor: "white",
   },

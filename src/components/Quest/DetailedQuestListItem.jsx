@@ -13,7 +13,7 @@ import person_icon from "../../../assets/images/participant.png";
 import { buttonGrey } from "../../data/color";
 import { useAppContext } from "../../data/AppContext";
 import Tag from "./Tag";
-import { activityCategories } from "../../data/activityHour";
+import { activityCategories } from "../../data/activityCategory";
 
 import { statusIcon } from "../../components/misc/Status";
 
@@ -37,7 +37,7 @@ export default function DetailedQuestListItem({
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
 
   const checkQuestCompleted = () => {
-    if (!quest.status) {
+    if (!quest.status || !quest.isCheckin) {
       return false;
     }
     let status = false;
@@ -79,10 +79,33 @@ export default function DetailedQuestListItem({
     return `${dayOfWeek[time.getDay()]} ${hh}:${mm}`;
   };
 
+  const queststatus = () => {
+    let qstatus
+    quest.isJoin
+      ? quest.isCheckin 
+        ? quest.status
+          ? qstatus = "เควสสำเร็จ"
+          : qstatus = "เช็คอินเเล้ว"
+        : quest.status
+          ? qstatus = "เควสไม่สำเร็จ"
+          : qstatus = "ยังไม่ได้เช็คอิน"
+      : qstatus = "ไม่ได้เข้าร่วม"
+    return qstatus
+  }
+
   return (
     <TouchableOpacity
       onPress={questPressHandler}
-      style={[quest.isJoin ? (quest.isCheckin || quest.status) ? styles.questcheckinContainer:styles.questJoinedContainer:styles.questContainer , { opacity: quest.status ? 0.5 : 1 }]}
+      style={[
+        quest.isJoin
+        ? quest.isCheckin 
+          ? styles.questcheckinContainer
+          : quest.status
+            ? styles.questFailed
+            : styles.questJoinedContainer
+        : styles.questContainer,
+        { opacity: quest.status ? 0.5 : 1 },
+      ]}
     >
       <View style={styles.nameAndParticipants}>
         <Text style={styles.questName}>{quest.questName}</Text>
@@ -116,7 +139,7 @@ export default function DetailedQuestListItem({
         <Text style={styles.requirementText}>
           ชั่วโมงกิจกรรม :
           <Text style={styles.boldDetail}>
-            {quest.activityHour
+            {quest.activityHour.category
               ? ` ${activityCategories[quest.activityHour.category]} ${
                   quest.activityHour.hour
                 } ชั่วโมง`
@@ -125,10 +148,7 @@ export default function DetailedQuestListItem({
         </Text>
         <View style={styles.requirement}>
           <Text style={styles.requirementText}>
-            ชั้นปีที่มีสิทธิ์ : <Text style={styles.boldDetail}>-</Text>
-          </Text>
-          <Text style={styles.requirementText}>
-            ชั้นปีที่ไม่มีสิทธิ์ : <Text style={styles.boldDetail}>-</Text>
+            สถานะ : <Text style={styles.boldDetail}>{queststatus()}</Text>
           </Text>
         </View>
       </View>
@@ -145,14 +165,27 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
   questcheckinContainer: {
-    backgroundColor: "#39FF14",
+    backgroundColor: buttonGrey,
+    borderColor: "#39FF14",
+    borderLeftWidth: 5,
     padding: 7,
     borderRadius: 5,
     paddingLeft: 15,
     paddingRight: 15,
   },
   questJoinedContainer: {
-    backgroundColor: "#FF5733",
+    backgroundColor: buttonGrey,
+    borderColor: "#FFC78F",
+    borderLeftWidth: 5,
+    padding: 7,
+    borderRadius: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  questFailed: {
+    backgroundColor: buttonGrey,
+    borderColor: "#F01E2C",
+    borderLeftWidth: 5,
     padding: 7,
     borderRadius: 5,
     paddingLeft: 15,
@@ -184,7 +217,7 @@ const styles = StyleSheet.create({
   requirement: {
     flexDirection: "row",
   },
-  requirementText: { flex: 0.5, fontFamily: "Kanit300", fontSize: 15 },
+  requirementText: { flex: 1, fontFamily: "Kanit300", fontSize: 15 },
   boldDetail: {
     fontFamily: "Kanit400",
   },

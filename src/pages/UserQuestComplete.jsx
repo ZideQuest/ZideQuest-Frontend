@@ -8,6 +8,7 @@ import ActivityName from "../components/Quest/ActivityName";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import { BGcolor, buttonBrightGreen, buttonLightGrey } from "../data/color";
 import Spinner from "../components/Animations/Spinner";
+import { activityCategories } from "../data/activityCategory";
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
@@ -59,24 +60,34 @@ export default function ActivityDetail() {
         index={1}
         hideBar={true}
       >
-        <View style={styles.ScrollView}>
-          {QuestDetail.picturePath && (
-            <View style={styles.picCon}>
-              <Image style={styles.pic} src={QuestDetail.picturePath} />
-            </View>
-          )}
-          <View style={styles.animationContainer}>
-            <View style={styles.lottieCon}>
-              <AnimatedLottieView
-                source={require("../../assets/lottie/complete2.json")}
-                progress={animationProgress.current}
-              />
-            </View>
-            <Text style={styles.animationText}>✨Quest Completed✨</Text>
+        {QuestDetail.picturePath && (
+          <View style={styles.picCon}>
+            <Image style={styles.pic} src={QuestDetail.picturePath} />
           </View>
-          <View style={{ width: "100%", paddingHorizontal: 15 }}>
-            <ActivityName quest={QuestDetail} />
+        )}
+        <View style={styles.animationContainer}>
+          <View style={styles.lottieCon}>
+            <AnimatedLottieView
+              source={require("../../assets/lottie/complete2.json")}
+              progress={animationProgress.current}
+            />
           </View>
+          <Text style={styles.animationText}>✨Quest Completed✨</Text>
+        </View>
+        {QuestDetail?.activityHour.category && (
+          <Text
+            style={{
+              fontFamily: "Kanit400",
+              fontSize: 18,
+              color: buttonBrightGreen,
+              textAlign: "center",
+            }}
+          >{`+ ${QuestDetail.activityHour.hour} ชั่วโมง ${
+            activityCategories[QuestDetail.activityHour.category]
+          }`}</Text>
+        )}
+        <View style={{ width: "100%", paddingHorizontal: 15 }}>
+          <ActivityName quest={QuestDetail} />
         </View>
       </BottomsheetDynamic>
     );
@@ -107,17 +118,17 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 250,
     position: "absolute",
-    top: -60
+    top: -60,
   },
   animationContainer: {
     height: 180,
     // backgroundColor: "grey",
     justifyContent: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
   },
   animationText: {
     fontFamily: "Kanit600",
     fontSize: 30,
-    color: buttonBrightGreen
-  }
+    color: buttonBrightGreen,
+  },
 });

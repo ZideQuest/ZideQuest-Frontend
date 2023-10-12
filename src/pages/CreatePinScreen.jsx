@@ -31,12 +31,12 @@ export default function CreatePinScreen() {
         <View
           style={{ flexDirection: "row", gap: 20, backgroundColor: "white" }}
         >
-          <BigButton text="ยืนยัน" bg={primaryColor} onPress={confirmHandler} />
           <BigButton
             text="ยกเลิก"
             bg="rgba(61, 61, 55, 0.28)"
             onPress={cancelHandler}
           />
+          <BigButton text="ยืนยัน" bg={primaryColor} onPress={confirmHandler} />
         </View>
       </View>
     </Bottomsheet>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerText: {
-    fontWeight: 700,
+    fontFamily: "Kanit500",
     fontSize: 20,
   },
   buttonContainer: {

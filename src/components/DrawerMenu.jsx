@@ -221,20 +221,21 @@ export default function DrawerMenu({ navigation, children }) {
               <TouchableOpacity>
                 <Text style={styles.smallMenuItem}>Privacy</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  gap: 10,
-                  alignItems: "center",
-                  display: userDetail.user ? "block" : "none",
-                }}
-                onPress={logoutHandler}
-              >
-                <Text style={[styles.smallMenuItem, { color: primaryColor }]}>
-                  Logout
-                </Text>
-                <Image source={leave_icon} />
-              </TouchableOpacity>
+              {userDetail.user && (
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                  onPress={logoutHandler}
+                >
+                  <Text style={[styles.smallMenuItem, { color: primaryColor }]}>
+                    Logout
+                  </Text>
+                  <Image source={leave_icon} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         );
@@ -285,12 +286,17 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    borderWidth: 1,
-    overflow: "hidden",
+    backgroundColor: "lightgray",
+    shadowColor: "#171717",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
   },
   displayImage: {
     width: "100%",
     height: "100%",
+    borderRadius: 25,
+    overflow: "hidden",
   },
   smallMenuContainer: {
     gap: 15,
@@ -310,6 +316,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 10,
+    padding: 12,
     overflow: "hidden",
   },
   bigMenuItem: {

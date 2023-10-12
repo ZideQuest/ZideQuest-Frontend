@@ -8,7 +8,7 @@ const randomColor = () => {
 
 export default function TagItem({ tag }) {
   return (
-    <View style={[styles.singleTag, { backgroundColor: randomColor() }]}>
+    <View style={[styles.singleTag, { backgroundColor: tag.tagColor }]}>
       <Text style={styles.tagText}>{tag.tagName}</Text>
     </View>
   );

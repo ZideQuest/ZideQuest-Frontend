@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { BASE_URL } from "./backend_url";
+import qs from "qs";
 
 export async function createQuest(questDetail, locationId) {
   const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
@@ -29,9 +30,34 @@ export async function getQuestData(id) {
   return data;
 }
 
-export async function searchQuest(name, selectedTag) {
+export async function searchQuest(
+  name,
+  selectedTag,
+  startDate,
+  endDate,
+  useStartDate,
+  useEndDate,
+  activityHour
+) {
+  const params = {};
+  if (name) {
+    params.Name = name;
+  }
+  if (selectedTag) {
+    params.tagId = selectedTag.map((tag) => tag._id);
+  }
+  if (useStartDate) {
+    params.timeStart = startDate;
+  }
+  if (useEndDate) {
+    params.timeEnd = endDate;
+  }
+  if (activityHour != 0) {
+    params.activityCat = activityHour;
+  }
+
   const { data } = await axios.get(`${BASE_URL}/search`, {
-    params: { Name: name, Tag: selectedTag[0] },
+    params,
   });
 
   return data;

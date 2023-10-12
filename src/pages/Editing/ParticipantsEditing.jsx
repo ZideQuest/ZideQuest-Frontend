@@ -25,7 +25,11 @@ export default function ParticipantsEditing({ route }) {
 
   return (
     <Bottomsheet snapPoints={["95%"]} detached={true} hideBar={true} index={0}>
-      <BackButton />
+      <BackButton
+        targetRoute="QuestManage"
+        params={{ questId: route.params?.questId }}
+        resetFocus={false}
+      />
       <Text>ผู้เข้าร่วม</Text>
       <BottomSheetScrollView>
         <View style={styles.participantsContainer}>
