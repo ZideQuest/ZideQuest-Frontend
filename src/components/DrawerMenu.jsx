@@ -219,7 +219,7 @@ export default function DrawerMenu({ navigation, children }) {
                 <Text style={styles.smallMenuItem}>Contact Us</Text>
               </TouchableOpacity>
               <TouchableOpacity>
-                <Text style={styles.smallMenuItem}>Privacy</Text>
+                <Text style={styles.smallMenuItem}>Privacy</Text> 
               </TouchableOpacity>
               {userDetail.user && (
                 <TouchableOpacity

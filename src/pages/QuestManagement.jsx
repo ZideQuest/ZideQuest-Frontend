@@ -40,6 +40,7 @@ export default function QuestManagement({ route }) {
         const data = await sendQuestComplete(route.params.questId);
         alert("ยืนยันสำเร็จ");
         setQuestData((prev) => ({ ...prev, status: true }));
+        TabNavigation.navigate("Recommend");
       } catch (error) {
         alert("ยืนยันไม่สำเร็จ");
       }
