@@ -92,7 +92,7 @@ export default function DetailedQuestListItem({
       : qstatus = "ไม่ได้เข้าร่วม"
     return qstatus
   }
-  console.log(quest)
+  // console.log(quest)
   return (
     <TouchableOpacity
       onPress={questPressHandler}
