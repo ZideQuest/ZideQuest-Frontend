@@ -43,6 +43,11 @@ export default function CheckinScreen({ navigation }) {
           );
         } else if (error.response.status === 400) {
           Alert.alert("ไม่มีกิจกรรมนี้ในระบบ");
+        } else if (
+          error.response.status === 428 ||
+          error.response.status === 430
+        ) {
+          Alert.alert("กิจกรรมนี้ได้สิ้นสุดไปแล้ว");
         }
       }
     }

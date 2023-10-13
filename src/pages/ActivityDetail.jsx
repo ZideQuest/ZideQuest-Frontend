@@ -80,7 +80,6 @@ export default function ActivityDetail() {
     const fetchData = async (questId) => {
       try {
         const response = await getQuestData(questId);
-        console.log(response);
         setQuestDetail(response);
         setLoading(false);
         setIsJoined(response.isJoin);
@@ -136,7 +135,7 @@ export default function ActivityDetail() {
           </View>
 
           {isJoined &&
-            (QuestDetail.isCheckedIn ? (
+            (QuestDetail.isCheckIn ? (
               <Text style={[styles.checkinStatus, { color: "green" }]}>
                 เช็คอินแล้ว
               </Text>
