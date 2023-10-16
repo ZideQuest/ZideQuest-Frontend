@@ -82,7 +82,7 @@ export default function DetailedQuestListItem({
   const queststatus = () => {
     let qstatus
     quest.isJoin
-      ? quest.isCheckin 
+      ? quest.isCheckIn 
         ? quest.status
           ? qstatus = "เควสสำเร็จ"
           : qstatus = "เช็คอินเเล้ว"
@@ -98,7 +98,7 @@ export default function DetailedQuestListItem({
       onPress={questPressHandler}
       style={[
         quest.isJoin
-        ? quest.isCheckin 
+        ? quest.isCheckIn 
           ? styles.questcheckinContainer
           : quest.status
             ? styles.questFailed

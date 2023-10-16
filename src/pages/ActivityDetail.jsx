@@ -90,7 +90,7 @@ export default function ActivityDetail() {
 
     fetchData(questId);
   }, []);
-
+  console.log(QuestDetail)
   return (
     <BottomsheetDynamic style={styles.container} snapPoints={["20%"]} index={1}>
       {isLoading ? (
