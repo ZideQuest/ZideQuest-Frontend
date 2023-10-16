@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  TextInput,
 } from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
@@ -32,6 +33,7 @@ export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
   const { userDetail } = useAppContext();
   const [modalVisible, setModalVisible] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     const fetchQuestData = async () => {
@@ -114,6 +116,15 @@ export default function QuestManagement({ route }) {
     }
   };
 
+  const sendInputData = () => {
+    // Do something with the inputValue
+    console.log("Input Value:", inputValue);
+    creatorCancelQuest(route.params.questId, inputValue);
+
+    // Close the modal
+    setModalVisible(false);
+  };
+
   return (
     <BottomsheetDynamic snapPoints={["20%"]} index={1} hideBar={true}>
       <View style={styles.container}>
@@ -168,17 +179,38 @@ export default function QuestManagement({ route }) {
             <Modal
               animationType="slide"
               visible={modalVisible}
+              transparent={true}
               onRequestClose={() => {
                 setModalVisible(!modalVisible);
               }}
             >
               <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                  <Text>This is your modal content</Text>
+                <View>
+                  <Text style={{ fontFamily: "Kanit500" }}>
+                    ทำไมถึงจะยกเลิกล่ะ?
+                  </Text>
+
+                  {/* Input Component */}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter something"
+                    value={inputValue}
+                    onChangeText={(text) => setInputValue(text)}
+                  />
+
+                  {/* Button Component */}
+                  <BigButton
+                    text="Remove Quest"
+                    bg={buttonDarkRed} // Change the color as needed
+                    color="white"
+                    onPress={sendInputData}
+                  />
+
                   <TouchableOpacity
+                    style={styles.cancelButton}
                     onPress={() => setModalVisible(!modalVisible)}
                   >
-                    <Text>Close Modal</Text>
+                    <Text style={styles.buttonText}>Cancel</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -193,7 +225,32 @@ export default function QuestManagement({ route }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  modalContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+  },
   infoContainer: {
     paddingHorizontal: 20,
     gap: 8,
@@ -211,5 +268,16 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: "100%",
     height: "100%",
+  },
+  cancelButton: {
+    backgroundColor: buttonGrey, // Change the color as needed
+    padding: 10,
+    marginVertical: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "grey",
+    fontFamily: "Kanit400", // Change the font family as needed
   },
 });
