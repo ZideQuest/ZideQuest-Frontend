@@ -86,18 +86,23 @@ export async function fetchParticipants(questId) {
 }
 
 export async function creatorCancelQuest(questId, reason) {
-  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
-  const { token } = userdetail;
-  const { data } = await axios.put(
-    `${BASE_URL}/quests/${questId}/cancel`,
-    { message:reason },
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-  return data;
+  try {
+    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { token } = userdetail;
+    const { data } = await axios.put(
+      `${BASE_URL}/quests/${questId}/cancel`,
+      { message: reason },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    console.error("Error in creatorCancelQuest:", error);
+    throw error; // Re-throw the error to propagate it to the caller
+  }
 }
 
 

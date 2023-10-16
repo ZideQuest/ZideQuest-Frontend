@@ -117,11 +117,8 @@ export default function QuestManagement({ route }) {
   };
 
   const sendInputData = () => {
-    // Do something with the inputValue
     console.log("Input Value:", inputValue);
     creatorCancelQuest(route.params.questId, inputValue);
-
-    // Close the modal
     setModalVisible(false);
   };
 
