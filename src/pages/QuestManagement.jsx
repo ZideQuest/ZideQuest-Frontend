@@ -1,19 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+} from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
-import { getQuestData, sendQuestComplete } from "../data/Quest";
+import {
+  getQuestData,
+  sendQuestComplete,
+  creatorCancelQuest,
+} from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
-import { buttonBlue, buttonBrightGreen, buttonGrey } from "../data/color";
+import {
+  buttonBlue,
+  buttonBrightGreen,
+  buttonDarkRed,
+  buttonGrey,
+} from "../data/color";
 import Participants from "../components/Participants/Participants";
 import Alert from "../components/misc/Alert";
 
 export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
   const { userDetail } = useAppContext();
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchQuestData = async () => {
@@ -85,6 +103,17 @@ export default function QuestManagement({ route }) {
     }
   };
 
+  const cancelQuestHandler = () => {
+    if (!ownerChecker()) {
+      return alert("You are not allowed to cancel this quest.");
+    }
+    if (questData.status) {
+      return;
+    } else if (!questData.status) {
+      setModalVisible(true);
+    }
+  };
+
   return (
     <BottomsheetDynamic snapPoints={["20%"]} index={1} hideBar={true}>
       <View style={styles.container}>
@@ -127,6 +156,35 @@ export default function QuestManagement({ route }) {
                 onPress={GenQRHandler}
               />
             </View>
+
+            <View style={styles.buttonContainer}>
+              <BigButton
+                text="ยกเลิก Quest"
+                bg={questData?.status ? buttonGrey : buttonDarkRed}
+                color={questData?.status ? "grey" : "white"}
+                onPress={cancelQuestHandler}
+              />
+            </View>
+            <Modal
+              animationType="slide"
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text>This is your modal content</Text>
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text>Close Modal</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            <Text></Text>
           </View>
         </View>
       </View>

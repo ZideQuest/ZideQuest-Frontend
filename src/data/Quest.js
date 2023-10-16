@@ -85,6 +85,22 @@ export async function fetchParticipants(questId) {
   }
 }
 
+export async function creatorCancelQuest(questId, reason) {
+  const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+  const { token } = userdetail;
+  const { data } = await axios.put(
+    `${BASE_URL}/quests/${questId}/cancel`,
+    { message:reason },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+  return data;
+}
+
+
 export async function usersQuest() {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
@@ -133,6 +149,7 @@ export async function editQuest(questDetail, questId) {
 
   return data;
 }
+
 
 export async function deleteQuest(questId) {
   try {
