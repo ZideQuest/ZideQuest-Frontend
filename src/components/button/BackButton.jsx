@@ -44,8 +44,8 @@ export default function BackButton({
 
 const styles = StyleSheet.create({
   button: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     borderRadius: 10,
     overflow: "hidden",
     justifyContent: "center",
