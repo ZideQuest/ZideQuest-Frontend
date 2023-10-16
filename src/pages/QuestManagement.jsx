@@ -1,19 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+  TextInput,
+} from "react-native";
 
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
-import { getQuestData, sendQuestComplete } from "../data/Quest";
+import {
+  getQuestData,
+  sendQuestComplete,
+  creatorCancelQuest,
+} from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
-import { buttonBlue, buttonBrightGreen, buttonGrey } from "../data/color";
+import {
+  buttonBlue,
+  buttonBrightGreen,
+  buttonDarkRed,
+  buttonGrey,
+} from "../data/color";
 import Participants from "../components/Participants/Participants";
 import Alert from "../components/misc/Alert";
 
 export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
   const { userDetail } = useAppContext();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     const fetchQuestData = async () => {
@@ -86,6 +106,23 @@ export default function QuestManagement({ route }) {
     }
   };
 
+  const cancelQuestHandler = () => {
+    if (!ownerChecker()) {
+      return alert("You are not allowed to cancel this quest.");
+    }
+    if (questData.status) {
+      return;
+    } else if (!questData.status) {
+      setModalVisible(true);
+    }
+  };
+
+  const sendInputData = () => {
+    console.log("Input Value:", inputValue);
+    creatorCancelQuest(route.params.questId, inputValue);
+    setModalVisible(false);
+  };
+
   return (
     <BottomsheetDynamic snapPoints={["20%"]} index={1} hideBar={true}>
       <View style={styles.container}>
@@ -128,6 +165,56 @@ export default function QuestManagement({ route }) {
                 onPress={GenQRHandler}
               />
             </View>
+
+            <View style={styles.buttonContainer}>
+              <BigButton
+                text="ยกเลิก Quest"
+                bg={questData?.status ? buttonGrey : buttonDarkRed}
+                color={questData?.status ? "grey" : "white"}
+                onPress={cancelQuestHandler}
+              />
+            </View>
+            <Modal
+              animationType="slide"
+              visible={modalVisible}
+              transparent={true}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.modalContainer}>
+                <View>
+                  <Text style={{ fontFamily: "Kanit500" }}>
+                    ทำไมถึงจะยกเลิกล่ะ?
+                  </Text>
+
+                  {/* Input Component */}
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter something"
+                    value={inputValue}
+                    onChangeText={(text) => setInputValue(text)}
+                  />
+
+                  {/* Button Component */}
+                  <BigButton
+                    text="Remove Quest"
+                    bg={buttonDarkRed} // Change the color as needed
+                    color="white"
+                    onPress={sendInputData}
+                  />
+
+                  <TouchableOpacity
+                    style={styles.cancelButton}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.buttonText}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            <Text></Text>
           </View>
         </View>
       </View>
@@ -136,7 +223,32 @@ export default function QuestManagement({ route }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  modalContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+  },
   infoContainer: {
     paddingHorizontal: 20,
     gap: 8,
@@ -154,5 +266,16 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: "100%",
     height: "100%",
+  },
+  cancelButton: {
+    backgroundColor: buttonGrey, // Change the color as needed
+    padding: 10,
+    marginVertical: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "grey",
+    fontFamily: "Kanit400", // Change the font family as needed
   },
 });

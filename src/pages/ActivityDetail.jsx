@@ -44,13 +44,14 @@ export default function ActivityDetail() {
       },
     ]);
 
-  const leaveAlert = (questId) =>
+  const leaveAlert = (questId) => {
+    console.log(questId);
     Alert.alert(
       "ยืนยันยกเลิกการเข้าร่วม",
       "ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES",
       [
         {
-          text: "OK!",
+          text: "YES",
           onPress: async () => {
             setLoading(true);
             try {
@@ -71,10 +72,11 @@ export default function ActivityDetail() {
           },
         },
         {
-          text: "cancel",
+          text: "NO",
         },
       ]
     );
+  };
 
   useEffect(() => {
     const fetchData = async (questId) => {

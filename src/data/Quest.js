@@ -85,6 +85,33 @@ export async function fetchParticipants(questId) {
   }
 }
 
+export async function creatorCancelQuest(questId, reason) {
+  console.log("Entering creatorCancelQuest");
+  try {
+    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    console.log("User Detail:", userdetail);
+    
+    const { token } = userdetail;
+    console.log("Token:", token);
+
+    const response = await axios.patch(
+      `${BASE_URL}/quests/${questId}/cancel`,
+      { message: reason },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    console.log("Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error in creatorCancelQuest:", error);
+    throw error; // Re-throw the error to propagate it to the caller
+  }
+}
+
 export async function usersQuest() {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
@@ -133,6 +160,7 @@ export async function editQuest(questDetail, questId) {
 
   return data;
 }
+
 
 export async function deleteQuest(questId) {
   try {
