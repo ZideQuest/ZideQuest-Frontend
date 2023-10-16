@@ -86,10 +86,15 @@ export async function fetchParticipants(questId) {
 }
 
 export async function creatorCancelQuest(questId, reason) {
+  console.log("Entering creatorCancelQuest");
   try {
     const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    console.log("User Detail:", userdetail);
+    
     const { token } = userdetail;
-    const { data } = await axios.put(
+    console.log("Token:", token);
+
+    const response = await axios.patch(
       `${BASE_URL}/quests/${questId}/cancel`,
       { message: reason },
       {
@@ -98,13 +103,14 @@ export async function creatorCancelQuest(questId, reason) {
         },
       }
     );
-    return data;
+
+    console.log("Response:", response.data);
+    return response.data;
   } catch (error) {
     console.error("Error in creatorCancelQuest:", error);
     throw error; // Re-throw the error to propagate it to the caller
   }
 }
-
 
 export async function usersQuest() {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
