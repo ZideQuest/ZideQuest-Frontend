@@ -109,10 +109,8 @@ export default function PinDetailScreen({ route }) {
       ));
     }
 
-    const myQuests = userDetail.user?.joinedQuest.map((q) => q._id);
-
     const filteredQuests = quests
-      .filter((q) => myQuests.includes(q._id))
+      .filter((q) => q.isJoin)
       .map((quest) => (
         <DetailedQuestListItem
           quest={quest}

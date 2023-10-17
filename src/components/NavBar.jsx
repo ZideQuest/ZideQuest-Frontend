@@ -23,9 +23,9 @@ export default function NavBar() {
   };
 
   const pinToggle = async () => {
-    if (!onlyPinWithMyQuest) {
-      await fetchUser();
-    }
+    // if (!onlyPinWithMyQuest) {
+    //   await fetchUser();
+    // }
     setOnlyPinWithMyQuest((prev) => !prev);
   };
 
