@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   TextInput,
+  Modal,
 } from "react-native";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
@@ -22,10 +23,9 @@ import BackButton from "../../components/button/BackButton";
 import { TimePicker } from "../../components/TimePicker";
 import Alert from "../../components/misc/Alert";
 
-import { buttonOrange, primaryColor, textColor } from "../../data/color";
-import { editQuest } from "../../data/Quest";
+import { buttonDarkRed, buttonOrange, primaryColor } from "../../data/color";
+import { getQuestData, editQuest, creatorCancelQuest } from "../../data/Quest";
 import * as TabNavigation from "../../data/TabNavigation";
-import { getQuestData, deleteQuest } from "../../data/Quest";
 
 import ImagePreviewModal from "../../components/misc/ImagePreviewModal";
 
@@ -52,6 +52,10 @@ export default function QuestEditing() {
   const [isAuto, setIsAuto] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [deletingModalVisible, setDeletingModalVisible] = useState(false);
+  const [cancelReason, setCancelReason] = useState("");
+
   const [locationId, setLocationId] = useState(null);
 
   const [limitParticipants, setLimitParticipants] = useState(false);
@@ -89,7 +93,10 @@ export default function QuestEditing() {
 
       questDetail.append("autoComplete", isAuto);
 
-      if (image != null && !image?.uri.startsWith("https://res.cloudinary.com")) {
+      if (
+        image != null &&
+        !image?.uri.startsWith("https://res.cloudinary.com")
+      ) {
         questDetail.append("img", {
           name: image.fileName,
           type: image.type,
@@ -206,17 +213,9 @@ export default function QuestEditing() {
   //   }
   // };
 
-  const questDeleteHandler = async () => {
-    if (
-      await Alert(
-        "Confirm Deleting Quest?",
-        "Are you sure you want to delete this quest?"
-      )
-    ) {
-      deleteQuest(route.params?.questId);
-      TabNavigation.navigate("Recommend");
-      alert("ลบเควสสำเร็จ");
-    }
+  const sendInputData = () => {
+    creatorCancelQuest(route.params.questId, inputValue);
+    setModalVisible(false);
   };
 
   return (
@@ -230,6 +229,53 @@ export default function QuestEditing() {
             setModalVisible={setModalVisible}
             imageUri={image?.uri}
           />
+          <Modal
+            animationType="slide"
+            visible={deletingModalVisible}
+            transparent={true}
+            onRequestClose={() => {
+              setDeletingModalVisible(false);
+            }}
+          >
+            <View style={styles.modalContainer}>
+              <View>
+                <View
+                  style={{
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text style={{ fontFamily: "Kanit500" }}>
+                    ทำไมถึงจะยกเลิกล่ะ?
+                  </Text>
+                  <BackButton
+                    onPress={() => {
+                      setDeletingModalVisible(false);
+                      setCancelReason("");
+                    }}
+                    changeRoute={false}
+                  />
+                </View>
+
+                {/* Input Component */}
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter something"
+                  value={cancelReason}
+                  onChangeText={setCancelReason}
+                  autoFocus
+                />
+
+                {/* Button Component */}
+                <BigButton
+                  text="Remove Quest"
+                  bg={buttonDarkRed} // Change the color as needed
+                  color="white"
+                  onPress={sendInputData}
+                />
+              </View>
+            </View>
+          </Modal>
           <View style={styles.innerContainer}>
             <View
               style={{
@@ -238,10 +284,19 @@ export default function QuestEditing() {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={styles.textXl}>แก้ไขเควส</Text>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+              >
+                <Text style={styles.textXl}>แก้ไขเควส</Text>
+                <TouchableOpacity
+                  onPress={() => setDeletingModalVisible(!deletingModalVisible)}
+                >
+                  <Image source={bin_icon} style={{ width: 20, height: 20 }} />
+                </TouchableOpacity>
+              </View>
               <BackButton
-                targetRoute="PinDetail"
-                params={{ pinId: locationId }}
+                targetRoute="QuestManage"
+                params={{ questId: route.params.questId }}
                 resetFocus={false}
               />
             </View>
@@ -556,5 +611,36 @@ const styles = StyleSheet.create({
   x: {
     width: "100%",
     height: "100%",
+  },
+  modalContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+  },
+  infoContainer: {
+    paddingHorizontal: 20,
+    gap: 8,
+    marginTop: 5,
   },
 });

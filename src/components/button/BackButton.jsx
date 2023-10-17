@@ -11,23 +11,25 @@ export default function BackButton({
   targetRoute,
   params,
   resetFocus = true,
+  changeRoute = true,
 }) {
   const { mapRefetch, setFocusedPin } = useAppContext();
 
   const closeHandler = async () => {
-    if (targetRoute) {
-      TabNavigation.navigate(targetRoute, params);
-    } else {
-      TabNavigation.navigate("Recommend");
-    }
-
     if (onPress) {
       onPress();
     }
 
-    mapRefetch();
-    if (resetFocus) {
-      setFocusedPin(null);
+    if (changeRoute) {
+      if (targetRoute) {
+        TabNavigation.navigate(targetRoute, params);
+      } else {
+        TabNavigation.navigate("Recommend");
+      }
+      mapRefetch();
+      if (resetFocus) {
+        setFocusedPin(null);
+      }
     }
   };
 
