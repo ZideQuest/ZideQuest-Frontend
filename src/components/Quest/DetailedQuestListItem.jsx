@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
   questName: {
     fontFamily: "Kanit400",
     fontSize: 20,
+    flex: 1,
   },
   timeAndTags: {
     flexDirection: "row",
