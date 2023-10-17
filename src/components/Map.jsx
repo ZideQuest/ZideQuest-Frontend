@@ -195,11 +195,12 @@ export default function Map() {
             onPress={(data) => markerPressHandler(pin._id, data)}
             style={markerOpacityHandler(pin._id)}
           >
-            <Image 
+            {pin.count == 0 ? <Image source={require('../../assets/images/pin_empty.png')} style={styles.markerImage}/>:
+              <Image 
               source={pin.pinMode ? require('../../assets/images/pin_(unnormal).png')
               : require('../../assets/images/pin_(normal).png')}
               style={styles.markerImage}
-            />
+            />}
           </Marker>
         ))}
         {newMarker && <Marker coordinate={newMarker} />}
