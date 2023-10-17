@@ -64,7 +64,10 @@ export default function BottomsheetDynamic({
     >
       <BottomSheetView
         onLayout={handleContentLayout}
-        style={[styles.contentContainer, { paddingBottom: insets.bottom || 13 }]}
+        style={[
+          styles.contentContainer,
+          { paddingBottom: detached ? 13 : insets.bottom || 13 },
+        ]}
       >
         {children}
       </BottomSheetView>
@@ -84,6 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
     overflow: "hidden",
+    // backgroundColor: "red",
   },
   backgroundStyle: {
     // backgroundColor: "transparent",
