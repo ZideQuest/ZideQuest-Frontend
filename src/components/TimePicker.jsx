@@ -304,7 +304,7 @@ export const TimePicker = ({
               onLayout={handleContentLayout}
               style={[
                 styles.contentContainer,
-                { paddingBottom: insets.bottom },
+                { paddingBottom: insets.bottom || 13 },
               ]}
             >
               <Text style={{ fontFamily: "Kanit400", fontSize: 20 }}>
