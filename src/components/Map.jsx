@@ -195,7 +195,7 @@ export default function Map() {
             onPress={(data) => markerPressHandler(pin._id, data)}
             style={markerOpacityHandler(pin._id)}
           >
-            {pin.count == 0 ? <Image source={require('../../assets/images/pin_empty.png')} style={styles.markerImage}/>:
+            {pin.count == 0 ? <Image source={require('../../assets/images/pin_empty.png')} style={styles.markeremptyImage} />:
               <Image 
               source={pin.pinMode ? require('../../assets/images/pin_(unnormal).png')
               : require('../../assets/images/pin_(normal).png')}
@@ -218,5 +218,10 @@ const styles = StyleSheet.create({
   markerImage: {
     width: 25,
     height: 25,
+  },
+  markeremptyImage: {
+    width: 25,
+    height: 25,
+    opacity: 0.65,
   },
 });
