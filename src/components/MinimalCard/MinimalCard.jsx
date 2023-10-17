@@ -12,6 +12,8 @@ import defaultQuestImage from "../../../assets/images/defaultQuestLocationImage.
 import * as TabNavigation from "../../data/TabNavigation";
 import { useAppContext } from "../../data/AppContext";
 import { buttonOrange, textColor } from "../../data/color";
+import Tag from "../Quest/Tag";
+import { activityCategories } from "../../data/activityCategory";
 
 function month_to_thai(datestring) {
   switch (datestring) {
@@ -65,6 +67,8 @@ const MinimalCard = ({ quest }) => {
     creatorId,
     countParticipant,
     maxParticipant,
+    activityHour,
+    tagId,
   } = quest;
 
   const date = timeStart.slice(8, 10);
@@ -136,6 +140,10 @@ const MinimalCard = ({ quest }) => {
         <View style={styles.image_container}>
           <Image style={styles.quest_image} source={questImageSource} />
         </View>
+        <View style={{ marginTop: 7 }}>
+          <Tag tags={tagId} justifyStart />
+          {activityHour && <Text style={{fontFamily: "Kanit400", fontSize: 15}}>{activityCategories[activityHour.category]} {activityHour.hour} ชั่วโมง</Text>}
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -145,7 +153,7 @@ const styles = StyleSheet.create({
   CardContainer: {
     backgroundColor: "white",
     paddingHorizontal: 10,
-    paddingBottom: 15,
+    paddingBottom: 10,
     paddingTop: 7,
     marginBottom: 7,
   },

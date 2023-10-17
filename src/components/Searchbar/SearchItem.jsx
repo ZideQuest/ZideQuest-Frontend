@@ -7,7 +7,6 @@ import { timeConv } from "../../data/time/time";
 import { useAppContext } from "../../data/AppContext";
 import { textColor } from "../../data/color";
 import warning_icon from "../../../assets/images/warning_icon.png";
-import Tag from "../Quest/Tag";
 
 import { activityCategories } from "../../data/activityCategory";
 
