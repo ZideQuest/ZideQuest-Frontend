@@ -80,30 +80,30 @@ export default function DetailedQuestListItem({
   };
 
   const queststatus = () => {
-    let qstatus
+    let qstatus;
     quest.isJoin
-      ? quest.isCheckIn 
+      ? quest.isCheckIn
         ? quest.status
-          ? qstatus = "เควสสำเร็จ"
-          : qstatus = "เช็คอินเเล้ว"
+          ? (qstatus = "เควสสำเร็จ")
+          : (qstatus = "เช็คอินเเล้ว")
         : quest.status
-          ? qstatus = "เควสไม่สำเร็จ"
-          : qstatus = "ยังไม่ได้เช็คอิน"
-      : qstatus = "ไม่ได้เข้าร่วม"
-    return qstatus
-  }
+        ? (qstatus = "เควสไม่สำเร็จ")
+        : (qstatus = "ยังไม่ได้เช็คอิน")
+      : (qstatus = "ไม่ได้เข้าร่วม");
+    return qstatus;
+  };
   // console.log(quest)
   return (
     <TouchableOpacity
       onPress={questPressHandler}
       style={[
         quest.isJoin
-        ? quest.isCheckIn 
-          ? styles.questcheckinContainer
-          : quest.status
+          ? quest.isCheckIn
+            ? styles.questcheckinContainer
+            : quest.status
             ? styles.questFailed
             : styles.questJoinedContainer
-        : styles.questContainer,
+          : styles.questContainer,
         { opacity: quest.status ? 0.5 : 1 },
       ]}
     >
@@ -124,7 +124,8 @@ export default function DetailedQuestListItem({
               backgroundColor: statusIcon(
                 quest.countParticipant,
                 quest.maxParticipant,
-                quest.status
+                quest.status,
+                quest.timeStart
               ),
               borderRadius: 25,
             }}

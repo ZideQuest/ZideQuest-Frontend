@@ -76,6 +76,7 @@ export default function DetailedQuestListItem({
         <View style={{ flexDirection: "row", flex: 1 }}>
           <View style={styles.timePlaceContainer}>
             <View style={{ flexDirection: "row" }}>
+
               <View
                 style={{
                   width: 10,
@@ -85,7 +86,9 @@ export default function DetailedQuestListItem({
                   backgroundColor: statusIcon(
                     quest.countParticipant,
                     quest.maxParticipant,
-                    quest.status
+                    quest.status,
+                    quest.timeStart,
+                    quest.timeEnd
                   ),
                   borderRadius: 10,
                 }}

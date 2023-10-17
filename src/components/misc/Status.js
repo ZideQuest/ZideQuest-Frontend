@@ -7,7 +7,9 @@ export function statusIcon(currentP, maxP, status, timeStart, timeEnd) {
     return "red";
   } else {
     const now = new Date();
-    if (now > timeStart) {
+    const start = new Date(timeStart);
+
+    if (now > start) {
       return "red";
     } else {
       return "lime";
