@@ -75,13 +75,13 @@ export default function AdminQuestListItem({
         <Text style={styles.headerText}>{quest.questName}</Text>
         <View style={{ flexDirection: "row", flex: 1 }}>
           <View style={styles.timePlaceContainer}>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View
                 style={{
                   width: 10,
-                  height: 5,
+                  height: 10,
                   marginRight: 5,
-                  aspectRatio: "1/1",
+                  // aspectRatio: "1/1",
                   backgroundColor: statusIcon(
                     quest.countParticipant,
                     quest.maxParticipant,
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   detailText: {
     fontFamily: "Kanit300",
-    lineHeight: 19,
+    // lineHeight: 19,
     fontSize: 15,
     textAlign: "right",
   },
