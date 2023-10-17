@@ -129,7 +129,7 @@ export default function PinDetailScreen({ route }) {
   };
 
   return (
-    <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
+    <Bottomsheet snapPoints={["20%", "60%", "83%"]} index={1}>
       <BottomSheetScrollView
         stickyHeaderIndices={[0]}
         style={{ backgroundColor: "white" }}
