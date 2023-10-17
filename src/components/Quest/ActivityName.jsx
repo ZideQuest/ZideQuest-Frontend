@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import * as TabNavigation from "../../data/TabNavigation";
 import { timeConv } from "../../data/time/time";
 import person_icon from "../../../assets/images/participant.png";
 import BackButton from "../button/BackButton";
@@ -11,6 +12,11 @@ import { BGcolor, textColor } from "../../data/color";
 import { statusIcon } from "../misc/Status";
 
 export default function ActivityName({ quest, backButtonRoute }) {
+  const locationPressHandler = () => {
+    console.log(quest);
+    TabNavigation.navigate("PinDetail", { pinId: quest.locationId });
+  };
+
   return (
     <View style={styles.DataCon}>
       <View style={styles.questItem}>
@@ -35,9 +41,11 @@ export default function ActivityName({ quest, backButtonRoute }) {
         <View style={styles.timePlaceCon}>
           <Text style={styles.smallDetail}>{timeConv(quest?.timeStart)}</Text>
           <Text style={styles.smallDetail}>{timeConv(quest?.timeEnd)}</Text>
-          <Text style={styles.locationText} numberOfLines={2}>
-            ที่ {quest?.locationName.replace(/\n/g, " ")}
-          </Text>
+          <TouchableOpacity onPress={locationPressHandler}>
+            <Text style={styles.locationText} numberOfLines={2}>
+              ที่ {quest?.locationName.replace(/\n/g, " ")}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={{ alignItems: "flex-end" }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
