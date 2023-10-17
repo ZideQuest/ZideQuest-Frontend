@@ -42,7 +42,7 @@ function CreateQuest() {
   const route = useRoute();
   const { locationId } = route.params;
   const [image, setImage] = useState(null);
-  const [isAuto, setIsAuto] = useState(false);
+  const [isAuto, setIsAuto] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
