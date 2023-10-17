@@ -13,7 +13,6 @@ import { statusIcon } from "../misc/Status";
 
 export default function ActivityName({ quest, backButtonRoute }) {
   const locationPressHandler = () => {
-    console.log(quest);
     TabNavigation.navigate("PinDetail", { pinId: quest.locationId });
   };
 
