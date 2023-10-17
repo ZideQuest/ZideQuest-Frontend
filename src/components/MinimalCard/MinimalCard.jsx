@@ -85,11 +85,17 @@ const MinimalCard = ({ quest }) => {
     if (userDetail.isAdmin) {
       mapMoveTo(locationId.latitude, locationId.longitude);
       setFocusedPin(locationId._id);
-      TabNavigation.navigate("QuestManage", { questId: quest._id });
+      TabNavigation.navigate("QuestManage", {
+        questId: quest._id,
+        fromScreen: "Recommend",
+      });
     } else if (userDetail.token != null) {
       mapMoveTo(locationId.latitude, locationId.longitude);
       setFocusedPin(locationId._id);
-      TabNavigation.navigate("QuestDetail", { questId: quest._id });
+      TabNavigation.navigate("QuestDetail", {
+        questId: quest._id,
+        fromScreen: "Recommend",
+      });
     } else {
       alert("กรุณา login");
     }

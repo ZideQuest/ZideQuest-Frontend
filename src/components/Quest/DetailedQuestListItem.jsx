@@ -51,11 +51,23 @@ export default function DetailedQuestListItem({
 
   const questPressHandler = () => {
     if (isAdmin) {
-      TabNavigation.navigate("QuestManage", { questId: quest._id });
+      TabNavigation.navigate("QuestManage", {
+        questId: quest._id,
+        fromScreen: "PinDetail",
+        fromParams: { pinId: quest.locationId },
+      });
     } else if (checkQuestCompleted()) {
-      TabNavigation.navigate("UserQuestComplete", { questId: quest._id });
+      TabNavigation.navigate("UserQuestComplete", {
+        questId: quest._id,
+        fromScreen: "PinDetail",
+        fromParams: { pinId: quest.locationId },
+      });
     } else if (userDetail?.token != null) {
-      TabNavigation.navigate("QuestDetail", { questId: quest._id });
+      TabNavigation.navigate("QuestDetail", {
+        questId: quest._id,
+        fromScreen: "PinDetail",
+        fromParams: { pinId: quest.locationId },
+      });
     } else {
       alert("กรุณา login");
       return;

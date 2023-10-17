@@ -10,17 +10,25 @@ import { activityCategories } from "../../data/activityCategory";
 import { BGcolor, textColor } from "../../data/color";
 import { statusIcon } from "../misc/Status";
 
-export default function ActivityName({ quest }) {
+export default function ActivityName({ quest, backButtonRoute }) {
   return (
     <View style={styles.DataCon}>
       <View style={styles.questItem}>
         <View style={[styles.questNameCon]}>
           <Text style={styles.questFont}>{quest?.questName}</Text>
-          <BackButton
-            targetRoute="PinDetail"
-            params={{ pinId: quest?.locationId }}
-            resetFocus={false}
-          />
+          {backButtonRoute ? (
+            <BackButton
+              targetRoute={backButtonRoute.targetRoute}
+              params={backButtonRoute.params}
+              resetFocus={backButtonRoute.resetFocus}
+            />
+          ) : (
+            <BackButton
+              targetRoute="PinDetail"
+              params={{ pinId: quest?.locationId }}
+              resetFocus={false}
+            />
+          )}
         </View>
       </View>
       <View style={styles.infoText}>

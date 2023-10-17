@@ -45,7 +45,6 @@ export default function ActivityDetail() {
     ]);
 
   const leaveAlert = (questId) => {
-    console.log(questId);
     Alert.alert(
       "ยืนยันยกเลิกการเข้าร่วม",
       "ต้องการยกเลิกการเข้าร่วมกิจกรรม กด YES",
@@ -109,7 +108,14 @@ export default function ActivityDetail() {
       ) : (
         <View>
           <View style={{ width: "100%", paddingHorizontal: 15 }}>
-            <ActivityName quest={QuestDetail} />
+            <ActivityName
+              quest={QuestDetail}
+              backButtonRoute={{
+                targetRoute: route.params?.fromScreen,
+                params: route.params?.fromParams,
+                resetFocus: false,
+              }}
+            />
           </View>
           {QuestDetail.picturePath && (
             <View style={styles.picCon}>
