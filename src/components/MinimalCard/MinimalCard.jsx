@@ -88,6 +88,7 @@ const MinimalCard = ({ quest }) => {
       TabNavigation.navigate("QuestManage", {
         questId: quest._id,
         fromScreen: "Recommend",
+        resetFocus: true,
       });
     } else if (userDetail.token != null) {
       mapMoveTo(locationId.latitude, locationId.longitude);
@@ -95,6 +96,7 @@ const MinimalCard = ({ quest }) => {
       TabNavigation.navigate("QuestDetail", {
         questId: quest._id,
         fromScreen: "Recommend",
+        resetFocus: true,
       });
     } else {
       alert("กรุณา login");

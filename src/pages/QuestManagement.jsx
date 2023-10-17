@@ -95,7 +95,14 @@ export default function QuestManagement({ route }) {
           </View>
         )}
         <View style={styles.infoContainer}>
-          <ActivityName quest={questData} />
+          <ActivityName
+            quest={questData}
+            backButtonRoute={{
+              targetRoute: route.params?.fromScreen,
+              params: route.params?.fromParams,
+              resetFocus: route.params?.resetFocus,
+            }}
+          />
           <TouchableOpacity onPress={editQuestButtonHandler}>
             <Text
               style={{
