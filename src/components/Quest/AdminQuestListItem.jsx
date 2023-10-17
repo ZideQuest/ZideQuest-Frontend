@@ -73,36 +73,29 @@ export default function AdminQuestListItem({
     <TouchableOpacity onPress={questPressHandler} style={styles.questContainer}>
       <View style={styles.header}>
         <Text style={styles.headerText}>{quest.questName}</Text>
-        <View style={{ flexDirection: "row", flex: 1 }}>
-          <View style={styles.timePlaceContainer}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <View
-                style={{
-                  width: 10,
-                  height: 10,
-                  marginRight: 5,
-                  // aspectRatio: "1/1",
-                  backgroundColor: statusIcon(
-                    quest.countParticipant,
-                    quest.maxParticipant,
-                    quest.status,
-                    quest.timeStart,
-                    quest.timeEnd
-                  ),
-                  borderRadius: 10,
-                }}
-              ></View>
-              <Text style={styles.detailText}>{getStartTime()}</Text>
-            </View>
-            <Text style={styles.detailText} numberOfLines={2}>
-              ที่ {quest.locationId.locationName.replace(/\n/g, " ")}
-            </Text>
-          </View>
-          {/* <View style={styles.qrContainer}>
-            <Image source={qr_icon} style={{ width: "100%", height: "100%" }} />
-          </View> */}
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              width: 10,
+              height: 10,
+              marginRight: 5,
+              // aspectRatio: "1/1",
+              backgroundColor: statusIcon(
+                quest.countParticipant,
+                quest.maxParticipant,
+                quest.status,
+                quest.timeStart,
+                quest.timeEnd
+              ),
+              borderRadius: 10,
+            }}
+          ></View>
+          <Text style={styles.detailText}>{getStartTime()}</Text>
         </View>
       </View>
+      <Text style={styles.detailText} numberOfLines={2}>
+        ที่ {quest.locationId.locationName.replace(/\n/g, " ")}
+      </Text>
       <View style={{ flexDirection: "row", gap: 10 }}>
         <View style={styles.countingContainer}>
           <Text style={styles.countHeader}>เข้าร่วมแล้ว</Text>
@@ -170,6 +163,6 @@ const styles = StyleSheet.create({
     fontFamily: "Kanit300",
     // lineHeight: 19,
     fontSize: 15,
-    textAlign: "right",
+    // textAlign: "right",
   },
 });
