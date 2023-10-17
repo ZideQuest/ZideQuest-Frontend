@@ -170,12 +170,12 @@ export default function DrawerMenu({ navigation, children }) {
               </TouchableOpacity>
             </View>
             {userDetail?.token ? (
-              <View style={{ flex: 1 }}>
+              <>
                 <ProfileDisplay userDetail={userDetail} />
                 {!userDetail?.isAdmin && (
                   <UpComingQuest onPress={() => setDrawerOpen(false)} />
                 )}
-              </View>
+              </>
             ) : (
               <TouchableOpacity
                 style={styles.loginButton}
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
   },
   smallMenuContainer: {
     gap: 15,
-    flex:0.5
+    marginBottom: 20,
   },
   smallMenuItem: {
     fontSize: 17,
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   bigMenuContainer: {
     flexDirection: "row",
     gap: 10,
-    marginVertical: 13,
+    marginVertical: 20,
   },
   bigMenuIcon: {
     backgroundColor: buttonGrey,

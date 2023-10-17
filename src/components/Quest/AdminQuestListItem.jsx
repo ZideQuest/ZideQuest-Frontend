@@ -27,16 +27,7 @@ export default function AdminQuestListItem({
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
 
   const checkQuestCompleted = () => {
-    if (!quest.status) {
-      return false;
-    }
-    let status = false;
-    quest.participant.forEach((p) => {
-      if (p.userId == userDetail.user._id) {
-        status = true;
-      }
-    });
-    return status;
+    return quest.status
   };
 
   const questPressHandler = () => {
