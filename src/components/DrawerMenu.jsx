@@ -126,7 +126,7 @@ export default function DrawerMenu({ navigation, children }) {
           </View>
           <View style={{ gap: 3, alignItems: "flex-end" }}>
             <Text style={{ fontFamily: "Kanit300" }}>
-              EXP : {userDetail.user?.exp}
+              EXP : {userDetail.user?.xpNow} / {userDetail.user?.maxXp}
             </Text>
             <View
               style={{
@@ -141,7 +141,7 @@ export default function DrawerMenu({ navigation, children }) {
                 borderRadius={0}
                 borderWidth={0}
                 color="green"
-                progress={userDetail.user?.exp / 15000}
+                progress={userDetail.user?.xpPercentage}
                 style={{ justifyContent: "flex-start" }}
               />
             </View>
@@ -219,7 +219,7 @@ export default function DrawerMenu({ navigation, children }) {
                 <Text style={styles.smallMenuItem}>Contact Us</Text>
               </TouchableOpacity>
               <TouchableOpacity>
-                <Text style={styles.smallMenuItem}>Privacy</Text> 
+                <Text style={styles.smallMenuItem}>Privacy</Text>
               </TouchableOpacity>
               {userDetail.user && (
                 <TouchableOpacity
