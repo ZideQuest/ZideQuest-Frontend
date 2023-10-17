@@ -167,7 +167,7 @@ export default function Map() {
       }
     };
     fetchMap();
-  }, []);
+  }, [userDetail]);
 
   return (
     <View style={styles.map}>
