@@ -10,7 +10,7 @@ import {
   TextInput,
   Modal,
 } from "react-native";
-import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import { BottomSheetTextInput, BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
@@ -165,53 +165,6 @@ export default function QuestEditing() {
     };
     getQuest();
   }, []);
-
-  // const submitHandler = async (e) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const questDetail = new FormData();
-  //     questDetail.append("timeStart", startDate.toISOString());
-  //     questDetail.append("timeEnd", endDate.toISOString());
-  //     questDetail.append("questName", questName);
-  //     questDetail.append("description", description);
-  //     questDetail.append("autoComplete", isAuto);
-
-  //     if (limitParticipants) {
-  //       questDetail.append("maxParticipant", maxParticipant);
-  //     }
-
-  //     if (image != null) {
-  //       questDetail.append("img", {
-  //         name: image.fileName,
-  //         type: image.type,
-  //         uri:
-  //           Platform.OS === "ios"
-  //             ? image.uri.replace("file://", "")
-  //             : image.uri,
-  //       });
-  //     }
-
-  //     if (activity != "" || activityHour != 0) {
-  //       const activityDetail = {
-  //         category: activity,
-  //         hour: activityHour,
-  //       };
-  //       questDetail.append("activityHour", activityDetail);
-  //     }
-
-  //     if (tagId != "" && tagId != null) {
-  //       const handleTag = [tagId];
-  //       questDetail.append("tagId", handleTag);
-  //     }
-
-  //     const newQuest = await editQuest(questDetail, route.params?.questId);
-  //     setIsLoading(false);
-  //     TabNavigation.navigate("QuestManage", { questId: newQuest._id });
-  //   } catch (error) {
-  //     setIsLoading(false);
-  //     alert("failed to edit quest", error);
-  //   }
-  // };
 
   const sendInputData = () => {
     creatorCancelQuest(route.params.questId, inputValue);

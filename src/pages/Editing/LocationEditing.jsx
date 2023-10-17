@@ -75,15 +75,6 @@ export default function PinCreateInfo({ route }) {
     bodyFormData.append("locationName", place);
     bodyFormData.append("description", detail);
 
-    // if (image != null) {
-    //   bodyFormData.append("img", {
-    //     name: image.fileName,
-    //     type: image.type,
-    //     uri:
-    //       Platform.OS === "ios" ? image.uri.replace("file://", "") : image.uri,
-    //   });
-    // }
-
     try {
       const { data } = await editLocation(bodyFormData, route.params?.pinId);
       closeHandler(data.location._id);
@@ -204,16 +195,17 @@ export default function PinCreateInfo({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 15,
+    paddingBottom: 0,
   },
   txt: {
     fontSize: 28,
     fontFamily: "Kanit300",
   },
   input: {
-    marginTop: 30,
+    marginTop: 15,
     gap: 10,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   txtin: {
     borderWidth: 1,
@@ -222,13 +214,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FBFBFB",
     borderColor: "#CDCDCD",
     padding: 5,
-  },
-  img: {
-    marginTop: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    height: 35,
   },
   icon: {
     marginTop: 10,
@@ -258,6 +243,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     position: "relative",
+    marginTop: 15,
   },
   xBtn: {
     position: "absolute",

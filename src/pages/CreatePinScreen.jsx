@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import * as TabNavigation from "../data/TabNavigation";
 import { useAppContext } from "../data/AppContext";
 import BigButton from "../components/button/BigButton";
-import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
+import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import { primaryColor } from "../data/color";
 
 export default function CreatePinScreen() {
@@ -25,7 +25,7 @@ export default function CreatePinScreen() {
   };
 
   return (
-    <Bottomsheet snapPoints={["14%"]} detached={true} hideBar={true}>
+    <BottomsheetDynamic snapPoints={[]} detached={true} hideBar={true}>
       <View style={styles.container}>
         <Text style={styles.headerText}>เลือกตำแหน่ง</Text>
         <View
@@ -36,10 +36,14 @@ export default function CreatePinScreen() {
             bg="rgba(61, 61, 55, 0.28)"
             onPress={cancelHandler}
           />
-          <BigButton text="ยืนยัน" bg={primaryColor} onPress={confirmHandler} />
+          <BigButton
+            text="ยืนยัน"
+            bg={newMarker ? primaryColor : "rgba(61, 61, 55, 0.28)"}
+            onPress={confirmHandler}
+          />
         </View>
       </View>
-    </Bottomsheet>
+    </BottomsheetDynamic>
   );
 }
 
@@ -52,6 +56,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 15,
     justifyContent: "center",
+    paddingTop: 5,
   },
   headerText: {
     fontFamily: "Kanit500",

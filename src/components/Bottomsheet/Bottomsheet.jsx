@@ -1,8 +1,6 @@
-import { StyleSheet, Text, View, } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
-import {
-  BottomSheetModal,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
 
 const Bottomsheet = ({
@@ -11,7 +9,7 @@ const Bottomsheet = ({
   index = 0,
   detached = false,
   hideBar = false,
-  onChange
+  onChange,
 }) => {
   const bottomSheetModalRef = useRef(null);
   const { setBottomModalRef } = useAppContext();
@@ -62,6 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
     overflow: "hidden",
+    paddingBottom: 13,
   },
   backgroundStyle: {
     // backgroundColor: "transparent",

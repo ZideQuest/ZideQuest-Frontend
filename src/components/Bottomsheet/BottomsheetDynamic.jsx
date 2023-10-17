@@ -64,7 +64,7 @@ export default function BottomsheetDynamic({
     >
       <BottomSheetView
         onLayout={handleContentLayout}
-        style={[styles.contentContainer, { paddingBottom: insets.bottom }]}
+        style={[styles.contentContainer, { paddingBottom: insets.bottom || 13 }]}
       >
         {children}
       </BottomSheetView>
