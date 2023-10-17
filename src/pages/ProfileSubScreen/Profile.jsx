@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 
 import * as TabNavigation from "../../data/TabNavigation";
 import ProfilePic from "../../../assets/images/user_icon.png";
-import goBackPic from "../../../assets/images/back-button.png";
+import goBackPic from "../../../assets/images/leave_icon.png";
 import * as Progress from "react-native-progress";
 import {
   buttonGrey,
@@ -10,6 +10,7 @@ import {
   buttonLightGrey,
   primaryColor,
   progressBarLightGreen,
+  textColor,
 } from "../../data/color";
 import { Divider } from "@rneui/themed";
 import { useAppContext } from "../../data/AppContext";
@@ -26,7 +27,7 @@ export default function Profile({ navigation }) {
         style={styles.exit}
       >
         <Image
-          style={{ width: 30, height: 30, borderRadius: 5 }}
+          style={{ width: 24, height: 24, borderRadius: 5 }}
           source={goBackPic}
         />
       </Pressable>
@@ -62,15 +63,21 @@ export default function Profile({ navigation }) {
             <Text
               style={{
                 fontSize: 30,
-                fontWeight: "bold",
                 marginTop: 20,
-                marginBottom: 10,
+                fontFamily: "Kanit400",
               }}
             >
               {userDetail.user.firstName} {userDetail.user.lastName}
             </Text>
           </View>
-          <View style={{ paddingLeft: 20, paddingRight: 18 }}>
+          <View
+            style={{
+              backgroundColor: buttonLightGrey,
+              borderRadius: 10,
+              paddingHorizontal: 18,
+              paddingVertical: 10,
+            }}
+          >
             <View
               style={{
                 display: "flex",
@@ -79,22 +86,56 @@ export default function Profile({ navigation }) {
                 justifyContent: "space-between",
               }}
             >
-              <Text>nisitID: {userDetail.user.nisitId}</Text>
-              <Text
-                style={{
-                  backgroundColor: primaryColor,
-                  paddingLeft: 5,
-                  paddingRight: 5,
-                  paddingTop: 2,
-                  paddingBottom: 2,
-                  borderRadius: 10,
-                }}
-              >
-                Level: {userDetail.user.level}
+              <Text style={styles.text_detail_small}>
+                nisitID: {userDetail.user.nisitId}
               </Text>
             </View>
-
-            <Text>Faculty: {userDetail.user.faculty}</Text>
+            <Text style={styles.text_detail_small}>
+              Faculty: {userDetail.user.faculty}
+            </Text>
+            <View>
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "Kanit400",
+                      fontSize: 15,
+                    }}
+                  >
+                    Level{" "}
+                    <Text style={{ color: "teal" }}>
+                      {userDetail?.user?.level}
+                    </Text>
+                  </Text>
+                  <Text style={{ fontFamily: "Kanit300" }}>
+                    EXP : {userDetail.user?.xpNow} / {userDetail.user?.maxXp}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: "100%",
+                    backgroundColor: "lightgreen",
+                    height: 6,
+                  }}
+                >
+                  <Progress.Bar
+                    width={null}
+                    height={6}
+                    borderRadius={0}
+                    borderWidth={0}
+                    color="green"
+                    progress={userDetail.user?.xpPercentage}
+                    style={{ justifyContent: "flex-start" }}
+                  />
+                </View>
+              </View>
+            </View>
           </View>
 
           {/* Progress Bar */}
@@ -102,7 +143,7 @@ export default function Profile({ navigation }) {
           {/* Header and Quest Button */}
           <View
             style={{
-              marginTop: 18,
+              marginTop: 7,
               gap: 5,
               backgroundColor: buttonLightGrey,
               borderRadius: 10,
@@ -119,49 +160,47 @@ export default function Profile({ navigation }) {
             >
               <Text
                 style={{
-                  fontFamily: "Kanit600",
-                  fontSize: 20,
-                  fontWeight: "bold",
+                  fontFamily: "Kanit400",
+                  fontSize: 23,
+                  color: textColor,
                 }}
               >
                 PROGRESS
               </Text>
 
-              {/* Quest Button */}
               <Pressable
                 onPress={() => navigation.navigate("Quests")}
                 style={styles.exit}
               >
-                <Text style={styles.quest_button}>Quests</Text>
+                <Text style={styles.quest_button}>My Quests</Text>
               </Pressable>
             </View>
-            {/* Main Progress */}
             <Text style={styles.text_small}>
               1. กิจกรรมหาลัย (
               {userDetail.user.activityTranscript.category.university.hour}/10)
             </Text>
-            <Progress.Bar
-              progress={
-                userDetail.user.activityTranscript.category.university.hour / 10
-              }
-              borderRadius={0}
-              borderWidth={0}
-              width={null}
-              height={10}
-              color={progressBarGreen}
-            />
+            <View
+              style={{
+                width: "100%",
+                backgroundColor: progressBarLightGreen,
+                height: 8,
+              }}
+            >
+              <Progress.Bar
+                progress={
+                  userDetail.user.activityTranscript.category.university.hour /
+                  10
+                }
+                borderRadius={0}
+                borderWidth={0}
+                width={null}
+                height={8}
+                color={progressBarGreen}
+              />
+            </View>
             <Text style={styles.text_small}>
               2. กิจกรรมเพื่อเสริมสร้างสมรรถนะ
             </Text>
-            {/* <Progress.Bar
-              progress={
-                userDetail.user.activityTranscript.category.empowerment.hour /
-                10
-              }
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            /> */}
             <Divider></Divider>
             <View style={{ marginLeft: 20 }}>
               <Text style={styles.text_soSmall}>
@@ -172,17 +211,25 @@ export default function Profile({ navigation }) {
                 }
                 /10)
               </Text>
-              <Progress.Bar
-                progress={
-                  userDetail.user.activityTranscript.category.empowerment
-                    .category.morality.hour / 10
-                }
-                borderRadius={0}
-                borderWidth={0}
-                width={null}
-                height={10}
-                color={progressBarGreen}
-              />
+              <View
+                style={{
+                  width: "100%",
+                  backgroundColor: progressBarLightGreen,
+                  height: 8,
+                }}
+              >
+                <Progress.Bar
+                  progress={
+                    userDetail.user.activityTranscript.category.empowerment
+                      .category.morality.hour / 10
+                  }
+                  borderRadius={0}
+                  borderWidth={0}
+                  width={null}
+                  height={8}
+                  color={progressBarGreen}
+                />
+              </View>
               <Text style={styles.text_soSmall}>
                 2.2 ด้านพัฒนาทักษะการคิดและการเรียนรู้ (
                 {
@@ -191,17 +238,25 @@ export default function Profile({ navigation }) {
                 }
                 /10)
               </Text>
-              <Progress.Bar
-                progress={
-                  userDetail.user.activityTranscript.category.empowerment
-                    .category.thingking.hour / 10
-                }
-                borderRadius={0}
-                borderWidth={0}
-                width={280}
-                height={10}
-                color={progressBarGreen}
-              />
+              <View
+                style={{
+                  width: "100%",
+                  backgroundColor: progressBarLightGreen,
+                  height: 8,
+                }}
+              >
+                <Progress.Bar
+                  progress={
+                    userDetail.user.activityTranscript.category.empowerment
+                      .category.thingking.hour / 10
+                  }
+                  borderRadius={0}
+                  borderWidth={0}
+                  width={280}
+                  height={8}
+                  color={progressBarGreen}
+                />
+              </View>
               <Text style={styles.text_soSmall}>
                 2.3 ด้านพัฒนาทักษะเสริมสร้างความสัมพันธ์ระหว่างบุคคล (
                 {
@@ -210,17 +265,25 @@ export default function Profile({ navigation }) {
                 }
                 /10)
               </Text>
-              <Progress.Bar
-                progress={
-                  userDetail.user.activityTranscript.category.empowerment
-                    .category.relation.hour / 10
-                }
-                borderRadius={0}
-                borderWidth={0}
-                width={280}
-                height={10}
-                color={progressBarGreen}
-              />
+              <View
+                style={{
+                  width: "100%",
+                  backgroundColor: progressBarLightGreen,
+                  height: 8,
+                }}
+              >
+                <Progress.Bar
+                  progress={
+                    userDetail.user.activityTranscript.category.empowerment
+                      .category.relation.hour / 10
+                  }
+                  borderRadius={0}
+                  borderWidth={0}
+                  width={280}
+                  height={8}
+                  color={progressBarGreen}
+                />
+              </View>
               <Text style={styles.text_soSmall}>
                 2.4 ด้านพัฒนาสุขภาพ (
                 {
@@ -229,17 +292,25 @@ export default function Profile({ navigation }) {
                 }
                 /10)
               </Text>
-              <Progress.Bar
-                progress={
-                  userDetail.user.activityTranscript.category.empowerment
-                    .category.health.hour / 10
-                }
-                borderRadius={0}
-                borderWidth={0}
-                width={280}
-                height={10}
-                color={progressBarGreen}
-              />
+              <View
+                style={{
+                  width: "100%",
+                  backgroundColor: progressBarLightGreen,
+                  height: 8,
+                }}
+              >
+                <Progress.Bar
+                  progress={
+                    userDetail.user.activityTranscript.category.empowerment
+                      .category.health.hour / 10
+                  }
+                  borderRadius={0}
+                  borderWidth={0}
+                  width={280}
+                  height={8}
+                  color={progressBarGreen}
+                />
+              </View>
             </View>
             <Text style={styles.text_small}>
               3.กิจกรรมเพื่อสังคม (
@@ -250,7 +321,7 @@ export default function Profile({ navigation }) {
               style={{
                 width: "100%",
                 backgroundColor: progressBarLightGreen,
-                height: 10,
+                height: 8,
               }}
             >
               <Progress.Bar
@@ -260,7 +331,7 @@ export default function Profile({ navigation }) {
                 borderRadius={0}
                 borderWidth={0}
                 width={null}
-                height={10}
+                height={8}
                 // color="lime"
                 color={progressBarGreen}
               />
@@ -288,39 +359,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   exit: {
-    padding: 5,
-  },
-  progress_container: {
-    marginTop: 15,
-    marginLeft: 10,
-    marginRight: 10,
-    padding: 10,
-    paddingBottom: 30,
-    borderRadius: 5,
-    backgroundColor: buttonGrey,
-  },
-  badges_container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-    marginLeft: 30,
-  },
-  badge: {
-    width: 50,
-    height: 50,
-    resizeMode: "cover",
-    borderRadius: 50,
-    marginRight: 10,
-    marginBottom: 5,
+    paddingTop: 10,
+    paddingLeft: 10,
+    backgroundColor: "transparent"
   },
   quest_button: {
-    backgroundColor: "#e8e7e6",
-    borderRadius: 13,
-    // padding: 5,
-    // width: 100,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
+    backgroundColor: "#d4d4d4",
+    borderRadius: 10,
+    paddingHorizontal: 7,
     overflow: "hidden",
     textAlign: "center",
+    fontFamily: "Kanit300",
+  },
+  text_detail_small: {
+    fontFamily: "Kanit400",
+    fontSize: 15,
+    lineHeight: 19,
   },
 });
