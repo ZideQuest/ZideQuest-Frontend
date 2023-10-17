@@ -166,8 +166,8 @@ export default function QuestEditing() {
     getQuest();
   }, []);
 
-  const sendInputData = () => {
-    creatorCancelQuest(route.params.questId, inputValue);
+  const sendInputData = async () => {
+    await creatorCancelQuest(route.params.questId, cancelReason);
     setModalVisible(false);
   };
 

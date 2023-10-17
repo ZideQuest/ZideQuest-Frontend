@@ -37,16 +37,10 @@ export default function DetailedQuestListItem({
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
 
   const checkQuestCompleted = () => {
-    if (!quest.status || !quest.isCheckin) {
+    if (!quest.status || !quest.isCheckIn || !quest.isJoin) {
       return false;
     }
-    let status = false;
-    quest.participant.forEach((p) => {
-      if (p?.userId == userDetail?.user?._id) {
-        status = true;
-      }
-    });
-    return status;
+    return true;
   };
 
   const questPressHandler = () => {

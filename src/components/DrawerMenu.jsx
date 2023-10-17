@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
   menus: {
     backgroundColor: "white",
     padding: 20,
+    height: "100%",
   },
   menuHeader: {
     flexDirection: "row",
@@ -300,6 +301,7 @@ const styles = StyleSheet.create({
   },
   smallMenuContainer: {
     gap: 15,
+    marginBottom: 20,
   },
   smallMenuItem: {
     fontSize: 17,
@@ -309,7 +311,7 @@ const styles = StyleSheet.create({
   bigMenuContainer: {
     flexDirection: "row",
     gap: 10,
-    marginVertical: 30,
+    marginVertical: 20,
   },
   bigMenuIcon: {
     backgroundColor: buttonGrey,
