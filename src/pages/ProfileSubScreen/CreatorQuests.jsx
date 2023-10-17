@@ -1,19 +1,19 @@
 import react, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import back_icon from "../../../assets/images/leave_icon.png";
-import QuestListItem from "../../components/QuestListItem";
+import AdminQuestListItem from "../../components/Quest/AdminQuestListItem";
 import { getCratorQuests } from "../../data/Quest";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { useAppContext } from "../../data/AppContext";
 
-export default function MyQuests({ navigation }) {
-  const [creatorQuest, setCreatorQuest] = useState({});
-
+export default function CreatorQuests({ navigation }) {
+  const [creatorQuest, setCreatorQuest] = useState([]);
+  const { userDetail } = useAppContext();
   useEffect(() => {
     const fetchCreatorQuestData = async () => {
       try {
         const data = await getCratorQuests();
         setCreatorQuest(data);
-        console.log(creatorQuest);
       } catch (error) {
         console.error("Error fetching UserQuest", error);
       }
@@ -34,12 +34,12 @@ export default function MyQuests({ navigation }) {
       </View>
 
       <BottomSheetScrollView style={styles.questListContainer}>
-        {/* {creatorQuest.} */}
-        <Pressable style={styles.byMonthQuest}>
-
-        </Pressable>
+        <View style={styles.questListItemContainer}>
+          {creatorQuest.map((quest) => (
+            <AdminQuestListItem quest={quest} key={`all-quest-${quest._id}`} />
+          ))}
+        </View>
       </BottomSheetScrollView>
-
     </View>
   );
 }
@@ -47,14 +47,12 @@ export default function MyQuests({ navigation }) {
 const styles = StyleSheet.create({
   allContainer: {
     padding: 15,
-    gap: 30,
+    gap: 15,
     backgroundColor: "white",
     flex: 1,
   },
-  headerContainer: {},
-  background: {
-    backgroundColor: "blue",
-    borderBottomWidth: 2,
+  headerContainer: {
+    // backgroundColor: "blue",
   },
   backButton: {
     position: "absolute",
@@ -69,5 +67,9 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     fontFamily: "Kanit400",
+  },
+  questListItemContainer: {
+    // backgroundColor: "blue",
+    gap: 5,
   },
 });
