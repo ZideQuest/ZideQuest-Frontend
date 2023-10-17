@@ -61,12 +61,14 @@ export default function DetailedQuestListItem({
         questId: quest._id,
         fromScreen: "PinDetail",
         fromParams: { pinId: quest.locationId },
+        resetFocus: false,
       });
     } else if (userDetail?.token != null) {
       TabNavigation.navigate("QuestDetail", {
         questId: quest._id,
         fromScreen: "PinDetail",
         fromParams: { pinId: quest.locationId },
+        resetFocus: false,
       });
     } else {
       alert("กรุณา login");

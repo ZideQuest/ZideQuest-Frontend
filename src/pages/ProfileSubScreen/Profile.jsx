@@ -9,6 +9,7 @@ import {
   progressBarGreen,
   buttonLightGrey,
   primaryColor,
+  progressBarLightGreen,
 } from "../../data/color";
 import { Divider } from "@rneui/themed";
 import { useAppContext } from "../../data/AppContext";
@@ -143,7 +144,9 @@ export default function Profile({ navigation }) {
               progress={
                 userDetail.user.activityTranscript.category.university.hour / 10
               }
-              width={300}
+              borderRadius={0}
+              borderWidth={0}
+              width={null}
               height={10}
               color={progressBarGreen}
             />
@@ -174,7 +177,9 @@ export default function Profile({ navigation }) {
                   userDetail.user.activityTranscript.category.empowerment
                     .category.morality.hour / 10
                 }
-                width={280}
+                borderRadius={0}
+                borderWidth={0}
+                width={null}
                 height={10}
                 color={progressBarGreen}
               />
@@ -191,6 +196,8 @@ export default function Profile({ navigation }) {
                   userDetail.user.activityTranscript.category.empowerment
                     .category.thingking.hour / 10
                 }
+                borderRadius={0}
+                borderWidth={0}
                 width={280}
                 height={10}
                 color={progressBarGreen}
@@ -208,6 +215,8 @@ export default function Profile({ navigation }) {
                   userDetail.user.activityTranscript.category.empowerment
                     .category.relation.hour / 10
                 }
+                borderRadius={0}
+                borderWidth={0}
                 width={280}
                 height={10}
                 color={progressBarGreen}
@@ -225,6 +234,8 @@ export default function Profile({ navigation }) {
                   userDetail.user.activityTranscript.category.empowerment
                     .category.health.hour / 10
                 }
+                borderRadius={0}
+                borderWidth={0}
                 width={280}
                 height={10}
                 color={progressBarGreen}
@@ -235,14 +246,25 @@ export default function Profile({ navigation }) {
               {userDetail.user.activityTranscript.category.society.hour}
               /10)
             </Text>
-            <Progress.Bar
-              progress={
-                userDetail.user.activityTranscript.category.society.hour / 10
-              }
-              width={300}
-              height={10}
-              color={progressBarGreen}
-            />
+            <View
+              style={{
+                width: "100%",
+                backgroundColor: progressBarLightGreen,
+                height: 10,
+              }}
+            >
+              <Progress.Bar
+                progress={
+                  userDetail.user.activityTranscript.category.society.hour / 10
+                }
+                borderRadius={0}
+                borderWidth={0}
+                width={null}
+                height={10}
+                // color="lime"
+                color={progressBarGreen}
+              />
+            </View>
           </View>
         </View>
       </BottomSheetScrollView>

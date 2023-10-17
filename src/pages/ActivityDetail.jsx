@@ -113,7 +113,7 @@ export default function ActivityDetail() {
               backButtonRoute={{
                 targetRoute: route.params?.fromScreen,
                 params: route.params?.fromParams,
-                resetFocus: false,
+                resetFocus: route.params?.resetFocus,
               }}
             />
           </View>
