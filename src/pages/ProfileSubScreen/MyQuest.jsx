@@ -1,12 +1,5 @@
 import react, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import back_icon from "../../../assets/images/leave_icon.png";
 import QuestListItem from "../../components/QuestListItem";
 import { usersQuest } from "../../data/Quest";
@@ -16,12 +9,6 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 export default function MyQuests({ navigation }) {
   const [UserQuest, setUserQuest] = useState({});
   const { userDetail } = useAppContext();
-  const [indexCurrent, setindexCurrent] = useState(5);
-  const [indexSuccess, setindexSuccess] = useState(5);
-  const [pressCurrent, setpressCurrent] = useState(false);
-  const [pressSuccess, setpressSuccess] = useState(false);
-  const newindexCurrent = UserQuest.currentQuest?.length;
-  const newindexSuccess = UserQuest.successQuest?.length;
 
   useEffect(() => {
     const fetchUserQuestData = async () => {
@@ -34,16 +21,6 @@ export default function MyQuests({ navigation }) {
     };
     fetchUserQuestData();
   }, []);
-
-  const seeMoreCurrent = () => {
-    setpressCurrent(!pressCurrent);
-    pressCurrent ? setindexCurrent(5) : setindexCurrent(newindexCurrent);
-  };
-
-  const seeMoreSuccess = () => {
-    setpressSuccess(!pressSuccess);
-    pressSuccess ? setindexSuccess(5) : setindexSuccess(newindexSuccess);
-  };
 
   return (
     <View style={styles.allContainer}>
@@ -101,7 +78,6 @@ const styles = StyleSheet.create({
   },
   questList: {
     gap: 7,
-    // backgroundColor: "green",
     flex: 1,
     marginBottom: 10,
   },
@@ -110,7 +86,6 @@ const styles = StyleSheet.create({
     borderColor: "#E1E1E1",
     fontWeight: "bold",
     fontSize: 15,
-    // marginTop:10,
     fontFamily: "Kanit400",
     fontSize: 16,
   },
