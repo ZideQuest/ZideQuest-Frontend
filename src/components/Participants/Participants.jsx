@@ -4,6 +4,7 @@ import UserTag from "./UserTag";
 import * as TabNavigation from "../../data/TabNavigation";
 
 import { fetchParticipants } from "../../data/Quest";
+import { textColor } from "../../data/color";
 
 export default function Participants({ questId, ownerChecker }) {
   const [participants, setParticipants] = useState([]);
@@ -52,14 +53,26 @@ export default function Participants({ questId, ownerChecker }) {
             </TouchableOpacity>
           </View>
           <ScrollView>
-            {participants?.map((user) => (
-              <View key={`participant-${user?.user?._id}`} style={{marginBottom:5}}>
-                <UserTag user={user}  />
+            {participants?.slice(0, 5).map((user) => (
+              <View
+                key={`participant-${user?.user?._id}`}
+                style={{ marginBottom: 5 }}
+              >
+                <UserTag user={user} />
               </View>
-              
             ))}
+            {participants.length > 5 && (
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontFamily: "Kanit300",
+                  color: textColor,
+                }}
+              >
+                และคนอื่นๆอีก {participants.length - 5} คน...
+              </Text>
+            )}
           </ScrollView>
-
         </View>
       ) : (
         <Text style={{ fontFamily: "Kanit400", fontSize: 17 }}>
