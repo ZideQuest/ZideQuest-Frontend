@@ -17,6 +17,7 @@ import { creatorCancelQuest } from "../../data/Quest";
 import BigButton from "../button/BigButton";
 import { buttonDarkRed } from "../../data/color";
 import bin_icon from "../.././../assets/images/bin.png";
+import Alert from "../misc/Alert.js";
 
 export default function CancelQuest({ questId, locationId, questName }) {
   const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], []);
@@ -35,13 +36,20 @@ export default function CancelQuest({ questId, locationId, questName }) {
   };
 
   const sendInputData = async () => {
-    try {
-      await creatorCancelQuest(questId, cancelReason);
-      bottomSheetModalRef.current?.dismiss();
-      TabNavigation.navigate("PinDetail", { pinId: locationId });
-      alert(`ยกเลิกเควส ${questName} สำเร็จ`);
-    } catch (error) {
-      alert(`error occured ${error}`);
+    if (
+      await Alert(
+        "ต้องการที่จะลบเควสนี้?",
+        `คุณยืนยันที่จะลบเควส ${questName} หรือไม่ การกระทำนี้ไม่สามารถย้อนกลับได้`
+      )
+    ) {
+      try {
+        await creatorCancelQuest(questId, cancelReason);
+        bottomSheetModalRef.current?.dismiss();
+        TabNavigation.navigate("PinDetail", { pinId: locationId });
+        alert(`ยกเลิกเควส ${questName} สำเร็จ`);
+      } catch (error) {
+        alert(`error occured ${error}`);
+      }
     }
   };
 
