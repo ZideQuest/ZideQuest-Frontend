@@ -12,6 +12,7 @@ import * as TabNavigation from "../data/TabNavigation";
 import MyQuests from "./ProfileSubScreen/MyQuest";
 import Profile from "./ProfileSubScreen/Profile";
 import CreatorProfile from "./ProfileSubScreen/CreatorProfile";
+import CreatorQuests from "./ProfileSubScreen/CreatorQuests";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ export default function ProfileModal() {
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="CreatorProfile" component={CreatorProfile} />
             <Stack.Screen name="Quests" component={MyQuests} />
+            <Stack.Screen name="CreatorQuests" component={CreatorQuests} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

@@ -57,7 +57,7 @@ export default function Profile({ navigation }) {
             <Text style={styles.activeText}>Active Quests</Text>
             <TouchableOpacity
               style={styles.allQuests}
-              onPress={() => TabNavigation.navigate("CreatorQuests")}
+              onPress={() => navigation.navigate("CreatorQuests")}
             >
               <Text style={styles.allQuestText}>All Quests</Text>
             </TouchableOpacity>
