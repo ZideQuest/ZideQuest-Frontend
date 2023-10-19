@@ -226,7 +226,6 @@ const styles = StyleSheet.create({
   bannerImage: {
     height: "100%",
     width: "100%",
-    
   },
   bannerContainer: {
     height: "100%",
@@ -262,10 +261,10 @@ const styles = StyleSheet.create({
     backgroundColor: buttonNormalGreen,
     borderRadius: 10,
     overflow: "hidden",
-    paddingVertical: 2,
+    paddingVertical: 1,
     paddingHorizontal: 7,
     color: "white",
-    fontSize: 15,
+    fontFamily: "Kanit300",
   },
   questListContainer: {
     // marginTop: 6,

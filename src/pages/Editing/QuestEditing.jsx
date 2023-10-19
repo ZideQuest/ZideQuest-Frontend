@@ -8,12 +8,12 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   TextInput,
-  Modal,
 } from "react-native";
-import { BottomSheetTextInput, BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
+import Checkbox from "expo-checkbox";
 
 import BottomsheetDynamic from "../../components/Bottomsheet/BottomsheetDynamic";
 import AddPhoto from "../../components/AddPhoto";
@@ -21,21 +21,19 @@ import Spinner from "../../components/Animations/Spinner";
 import BigButton from "../../components/button/BigButton.jsx";
 import BackButton from "../../components/button/BackButton";
 import { TimePicker } from "../../components/TimePicker";
-import Alert from "../../components/misc/Alert";
 
-import { buttonDarkRed, buttonOrange, primaryColor } from "../../data/color";
-import { getQuestData, editQuest, creatorCancelQuest } from "../../data/Quest";
+import { buttonOrange, primaryColor } from "../../data/color";
+import { getQuestData, editQuest } from "../../data/Quest";
 import * as TabNavigation from "../../data/TabNavigation";
 
 import ImagePreviewModal from "../../components/misc/ImagePreviewModal";
 
-import bin_icon from "../../../assets/images/bin.png";
 import close_icon from "../../../assets/images/close_icon.png";
 
 import ItemSelectingModal from "../../components/misc/ItemSelectingModal";
-import Checkbox from "expo-checkbox";
-import { getTags } from "../../data/tag";
 import TagItem from "../../components/Quest/TagItem";
+import CancelQuest from "../../components/Quest/CancelQuest";
+import { getTags } from "../../data/tag";
 import { activityCategories } from "../../data/activityCategory";
 
 export default function QuestEditing() {
@@ -52,9 +50,6 @@ export default function QuestEditing() {
   const [isAuto, setIsAuto] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const [deletingModalVisible, setDeletingModalVisible] = useState(false);
-  const [cancelReason, setCancelReason] = useState("");
 
   const [locationId, setLocationId] = useState(null);
 
@@ -166,11 +161,6 @@ export default function QuestEditing() {
     getQuest();
   }, []);
 
-  const sendInputData = async () => {
-    await creatorCancelQuest(route.params.questId, cancelReason);
-    setModalVisible(false);
-  };
-
   return (
     <BottomsheetDynamic style={styles.container} snapPoints={["20%"]} index={1}>
       {isLoading ? (
@@ -182,53 +172,6 @@ export default function QuestEditing() {
             setModalVisible={setModalVisible}
             imageUri={image?.uri}
           />
-          <Modal
-            animationType="slide"
-            visible={deletingModalVisible}
-            transparent={true}
-            onRequestClose={() => {
-              setDeletingModalVisible(false);
-            }}
-          >
-            <View style={styles.modalContainer}>
-              <View>
-                <View
-                  style={{
-                    justifyContent: "space-between",
-                    flexDirection: "row",
-                  }}
-                >
-                  <Text style={{ fontFamily: "Kanit500" }}>
-                    ทำไมถึงจะยกเลิกล่ะ?
-                  </Text>
-                  <BackButton
-                    onPress={() => {
-                      setDeletingModalVisible(false);
-                      setCancelReason("");
-                    }}
-                    changeRoute={false}
-                  />
-                </View>
-
-                {/* Input Component */}
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter something"
-                  value={cancelReason}
-                  onChangeText={setCancelReason}
-                  autoFocus
-                />
-
-                {/* Button Component */}
-                <BigButton
-                  text="Remove Quest"
-                  bg={buttonDarkRed} // Change the color as needed
-                  color="white"
-                  onPress={sendInputData}
-                />
-              </View>
-            </View>
-          </Modal>
           <View style={styles.innerContainer}>
             <View
               style={{
@@ -241,11 +184,11 @@ export default function QuestEditing() {
                 style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
               >
                 <Text style={styles.textXl}>แก้ไขเควส</Text>
-                <TouchableOpacity
-                  onPress={() => setDeletingModalVisible(!deletingModalVisible)}
-                >
-                  <Image source={bin_icon} style={{ width: 20, height: 20 }} />
-                </TouchableOpacity>
+                <CancelQuest
+                  questId={route.params.questId}
+                  locationId={locationId}
+                  questName={questName}
+                />
               </View>
               <BackButton
                 targetRoute="QuestManage"
@@ -564,36 +507,5 @@ const styles = StyleSheet.create({
   x: {
     width: "100%",
     height: "100%",
-  },
-  modalContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "white",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: -2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginVertical: 10,
-  },
-  infoContainer: {
-    paddingHorizontal: 20,
-    gap: 8,
-    marginTop: 5,
   },
 });
