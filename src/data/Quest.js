@@ -186,7 +186,7 @@ export async function getActiveQuests() {
 export async function getCratorQuests() {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
-  const { data } = await axios.get(`${BASE_URL}/quests/creator-all `, {
+  const { data } = await axios.get(`${BASE_URL}/quests/creator-all`, {
     headers: {
       Authorization: "Bearer " + token,
       "Content-Type": "application/json",
