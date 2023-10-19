@@ -46,7 +46,7 @@ export default function Profile({ navigation }) {
           <View style={styles.displayProfile}>
             <Image
               source={{ uri: userDetail.user.picturePath }}
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: "100%", height: "100%", borderRadius: 65 }}
             />
           </View>
           <Text style={styles.organize}>{userDetail.user.organizeName}</Text>
@@ -115,11 +115,14 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   displayProfile: {
-    width: 130,
-    height: 130,
+    width: 100,
+    height: 100,
     borderRadius: 65,
-    overflow: "hidden",
-    borderWidth: 2,
+    backgroundColor: "lightgray",
+    shadowColor: "#171717",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
   },
   questContainer: {
     gap: 8,
@@ -127,8 +130,8 @@ const styles = StyleSheet.create({
   },
   activeText: {
     paddingVertical: 3,
-    fontFamily: "Kanit500",
-    fontSize: 23,
+    fontFamily: "Kanit400",
+    fontSize: 22,
   },
   active: {
     paddingHorizontal: 13,
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: "absolute",
     margin: 20,
-    right: 0,
+    left: 0,
     zIndex: 10,
   },
   organize: {
@@ -165,12 +168,15 @@ const styles = StyleSheet.create({
     fontFamily: "Kanit300",
   },
   allQuests: {
-    backgroundColor: buttonGrey,
-    borderRadius: 5,
-    borderWidth: 0.5,
-    paddingHorizontal: 3,
+    // justifyContent: "center",
+    // alignItems: "center",
+    // backgroundColor: buttonGrey,
+    // borderRadius: 5,
+    // borderWidth: 0.5,
+    // paddingHorizontal: 3,
   },
   allQuestText: {
     fontFamily: "Kanit300",
+    color: "teal",
   },
 });

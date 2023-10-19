@@ -13,6 +13,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -42,8 +43,8 @@ export const TimePicker = ({
   setStartDate,
   endDate,
   setEndDate,
-  useStartDate=true,
-  useEndDate=true,
+  useStartDate = true,
+  useEndDate = true,
 }) => {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
@@ -191,6 +192,7 @@ export const TimePicker = ({
   const handlePresentModalPress = useCallback((modePressed) => {
     setSelectingMode(modePressed);
     bottomSheetModalRef.current?.present();
+    Keyboard.dismiss();
   }, []);
 
   if (Platform.OS === "android") {

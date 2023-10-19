@@ -287,7 +287,7 @@ export default function SearchBar({ searching, setSearching }) {
               isActive={selectedTag.length != 0}
             >
               <View style={{ padding: 5, paddingTop: 10, width: "100%" }}>
-                <TextInput
+                <BottomSheetTextInput
                   placeholder="ค้นหาแท็ก"
                   value={tagSearch}
                   onChangeText={setTagSearch}
