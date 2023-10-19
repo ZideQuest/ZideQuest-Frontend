@@ -1,23 +1,29 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { buttonGrey, buttonLightGrey } from "../../data/color";
+import { buttonGrey, buttonLightGrey, primaryColor } from "../../data/color";
 import user_icon from "../../../assets/images/user_icon.png";
 import Checkbox from "expo-checkbox";
 import bin_icon from "../../../assets/images/bin.png";
 
-export default function UserTag({ user, checkable = false, onChecked, onDelete, deleteable = false}) {
+export default function UserTag({
+  user,
+  checkable = false,
+  onChecked,
+  onDelete,
+  deleteable = false,
+}) {
   const [isChecked, setIsChecked] = useState(user.status);
 
   const checkboxHandler = (v) => {
     if (checkable) {
       setIsChecked(v);
-      onChecked(v, user?.user?._id)
+      onChecked(v, user?.user?._id);
     }
   };
 
-  const handleDelete = async ()=>{
-    await onDelete(user?.user?._id)
-  }
+  const handleDelete = async () => {
+    await onDelete(user?.user?._id);
+  };
 
   return (
     <View style={styles.container}>
@@ -49,12 +55,11 @@ export default function UserTag({ user, checkable = false, onChecked, onDelete, 
           {user?.user?.firstName} {user?.user?.lastName}
         </Text>
       </View>
-      <View style={{flexDirection:'row', justifyContent:'flex-end', gap:5}}>
+      <View
+        style={{ flexDirection: "row", justifyContent: "flex-end", gap: 5 }}
+      >
         {deleteable && (
-          <TouchableOpacity
-            style={styles.binIcon}
-            onPress={handleDelete}
-          >
+          <TouchableOpacity style={styles.binIcon} onPress={handleDelete}>
             <Image
               source={bin_icon}
               style={{ width: "100%", height: "100%" }}
@@ -63,10 +68,13 @@ export default function UserTag({ user, checkable = false, onChecked, onDelete, 
         )}
 
         {checkable && (
-          <Checkbox value={isChecked} onValueChange={checkboxHandler} />
+          <Checkbox
+            value={isChecked}
+            onValueChange={checkboxHandler}
+            color={primaryColor}
+          />
         )}
       </View>
-      
     </View>
   );
 }
