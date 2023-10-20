@@ -6,7 +6,7 @@ import * as TabNavigation from "../../data/TabNavigation";
 import { fetchParticipants } from "../../data/Quest";
 import { textColor } from "../../data/color";
 
-export default function Participants({ questId, ownerChecker }) {
+export default function Participants({ questId, ownerChecker, isCompleted }) {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +22,9 @@ export default function Participants({ questId, ownerChecker }) {
   }, []);
 
   const editParticipantHandler = () => {
+    if (isCompleted) {
+      return;
+    }
     if (ownerChecker()) {
       TabNavigation.navigate("EditParticipants", { questId });
     } else {
@@ -44,7 +47,7 @@ export default function Participants({ questId, ownerChecker }) {
                 style={{
                   fontFamily: "Kanit300",
                   fontSize: 15,
-                  color: "teal",
+                  color: isCompleted ? "grey" : "teal",
                   opacity: ownerChecker() ? 1 : 0.4,
                 }}
               >

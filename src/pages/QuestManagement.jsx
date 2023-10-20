@@ -7,7 +7,12 @@ import { getQuestData, sendQuestComplete } from "../data/Quest";
 import BigButton from "../components/button/BigButton";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
 import ActivityName from "../components/Quest/ActivityName";
-import { buttonBlue, buttonBrightGreen, buttonGrey } from "../data/color";
+import {
+  buttonBlue,
+  buttonBrightGreen,
+  buttonGrey,
+  buttonNormalGreen,
+} from "../data/color";
 import Participants from "../components/Participants/Participants";
 import Alert from "../components/misc/Alert";
 
@@ -68,6 +73,9 @@ export default function QuestManagement({ route }) {
   };
 
   const editQuestButtonHandler = async () => {
+    if (questData?.status) {
+      return;
+    }
     if (ownerChecker()) {
       TabNavigation.navigate("EditQuest", { questId: route.params.questId });
     } else {
@@ -106,7 +114,7 @@ export default function QuestManagement({ route }) {
           <TouchableOpacity onPress={editQuestButtonHandler}>
             <Text
               style={{
-                color: "teal",
+                color: questData?.status ? "grey" : "teal",
                 fontFamily: "Kanit300",
                 opacity: ownerChecker() ? 1 : 0.3,
               }}
@@ -117,12 +125,19 @@ export default function QuestManagement({ route }) {
           <Participants
             questId={route.params.questId}
             ownerChecker={ownerChecker}
+            isCompleted={questData?.status}
           />
           <View style={{ opacity: ownerChecker() ? 1 : 0.4, gap: 7 }}>
             <View style={styles.buttonContainer}>
               <BigButton
                 text="ยืนยัน Quest Completed"
-                bg={questData?.status ? buttonGrey : buttonBrightGreen}
+                bg={
+                  questData
+                    ? questData.status
+                      ? buttonGrey
+                      : buttonBrightGreen
+                    : buttonGrey
+                }
                 color={questData?.status ? "grey" : "white"}
                 onPress={questCompleteHandler}
               />
@@ -130,7 +145,13 @@ export default function QuestManagement({ route }) {
             <View style={styles.buttonContainer}>
               <BigButton
                 text="สร้าง Check-in QR Code"
-                bg={questData?.status ? buttonGrey : buttonBlue}
+                bg={
+                  questData
+                    ? questData.status
+                      ? buttonGrey
+                      : buttonBlue
+                    : buttonGrey
+                }
                 color={questData?.status ? "grey" : "white"}
                 onPress={GenQRHandler}
               />
