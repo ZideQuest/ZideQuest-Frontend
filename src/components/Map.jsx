@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Button, Image } from "react-native";
+import { StyleSheet, View, Image, Keyboard } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 
@@ -8,7 +8,6 @@ import { mapCustomStyle } from "../data/map-style";
 import { fetchLocations } from "../data/locations";
 import * as TabNavigation from "../data/TabNavigation";
 import NavBar from "./NavBar";
-import Alert from "./misc/Alert";
 
 const initialRegion = {
   latitude: 13.848236064906674,
@@ -127,6 +126,11 @@ export default function Map() {
     }
   };
 
+  const touchStartHandler = () => {
+    bottomModalRef.current?.collapse();
+    Keyboard.dismiss();
+  };
+
   useEffect(() => {
     const myQuestLocations =
       userDetail.user?.joinedQuest?.map((q) => q.locationId?._id) || [];
@@ -182,7 +186,7 @@ export default function Map() {
         onPress={(data) => mapPressHandler(data)}
         onPoiClick={(data) => mapPressHandler(data)}
         customMapStyle={mapCustomStyle}
-        onTouchStart={() => bottomModalRef.current?.collapse()}
+        onTouchStart={touchStartHandler}
         // loadingEnabled
         mapPadding={{ bottom: "100%" }}
       >
@@ -237,5 +241,5 @@ const styles = StyleSheet.create({
   },
   pinPadding: {
     paddingVertical: 5,
-  }
+  },
 });

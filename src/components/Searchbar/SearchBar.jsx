@@ -9,7 +9,7 @@ import {
   Image,
   Keyboard,
 } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { BottomSheetTextInput, TouchableHighlight } from "@gorhom/bottom-sheet";
 import Checkbox from "expo-checkbox";
 
@@ -132,9 +132,10 @@ export default function SearchBar({ searching, setSearching }) {
   };
 
   const onBlurHandler = () => {
-    // if (!search) {
-    //   setSearching(false);
-    // }
+    if (!search) {
+      setSearching(false);
+      // Keyboard.dismiss();
+    }
   };
 
   const onSubmitHandler = () => {
@@ -427,6 +428,7 @@ const styles = StyleSheet.create({
   searchText: {
     padding: 10,
     flex: 1,
+    fontFamily: "Kanit300",
   },
   searchButton: {
     backgroundColor: primaryColor,
