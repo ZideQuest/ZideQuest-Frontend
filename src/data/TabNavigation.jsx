@@ -6,6 +6,13 @@ export const navigationRef = createNavigationContainerRef();
 
 export function navigate(name, params) {
   if (navigationRef.isReady()) {
+    const current = navigationRef.current?.getCurrentRoute();
+    if (
+      current.name == name &&
+      JSON.stringify(current.params) == JSON.stringify(params)
+    ) {
+      return;
+    }
     // navigationRef.navigate(name, params)
     navigationRef.current?.dispatch(StackActions.replace(name, params));
   }
