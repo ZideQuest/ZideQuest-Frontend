@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
   DataCon: {
     flexDirection: "row",
     flexWrap: "wrap",
-    rowGap: 10,
-    columnGap: 10,
+    rowGap: 5,
+    columnGap: 5,
     justifyContent: "flex-end",
     flex: 1,
   },

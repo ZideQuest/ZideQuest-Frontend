@@ -6,20 +6,16 @@ import {
   View,
   Platform,
   TouchableOpacity,
-  TouchableHighlight,
-  TextInput,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import AddPhoto from "../components/AddPhoto";
-import SelectDropdown from "react-native-select-dropdown";
 import React, { useEffect, useState } from "react";
 import { TimePicker } from "../components/TimePicker";
 import { useRoute } from "@react-navigation/native";
 import { createQuest } from "../data/Quest";
 import { getTags } from "../data/tag";
 import close_icon from "../../assets/images/close_icon.png";
-import { activityCategories } from "../data/activityCategory";
 
 import Spinner from "../components/Animations/Spinner";
 import BigButton from "../components/button/BigButton.jsx";
@@ -27,9 +23,9 @@ import BackButton from "../components/button/BackButton";
 import { buttonOrange, primaryColor, textColor } from "../data/color";
 import * as TabNavigation from "../data/TabNavigation";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
-import ItemSelectingModal from "../components/misc/ItemSelectingModal";
-import TagItem from "../components/Quest/TagItem";
 import ImagePreviewModal from "../components/misc/ImagePreviewModal";
+import TagSelectingModal from "../components/Quest/TagSelectingModal";
+import ActivityHourSelectingModal from "../components/Quest/ActivityHourSelectingModal";
 
 function CreateQuest() {
   const [startDate, setStartDate] = useState(new Date());
@@ -50,21 +46,6 @@ function CreateQuest() {
   const [maxParticipant, setMaxParticipant] = useState("");
 
   const [selectedTag, setSelectedTag] = useState([]);
-  const [tagSearch, setTagSearch] = useState("");
-  const selectedTagIds = selectedTag.map((t) => t._id);
-  const tagPressHandler = (tag) => {
-    if (selectedTagIds.includes(tag._id)) {
-      setSelectedTag((prev) => prev.filter((p) => p._id != tag._id));
-    } else {
-      setSelectedTag((prev) => [...prev, tag]);
-    }
-  };
-
-  const [refresher, setRefresher] = useState(false);
-  const activityPressHandler = (act) => {
-    setActivity(act);
-    setRefresher((prev) => !prev);
-  };
 
   const buttonHandler = async (e) => {
     setIsLoading(true);
@@ -168,41 +149,12 @@ function CreateQuest() {
               </View>
               <View style={{ ...styles.box, flex: 1 }}>
                 <Text style={styles.textMd}>แท็ก</Text>
-                <ItemSelectingModal
-                  subject={
-                    selectedTag.length != 0
-                      ? `${selectedTag.length} แท็ก`
-                      : "แท็ก"
-                  }
-                  isActive={selectedTag.length != 0}
-                >
-                  <View style={{ padding: 5, paddingTop: 10, width: "100%" }}>
-                    <TextInput
-                      placeholder="ค้นหาแท็ก"
-                      value={tagSearch}
-                      onChangeText={setTagSearch}
-                    />
-                    <View style={styles.tagContainer}>
-                      {tags
-                        .filter((tag) => tag.tagName.startsWith(tagSearch))
-                        .map((tag) => (
-                          <TouchableOpacity
-                            onPress={() => tagPressHandler(tag)}
-                            key={`search-tag-${tag._id}`}
-                            style={{
-                              borderColor: selectedTagIds.includes(tag._id)
-                                ? "black"
-                                : "white",
-                              borderWidth: 3,
-                              borderRadius: 15,
-                            }}
-                          >
-                            <TagItem tag={tag} />
-                          </TouchableOpacity>
-                        ))}
-                    </View>
-                  </View>
-                </ItemSelectingModal>
+                <TagSelectingModal
+                  selectedTag={selectedTag}
+                  setSelectedTag={setSelectedTag}
+                  tags={tags}
+                  setTags={setTags}
+                />
               </View>
             </View>
 
@@ -217,40 +169,10 @@ function CreateQuest() {
               >
                 <View style={{ ...styles.box, flex: 1 }}>
                   <Text style={styles.textMd}>ชั่วโมงกิจกรรม</Text>
-                  <ItemSelectingModal
-                    subject={activityCategories[activity]}
-                    closeOnPress
-                    refresher={refresher}
-                    isActive={activity != 0}
-                  >
-                    <View>
-                      <Text
-                        style={{
-                          paddingHorizontal: 7,
-                          marginTop: 10,
-                          marginBottom: 6,
-                          fontFamily: "Kanit400",
-                          fontSize: 18,
-                        }}
-                      >
-                        เลือกชั่วโมงกิจกรรม
-                      </Text>
-                      {Object.keys(activityCategories).map((act) => (
-                        <TouchableHighlight
-                          underlayColor="#DDDDDD"
-                          onPress={() => activityPressHandler(act)}
-                          key={`activity-hour-${act}`}
-                          style={{ width: "100%", padding: 7, paddingLeft: 13 }}
-                        >
-                          <Text
-                            style={{ fontFamily: "Kanit300", fontSize: 15 }}
-                          >
-                            {activityCategories[act]}
-                          </Text>
-                        </TouchableHighlight>
-                      ))}
-                    </View>
-                  </ItemSelectingModal>
+                  <ActivityHourSelectingModal
+                    activity={activity}
+                    setActivity={setActivity}
+                  />
                 </View>
                 <View style={styles.box}>
                   <Text

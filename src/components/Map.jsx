@@ -236,6 +236,6 @@ const styles = StyleSheet.create({
     opacity: 0.65,
   },
   pinPadding: {
-    padding: 5
+    paddingVertical: 5,
   }
 });
