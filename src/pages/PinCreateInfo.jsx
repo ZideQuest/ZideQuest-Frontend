@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
-import * as ImagePicker from "expo-image-picker";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
-import photo_icon from "../../assets/images/photo.png";
-import picture_icon from "../../assets/images/picture.png";
 import BackButton from "../components/button/BackButton";
 import { useAppContext } from "../data/AppContext";
 import * as TabNavigation from "../data/TabNavigation";
@@ -110,6 +107,7 @@ export default function PinCreateInfo() {
               ]}
               value={place}
               onChangeText={setPlace}
+              placeholder="ชื่อสถานที่..."
             />
           </View>
           <View style={styles.inputField}>
@@ -128,6 +126,7 @@ export default function PinCreateInfo() {
               ]}
               value={detail}
               onChangeText={setDetail}
+              placeholder="รายละเอียดสถานที่..."
             />
           </View>
         </View>

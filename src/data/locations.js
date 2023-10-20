@@ -5,7 +5,7 @@ import { BASE_URL } from "./backend_url";
 export async function fetchLocations() {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   let data = {};
-  if(userdetail){
+  if (userdetail) {
     const response = await axios.get(`${BASE_URL}/locations`, {
       headers: {
         Authorization: "Bearer " + userdetail.token,
@@ -13,10 +13,10 @@ export async function fetchLocations() {
         "Content-Type": "multipart/form-data",
       },
     });
-    data = response.data
-  } else{
-  const response = await axios.get(`${BASE_URL}/locations`);
-  data = response.data
+    data = response.data;
+  } else {
+    const response = await axios.get(`${BASE_URL}/locations`);
+    data = response.data;
   }
   // console.log(data)
   return data;
@@ -101,15 +101,13 @@ export const editLocation = async (data, id) => {
   const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
   const { token } = userdetail;
 
-  const res = await axios.put(`${BASE_URL}/locations/${id}`, data, {
+  return await axios.put(`${BASE_URL}/locations/${id}`, data, {
     headers: {
       Authorization: "Bearer " + token,
       Accept: "application/json",
       "Content-Type": "multipart/form-data",
     },
   });
-
-  return res;
 };
 
 export const deleteLocation = async (id) => {

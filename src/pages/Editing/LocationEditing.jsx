@@ -20,7 +20,7 @@ import {
   editLocation,
   deleteLocation,
 } from "../../data/locations";
-import { primaryColor } from "../../data/color";
+import { primaryColor, textColor } from "../../data/color";
 
 export default function PinCreateInfo({ route }) {
   const { newMarker, setNewMarker, mapRefetch, setFocusedPin } =
@@ -31,6 +31,8 @@ export default function PinCreateInfo({ route }) {
   const [detail, setDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [image, setImage] = useState(null);
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -57,18 +59,13 @@ export default function PinCreateInfo({ route }) {
   };
 
   const submitHandler = async () => {
-    if (!place && !detail) {
+    setIsSubmitted(true);
+
+    if (!place || !detail) {
       alert("กรุณากรอกชื่อสถานที่และรายละเอียด");
       return;
     }
-    if (!place) {
-      alert("กรุณากรอกชื่อสถานที่");
-      return;
-    }
-    if (!detail) {
-      alert("กรุณากรอกรายละเอียด");
-      return;
-    }
+
     setIsLoading(true);
 
     let bodyFormData = new FormData();
@@ -143,25 +140,47 @@ export default function PinCreateInfo({ route }) {
         </View>
         <View style={styles.input}>
           <View>
-            <Text>ชื่อสถานที่*</Text>
+            <Text
+              style={{
+                fontFamily: "Kanit300",
+                color: isSubmitted && !place ? "red" : textColor,
+              }}
+            >
+              ชื่อสถานที่*
+            </Text>
             <BottomSheetTextInput
-              style={styles.txtin}
+              style={[
+                styles.txtin,
+                { borderColor: isSubmitted && !place ? "red" : textColor },
+              ]}
               value={place}
               onChangeText={setPlace}
+              placeholder="ชื่อสถานที่..."
             />
           </View>
           <View>
-            <Text>รายละเอียด*</Text>
+            <Text
+              style={{
+                fontFamily: "Kanit300",
+                color: isSubmitted && !detail ? "red" : textColor,
+              }}
+            >
+              รายละเอียด*
+            </Text>
             <BottomSheetTextInput
-              style={styles.txtin}
+              style={[
+                styles.txtin,
+                { borderColor: isSubmitted && !detail ? "red" : textColor },
+              ]}
               value={detail}
               onChangeText={setDetail}
+              placeholdxer="รายละเอียดสถานที่..."
             />
           </View>
         </View>
 
         <View style={styles.box}>
-          <Text style={styles.textMd}>เพิ่่มรูปภาพ</Text>
+          <Text style={{ fontFamily: "Kanit300" }}>เพิ่่มรูปภาพ</Text>
           <AddPhoto image={image} setImage={setImage} />
           {image && (
             <View style={styles.image}>
@@ -212,8 +231,8 @@ const styles = StyleSheet.create({
     minHeight: 27.25,
     borderRadius: 5,
     backgroundColor: "#FBFBFB",
-    borderColor: "#CDCDCD",
     padding: 5,
+    fontFamily: "Kanit300",
   },
   icon: {
     marginTop: 10,
