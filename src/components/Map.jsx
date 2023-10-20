@@ -20,8 +20,7 @@ const initialRegion = {
 function getDetailFromData(coordinate) {
   const lat = coordinate.nativeEvent.coordinate.latitude;
   const lng = coordinate.nativeEvent.coordinate.longitude;
-  const name = coordinate.nativeEvent.name;
-  const placeId = coordinate.nativeEvent.placeId;
+  const { name, placeId } = coordinate.nativeEvent;
   return { lat, lng, name, placeId };
 }
 
@@ -69,11 +68,10 @@ export default function Map() {
     if (TabNavigation.currentScreen() == "CreatePin") {
       setNewMarker(null);
     }
-    
+
     if (TabNavigation.currentScreen() == "PinCreateInfo") {
-      return
+      return;
     }
-    
 
     TabNavigation.navigate("PinDetail", { pinId });
     animateToRegion(lat, lng);
@@ -195,12 +193,21 @@ export default function Map() {
             onPress={(data) => markerPressHandler(pin._id, data)}
             style={markerOpacityHandler(pin._id)}
           >
-            {pin.count == 0 ? <Image source={require('../../assets/images/pin_empty.png')} style={styles.markeremptyImage} />:
-              <Image 
-              source={pin.pinMode ? require('../../assets/images/pin_(unnormal).png')
-              : require('../../assets/images/pin_(normal).png')}
-              style={styles.markerImage}
-            />}
+            {pin.count == 0 ? (
+              <Image
+                source={require("../../assets/images/pin_empty.png")}
+                style={styles.markeremptyImage}
+              />
+            ) : (
+              <Image
+                source={
+                  pin.pinMode
+                    ? require("../../assets/images/pin_(unnormal).png")
+                    : require("../../assets/images/pin_(normal).png")
+                }
+                style={styles.markerImage}
+              />
+            )}
           </Marker>
         ))}
         {newMarker && <Marker coordinate={newMarker} />}
