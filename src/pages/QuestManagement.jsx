@@ -15,6 +15,7 @@ import {
 } from "../data/color";
 import Participants from "../components/Participants/Participants";
 import Alert from "../components/misc/Alert";
+import Tag from "../components/Quest/Tag";
 
 export default function QuestManagement({ route }) {
   const [questData, setQuestData] = useState(null);
@@ -111,6 +112,13 @@ export default function QuestManagement({ route }) {
               resetFocus: route.params?.resetFocus,
             }}
           />
+          <View
+            style={{
+              alignItems: "flex-start",
+            }}
+          >
+            <Tag tags={questData?.tag} />
+          </View>
           <TouchableOpacity onPress={editQuestButtonHandler}>
             <Text
               style={{
