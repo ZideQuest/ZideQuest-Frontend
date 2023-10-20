@@ -191,7 +191,7 @@ export default function PinDetailScreen({ route }) {
               }}
               style={{ display: userDetail?.isAdmin ? "flex" : "none" }}
             >
-              <Text style={styles.addQuestButton}>เพิ่มเควส</Text>
+              <Text style={styles.addQuestButton}>เพิ่มเควส +</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.questListContainer}>
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     paddingHorizontal: 20,
     backgroundColor: "white",
+    paddingBottom: 4,
   },
   imageScrollContainer: {
     height: 220,
@@ -259,7 +260,7 @@ const styles = StyleSheet.create({
   },
   addQuestButton: {
     backgroundColor: buttonNormalGreen,
-    borderRadius: 10,
+    borderRadius: 5,
     overflow: "hidden",
     paddingVertical: 1,
     paddingHorizontal: 7,
@@ -267,12 +268,12 @@ const styles = StyleSheet.create({
     fontFamily: "Kanit300",
   },
   questListContainer: {
-    // marginTop: 6,
     gap: 6,
     overflow: "scroll",
   },
   editIcon: {
     width: 25,
     height: 25,
+    top: -5
   },
 });
