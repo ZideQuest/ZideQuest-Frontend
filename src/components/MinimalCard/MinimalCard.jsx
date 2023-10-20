@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 10,
     paddingBottom: 10,
-    paddingTop: 7,
+    paddingTop: 5,
     marginBottom: 7,
   },
   quest_name: {
