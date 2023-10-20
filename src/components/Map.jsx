@@ -194,19 +194,23 @@ export default function Map() {
             style={markerOpacityHandler(pin._id)}
           >
             {pin.count == 0 ? (
-              <Image
-                source={require("../../assets/images/pin_empty.png")}
-                style={styles.markeremptyImage}
-              />
+              <View style={styles.pinPadding}>
+                <Image
+                  source={require("../../assets/images/pin_empty.png")}
+                  style={styles.markeremptyImage}
+                />
+              </View>
             ) : (
-              <Image
-                source={
-                  pin.pinMode
-                    ? require("../../assets/images/pin_(unnormal).png")
-                    : require("../../assets/images/pin_(normal).png")
-                }
-                style={styles.markerImage}
-              />
+              <View style={styles.pinPadding}>
+                <Image
+                  source={
+                    pin.pinMode
+                      ? require("../../assets/images/pin_(unnormal).png")
+                      : require("../../assets/images/pin_(normal).png")
+                  }
+                  style={styles.markerImage}
+                />
+              </View>
             )}
           </Marker>
         ))}
@@ -231,4 +235,7 @@ const styles = StyleSheet.create({
     height: 25,
     opacity: 0.65,
   },
+  pinPadding: {
+    padding: 5
+  }
 });
