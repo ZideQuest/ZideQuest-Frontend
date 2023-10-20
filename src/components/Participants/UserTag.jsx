@@ -3,26 +3,14 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { buttonGrey, buttonLightGrey, primaryColor } from "../../data/color";
 import user_icon from "../../../assets/images/user_icon.png";
 import Checkbox from "expo-checkbox";
-import bin_icon from "../../../assets/images/bin.png";
 
-export default function UserTag({
-  user,
-  checkable = false,
-  onChecked,
-  onDelete,
-  deleteable = false,
-}) {
-  const [isChecked, setIsChecked] = useState(user.status);
+export default function UserTag({ user, checkable = false, onChecked }) {
+  const isChecked = user.status;
 
   const checkboxHandler = (v) => {
     if (checkable) {
-      setIsChecked(v);
       onChecked(v, user?.user?._id);
     }
-  };
-
-  const handleDelete = async () => {
-    await onDelete(user?.user?._id);
   };
 
   return (
@@ -58,15 +46,6 @@ export default function UserTag({
       <View
         style={{ flexDirection: "row", justifyContent: "flex-end", gap: 5 }}
       >
-        {deleteable && (
-          <TouchableOpacity style={styles.binIcon} onPress={handleDelete}>
-            <Image
-              source={bin_icon}
-              style={{ width: "100%", height: "100%" }}
-            />
-          </TouchableOpacity>
-        )}
-
         {checkable && (
           <Checkbox
             value={isChecked}

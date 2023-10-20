@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   View,
   Image,
@@ -7,7 +7,10 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetScrollView,
+  BottomSheetFlatList,
+} from "@gorhom/bottom-sheet";
 import Swipeout from "react-native-swipeout";
 
 import UserTag from "../../components/Participants/UserTag";
@@ -29,67 +32,90 @@ import { primaryColor } from "../../data/color";
 export default function ParticipantsEditing({ route }) {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isChecked, setIsChecked] = useState();
-  const [all, setAll] = useState(false);
+  const [isAllChecked, setIsAllChecked] = useState(true);
 
   const getParticipants = async () => {
     setLoading(true);
     setParticipants([]);
     const data = await fetchParticipants(route.params?.questId);
     setParticipants(data);
+    data.map((p) => {
+      if (!p.status) {
+        setIsAllChecked(false);
+      }
+    });
     setLoading(false);
   };
 
-  const handleCheckedAll = async (e) => {
-    if (all && (await Alert("ยืนยันยกเลิกการเลือกทั้งหมด"))) {
+  const userTagItem = useCallback((data) => {
+    const user = data.item;
+    return (
+      <Swipeout
+        right={[
+          {
+            text: "Delete",
+            backgroundColor: "red",
+            underlayColor: "rgba(0, 0, 0, 1, 0.6)",
+            onPress: () => {
+              handleDelete(user.user._id);
+            },
+          },
+        ]}
+        key={`participant-${user?.user?._id}`}
+        autoClose="true"
+        backgroundColor="transparent"
+      >
+        <UserTag user={user} onChecked={handleChecked} checkable />
+      </Swipeout>
+    );
+  });
+
+  const handleCheckedAll = async (val) => {
+    if (
+      val &&
+      (await Alert(
+        "ยืนยันการเลือกทั้งหมด",
+        "คุณแน่ใจหรือไม่ที่จะเช็คชื่อให้ทุกคน"
+      ))
+    ) {
       try {
-        setIsChecked(e);
-        setAll(false);
         const userList = [];
         participants.map((user) => {
           const userId = user?.user?._id;
           userList.push(userId);
         });
 
-        if (e === true) {
-          const response = await checkUser(route.params?.questId, userList);
-          console.log(response);
-        } else {
-          const response = await unCheckUser(route.params?.questId, userList);
-          console.log(response);
-        }
-        await getParticipants();
+        await checkUser(route.params?.questId, userList);
+        setParticipants((prev) => prev.map((p) => ({ ...p, status: true })));
+        setIsAllChecked(true);
       } catch (error) {
-        alert("ยกเลิกการเลือกทั้งหมด");
+        await getParticipants();
+        alert(`error occured ${error}`);
       }
-    }
-
-    if (!all && (await Alert("ยืนยันการเลือกทั้งหมด"))) {
+    } else if (
+      await Alert(
+        "ยืนยันยกเลิกการเลือกทั้งหมด",
+        "คุณแน่ใจหรือไม่ที่จะยกเลิกเช็คชื่อให้ทุกคน"
+      )
+    ) {
       try {
-        setIsChecked(e);
-        setAll(true);
         const userList = [];
         participants.map((user) => {
           const userId = user?.user?._id;
           userList.push(userId);
         });
 
-        if (e === true) {
-          const response = await checkUser(route.params?.questId, userList);
-          console.log(response);
-        } else {
-          const response = await unCheckUser(route.params?.questId, userList);
-          console.log(response);
-        }
-        await getParticipants();
+        await unCheckUser(route.params?.questId, userList);
+        setParticipants((prev) => prev.map((p) => ({ ...p, status: false })));
+        setIsAllChecked(false);
       } catch (error) {
-        alert("ยกเลิกการเลือกทั้งหมด");
+        await getParticipants();
+        alert(`error occured ${error}`);
       }
     }
   };
 
   const handleChecked = async (checked, userId) => {
-    // console.log(participants);
     if (checked) {
       setParticipants((prev) =>
         prev.map((p) => {
@@ -122,6 +148,16 @@ export default function ParticipantsEditing({ route }) {
       }
     }
   };
+
+  useEffect(() => {
+    let allChecked = true;
+    participants.map((p) => {
+      if (!p.status) {
+        allChecked = false;
+      }
+    });
+    setIsAllChecked(allChecked);
+  }, [participants]);
 
   const handleDelete = async (userId) => {
     if (
@@ -156,14 +192,18 @@ export default function ParticipantsEditing({ route }) {
     getParticipants();
   }, []);
 
+  const handleRefresh = useCallback(() => {
+    getParticipants();
+  }, []);
+
   return (
     <Bottomsheet snapPoints={["90%"]} detached={true} hideBar={true} index={0}>
       <View
         style={{
           alignItems: "center",
           position: "relative",
-          marginTop: 5,
-          marginHorizontal: 5,
+          marginTop: 15,
+          marginHorizontal: 10,
         }}
       >
         <TouchableOpacity
@@ -211,16 +251,23 @@ export default function ParticipantsEditing({ route }) {
           <Text style={{ fontFamily: "Kanit300" }}>เลือกทั้งหมด</Text>
           <Checkbox
             color={primaryColor}
-            value={isChecked}
+            value={isAllChecked}
             onValueChange={handleCheckedAll}
             style={{ marginLeft: 5, marginRight: 5 }}
           />
         </View>
       </View>
-      <BottomSheetScrollView>
+      <BottomSheetFlatList
+        data={participants}
+        keyExtractor={(i) => i.user._id}
+        renderItem={userTagItem}
+        contentContainerStyle={styles.participantsContainer}
+        refreshing={false}
+        onRefresh={handleRefresh}
+      />
+      {/* <BottomSheetScrollView refreshing={true} onRefresh={handleRefresh}>
         <View style={styles.participantsContainer}>
-          {participants &&
-            participants.length > 0 &&
+          {participants.length > 0 &&
             participants?.map((user) => (
               <Swipeout
                 right={[
@@ -237,24 +284,18 @@ export default function ParticipantsEditing({ route }) {
                 autoClose="true"
                 backgroundColor="transparent"
               >
-                <UserTag
-                  user={user}
-                  onChecked={handleChecked}
-                  // onDelete={handleDelete}
-                  // deleteable
-                  checkable
-                />
+                <UserTag user={user} onChecked={handleChecked} checkable />
               </Swipeout>
             ))}
         </View>
-      </BottomSheetScrollView>
+      </BottomSheetScrollView> */}
     </Bottomsheet>
   );
 }
 
 const styles = StyleSheet.create({
   participantsContainer: {
-    gap: 10,
+    gap: 5,
     paddingHorizontal: 10,
     marginTop: 3,
   },
