@@ -79,7 +79,7 @@ export default function ActivityName({ quest, backButtonRoute }) {
                 }}
               >
                 <Text style={styles.creatorText}>{quest?.creatorName}</Text>
-                <View style={styles.badgeIcon}>
+                {/* <View style={styles.badgeIcon}>
                   <Image
                     source={official_icon}
                     style={{
@@ -87,8 +87,8 @@ export default function ActivityName({ quest, backButtonRoute }) {
                       height: "100%",
                     }}
                   />
-                </View>
-                <Text style={styles.badgeText}>Official</Text>
+                </View> */}
+                {/* <Text style={styles.badgeText}>Official</Text> */}
               </View>
             </View>
             <View style={styles.creatorPicCon}>
@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   infoText: {
-    width: "100%",
+    // width: "100%",
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 5,
@@ -183,6 +184,7 @@ const styles = StyleSheet.create({
     color: textColor,
     textAlign: "right",
     lineHeight: 20,
+    flexWrap: "wrap",
   },
   locationText: {
     fontSize: 16,
