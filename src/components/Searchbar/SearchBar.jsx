@@ -43,6 +43,7 @@ export default function SearchBar({ searching, setSearching }) {
     mapRefetch,
     mapMoveTo,
   } = useAppContext();
+
   const [search, setSearch] = useState(null);
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -99,7 +100,6 @@ export default function SearchBar({ searching, setSearching }) {
   const debouncedFetch = useCallback(debounce(searchFetching, 500), []);
 
   useEffect(() => {
-    setLoading(true);
     searchFetching(
       search,
       selectedTag,
@@ -109,7 +109,15 @@ export default function SearchBar({ searching, setSearching }) {
       useEndDate,
       activityHour
     );
-  }, [selectedTag, startDate, endDate, activityHour, useEndDate, useStartDate]);
+  }, [
+    search,
+    selectedTag,
+    startDate,
+    endDate,
+    activityHour,
+    useEndDate,
+    useStartDate,
+  ]);
 
   const handleTextChange = (q) => {
     setLoading(true);
@@ -370,7 +378,6 @@ export default function SearchBar({ searching, setSearching }) {
       )}
 
       <View style={styles.greyBackground}>
-        {loading && <SearchLoading search={search} selectedTag={selectedTag} />}
         {searching &&
           !loading &&
           (search ||
@@ -382,6 +389,7 @@ export default function SearchBar({ searching, setSearching }) {
           ) : (
             <RecentSearch handleTextChange={handleTextChange} />
           ))}
+        {loading && <SearchLoading search={search} selectedTag={selectedTag} />}
       </View>
     </View>
   );
