@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { BASE_URL } from "./backend_url";
-import qs from "qs";
 
 export async function createQuest(questDetail, locationId) {
   const { token } = JSON.parse(await SecureStore.getItemAsync("userDetail"));
