@@ -11,7 +11,7 @@ import defaultCreatorImage from "../../../assets/images/UserProfileTest.jpg";
 import defaultQuestImage from "../../../assets/images/defaultQuestLocationImage.jpg";
 import * as TabNavigation from "../../data/TabNavigation";
 import { useAppContext } from "../../data/AppContext";
-import { buttonOrange, textColor } from "../../data/color";
+import { buttonGrey, buttonOrange, textColor } from "../../data/color";
 import Tag from "../Quest/Tag";
 import { activityCategories } from "../../data/activityCategory";
 
@@ -69,6 +69,7 @@ const MinimalCard = ({ quest }) => {
     maxParticipant,
     activityHour,
     tagId,
+    description,
   } = quest;
 
   const date = timeStart.slice(8, 10);
@@ -113,7 +114,9 @@ const MinimalCard = ({ quest }) => {
         <Text style={styles.quest_name}>{questName}</Text>
         <View style={styles.row}>
           <View style={styles.row_inner}>
-            <Image style={styles.userprofile} source={creatorImageSource} />
+            <View style={styles.userprofileContainer}>
+              <Image style={styles.userprofile} source={creatorImageSource} />
+            </View>
             <View style={styles.userdescription}>
               <Text style={{ fontFamily: "Kanit400" }} numberOfLines={2}>
                 สถานที่: {locationId.locationName.replace(/\n/g, " ")}
@@ -137,12 +140,41 @@ const MinimalCard = ({ quest }) => {
             </View>
           </View>
         </View>
-        <View style={styles.image_container}>
-          <Image style={styles.quest_image} source={questImageSource} />
-        </View>
-        <View style={{ marginTop: 7 }}>
-          <Tag tags={tagId} justifyStart />
-          {activityHour && <Text style={{fontFamily: "Kanit400", fontSize: 15}}>{activityCategories[activityHour.category]} {activityHour.hour} ชั่วโมง</Text>}
+        {picturePath && (
+          <View style={styles.image_container}>
+            <Image style={styles.quest_image} source={questImageSource} />
+          </View>
+        )}
+        <View style={{ marginTop: 5, marginLeft: 5 }}>
+          {tagId.length != 0 && (
+            <View style={{ marginVertical: 4 }}>
+              <Tag tags={tagId} justifyStart />
+            </View>
+          )}
+          {activityHour && (
+            <Text style={{ fontFamily: "Kanit300" }}>
+              ได้รับชั่วโมง{" "}
+              <Text style={{ fontFamily: "Kanit400" }}>
+                {activityCategories[activityHour.category]} {activityHour.hour}{" "}
+                ชั่วโมง
+              </Text>
+            </Text>
+          )}
+          {/* {description ? (
+            <Text
+              style={{
+                fontFamily: "Kanit300",
+                color: textColor,
+                // paddingLeft: 10,
+              }}
+            >
+              {description}
+            </Text>
+          ) : (
+            <Text style={{ fontFamily: "Kanit300", color: "grey" }}>
+              ไม่มีรายละเอียด...
+            </Text>
+          )} */}
         </View>
       </View>
     </TouchableOpacity>
@@ -192,9 +224,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "Kanit300",
   },
-  userprofile: {
+  userprofileContainer: {
+    backgroundColor: "lightgray",
+    shadowColor: "#171717",
+    shadowOffset: { width: 3, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
     width: 50,
     height: 50,
+    borderRadius: 25,
+  },
+  userprofile: {
+    width: "100%",
+    height: "100%",
     borderRadius: 25,
   },
   image_container: {

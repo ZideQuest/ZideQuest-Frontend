@@ -11,6 +11,7 @@ import BigButton from "../components/button/BigButton";
 import { join_leave } from "../data/join-leave";
 
 import { textColor, BGcolor, primaryColor, buttonGrey } from "../data/color";
+import { activityCategories } from "../data/activityCategory";
 
 export default function ActivityDetail() {
   const [QuestDetail, setQuestDetail] = useState(null);
@@ -110,6 +111,7 @@ export default function ActivityDetail() {
           <View style={{ width: "100%", paddingHorizontal: 15 }}>
             <ActivityName
               quest={QuestDetail}
+              showGain={false}
               backButtonRoute={{
                 targetRoute: route.params?.fromScreen,
                 params: route.params?.fromParams,
@@ -130,7 +132,23 @@ export default function ActivityDetail() {
           >
             <Tag tags={QuestDetail?.tag} />
           </View>
+
           <View style={styles.DescripCon}>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontFamily: "Kanit400" }}>จะได้รับ</Text>
+              <View style={{ marginLeft: 7 }}>
+                {QuestDetail?.activityHour.category && (
+                  <Text style={{ fontFamily: "Kanit400" }}>
+                    {"\u25B8"}{" "}
+                    {activityCategories[QuestDetail.activityHour?.category]}{" "}
+                    {QuestDetail.activityHour?.hour} ชั่วโมง
+                  </Text>
+                )}
+                <Text style={{ fontFamily: "Kanit400" }}>
+                  {"\u25B8"} {QuestDetail?.xpGiven} EXP
+                </Text>
+              </View>
+            </View>
             <Text
               style={{
                 color: textColor,
@@ -158,7 +176,12 @@ export default function ActivityDetail() {
               <BigButton
                 text="ยกเลิกการเข้าร่วม"
                 bg={QuestDetail.status ? buttonGrey : "#8C1C15"}
-                onPress={() => leaveAlert(questId)}
+                color={QuestDetail.status ? "grey" : "white"}
+                onPress={
+                  QuestDetail.status
+                    ? () => alert("ไม่ทันแร้ว")
+                    : () => leaveAlert(questId)
+                }
               />
             ) : (
               <BigButton
@@ -187,9 +210,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   picCon: {
-    width: "100%",
+    // width: "100%",
     height: 220,
-    marginVertical: 10,
+    marginVertical: 4,
+    marginHorizontal: 15,
+    borderRadius: 10,
+    overflow: "hidden",
   },
   pic: {
     width: "100%",

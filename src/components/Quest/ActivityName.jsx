@@ -11,7 +11,11 @@ import { activityCategories } from "../../data/activityCategory";
 import { BGcolor, textColor } from "../../data/color";
 import { statusIcon } from "../misc/Status";
 
-export default function ActivityName({ quest, backButtonRoute }) {
+export default function ActivityName({
+  quest,
+  backButtonRoute,
+  showGain = true,
+}) {
   const locationPressHandler = () => {
     TabNavigation.navigate("PinDetail", { pinId: quest.locationId });
   };
@@ -97,11 +101,21 @@ export default function ActivityName({ quest, backButtonRoute }) {
           </View>
         </View>
       </View>
-      {quest?.activityHour.category && (
-        <Text style={{ fontFamily: "Kanit400" }}>
-          คุณจะได้รับ {activityCategories[quest.activityHour?.category]}{" "}
-          {quest.activityHour?.hour} ชั่วโมง
-        </Text>
+      {showGain && (
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ fontFamily: "Kanit400" }}>จะได้รับ</Text>
+          <View style={{ marginLeft: 7 }}>
+            {quest?.activityHour.category && (
+              <Text style={{ fontFamily: "Kanit400" }}>
+                {"\u25B8"} {activityCategories[quest.activityHour?.category]}{" "}
+                {quest.activityHour?.hour} ชั่วโมง
+              </Text>
+            )}
+            <Text style={{ fontFamily: "Kanit400" }}>
+              {"\u25B8"} {quest?.xpGiven} EXP
+            </Text>
+          </View>
+        </View>
       )}
     </View>
   );

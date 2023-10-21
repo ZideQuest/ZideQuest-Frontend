@@ -119,6 +119,9 @@ export default function QuestManagement({ route }) {
           >
             <Tag tags={questData?.tag} />
           </View>
+          <Text style={{ fontFamily: "Kanit300" }}>
+            {questData?.description}
+          </Text>
           <TouchableOpacity onPress={editQuestButtonHandler}>
             <Text
               style={{
@@ -174,7 +177,7 @@ export default function QuestManagement({ route }) {
 const styles = StyleSheet.create({
   infoContainer: {
     paddingHorizontal: 20,
-    gap: 8,
+    gap: 2,
     marginTop: 5,
   },
   buttonContainer: {

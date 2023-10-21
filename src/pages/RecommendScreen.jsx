@@ -10,7 +10,7 @@ const Recommend = () => {
   const [searching, setSearching] = useState(false);
 
   return (
-    <Bottomsheet snapPoints={["15%", "50%", "83%"]} index={0}>
+    <Bottomsheet snapPoints={["15%", "50%", "90%"]} index={0}>
       <BottomSheetScrollView
         style={styles.Container}
         keyboardShouldPersistTaps="handled"

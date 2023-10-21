@@ -27,7 +27,7 @@ export default function AdminQuestListItem({
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
 
   const checkQuestCompleted = () => {
-    return quest.status
+    return quest.status;
   };
 
   const questPressHandler = () => {
@@ -116,8 +116,7 @@ const styles = StyleSheet.create({
   },
   countingContainer: {
     borderWidth: 1,
-    paddingHorizontal: 15,
-    paddingVertical: 3,
+    // paddingVertical: 3,
     alignItems: "center",
     flex: 1,
     borderRadius: 10,
@@ -136,6 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 7,
+    // alignItems: "flex-start",
   },
   qrContainer: {
     width: 30,
@@ -148,7 +148,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontFamily: "Kanit400",
-    fontSize: 20,
+    fontSize: 17,
+    flex: 1,
   },
   detailText: {
     fontFamily: "Kanit300",

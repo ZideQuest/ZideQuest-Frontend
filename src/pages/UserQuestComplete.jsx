@@ -86,8 +86,16 @@ export default function ActivityDetail() {
             activityCategories[QuestDetail.activityHour.category]
           }`}</Text>
         )}
+        <Text
+          style={{
+            fontFamily: "Kanit400",
+            fontSize: 18,
+            color: buttonBrightGreen,
+            textAlign: "center",
+          }}
+        >{`+ ${QuestDetail.xpGiven} EXP`}</Text>
         <View style={{ width: "100%", paddingHorizontal: 15 }}>
-          <ActivityName quest={QuestDetail} />
+          <ActivityName quest={QuestDetail} showGain={false} />
         </View>
       </BottomsheetDynamic>
     );
