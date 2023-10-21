@@ -127,7 +127,7 @@ export default function PinDetailScreen({ route }) {
   };
 
   return (
-    <Bottomsheet snapPoints={["20%", "60%", "83%"]} index={1}>
+    <Bottomsheet snapPoints={["20%", "60%", "90%"]} index={1}>
       <BottomSheetScrollView
         stickyHeaderIndices={[0]}
         style={{ backgroundColor: "white" }}
@@ -223,6 +223,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -1, height: 5 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
+    marginHorizontal: 15,
+    borderRadius: 10,
+    overflow: "hidden",
   },
   bannerImage: {
     height: "100%",
@@ -274,6 +277,6 @@ const styles = StyleSheet.create({
   editIcon: {
     width: 25,
     height: 25,
-    top: -5
+    top: -5,
   },
 });
