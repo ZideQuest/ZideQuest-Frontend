@@ -4,6 +4,8 @@ import {
   StyleSheet,
   Pressable,
   TouchableOpacity,
+  Platform,
+  Image,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
@@ -16,6 +18,62 @@ import AddPhoto from "../AddPhoto";
 import { primaryColor } from "../../data/color";
 import { getTags } from "../../data/tag";
 import ImagePreviewModal from "../misc/ImagePreviewModal";
+
+import close_icon from "../../../assets/images/close_icon.png";
+
+export function useQuestForm() {
+  return useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    questName: "",
+    description: "",
+    activity: 0,
+    activityHour: 1,
+    image: null,
+    isAuto: true,
+    limitParticipants: false,
+    maxParticipant: "",
+    selectedTag: [],
+  });
+}
+
+export function createQuestFormData(questForm) {
+  const questDetail = new FormData();
+  questDetail.append("timeStart", questForm.startDate.toISOString());
+  questDetail.append("timeEnd", questForm.endDate.toISOString());
+  questDetail.append("questName", questForm.questName);
+  questDetail.append("description", questForm.description);
+
+  if (questForm.limitParticipants) {
+    questDetail.append("maxParticipant", questForm.maxParticipant);
+  }
+
+  questDetail.append("autoComplete", questForm.isAuto);
+
+  if (questForm.image != null) {
+    questDetail.append("img", {
+      name: questForm.image.fileName,
+      type: questForm.image.type,
+      uri:
+        Platform.OS === "ios"
+          ? questForm.image.uri.replace("file://", "")
+          : questForm.image.uri,
+    });
+  }
+
+  if (questForm.activity != 0) {
+    questDetail.append("activityHour[category]", questForm.activity);
+    questDetail.append("activityHour[hour]", questForm.activityHour);
+  }
+
+  if (questForm.selectedTag.length) {
+    questForm.selectedTag.forEach((tag) =>
+      questDetail.append("tagId", tag._id)
+    );
+  }
+
+  return questDetail;
+}
 
 export default function QuestDetailForm({
   startDate,
@@ -45,12 +103,6 @@ export default function QuestDetailForm({
     };
     fetchTags();
   }, []);
-
-  // return (
-  //   <>
-  //     <Text>Ayo</Text>
-  //   </>
-  // );
 
   return (
     <View>

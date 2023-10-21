@@ -62,7 +62,6 @@ export default function CreatorQuests({ navigation }) {
             clearButtonMode="always"
           />
         </View>
-        {/* {console.log(value)} */}
       </View>
       <Dropdown
         style={styles.dropdown}
