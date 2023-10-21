@@ -28,10 +28,10 @@ export default function CreatorQuests({ navigation }) {
   }, []);
 
   const data = [
-    { label: "Oldest Quest - Newest Quest", value: "1" },
     { label: "Newest Quest - Oldest Quest", value: "2" },
+    { label: "Oldest Quest - Newest Quest", value: "1" },
   ];
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(2);
 
   return (
     <View style={styles.allContainer}>
@@ -42,7 +42,7 @@ export default function CreatorQuests({ navigation }) {
         >
           <Image source={back_icon} style={{ width: "100%", height: "100%" }} />
         </Pressable>
-        <Text style={styles.header}>เควสที่ฉันสร้าง</Text>
+        <Text style={styles.header}>เควสที่สร้าง</Text>
       </View>
 
       <View style={styles.searchAndSortContainer}>
@@ -73,7 +73,7 @@ export default function CreatorQuests({ navigation }) {
         data={data}
         labelField="label"
         valueField="value"
-        placeholder="Oldest Quest - Newest Quest"
+        placeholder="Newest Quest - Oldest Quest"
         value={value}
         onChange={(item) => {
           setValue(item.value);
@@ -111,7 +111,8 @@ export default function CreatorQuests({ navigation }) {
 
 const styles = StyleSheet.create({
   allContainer: {
-    padding: 15,
+    paddingHorizontal: 10,
+    paddingTop: 15,
     gap: 7,
     backgroundColor: "white",
     flex: 1,
@@ -180,6 +181,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   containerStyle: {
+    fontFamily: "Kanit300",
+  },
+  filterTextBox: {
     fontFamily: "Kanit300",
   },
 });

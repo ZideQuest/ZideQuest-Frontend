@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useAppContext } from "../../data/AppContext";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Bottomsheet = ({
   children,
@@ -11,6 +12,7 @@ const Bottomsheet = ({
   hideBar = false,
   onChange,
 }) => {
+  const insets = useSafeAreaInsets();
   const bottomSheetModalRef = useRef(null);
   const { setBottomModalRef } = useAppContext();
 
@@ -38,6 +40,7 @@ const Bottomsheet = ({
         },
       ]}
       detached={detached}
+      topInset={insets.top}
       bottomInset={detached ? 30 : 0}
       enableOverDrag={!detached}
       keyboardBehavior="extend"

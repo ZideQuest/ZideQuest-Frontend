@@ -137,5 +137,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginVertical: 10,
+    fontFamily: "Kanit300"
   },
 });

@@ -300,6 +300,7 @@ export default function SearchBar({ searching, setSearching }) {
                   placeholder="ค้นหาแท็ก"
                   value={tagSearch}
                   onChangeText={setTagSearch}
+                  style={{fontFamily: "Kanit300"}}
                 />
                 <View style={styles.tagContainer}>
                   {tags

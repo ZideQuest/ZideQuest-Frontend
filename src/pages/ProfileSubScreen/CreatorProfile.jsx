@@ -49,11 +49,20 @@ export default function Profile({ navigation }) {
               style={{ width: "100%", height: "100%", borderRadius: 65 }}
             />
           </View>
-          <Text style={styles.organize}>{userDetail.user.organizeName}</Text>
+          <View>
+            <Text style={styles.organize}>{userDetail.user.organizeName}</Text>
+            <Text style={styles.role}>{userDetail.user.role}</Text>
+          </View>
         </View>
 
         <View style={styles.active}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <Text style={styles.activeText}>Active Quests</Text>
             <TouchableOpacity
               style={styles.allQuests}
@@ -107,17 +116,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    paddingTop: 5,
+    paddingTop: 45,
     position: "relative",
   },
   profileContainer: {
+    paddingBottom: 7,
+    gap: 16,
+    flexDirection: "row",
     alignItems: "center",
-    paddingTop: 30,
+    justifyContent: "center",
+    // paddingHorizontal: 20,
   },
   displayProfile: {
     width: 100,
     height: 100,
-    borderRadius: 65,
+    borderRadius: 50,
     backgroundColor: "lightgray",
     shadowColor: "#171717",
     shadowOffset: { width: 2, height: 2 },
@@ -144,8 +157,12 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   organize: {
+    fontFamily: "Kanit400",
+    fontSize: 28,
+  },
+  role: {
     fontFamily: "Kanit300",
-    fontSize: 40,
+    fontSize: 22,
   },
   filterBoxContainer: {
     // borderWidth: 1,
@@ -158,6 +175,7 @@ const styles = StyleSheet.create({
   filterTextBox: {
     flex: 1,
     height: "100%",
+    fontFamily: "Kanit300",
   },
   searchIcon: {
     width: 20,

@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fbfbfb",
     borderRadius: 6,
     fontSize: 16,
+    fontFamily: "Kanit300"
   },
   textXl: {
     fontSize: 30,

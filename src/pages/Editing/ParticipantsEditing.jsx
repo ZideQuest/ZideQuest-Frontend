@@ -197,7 +197,7 @@ export default function ParticipantsEditing({ route }) {
   }, []);
 
   return (
-    <Bottomsheet snapPoints={["90%"]} detached={true} hideBar={true} index={0}>
+    <Bottomsheet snapPoints={["100%"]} detached={true} hideBar={true} index={0}>
       <View
         style={{
           alignItems: "center",
@@ -265,30 +265,6 @@ export default function ParticipantsEditing({ route }) {
         refreshing={false}
         onRefresh={handleRefresh}
       />
-      {/* <BottomSheetScrollView refreshing={true} onRefresh={handleRefresh}>
-        <View style={styles.participantsContainer}>
-          {participants.length > 0 &&
-            participants?.map((user) => (
-              <Swipeout
-                right={[
-                  {
-                    text: "Delete",
-                    backgroundColor: "red",
-                    underlayColor: "rgba(0, 0, 0, 1, 0.6)",
-                    onPress: () => {
-                      handleDelete(user.user._id);
-                    },
-                  },
-                ]}
-                key={`participant-${user?.user?._id}`}
-                autoClose="true"
-                backgroundColor="transparent"
-              >
-                <UserTag user={user} onChecked={handleChecked} checkable />
-              </Swipeout>
-            ))}
-        </View>
-      </BottomSheetScrollView> */}
     </Bottomsheet>
   );
 }
@@ -313,5 +289,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
+    fontFamily: "Kanit300",
   },
 });
