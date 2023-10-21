@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: BGcolor,
     width: "100%",
+    marginTop: 2,
   },
   ButtonCon: {
     width: "100%",
