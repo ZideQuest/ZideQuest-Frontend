@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   pullBar: {
     backgroundColor: "white",
-    borderRadius: 15,
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

@@ -1,87 +1,30 @@
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
-import Checkbox from "expo-checkbox";
-import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
-import AddPhoto from "../components/AddPhoto";
-import React, { useEffect, useState } from "react";
-import { TimePicker } from "../components/TimePicker";
+import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { createQuest } from "../data/Quest";
-import { getTags } from "../data/tag";
-import close_icon from "../../assets/images/close_icon.png";
 
 import Spinner from "../components/Animations/Spinner";
 import BigButton from "../components/button/BigButton.jsx";
 import BackButton from "../components/button/BackButton";
-import { buttonOrange, primaryColor, textColor } from "../data/color";
+import { buttonOrange } from "../data/color";
 import * as TabNavigation from "../data/TabNavigation";
 import BottomsheetDynamic from "../components/Bottomsheet/BottomsheetDynamic";
-import ImagePreviewModal from "../components/misc/ImagePreviewModal";
-import TagSelectingModal from "../components/Quest/TagSelectingModal";
-import ActivityHourSelectingModal from "../components/Quest/ActivityHourSelectingModal";
+import QuestDetailForm, {
+  createQuestFormData,
+  useQuestForm,
+} from "../components/Quest/QuestDetailForm";
 
 function CreateQuest() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [questName, setQuestName] = useState("");
-  const [description, setDescription] = useState("");
-  const [activity, setActivity] = useState(0);
-  const [activityHour, setActivityHour] = useState(1);
-  const [tags, setTags] = useState([]);
   const route = useRoute();
   const { locationId } = route.params;
-  const [image, setImage] = useState(null);
-  const [isAuto, setIsAuto] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const [limitParticipants, setLimitParticipants] = useState(false);
-  const [maxParticipant, setMaxParticipant] = useState("");
-
-  const [selectedTag, setSelectedTag] = useState([]);
+  const [questForm, setQuestForm] = useQuestForm();
 
   const buttonHandler = async (e) => {
     setIsLoading(true);
     try {
-      const questDetail = new FormData();
-      questDetail.append("timeStart", startDate.toISOString());
-      questDetail.append("timeEnd", endDate.toISOString());
-      questDetail.append("questName", questName);
-      questDetail.append("description", description);
-
-      if (limitParticipants) {
-        questDetail.append("maxParticipant", maxParticipant);
-      }
-
-      questDetail.append("autoComplete", isAuto);
-
-      if (image != null) {
-        questDetail.append("img", {
-          name: image.fileName,
-          type: image.type,
-          uri:
-            Platform.OS === "ios"
-              ? image.uri.replace("file://", "")
-              : image.uri,
-        });
-      }
-
-      if (activity != 0) {
-        questDetail.append("activityHour[category]", activity);
-        questDetail.append("activityHour[hour]", activityHour);
-      }
-
-      if (selectedTag.length) {
-        selectedTag.forEach((tag) => questDetail.append("tagId", tag._id));
-      }
-
+      const questDetail = createQuestFormData(questForm);
+      console.log(questDetail);
       const newQuest = await createQuest(questDetail, locationId);
       setIsLoading(false);
       TabNavigation.navigate("QuestManage", { questId: newQuest._id });
@@ -91,29 +34,12 @@ function CreateQuest() {
     }
   };
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const data = await getTags();
-        setTags(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchTags();
-  }, []);
-
   return (
     <BottomsheetDynamic style={styles.container} snapPoints={["20%"]} index={1}>
       {isLoading ? (
         <Spinner />
       ) : (
         <>
-          <ImagePreviewModal
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            imageUri={image?.uri}
-          />
           <View style={styles.innerContainer}>
             <View
               style={{
@@ -130,167 +56,7 @@ function CreateQuest() {
               />
             </View>
 
-            <View style={styles.detailBox}>
-              <View style={styles.box}>
-                <Text style={styles.textMd}>ชื่อเควส</Text>
-                <BottomSheetTextInput
-                  style={styles.textIn}
-                  value={questName}
-                  onChangeText={setQuestName}
-                />
-              </View>
-              <View style={styles.box}>
-                <Text style={styles.textMd}>รายละเอียด</Text>
-                <BottomSheetTextInput
-                  style={styles.textIn}
-                  value={description}
-                  onChangeText={setDescription}
-                />
-              </View>
-              <View style={{ ...styles.box, flex: 1 }}>
-                <Text style={styles.textMd}>แท็ก</Text>
-                <TagSelectingModal
-                  selectedTag={selectedTag}
-                  setSelectedTag={setSelectedTag}
-                  tags={tags}
-                  setTags={setTags}
-                />
-              </View>
-            </View>
-
-            <View style={{ marginBottom: 10 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 20,
-                  flex: 1,
-                  justifyContent: "space-between",
-                }}
-              >
-                <View style={{ ...styles.box, flex: 1 }}>
-                  <Text style={styles.textMd}>ชั่วโมงกิจกรรม</Text>
-                  <ActivityHourSelectingModal
-                    activity={activity}
-                    setActivity={setActivity}
-                  />
-                </View>
-                <View style={styles.box}>
-                  <Text
-                    style={[
-                      styles.textMd,
-                      { color: activity != 0 ? "black" : "grey" },
-                    ]}
-                  >
-                    จำนวนชั่วโมง
-                  </Text>
-                  <BottomSheetTextInput
-                    style={[
-                      styles.textIn,
-                      { color: activity != 0 ? "black" : "grey" },
-                    ]}
-                    value={activity != 0 ? activityHour?.toString() : ""}
-                    onChangeText={setActivityHour}
-                    editable={activity != 0}
-                    inputMode="numeric"
-                  />
-                </View>
-              </View>
-
-              <View style={{ marginTop: 20 }}>
-                <TimePicker
-                  startDate={startDate}
-                  setStartDate={setStartDate}
-                  endDate={endDate}
-                  setEndDate={setEndDate}
-                />
-              </View>
-
-              <Pressable
-                style={{
-                  flexDirection: "row",
-                  gap: 10,
-                  marginVertical: 4,
-                  alignItems: "center",
-                }}
-                onPress={() => setIsAuto((prev) => !prev)}
-              >
-                <Checkbox
-                  color={primaryColor}
-                  value={isAuto}
-                  onValueChange={(v) => setIsAuto(v)}
-                />
-                <Text style={styles.textMd}>
-                  ให้เควสจบอัตโนมัติเมื่อถึงเวลา
-                </Text>
-              </Pressable>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 5,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 10,
-                    alignItems: "center",
-                  }}
-                >
-                  <Checkbox
-                    color={primaryColor}
-                    value={limitParticipants}
-                    onValueChange={setLimitParticipants}
-                  />
-                  <Text style={styles.textMd}>จำกัดจำนวนคน</Text>
-                </View>
-
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <BottomSheetTextInput
-                    style={[
-                      styles.textIn,
-                      { width: 100, marginHorizontal: 10 },
-                    ]}
-                    value={maxParticipant?.toString()}
-                    onChangeText={setMaxParticipant}
-                    editable={limitParticipants}
-                  />
-                  <Text
-                    style={[
-                      styles.textMd,
-                      {
-                        color: limitParticipants ? "black" : "gray",
-                      },
-                    ]}
-                  >
-                    คน
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.box}>
-                <Text style={styles.textMd}>เพิ่มรูปภาพ</Text>
-                <AddPhoto image={image} setImage={setImage} />
-                {image && (
-                  <View style={styles.image}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setImage(null);
-                      }}
-                      style={styles.xBtn}
-                    >
-                      <Image source={close_icon} style={styles.x} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
-                      <Image
-                        source={{ uri: image.uri }}
-                        style={{ height: 150, flex: 1 }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            </View>
+            <QuestDetailForm {...questForm} setQuestForm={setQuestForm} />
 
             <BigButton
               bg={buttonOrange}
@@ -319,69 +85,9 @@ const styles = StyleSheet.create({
   innerContainer: {
     paddingHorizontal: 15,
   },
-  textIn: {
-    borderColor: "#CDCDCD",
-    borderWidth: 1,
-    padding: 4,
-    backgroundColor: "#fbfbfb",
-    borderRadius: 6,
-    fontSize: 16,
-    fontFamily: "Kanit300"
-  },
   textXl: {
     fontSize: 30,
     fontFamily: "Kanit400",
-  },
-  textMd: {
-    fontSize: 16,
-    fontFamily: "Kanit300",
-  },
-  box: {
-    gap: 2,
-    // borderWidth: 1
-  },
-  detailBox: {
-    gap: 10,
-    marginBottom: 10,
-  },
-  textBtn: {
-    textAlign: "center",
-    color: "white",
-    fontWeight: "bold",
-  },
-  image: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    overflow: "hidden",
-    shadowColor: "#171717",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    position: "relative",
-  },
-  xBtn: {
-    position: "absolute",
-    top: 5,
-    right: 5,
-    zIndex: 10,
-    backgroundColor: "white",
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 4,
-  },
-  tagContainer: {
-    flexWrap: "wrap",
-    flexDirection: "row",
-    gap: 5,
-    padding: 10,
-  },
-  x: {
-    width: "100%",
-    height: "100%",
   },
 });
 

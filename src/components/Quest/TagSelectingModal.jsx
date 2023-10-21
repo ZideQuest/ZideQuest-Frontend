@@ -81,9 +81,15 @@ export default function TagSelectingModal({
   const selectedTagIds = selectedTag.map((t) => t._id);
   const tagPressHandler = (tag) => {
     if (selectedTagIds.includes(tag._id)) {
-      setSelectedTag((prev) => prev.filter((p) => p._id != tag._id));
+      setSelectedTag((prev) => ({
+        ...prev,
+        selectedTag: prev.selectedTag.filter((p) => p._id != tag._id),
+      }));
     } else {
-      setSelectedTag((prev) => [...prev, tag]);
+      setSelectedTag((prev) => ({
+        ...prev,
+        selectedTag: [...prev.selectedTag, tag],
+      }));
     }
   };
 
