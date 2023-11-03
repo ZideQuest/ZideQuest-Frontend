@@ -25,19 +25,21 @@ export default function ActivityName({
       <View style={styles.questItem}>
         <View style={[styles.questNameCon]}>
           <Text style={styles.questFont}>{quest?.questName}</Text>
-          {backButtonRoute ? (
-            <BackButton
-              targetRoute={backButtonRoute.targetRoute}
-              params={backButtonRoute.params}
-              resetFocus={backButtonRoute.resetFocus}
-            />
-          ) : (
-            <BackButton
-              targetRoute="PinDetail"
-              params={{ pinId: quest?.locationId }}
-              resetFocus={false}
-            />
-          )}
+          <View style={{marginTop: 13}}>
+            {backButtonRoute ? (
+              <BackButton
+                targetRoute={backButtonRoute.targetRoute}
+                params={backButtonRoute.params}
+                resetFocus={backButtonRoute.resetFocus}
+              />
+            ) : (
+              <BackButton
+                targetRoute="PinDetail"
+                params={{ pinId: quest?.locationId }}
+                resetFocus={false}
+              />
+            )}
+          </View>
         </View>
       </View>
       <View style={styles.infoText}>
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
   questNameCon: {
     width: "100%",
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "space-between",
   },
   pic: {

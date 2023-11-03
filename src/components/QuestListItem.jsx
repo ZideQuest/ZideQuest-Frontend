@@ -15,7 +15,6 @@ export default function QuestListItem({
   panMap = false,
 }) {
   const { userDetail, mapMoveTo, setFocusedPin } = useAppContext();
-  
   const checkQuestCompleted = () => {
     if (!quest.status) {
       return false;
@@ -56,8 +55,16 @@ export default function QuestListItem({
       onPress={questPressHandler}
       style={[styles.questItem, { opacity: quest.status ? 0.5 : 1 }]}
     >
-      <Text style={styles.questFont}>{quest.questName}</Text>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+      <Text style={styles.questFont} numberOfLines={1}>
+        {quest.questName}
+      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
         <Text style={styles.questFont}>
           {quest.countParticipant}
           {quest.maxParticipant ? `/${quest.maxParticipant}` : ""}
@@ -101,5 +108,6 @@ const styles = StyleSheet.create({
   questFont: {
     fontFamily: "Kanit300",
     fontSize: 17,
+    flexShrink: 1,
   },
 });
