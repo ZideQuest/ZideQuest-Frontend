@@ -13,8 +13,6 @@ import redcross_icon from "../../assets/images/redcross.png";
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 import { useAppContext } from "../data/AppContext";
 
-import { statusIcon } from "../components/misc/Status";
-
 export default function NotificationList({ name, message, id }) {
   return (
     <View style={styles.Card}>
