@@ -19,6 +19,7 @@ import LocationEditing from "./Editing/LocationEditing";
 import ParticipantsEditing from "./Editing/ParticipantsEditing";
 import UserQuestComplete from "./UserQuestComplete";
 import GenQRScreen from "./GenQRScreen";
+import MyNotifications from "./MyNotifications";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,7 @@ export default function HomeScreen() {
           <Stack.Screen name="PinCreateInfo" component={PinCreateInfo} />
           <Stack.Screen name="QuestManage" component={QuestManagement} />
           <Stack.Screen name="Profile" component={ProfileModal} />
+          <Stack.Screen name="Notifications" component={MyNotifications} />
           <Stack.Screen name="EditQuest" component={QuestEditing} />
           <Stack.Screen name="EditLocation" component={LocationEditing} />
           <Stack.Screen

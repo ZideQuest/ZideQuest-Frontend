@@ -48,6 +48,7 @@ export default function DrawerMenu({ navigation, children }) {
   const notificationButtonHandler = () => {
     if (userDetail.isAdmin || userDetail.token != null) {
       setDrawerOpen(false);
+      TabNavigation.navigate("Notifications");
     } else {
       alert("กรุณา login");
     }
@@ -143,7 +144,11 @@ export default function DrawerMenu({ navigation, children }) {
                   source={notification_icon}
                   style={{ width: 25, height: 25 }}
                 />
-                <Text style={styles.badge}>3</Text>
+                {userDetail.user.notifications.length > 0 ? (
+                  <Text style={styles.badge}>
+                    {userDetail.user.notifications.length}
+                  </Text>
+                ) : null}
               </TouchableOpacity>
             </View>
           </View>
