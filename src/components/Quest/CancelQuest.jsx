@@ -103,10 +103,11 @@ export default function CancelQuest({ questId, locationId, questName }) {
 
               <BottomSheetTextInput
                 style={styles.input}
-                placeholder="Enter something"
-                value={cancelReason}
+                placeholder="เหตุผลของการยกเลิก..."
+                // value={cancelReason}
                 onChangeText={setCancelReason}
                 autoFocus
+                multiline
               />
 
               <BigButton
@@ -131,12 +132,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
-    height: 40,
+    height: 130,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginVertical: 10,
-    fontFamily: "Kanit300"
+    fontFamily: "Kanit300",
   },
 });

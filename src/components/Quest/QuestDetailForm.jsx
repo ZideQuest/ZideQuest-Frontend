@@ -128,8 +128,8 @@ export default function QuestDetailForm({
           <Text style={styles.textMd}>รายละเอียด</Text>
           <BottomSheetTextInput
             placeholder="รายละเอียด..."
-            style={styles.textIn}
-            value={description}
+            multiline
+            style={[styles.textIn, { height: 100 }]}
             onChangeText={(text) =>
               setQuestForm((prev) => ({ ...prev, description: text }))
             }

@@ -44,13 +44,14 @@ export default function MyNotifications() {
           </Pressable>
         </View>
         <BottomSheetScrollView style={styles.notificationContainer}>
-          <View style={{gap: 7}}>
+          <View style={{ gap: 7 }}>
             {userDetail.user.notifications &&
             userDetail.user.notifications.length > 0 ? (
               userDetail.user.notifications.map((item) => (
                 <NotificationList
                   detail={item}
                   onDelete={deleteNotification}
+                  key={item._id}
                 />
               ))
             ) : (

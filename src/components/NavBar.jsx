@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppContext } from "../data/AppContext";
 import { primaryColor } from "../data/color";
@@ -39,6 +39,11 @@ export default function NavBar() {
         onPress={DrawerToggle}
         activeOpacity={0.7}
       >
+        {userDetail.user?.notifications?.length > 0 ? (
+          <Text style={styles.badge}>
+            {userDetail.user.notifications.length}
+          </Text>
+        ) : null}
         <Image source={zidequest_icon} style={styles.hamburgerIcon} />
       </TouchableOpacity>
       {userDetail.token && !userDetail.isAdmin && (
@@ -76,14 +81,14 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     position: "relative",
-    borderRadius: 30,
-    overflow: "hidden",
-    borderColor: primaryColor,
-    borderWidth: 3,
   },
   hamburgerIcon: {
     height: "100%",
     width: "100%",
+    borderRadius: 30,
+    overflow: "hidden",
+    borderColor: primaryColor,
+    borderWidth: 3,
   },
   searchContainer: {
     flex: 1,
@@ -92,5 +97,21 @@ const styles = StyleSheet.create({
   pinButtonIcon: {
     width: 40,
     height: 40,
+  },
+  badge: {
+    position: "absolute",
+    zIndex: 2,
+    top: 0,
+    right: -3,
+    padding: 2,
+    fontSize: 12,
+    backgroundColor: "red",
+    fontWeight: "bold",
+    color: "white",
+    height: 17,
+    width: 17,
+    textAlign: "center",
+    borderRadius: 9, // Half of width and height to make it a circle
+    overflow: "hidden",
   },
 });

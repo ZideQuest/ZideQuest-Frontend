@@ -13,6 +13,7 @@ import QuestDetailForm, {
   createQuestFormData,
   useQuestForm,
 } from "../components/Quest/QuestDetailForm";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 function CreateQuest() {
   const route = useRoute();
@@ -24,7 +25,7 @@ function CreateQuest() {
     setIsLoading(true);
     try {
       const questDetail = createQuestFormData(questForm);
-      console.log(questDetail);
+      // console.log(questDetail);
       const newQuest = await createQuest(questDetail, locationId);
       setIsLoading(false);
       TabNavigation.navigate("QuestManage", { questId: newQuest._id });
@@ -39,7 +40,7 @@ function CreateQuest() {
       {isLoading ? (
         <Spinner />
       ) : (
-        <>
+        <BottomSheetScrollView>
           <View style={styles.innerContainer}>
             <View
               style={{
@@ -64,7 +65,7 @@ function CreateQuest() {
               onPress={buttonHandler}
             />
           </View>
-        </>
+        </BottomSheetScrollView>
       )}
     </BottomsheetDynamic>
   );
