@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,9 +14,17 @@ import goBackPic from "../../assets/images/close_icon.png";
 import * as TabNavigation from "../data/TabNavigation";
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 import NotificationList from "../components/NotificationList";
+import { deleteUserNotification } from "../data/authen";
 
 export default function MyNotifications() {
-  const { userDetail } = useAppContext();
+  const { userDetail, fetchUser } = useAppContext();
+  console.log(userDetail.user.notifications);
+
+  const deleteNotification = (id) => {
+    deleteUserNotification(id).then(() => {
+      fetchUser();
+    });
+  };
 
   return (
     <Bottomsheet snapPoints={["90%"]} detached={true} hideBar={true}>
@@ -29,31 +37,15 @@ export default function MyNotifications() {
         </Pressable>
         <Text style={styles.Head_text}>Notifications 🔥</Text>
         <ScrollView style={styles.notificationContainer}>
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
-          <NotificationList />
           {userDetail.user.notifications &&
           userDetail.user.notifications.length > 0 ? (
             userDetail.user.notifications.map((item) => (
               <NotificationList
-                name={item.questId}
+                quest={item.questId}
                 key={item._id}
                 message={item.message}
+                id={item._id}
+                onDelete={deleteNotification}
               />
             ))
           ) : (

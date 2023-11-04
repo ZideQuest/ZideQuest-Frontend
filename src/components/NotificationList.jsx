@@ -11,13 +11,19 @@ import {
 import * as TabNavigation from "../data/TabNavigation";
 import redcross_icon from "../../assets/images/redcross.png";
 import { buttonGrey, primaryColor, textColor } from "../data/color";
-import { useAppContext } from "../data/AppContext";
+import { deleteUserNotification } from "../data/authen";
+import Alert from "./misc/Alert";
 
-export default function NotificationList({ name, message, id }) {
+export default function NotificationList({ quest, message, id, onDelete }) {
+  const DeleteNotiPressHandler = async () => {
+    if (await Alert("Delete", "ยืนยันการลบ notification นี้?")) {
+      onDelete(id);
+    }
+  };
   return (
     <View style={styles.Card}>
       <View style={{ flex: 1, paddingRight: 25 }}>
-        <Text style={styles.QuestName}>Quest: {name}</Text>
+        <Text style={styles.QuestName}>Quest: {quest.questName}</Text>
         <Text style={styles.Message}>{message}</Text>
       </View>
       <View
@@ -28,7 +34,7 @@ export default function NotificationList({ name, message, id }) {
           backgroundColor: textColor,
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={DeleteNotiPressHandler}>
           <Image source={redcross_icon} style={{ width: 25, height: 25 }} />
         </TouchableOpacity>
       </View>
