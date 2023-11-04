@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import Bottomsheet from "../components/Bottomsheet/Bottomsheet";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import goBackPic from "../../assets/images/close_icon.png";
 import * as TabNavigation from "../data/TabNavigation";
-import { buttonGrey, primaryColor, textColor } from "../data/color";
+import { primaryColor } from "../data/color";
 import NotificationList from "../components/NotificationList";
 import { deleteUserNotification } from "../data/authen";
 
@@ -26,39 +26,46 @@ export default function MyNotifications() {
   };
 
   return (
-    <Bottomsheet snapPoints={["90%"]} detached={true} hideBar={true}>
+    <Bottomsheet snapPoints={["100%"]} detached={true} hideBar={true}>
       <View style={styles.container}>
-        <Pressable
-          onPress={() => TabNavigation.navigate("Recommend")}
-          style={[styles.exit, { alignItems: "flex-end" }]}
+        <View
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            paddingRight: 20,
+          }}
         >
-          <Image style={{ width: 17, height: 17 }} source={goBackPic} />
-        </Pressable>
-        <Text style={styles.Head_text}>Notifications 🔥</Text>
-        <ScrollView style={styles.notificationContainer}>
-          {userDetail.user.notifications &&
-          userDetail.user.notifications.length > 0 ? (
-            userDetail.user.notifications.map((item) => (
-              <NotificationList
-                quest={item.questId}
-                key={item._id}
-                message={item.message}
-                id={item._id}
-                onDelete={deleteNotification}
-              />
-            ))
-          ) : (
-            <Text
-              style={{
-                justifyContent: "center",
-                fontFamily: "Kanit600",
-                fontSize: 20,
-              }}
-            >
-              Nothing here yet 😉
-            </Text>
-          )}
-        </ScrollView>
+          <Text style={styles.Head_text}>Notifications 📣</Text>
+          <Pressable
+            onPress={() => TabNavigation.navigate("Recommend")}
+            style={[styles.exit]}
+          >
+            <Image style={{ width: 17, height: 17 }} source={goBackPic} />
+          </Pressable>
+        </View>
+        <BottomSheetScrollView style={styles.notificationContainer}>
+          <View style={{gap: 7}}>
+            {userDetail.user.notifications &&
+            userDetail.user.notifications.length > 0 ? (
+              userDetail.user.notifications.map((item) => (
+                <NotificationList
+                  detail={item}
+                  onDelete={deleteNotification}
+                />
+              ))
+            ) : (
+              <Text
+                style={{
+                  justifyContent: "center",
+                  fontFamily: "Kanit600",
+                  fontSize: 20,
+                }}
+              >
+                Nothing here yet 😉
+              </Text>
+            )}
+          </View>
+        </BottomSheetScrollView>
       </View>
     </Bottomsheet>
   );
@@ -70,9 +77,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   exit: {
-    paddingTop: 15,
-    paddingRight: 15,
     backgroundColor: "transparent",
+    alignSelf: "center",
+    padding: 7,
+    marginTop: 14,
   },
   Head_text: {
     fontFamily: "Kanit600",
@@ -82,10 +90,10 @@ const styles = StyleSheet.create({
     color: primaryColor,
   },
   notificationContainer: {
-    paddingTop: 25,
-    paddingLeft: 25,
-    paddingRight: 25,
+    paddingTop: 7,
+    paddingLeft: 15,
+    paddingRight: 15,
     flex: 1,
-    gap: 5,
+    // gap: 5,
   },
 });

@@ -18,7 +18,7 @@ export default function ProfileModal() {
   const { userDetail } = useAppContext();
 
   return (
-    <Bottomsheet snapPoints={["90%"]} detached={true} hideBar={true}>
+    <Bottomsheet snapPoints={["100%"]} detached={true} hideBar={true}>
       <View style={styles.container}>
         <NavigationContainer independent={true}>
           <Stack.Navigator

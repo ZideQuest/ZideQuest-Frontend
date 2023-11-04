@@ -29,14 +29,13 @@ export default function CheckinScreen({ navigation }) {
       navigation.navigate("App");
       const quest = data.split("/");
       const questId = quest[2];
-      console.log(questId);
       try {
         const res = await userCheckin(questId);
         TabNavigation.navigate("QuestDetail", { questId });
 
         Alert.alert(`เช็คอินกิจกรรม ${res.questName} สำเร็จ!`);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         if (error.response.status === 444) {
           Alert.alert(
             "กิจกรรมที่คุณกำลังจะเข้าร่วมนั้นมีผู้เข้าร่วมเต็มจำนวนแล้ว"
