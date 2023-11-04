@@ -18,7 +18,6 @@ import { deleteUserNotification } from "../data/authen";
 
 export default function MyNotifications() {
   const { userDetail, fetchUser } = useAppContext();
-  console.log(userDetail.user.notifications);
 
   const deleteNotification = (id) => {
     deleteUserNotification(id).then(() => {
