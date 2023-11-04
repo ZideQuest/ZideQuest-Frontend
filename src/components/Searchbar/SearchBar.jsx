@@ -132,6 +132,9 @@ export default function SearchBar({ searching, setSearching }) {
   };
 
   const onBlurHandler = () => {
+    if (endDate || startDate) {
+      return;
+    }
     if (!search) {
       setSearching(false);
       // Keyboard.dismiss();

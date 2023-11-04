@@ -20,6 +20,7 @@ export const AppProvider = ({ children }) => {
   const [focusedPin, setFocusedPin] = useState(null);
   const [snapBack, setSnapBack] = useState(null);
   const [onlyPinWithMyQuest, setOnlyPinWithMyQuest] = useState(false);
+  const [isLoginAlerted, setIsLoginAlerted] = useState(false);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -59,12 +60,17 @@ export const AppProvider = ({ children }) => {
       const response = await fetchUserData();
       setUserDetails(response);
 
+      // console.log(response);
+
       if (response.user) {
         setSoonQuest(response.user.joinedQuest?.filter((q) => !q.status));
       }
     } catch (error) {
-      console.error(error);
-      alert("Please Login again", error);
+      // console.error(error);
+      if (!isLoginAlerted) {
+        alert("Please try logging in again", error);
+        setIsLoginAlerted(true);
+      }
     }
   };
 

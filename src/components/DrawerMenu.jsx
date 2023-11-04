@@ -375,9 +375,14 @@ const styles = StyleSheet.create({
     top: -10,
     right: -2,
     padding: 2,
-    fontSize: 12,
-    borderRadius: 100, // Half of width and height to make it a circle
+    fontSize: 10,
     backgroundColor: "red",
+    fontWeight: "bold",
     color: "white",
+    height: 15,
+    width: 15,
+    textAlign: "center",
+    borderRadius: 9, // Half of width and height to make it a circle
+    overflow: "hidden",
   },
 });

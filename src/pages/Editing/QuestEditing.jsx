@@ -17,6 +17,7 @@ import QuestDetailForm, {
   createQuestFormData,
   useQuestForm,
 } from "../../components/Quest/QuestDetailForm";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 export default function QuestEditing() {
   const [questForm, setQuestForm] = useQuestForm();
@@ -76,7 +77,7 @@ export default function QuestEditing() {
       {isLoading ? (
         <Spinner />
       ) : (
-        <>
+        <BottomSheetScrollView>
           <View style={styles.innerContainer}>
             <View
               style={{
@@ -110,7 +111,7 @@ export default function QuestEditing() {
               onPress={buttonHandler}
             />
           </View>
-        </>
+        </BottomSheetScrollView>
       )}
     </BottomsheetDynamic>
   );

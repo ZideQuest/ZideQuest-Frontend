@@ -29,12 +29,11 @@ export async function fetchUserData() {
     },
   });
 
-  const user = {
-    token: userDetail.token,
-    user: data,
-    isAdmin: data.role,
-  };
-  return user;
+  return {
+      token: userDetail.token,
+      user: data,
+      isAdmin: data.role,
+    };
 }
 
 export async function userCheckin(questId) {

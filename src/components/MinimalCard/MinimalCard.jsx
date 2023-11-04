@@ -194,6 +194,8 @@ const styles = StyleSheet.create({
     color: textColor,
     fontSize: 24,
     fontFamily: "Kanit400",
+    paddingLeft: 10,
+    paddingTop: 6,
   },
   row: {
     flexDirection: "row",
