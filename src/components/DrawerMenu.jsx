@@ -14,6 +14,7 @@ import plus_icon from "../../assets/images/plus.png";
 import leave_icon from "../../assets/images/leave_icon.png";
 import qr_scanner_icon from "../../assets/images/qr_scanner_icon.png";
 import close_icon from "../../assets/images/close_icon.png";
+import notification_icon from "../../assets/images/notification.png";
 
 import { buttonGrey, primaryColor, textColor } from "../data/color";
 
@@ -39,6 +40,15 @@ export default function DrawerMenu({ navigation, children }) {
     if (userDetail.isAdmin || userDetail.token != null) {
       navigation.navigate("Checkin");
       setDrawerOpen(false);
+    } else {
+      alert("กรุณา login");
+    }
+  };
+
+  const notificationButtonHandler = () => {
+    if (userDetail.isAdmin || userDetail.token != null) {
+      setDrawerOpen(false);
+      TabNavigation.navigate("Notifications");
     } else {
       alert("กรุณา login");
     }
@@ -102,18 +112,20 @@ export default function DrawerMenu({ navigation, children }) {
       );
     } else {
       return (
-        <TouchableOpacity onPress={profilePressHander} style={{ gap: 10 }}>
+        <View style={{ gap: 10 }}>
           <View style={styles.profileDisplayContainer}>
-            <View style={styles.displayImageContainer}>
-              <Image
-                source={
-                  userDetail?.user?.picturePath
-                    ? { uri: userDetail?.user?.picturePath }
-                    : user_icon
-                }
-                style={styles.displayImage}
-              />
-            </View>
+            <TouchableOpacity onPress={profilePressHander}>
+              <View style={styles.displayImageContainer}>
+                <Image
+                  source={
+                    userDetail?.user?.picturePath
+                      ? { uri: userDetail?.user?.picturePath }
+                      : user_icon
+                  }
+                  style={styles.displayImage}
+                />
+              </View>
+            </TouchableOpacity>
             <View>
               <Text style={styles.username}>{userDetail?.user?.firstName}</Text>
               <Text
@@ -122,6 +134,22 @@ export default function DrawerMenu({ navigation, children }) {
                 Level{" "}
                 <Text style={{ color: "teal" }}>{userDetail?.user?.level}</Text>
               </Text>
+            </View>
+            <View>
+              <TouchableOpacity
+                onPress={notificationButtonHandler}
+                style={styles.notification}
+              >
+                <Image
+                  source={notification_icon}
+                  style={{ width: 25, height: 25 }}
+                />
+                {userDetail.user.notifications.length > 0 ? (
+                  <Text style={styles.badge}>
+                    {userDetail.user.notifications.length}
+                  </Text>
+                ) : null}
+              </TouchableOpacity>
             </View>
           </View>
           <View style={{ gap: 3, alignItems: "flex-end" }}>
@@ -146,7 +174,7 @@ export default function DrawerMenu({ navigation, children }) {
               />
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
       );
     }
   };
@@ -337,5 +365,19 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontFamily: "Kanit400",
     fontSize: 14,
+  },
+  notification: {
+    position: "relative",
+    display: "flex",
+  },
+  badge: {
+    position: "absolute",
+    top: -10,
+    right: -2,
+    padding: 2,
+    fontSize: 12,
+    borderRadius: 100, // Half of width and height to make it a circle
+    backgroundColor: "red",
+    color: "white",
   },
 });

@@ -55,3 +55,23 @@ export async function userCheckin(questId) {
 
   return data;
 }
+
+export const deleteUserNotification = async (id) => {
+  try {
+    const userdetail = JSON.parse(await SecureStore.getItemAsync("userDetail"));
+    const { token } = userdetail;
+    // console.log("this is id that send", id);
+
+    const res = await axios.delete(`${BASE_URL}/users/notification/${id}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
