@@ -14,6 +14,7 @@ import { useAppContext } from "../../data/AppContext";
 import { buttonGrey, buttonOrange, textColor } from "../../data/color";
 import Tag from "../Quest/Tag";
 import { activityCategories } from "../../data/activityCategory";
+import { timeConvMini, timeConv } from "../../data/time/time";
 
 function month_to_thai(datestring) {
   switch (datestring) {
@@ -134,9 +135,9 @@ const MinimalCard = ({ quest }) => {
               {date} {month} {year}
             </Text>
             <View style={styles.timeSE}>
-              <Text style={styles.time}>{formattedTime}</Text>
+              <Text style={styles.time}>{timeConvMini(quest?.timeStart)}</Text>
               <Text style={styles.time}>-</Text>
-              <Text style={styles.time}>{formattedTimeEnd}</Text>
+              <Text style={styles.time}>{timeConvMini(quest?.timeEnd)}</Text>
             </View>
           </View>
         </View>

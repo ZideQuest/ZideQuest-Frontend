@@ -1,17 +1,8 @@
-import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-import * as TabNavigation from "../data/TabNavigation";
 import redcross_icon from "../../assets/images/redcross.png";
 import { buttonGrey, primaryColor, textColor } from "../data/color";
-import { deleteUserNotification } from "../data/authen";
 import Alert from "./misc/Alert";
 
 export default function NotificationList({ quest, message, id, onDelete }) {
