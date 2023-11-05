@@ -1,5 +1,5 @@
 import LottieView from "lottie-react-native";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import spinner from "./spinner.json";
 
 export default function Spinner() {
@@ -20,6 +20,7 @@ export default function Spinner() {
         }}
         source={spinner}
       />
+      <Text>Loading...</Text>
     </View>
   );
 }

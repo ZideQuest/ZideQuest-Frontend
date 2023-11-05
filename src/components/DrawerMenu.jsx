@@ -127,7 +127,9 @@ export default function DrawerMenu({ navigation, children }) {
               </View>
             </TouchableOpacity>
             <View>
-              <Text style={styles.username}>{userDetail?.user?.firstName}</Text>
+              <Text style={styles.username} numberOfLines={1}>
+                {userDetail?.user?.firstName}
+              </Text>
               <Text
                 style={{ fontFamily: "Kanit400", fontSize: 15, lineHeight: 17 }}
               >
@@ -310,6 +312,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
     gap: 20,
+    maxWidth: 130,
   },
   displayImageContainer: {
     width: 50,
