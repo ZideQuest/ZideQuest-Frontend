@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
   profileDisplayContainer: {
     flexDirection: "row",
     alignItems: "center",
+    // justifyContent: "space-between",
     marginTop: 20,
     gap: 20,
     maxWidth: 130,

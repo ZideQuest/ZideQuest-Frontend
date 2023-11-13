@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: "hidden",
     paddingBottom: 13,
+    zIndex: 5,
   },
   backgroundStyle: {
     // backgroundColor: "transparent",

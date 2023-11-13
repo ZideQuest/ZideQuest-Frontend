@@ -72,6 +72,15 @@ export default function PinCreateInfo({ route }) {
     bodyFormData.append("locationName", place);
     bodyFormData.append("description", detail);
 
+    if (image != null) {
+      bodyFormData.append("img", {
+        name: image.fileName,
+        type: image.type,
+        uri:
+          Platform.OS === "ios" ? image.uri.replace("file://", "") : image.uri,
+      });
+    }
+
     try {
       const { data } = await editLocation(bodyFormData, route.params?.pinId);
       closeHandler(data.location._id);
